@@ -25,7 +25,7 @@ function grants_handler_theme() {
  */
 function grants_handler_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
-  \Drupal::logger('grants_profile')->info('grants_handler_webform_submission_form_alter');
+  \Drupal::logger('grants_profile')->info($form_id);
 
   if ($form_id === 'webform_submission_yleisavustushakemus_add_form') {
 
