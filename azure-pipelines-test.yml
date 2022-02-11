@@ -5,7 +5,7 @@
 trigger:
   branches:
     include:
-    - develop
+    - hotfix/test-no-tunnistamo
   paths:
     exclude:
     - README.md
