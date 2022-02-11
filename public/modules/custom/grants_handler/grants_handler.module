@@ -27,7 +27,7 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
 
   \Drupal::logger('grants_profile')->info($form_id);
 
-  if ($form_id === 'webform_submission_yleisavustushakemus_add_form') {
+//  if ($form_id === 'webform_submission_yleisavustushakemus_add_form') {
 
     /** @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $userExternalData */
 //    $userExternalData = \Drupal::service('helfi_helsinki_profiili.userdata');
@@ -76,7 +76,7 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
     }
 
 
-  }
+//  }
 }
 
 /**
