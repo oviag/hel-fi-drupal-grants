@@ -43,8 +43,6 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
 //      $associationRoles = $yjdhClient->roleSearchWithSsn($profileData["verifiedPersonalInformation"]["nationalIdentificationNumber"]);
       $associationRoles = $yjdhClient->roleSearchWithSsn('210281-9988');
 
-      \Drupal::logger('grants_profile')->info('Assosiations roles'. print_r($associationRoles, true));
-
       $form['#prefix'] = '<div id="form_wrap">';
       $form['#suffix'] = '</div>';
 
@@ -67,8 +65,6 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
           'message' => 'Getting YTJ data',
         ],
       ];
-
-      \Drupal::logger('grants_profile')->info('Assosiations roles'. print_r($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"], true));
 
     } catch (YjdhException $e) {
       \Drupal::messenger()
