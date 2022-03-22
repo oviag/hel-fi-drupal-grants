@@ -1,0 +1,4 @@
+administer form_tool_embed configuration:
+  title: 'Administer form_tool_embed configuration'
+  description: 'Optional description.'
+  restrict access: true

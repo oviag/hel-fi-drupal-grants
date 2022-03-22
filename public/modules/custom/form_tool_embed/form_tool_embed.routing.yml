@@ -1,0 +1,25 @@
+form_tool_embed.example:
+  path: '/form-tool-embed/testi1'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\form_tool_embed\Controller\FormToolEmbedController::build'
+  requirements:
+    _permission: 'access content'
+
+form_tool_embed.example2:
+  path: '/form-tool-embed/testi2'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\form_tool_embed\Controller\FormToolEmbedController::build2'
+  requirements:
+    _permission: 'access content'
+
+
+form_tool_embed.example3:
+  path: '/form-tool-embed/testi3'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\form_tool_embed\Controller\FormToolEmbedController::build3'
+  requirements:
+    _permission: 'access content'
+

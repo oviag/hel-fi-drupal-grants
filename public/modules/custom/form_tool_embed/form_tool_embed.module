@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Form Tool Embed module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function form_tool_embed_theme(): array {
+  $theme['testi1'] = [
+    'variables' => [
+      'content' => NULL,
+    ],
+  ];
+  $theme['testi2'] = [
+    'variables' => [
+      'content' => NULL,
+    ],
+  ];
+  $theme['testi3'] = [
+    'variables' => [
+      'content' => NULL,
+    ],
+  ];
+
+  return $theme;
+}

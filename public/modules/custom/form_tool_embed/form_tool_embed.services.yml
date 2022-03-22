@@ -1,0 +1,6 @@
+services:
+  form_tool_embed.event_subscriber:
+    class: Drupal\form_tool_embed\EventSubscriber\FormToolEmbedSubscriber
+    arguments: ['@messenger']
+    tags:
+      - { name: event_subscriber }

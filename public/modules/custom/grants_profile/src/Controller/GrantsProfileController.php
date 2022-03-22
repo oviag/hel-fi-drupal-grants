@@ -90,6 +90,8 @@ class GrantsProfileController extends ControllerBase {
     $grantsProfileService = \Drupal::service('grants_profile.service');
     $selectedCompany = $grantsProfileService->getSelectedCompany();
 
+
+
     if ($selectedCompany == NULL) {
       $this->messenger()
         ->addError($this->t('No profile data available, select company'), TRUE);
