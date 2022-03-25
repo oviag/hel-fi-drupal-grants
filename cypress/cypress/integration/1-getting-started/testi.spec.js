@@ -94,7 +94,7 @@ describe('Site load, cookies, login', () => {
         cy.get('[data-webform-page="3_yhteison_tiedot"]').should('have.class', 'is-active')
 
         cy.get('[data-drupal-selector="edit-community-purpose"]').type('Lorem ipsum doler est')
-        cy.get('input#edit-community-practices-business-no[value="No"]').check({force: true})
+        cy.get('input#edit-community-practices-business-0[value="0"]').check({force: true})
         cy.get('[data-drupal-selector="edit-fee-person"]').type('539,30')
         cy.get('[data-drupal-selector="edit-fee-community"]').type('539,30')
         cy.get('[data-drupal-selector="edit-fee-community"]').type('539,30')

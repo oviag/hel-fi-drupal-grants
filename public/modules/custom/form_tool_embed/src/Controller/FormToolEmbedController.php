@@ -2,7 +2,13 @@
 
 namespace Drupal\form_tool_embed\Controller;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Controller\ControllerBase;
+
+use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Returns responses for Form Tool Embed routes.
@@ -20,36 +26,65 @@ class FormToolEmbedController extends ControllerBase {
     /** @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $hpud */
     $hpud = \Drupal::service('helfi_helsinki_profiili.userdata');
 
-//    $d = $hpud->getUserData();
-//    $dd = $hpud->getUserProfileData(true);
-//    $ddd = $hpud->getTokenData();
-
     // Access token to get api access tokens in next step.
     $accessToken = $hpud->getAccessToken();
 
     // Use access token to fetch profiili token from token service.
-    $apiAccessToken = $hpud->getHelsinkiProfiiliToken($accessToken);
+    try {
+      if ($accessToken) {
+        $apiAccessToken = $hpud->getHelsinkiProfiiliToken($accessToken);
 
-    $d = 'asdf';
+      }
+    } catch (\Exception $e) {
+      $d = 'asdf';
+    } catch (GuzzleException $e) {
+      $d = 'asdf';
+    }
 
-    $config = new \Auth0\SDK\Configuration\SdkConfiguration(
-      null,
-      null,
-      'tunnistamo.test.hel.ninja',
-      'tunnistamo.test.hel.ninja',
-      'avustusasiointi-ui-dev',
-      null,
-      '9b68a5b7f6941d72dcfe68ac389db134247bd4dc651c6e16e6a052b2'
+    $response = \Drupal::httpClient()
+      ->get('http://hel-fi-form-tool-app:8080/form-tool-share/init-form', [
+        'headers' => [
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json',
+          'X-Auth-Token' => $apiAccessToken["https://api.hel.fi/auth/lomaketyokaluapidev"],
+        ],
+      ]);
+
+    $bc = $response->getBody()->getContents();
+    $cookiesFromResponse = $response->getHeader('Set-Cookie');
+    $cookiesFromResponseExploded = explode(';', reset($cookiesFromResponse));
+    $bbcc = Json::decode($bc);
+
+    $session = explode('=', $cookiesFromResponseExploded[0]);
+    $expires = explode('=', $cookiesFromResponseExploded[1]);
+    $maxAge = explode('=', $cookiesFromResponseExploded[2]);
+
+    $expTime = strtotime($expires[1]);
+
+    //    $response = new Response();
+    //    $cookie = new Cookie('Test','Derp', 0, '/' , NULL, FALSE);
+    //    $response->headers->setCookie($cookie);
+    //    $response->send();
+
+    setcookie(
+      $session[0],
+      $session[1],
+      $expTime,
+      '/',
+      'hel-fi-form-tool.docker.so',
+      TRUE,
+      TRUE
     );
-    // The Auth0 SDK includes a helpful token processing utility we'll leverage for this:
-    $token = new \Auth0\SDK\Token($config, $apiAccessToken["https://api.hel.fi/auth/lomaketyokaluapidev"], \Auth0\SDK\Token::TYPE_ID_TOKEN);
 
-    // Verify the token: (This will throw an \Auth0\SDK\Exception\InvalidTokenException if verification fails.)
-    $token->verify();
-
-    // Validate the token claims: (This will throw an \Auth0\SDK\Exception\InvalidTokenException if validation fails.)
-    $token->validate();
-
+    //    setcookie(
+    //      string $name,
+    //    string $value = "",
+    //    int $expires_or_options = 0,
+    //    string $path = "",
+    //    string $domain = "",
+    //    bool $secure = false,
+    //    bool $httponly = false
+    //)
 
     $build['content'] = [
       '#theme' => 'testi1',
@@ -72,6 +107,7 @@ class FormToolEmbedController extends ControllerBase {
 
     return $build;
   }
+
   /**
    * Builds the response.
    */
