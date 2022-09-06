@@ -9,7 +9,7 @@
  * Implements hook_install().
  */
 function grants_announcements_install() {
-  \Drupal::messenger()->addStatus(__FUNCTION__);
+  // \Drupal::messenger()->addStatus(__FUNCTION__);
 }
 
 /**
