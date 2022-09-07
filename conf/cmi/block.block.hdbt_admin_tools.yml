@@ -1,6 +1,6 @@
 uuid: f65963fe-3438-4d95-96a5-2fff9b398fa2
-langcode: en
-status: true
+langcode: fi
+status: false
 dependencies:
   config:
     - system.menu.tools
@@ -19,8 +19,8 @@ plugin: 'system_menu_block:tools'
 settings:
   id: 'system_menu_block:tools'
   label: Tools
-  provider: system
   label_display: visible
+  provider: system
   level: 1
   depth: 0
   expand_all_items: false

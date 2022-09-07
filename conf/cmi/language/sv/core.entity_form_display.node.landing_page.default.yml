@@ -1,7 +1,9 @@
 content:
   field_content:
     settings:
-      title: Paragraf
+      title: Paragraph
+      title_plural: Paragraphs
   field_hero:
     settings:
-      title: Paragraf
+      title: Paragraph
+      title_plural: Paragraphs

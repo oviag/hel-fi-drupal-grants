@@ -1,20 +1,20 @@
 settings:
   allowed_values:
     0:
-      label: Vaakuna
+      label: 'Coat of Arms'
     1:
-      label: Kulta
+      label: Gold
     2:
-      label: Hopea
+      label: Silver
     3:
-      label: Tiili
+      label: Brick
     4:
-      label: Bussi
+      label: Bus
     5:
-      label: Kupari
+      label: Copper
     7:
-      label: Sumu
+      label: Fog
     9:
-      label: Kesä
+      label: Summer
     11:
-      label: Spåra
+      label: Tram

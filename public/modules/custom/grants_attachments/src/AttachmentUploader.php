@@ -51,6 +51,13 @@ class AttachmentUploader {
   protected Connection $connection;
 
   /**
+   * Debug prints?
+   *
+   * @var bool
+   */
+  protected bool $debug;
+
+  /**
    * Constructs an AttachmentUploader object.
    *
    * @param \GuzzleHttp\ClientInterface $http_client
@@ -62,7 +69,8 @@ class AttachmentUploader {
    * @param \Drupal\Core\Database\Connection $connection
    *   Interact with database.
    */
-  public function __construct(ClientInterface $http_client,
+  public function __construct(
+    ClientInterface $http_client,
                               MessengerInterface $messenger,
                               LoggerChannelFactory $loggerFactory,
                               Connection $connection) {
@@ -70,6 +78,29 @@ class AttachmentUploader {
     $this->messenger = $messenger;
     $this->loggerChannel = $loggerFactory->get('grants_attachments');
     $this->connection = $connection;
+
+    $this->debug = FALSE;
+
+  }
+
+  /**
+   * If debug is on or not.
+   *
+   * @return bool
+   *   TRue or false depending on if debug is on or not.
+   */
+  public function isDebug(): bool {
+    return $this->debug;
+  }
+
+  /**
+   * Set debug.
+   *
+   * @param bool $debug
+   *   True or false.
+   */
+  public function setDebug(bool $debug): void {
+    $this->debug = $debug;
   }
 
   /**
@@ -79,17 +110,48 @@ class AttachmentUploader {
    *   Array of file ids to upload.
    * @param string $applicationNumber
    *   Generated application number.
-   * @param bool $debug
-   *   Is debug mode on?
+   * @param string $mode
+   *   Mode to run in, "application" will function as was.
    *
-   * @return bool[]
+   * @return array[]
    *   Array keyed with FID and boolean to indicate if upload succeeded.
    */
   public function uploadAttachments(
     array $attachments,
     string $applicationNumber,
-    bool $debug
+    string $mode = 'application'
   ): array {
+
+    if (empty($attachments)) {
+      // If no new files are uploaded,
+      // just skip everything and return empty array.
+      return [];
+    }
+
+    if ($mode !== 'application') {
+      $endpoint = getenv('AVUSTUS2_MESSAGE_LIITE_ENDPOINT');
+      $auth = [
+        // Auth details.
+        getenv('AVUSTUS2_USERNAME'),
+        getenv('AVUSTUS2_PASSWORD'),
+      ];
+      $headers = [
+        'X-Case-ID' => $applicationNumber,
+        'X-Message-ID' => $mode,
+      ];
+    }
+    else {
+      $endpoint = getenv('AVUSTUS2_LIITE_ENDPOINT');
+      $auth = [
+        // Auth details.
+        getenv('AVUSTUS2_USERNAME'),
+        getenv('AVUSTUS2_PASSWORD'),
+      ];
+      $headers = [
+        'X-Case-ID' => $applicationNumber,
+      ];
+    }
+
     $retval = [];
     foreach ($attachments as $fileId) {
       try {
@@ -99,6 +161,9 @@ class AttachmentUploader {
         if ($file === NULL) {
           continue;
         }
+
+        $filename = $file->getFilename();
+
         // Get file metadata.
         $fileUri = $file->get('uri')->value;
         $filePath = \Drupal::service('file_system')->realpath($fileUri);
@@ -110,16 +175,10 @@ class AttachmentUploader {
         $response = $this->httpClient->request(
           'POST',
           // Liite endpoint.
-          getenv('AVUSTUS2_LIITE_ENDPOINT'),
+          $endpoint,
           [
-            'headers' => [
-              'X-Case-ID' => $applicationNumber,
-            ],
-            'auth' => [
-              // Auth details.
-              getenv('AVUSTUS2_USERNAME'),
-              getenv('AVUSTUS2_PASSWORD'),
-            ],
+            'headers' => $headers,
+            'auth' => $auth,
             // Form data.
             'multipart' => [
               [
@@ -131,19 +190,35 @@ class AttachmentUploader {
           ]
         );
         if ($response->getStatusCode() === $this->validStatusCode) {
-          $retval[$fileId] = TRUE;
-          $this->loggerChannel->notice('Grants attachment upload succeeded: Response statusCode = @status', [
-            '@status' => $response->getStatusCode(),
-          ]);
+          $retval[$fileId] = [
+            'upload' => TRUE,
+            'status' => $response->getStatusCode(),
+            'filename' => $file->getFilename(),
+          ];
+          if ($this->isDebug()) {
+            $this->loggerChannel->notice('Grants attachment(@filename) upload succeeded: Response statusCode = @status', [
+              '@status' => $response->getStatusCode(),
+              '@filename' => $file->getFilename(),
+            ]);
+          }
+
           // Make sure that no rows remain for this FID.
           $num_deleted = $this->connection->delete('grants_attachments')
             ->condition('fid', $file->id())
             ->execute();
-
-          $this->loggerChannel->notice('Removed file entity & db log row');
+          if ($this->isDebug()) {
+            $this->loggerChannel->notice('Removed db log row: @filename', [
+              '@filename' => $filename,
+            ]);
+          }
         }
         else {
-          $retval[$fileId] = FALSE;
+          $retval[$fileId] = [
+            'upload' => FALSE,
+            'status' => $response->getStatusCode(),
+            'filename' => $file->getFilename(),
+            'msg' => '',
+          ];
           $this->loggerChannel->error('Grants attachment upload failed: Response statusCode = @status', [
             '@status' => $response->getStatusCode(),
           ]);
@@ -151,23 +226,33 @@ class AttachmentUploader {
       }
       catch (\Exception $e) {
         $this->messenger->addError('Attachment upload failed:' . $file->getFilename());
-        if ($debug) {
-          $this->messenger->addError(printf('Grants attachment upload failed: %s', [$e->getMessage()]));
+        if ($this->isDebug()) {
+          $this->messenger->addError(printf('Grants attachment upload failed: %s', $e->getMessage()));
         }
         $this->loggerChannel->error('Grants attachment upload failed: @error', [
           '@error' => $e->getMessage(),
         ]);
-        $retval[$fileId] = FALSE;
+        $retval[$fileId] = [
+          'upload' => FALSE,
+          'status' => $e->getCode(),
+          'filename' => $file->getFilename(),
+          'msg' => $e->getMessage(),
+        ];
       }
       catch (GuzzleException $e) {
-        $this->messenger->addError('Attachment upload failed:' . $file->getFilename());
-        if ($debug) {
+        if ($this->isDebug()) {
+          $this->messenger->addError('Attachment upload failed:' . $file->getFilename());
           $this->messenger->addError($e->getMessage());
         }
         $this->loggerChannel->error('Grants attachment upload failed: @error', [
           '@error' => $e->getMessage(),
         ]);
-        $retval[$fileId] = FALSE;
+        $retval[$fileId] = [
+          'upload' => FALSE,
+          'status' => $e->getCode(),
+          'filename' => '',
+          'msg' => $e->getMessage(),
+        ];
       }
     }
     return $retval;

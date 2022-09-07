@@ -1,28 +1,42 @@
-label: Mediakirjasto
-description: 'Etsi ja ylläpidä mediatiedostoja.'
+label: 'Media library'
+description: 'Find and manage media.'
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
-      exposed_form:
-        options:
-          submit_button: 'Suodata tuloksia'
-          reset_button_label: Palauta
-          exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
+      title: Media
+      fields:
+        media_bulk_form:
+          action_title: Toiminto
       pager:
         options:
+          tags:
+            next: ››
+            previous: ‹‹
           expose:
             items_per_page_label: 'Merkintöjä sivua kohti'
             items_per_page_options_all_label: '- Kaikki -'
             offset_label: Offset
-          tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
-      fields:
-        media_bulk_form:
-          action_title: Toiminto
+      exposed_form:
+        options:
+          submit_button: 'Apply filters'
+          reset_button_label: Palauta
+          exposed_sorts_label: Lajittele
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      empty:
+        area_text_custom:
+          content: 'Ei mediaa saatavilla.'
+      sorts:
+        created:
+          expose:
+            label: 'Uusin ensin'
+        name:
+          expose:
+            label: 'Name (A-Z)'
+        name_1:
+          expose:
+            label: 'Name (Z-A)'
       filters:
         status:
           expose:
@@ -45,20 +59,6 @@ display:
         langcode:
           expose:
             label: Kieli
-      sorts:
-        created:
-          expose:
-            label: 'Uusin ensin'
-        name:
-          expose:
-            label: 'Nimi (A-Z)'
-        name_1:
-          expose:
-            label: 'Nimi (Z-A)'
-      title: Media
-      empty:
-        area_text_custom:
-          content: 'Ei mediaa saatavilla.'
   page:
     display_title: Sivu
     display_options:
@@ -69,32 +69,32 @@ display:
           separator: ', '
         edit_media:
           alter:
-            text: 'Muokkaa {{ name }}'
-            alt: 'Muokkaa {{ name }}'
+            text: 'Edit {{ name }}'
+            alt: 'Edit {{ name }}'
           text: Muokkaa
         delete_media:
           alter:
-            text: 'Poista {{ name }}'
-            alt: 'Poista {{ name }}'
+            text: 'Delete {{ name }}'
+            alt: 'Delete {{ name }}'
           text: Poista
   widget:
     display_title: Widgetti
     display_options:
-      filters:
-        name:
-          expose:
-            label: Nimi
       arguments:
         bundle:
           exception:
             title: Kaikki
+      filters:
+        name:
+          expose:
+            label: Nimi
       header:
         display_link_grid:
           label: Ruudukko
         display_link_table:
           label: Taulukko
   widget_table:
-    display_title: 'Widget (taulukko)'
+    display_title: 'Widget (table)'
     display_options:
       fields:
         thumbnail__target_id:
@@ -102,17 +102,17 @@ display:
         name:
           label: Nimi
         uid:
-          label: Kirjoittaja
+          label: Tekijä
         changed:
           label: Päivitetty
-      filters:
-        name:
-          expose:
-            label: Nimi
       arguments:
         bundle:
           exception:
             title: Kaikki
+      filters:
+        name:
+          expose:
+            label: Nimi
       header:
         display_link_grid:
           label: Ruudukko

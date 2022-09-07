@@ -9,12 +9,12 @@ _core:
 id: helfi_grant_applications_local_actions
 theme: helfi_grant_applications
 region: tools
-weight: -3
+weight: -11
 provider: null
 plugin: local_actions_block
 settings:
   id: local_actions_block
   label: 'Primary admin actions'
-  provider: core
   label_display: '0'
+  provider: core
 visibility: {  }

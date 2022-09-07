@@ -2,24 +2,24 @@ label: Luokittelutermi
 description: 'Sisältö, joka kuuluu tiettyyn taksonomiatermiin.'
 display:
   default:
-    display_title: Isäntä
+    display_title: Oletus
     display_options:
+      pager:
+        options:
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page_label: 'Merkintöjä sivua kohti'
+            items_per_page_options_all_label: '- Kaikki -'
+            offset_label: Offset
       exposed_form:
         options:
           submit_button: Käytä
           reset_button_label: Palauta
           exposed_sorts_label: Lajittele
-          sort_asc_label: Nousevasti
-          sort_desc_label: Laskevasti
-      pager:
-        options:
-          expose:
-            items_per_page_label: 'Merkintöjä sivua kohti'
-            items_per_page_options_all_label: '- Kaikki -'
-            offset_label: Offset
-          tags:
-            previous: '‹ Edellinen'
-            next: 'Seuraava ›'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
       arguments:
         tid:
           exception:

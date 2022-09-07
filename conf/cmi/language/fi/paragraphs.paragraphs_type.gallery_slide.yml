@@ -1,2 +1,2 @@
-label: 'Gallerian dia'
-description: 'Yksittäinen gallerian dia jossa voi olla kuva ja kuvateksti.'
+label: 'Gallery slide'
+description: 'One slide in the gallery that can include image and caption.'

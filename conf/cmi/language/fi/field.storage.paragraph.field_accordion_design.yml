@@ -1,6 +1,6 @@
 settings:
   allowed_values:
     -
-      label: Valkoinen
+      label: White
     -
-      label: Harmaa
+      label: Grey

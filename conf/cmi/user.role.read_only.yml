@@ -1,0 +1,16 @@
+uuid: 3e6a10f1-bc71-4995-b205-cf3e087126fa
+langcode: fi
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - toolbar
+id: read_only
+label: 'Vain luku'
+weight: 4
+is_admin: null
+permissions:
+  - 'access toolbar'
+  - 'view any unpublished landing_page content'
+  - 'view any unpublished page content'
+  - 'view unpublished paragraphs'

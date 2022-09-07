@@ -1,5 +1,5 @@
 uuid: fea04ab3-f9c6-4e28-b9d3-848a999a4ebb
-langcode: en
+langcode: fi
 status: true
 dependencies:
   theme:
@@ -15,8 +15,8 @@ plugin: local_tasks_block
 settings:
   id: local_tasks_block
   label: Tabs
-  provider: core
   label_display: '0'
+  provider: core
   primary: true
   secondary: true
 visibility: {  }

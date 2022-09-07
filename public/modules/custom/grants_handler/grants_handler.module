@@ -5,13 +5,1193 @@
  * Provides an example of a webform handler.
  */
 
+use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Core\Link;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\grants_handler\ApplicationHandler;
+use Drupal\grants_handler\Plugin\WebformElement\CompensationsComposite;
+use Drupal\webform\WebformInterface;
+use Drupal\webform\WebformSubmissionStorageInterface;
+use Drupal\grants_handler\EventsService;
+
 /**
  * Implements hook_theme().
+ *
+ * @return array
  */
-function grants_handler_theme() {
+function grants_handler_theme(): array {
   return [
     'webform_handler_grants_summary' => [
       'variables' => ['settings' => NULL, 'handler' => []],
     ],
+    // TODO: composite elements' custom themes.
+    //    'community_officials_composite' => [
+    //      'variables' => [],
+    //      'path' => 'themes/custom/helfi_grant_applications/templates/form/select',
+    //      'template' => 'select'
+    //    ],
+    //    'bank_account_composite' => [
+    //      'variables' => [],
+    //      'path' => 'themes/custom/helfi_grant_applications/templates/form/select',
+    //      'template' => 'select'
+    //    ],
+    //    'community_address_composite' => [
+    //      'variables' => [],
+    //      'path' => 'themes/custom/helfi_grant_applications/templates/form/select',
+    //      'template' => 'select'
+    //    ],
+    'webform_submission_messages' => [
+      'variables' => [
+        'messages' => NULL,
+        'message_form' => NULL,
+        'submission' => NULL,
+      ],
+    ],
+    'webform_submission_message_attachments' => [
+      'variables' => [
+        'attachments_to_print' => NULL,
+        'attachments' => NULL,
+      ],
+    ],
+    'webform_submission_events' => [
+      'variables' => [
+        'submission' => NULL,
+      ],
+    ],
+    'webform_submission_handler_details' => [
+      'variables' => [
+        'submission' => NULL,
+      ],
+    ],
+    'webform_submission_attachment_list' => [
+      'variables' => [
+        'submission' => NULL,
+      ],
+    ],
+    'webform_submission_status_history' => [
+      'variables' => [
+        'submission' => NULL,
+      ],
+    ],
+    'grants_handler_completion' => [
+      'variables' => [
+        'submissionId' => NULL,
+        'submissionObject' => NULL,
+      ],
+    ],
+    'grants_handler_view_application' => [
+      'variables' => [
+        'submissionId' => NULL,
+        'submissionObject' => NULL,
+      ],
+    ],
+    'grants_handler_edit_application' => [
+      'variables' => [
+        'submissionId' => NULL,
+        'submissionObject' => NULL,
+        'editForm' => NULL,
+      ],
+    ],
+    // 'grants_handler_copy_application' => [
+    //      'variables' => [
+    //        'submission' => NULL,
+    //      ],
+    //    ],
+    // Override the webform progress bar so we can add our page classes.
+    'webform_progress_bar' => [
+      'variables' => [
+        'webform' => NULL,
+        'webform_submission' => NULL,
+        'current_page' => NULL,
+        'operation' => NULL,
+        'max_pages' => 10,
+        'page_classes' => [],
+      ],
+    ],
+    // Override the webform progress tracker so we can add our page classes.
+    'webform_progress_tracker' => [
+      'variables' => [
+        'webform' => NULL,
+        'webform_submission' => NULL,
+        'current_page' => NULL,
+        'operation' => NULL,
+        'max_pages' => 10,
+        'page_classes' => [],
+      ],
+    ],
+    'application_list' => [
+      'variables' => [
+        'items' => NULL,
+        'type' => NULL,
+        'header' => NULL,
+        'id' => NULL,
+        'description' => NULL,
+      ],
+    ],
+    'application_list_item' => [
+      'variables' => [
+        'submission' => NULL,
+        'document' => NULL,
+      ],
+    ],
+    'application_status_tag' => [
+      'variables' => [
+        'applicationID' => NULL,
+      ],
+    ],
+    'message_list' => [
+      'variables' => [
+        'items' => NULL,
+        'style' => NULL,
+      ],
+    ],
+    'message_list_item' => [
+      'variables' => [
+        'message' => NULL,
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function grants_handler_entity_type_alter(array &$entity_types) {
+  // Add our custom handler for webform
+  $entity_types['webform_submission']->setStorageClass('Drupal\grants_handler\GrantsHandlerSubmissionStorage');
+}
+
+/**
+ * Alter webform elements.
+ *
+ * @param array $element
+ *   Webform specific element properties include:
+ *   - #webform: The element's parent webform ID.
+ *   - #webform_submission: The element's related webform submission ID.
+ *   - #webform_id: The element's unique webform key.
+ *   - #webform_key: The element's webform key/name.
+ *   - #webform_parent_key: The element's parent key/name.
+ *   - #webform_parent_flexbox: TRUE if the element's parent is a
+ *     flexbox container.
+ *   - #webform_depth: The depth level of the element in the form's
+ *     tree hierarchy.
+ *   - #webform_children: An array of child element keys/names.
+ *   - #webform_multiple: TRUE if element stores multiple values.
+ *   - #webform_composite: TRUE if element stores composite values.
+ *   - #webform_parents: An array containing the element's parent keys/names.
+ *
+ *   Webform specific composite sub-element properties include:
+ *   - #webform_composite_id: The composite sub-element's ID.
+ *   - #webform_composite_key: The composite sub-element's parent key and
+ *     element key.
+ *   - #webform_composite_parent_key: The composite sub-element's parent key.
+ *
+ *   Sub-element's can have properties defined using #SUB_ELEMENT__PROPERTY.
+ *   For example, an other element's placeholder can be defined using
+ *   the #other__placeholder property.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ * @param array $context
+ *   An associative array containing the following key-value pairs:
+ *   - form: The form structure to which elements is being attached.
+ *
+ * @see \Drupal\webform\WebformSubmissionForm::prepareElements()
+ * @see hook_webform_element_ELEMENT_TYPE_alter()
+ */
+function grants_handler_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
+  // Code here acts on all elements included in a webform.
+  /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+  $form_object = $form_state->getFormObject();
+  if ($element['#type'] == 'webform_multiple') {
+    if (isset($element['#multiple__header']) && $element['#multiple__header'] === TRUE) {
+      $element['#wrapper_attributes']['class'][] = 'table-layout-form';
+    }
+    else {
+      $element['#wrapper_attributes']['class'][] = 'hidden-head';
+    }
+  }
+  if (get_class($form_object) == 'Drupal\webform\WebformSubmissionForm') {
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webformSubmission = $form_object->getEntity();
+    /** @var \Drupal\webform\WebformInterface $webform */
+    $webform = $webformSubmission->getWebform();
+    // Get data from webform.
+    $webformData = $webformSubmission->getData();
+
+    if (isset($element['#webform_key']) && $element['#webform_key'] == 'olemme_saaneet_muita_avustuksia') {
+      if (empty($webformData["myonnetty_avustus"])) {
+        $element['#default_value'] = 'Ei';
+      }
+      else {
+        $element['#default_value'] = 'Kyllä';
+      }
+    }
+    if (isset($element['#webform_key']) && $element['#webform_key'] == 'olemme_hakeneet_avustuksia_muualta_kuin_helsingin_kaupungilta') {
+      if (empty($webformData["haettu_avustus_tieto"])) {
+        $element['#default_value'] = 'Ei';
+      }
+      else {
+        $element['#default_value'] = 'Kyllä';
+      }
+    }
+
+    // For some reason, this is only place I've found to do this.
+    if (isset($element['#webform_key']) && $element['#webform_key'] == 'subventions') {
+      // Get form values.
+      $formValues = $form_state->getValues();
+      // Get names from composite.
+      $typeNames = CompensationsComposite::getOptionsForTypes();
+      // Get subvention types from settings form.
+      $subventionTypes = $element['#subventionType'];
+      // Set element cardinality to match whatever is selected in
+      $element['#cardinality'] = $subventionTypes ? count($subventionTypes) : -1;
+
+      $defaultValues = [];
+      // get items either from form values or from loaded data
+      $inputItems = ($formValues["subventions"] ?? isset($webformData['subventions'])) ? $webformData['subventions'] : [];
+      foreach ($subventionTypes as $id => $typeId) {
+        $itemFound = 'notfound';
+        // If this item is not already been added to user input array
+        foreach ($inputItems as $sKey => $sItem) {
+          if ($sItem['subventionType'] == (string) $id) {
+            $itemFound = $sKey;
+          }
+        }
+        // then we set default values to contain type id + name.
+        if ($itemFound == 'notfound') {
+          $defaultValues[] = [
+            'subventionTypeTitle' => $typeNames[$typeId],
+            'subventionType' => $typeId,
+          ];
+        }
+        // But if we have either form data or saved data, let's use that.
+        else {
+          if (isset($inputItems[$itemFound])) {
+            $value = $inputItems[$itemFound];
+            $value['subventionTypeTitle'] = $typeNames[$typeId];
+            $defaultValues[] = $value;
+          }
+        }
+      }
+      // SET values.
+      $element['#default_value'] = $defaultValues;
+    }
+
+    if (
+      isset($webformData['status']) &&
+      !ApplicationHandler::isSubmissionEditable(NULL, $webformData['status']) &&
+      $element['#type'] != 'webform_actions') {
+      $element['#disabled'] = TRUE;
+    }
+    else {
+      if (!isset($webformData['status'])) {
+        if (isset($element['#webform_key']) && $element['#webform_key'] == 'status') {
+          $element['#default_value'] = 'DRAFT';
+        }
+      }
+    }
+
+    // Hacky fix for issues with camelCase keys with Custom component keys.
+    // Set issuerName value to issuer_name field and unset camelCase.
+    if (isset($element['#webform_key']) && ($element['#webform_key'] == 'myonnetty_avustus' || $element['#webform_key'] == 'haettu_avustus_tieto')) {
+      $newValues = [];
+      if (isset($element["#default_value"])) {
+        foreach ($element["#default_value"] as $key => $default) {
+          $new = $default;
+          if (isset($default['issuerName'])) {
+            $new['issuer_name'] = $default['issuerName'];
+            unset($new['issuerName']);
+          }
+          $newValues[] = $new;
+        }
+      }
+      $element["#default_value"] = $newValues;
+    }
+
+    // for some reason this selection cannot be done in address composite class.
+    // so we'll need to hack this here.
+    // @todo Can the composite default value be added here?
+    if (isset($element['#webform_key']) && ($element['#webform_key'] == 'community_address')) {
+
+      /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+      $grantsProfileService = \Drupal::service('grants_profile.service');
+
+      $selectedCompany = $grantsProfileService->getSelectedCompany();
+      $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
+
+      if (isset($element['#default_value'])) {
+        $formValues = $element['#default_value'];
+        $formSelection = $formValues['community_street'] . ', ' .
+          $formValues['community_post_code'] . ', ' .
+          $formValues['community_city'] . ', ' .
+          $formValues['community_country'];
+
+        $defaultDelta = '0';
+
+        foreach ($profileData['addresses'] as $delta => $address) {
+          $deltaString = (string) $delta;
+          $optionSelection = $address['street'] . ', ' . $address['postCode'] .
+            ', ' . $address['city'] . ', ' . $address['country'];
+
+          if ($formSelection == $optionSelection) {
+            $defaultDelta = $deltaString;
+          }
+        }
+        $element["#default_value"]["community_address_select"] = $defaultDelta;
+      }
+    }
+
+    // for some reason this selection cannot be done in official composite class.
+    // so we'll need to hack this here.
+    // @todo Can the composite default value be added here?
+    if (isset($element['#webform_key']) && ($element['#webform_key'] == 'community_officials')) {
+
+      /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+      $grantsProfileService = \Drupal::service('grants_profile.service');
+
+      $selectedCompany = $grantsProfileService->getSelectedCompany();
+      $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
+
+      $defaultDelta = '0';
+
+      if (isset($element['#default_value'])) {
+        foreach ($element['#default_value'] as $delta => $official) {
+          $valueName = $official['name'];
+
+          foreach ($profileData['officials'] as $profileDelta => $profileOfficial) {
+            $deltaString = (string) $profileDelta;
+
+            if ($valueName == $profileOfficial['name']) {
+              $defaultDelta = $deltaString;
+            }
+          }
+          $element['#default_value'][$delta]['community_officials_select'] = $defaultDelta;
+        }
+      }
+    }
+
+    if (isset($element['#webform_key']) && ($element['#webform_key'] == 'community_practices_business')) {
+      if (isset($webformData["community_practices_business"])) {
+        $element['#default_value'] = $webformData["community_practices_business"];
+      }
+    }
+  }
+}
+
+/**
+ * @param $array
+ *   Array being manipulated.
+ * @param $value
+ *   Imported value for the array.
+ * @param bool $show_checkmark
+ *   Is the checkmark visible.
+ */
+function _grants_handler_imported_handler(
+  mixed &$array,
+        $value,
+  bool $show_checkmark = TRUE) {
+
+  if (!is_array($array)) {
+    return;
+  }
+
+  $array["#value"] = $value;
+  $array['#attributes'] = ['readonly' => 'readonly', 'style' => 'display:none'];
+  $array['#description'] = FieldFilteredMarkup::create($show_checkmark ? $value .
+    ' <span aria-hidden="true" class="hds-icon hds-icon--check-circle-fill hds-icon--size-s"></span>' : $value);
+  $array['#wrapper_attributes']['class'][] = 'grants-handler--prefilled-field';
+  if ($show_checkmark === FALSE) {
+    $array['#field_prefix'] = '<a class="hds-link hds-link--medium" style="display:inline-block;" href="/grants-profile/">
+            <span aria-hidden="true" class="hds-icon hds-icon--pen-line hds-icon--size-s"></span><span class="link-label">' . t('Edit') . '</span>
+          </a>';
+  }
+
+}
+
+/**
+ * @param array $element
+ *   The element in question.
+ * @param string $str1
+ *   Header of the alert notification.
+ * @param string $str2
+ *   Link text.
+ * @param string $str3
+ *   Clarifying text.
+ */
+function _grants_handler_missing_data(
+  array &$element,
+  string $str1 = 'Field is missing.',
+  string $str2 = 'Go to grants profile',
+  string $str3 = 'to fill out missing data.') {
+
+  unset($element['#value']);
+  unset($element['#default_value']);
+  $element['#required'] = TRUE;
+  $element['#attributes'] = [
+    'required' => 'required',
+    'readonly' => 'readonly',
+    'style' => 'display:none',
+  ];
+  $element['#description'] = '
+  <section aria-label="Notification" class="hds-notification hds-notification--alert">
+    <div class="hds-notification__content">
+      <div class="hds-notification__label" role="heading" aria-level="2">
+        <span class="hds-icon hds-icon--alert-circle-fill" aria-hidden="true"></span>
+        <span>' . $str1 . '</span>
+      </div>
+      <div class="hds-notification__body">' . Link::createFromRoute($str2, 'grants_profile.show')
+  ->toString() . ' ' . $str3 . '</div>
+    </div>
+  </section>
+  ';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function grants_handler_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $form['actions']['wizard_next']['#validate'][] = '::noValidate';
+
+  /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+  $grantsProfileService = \Drupal::service('grants_profile.service');
+  $selectedCompany = $grantsProfileService->getSelectedCompany();
+
+  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
+  $webform_submission = $form_state->getFormObject()->getEntity();
+  $formData = $webform_submission->getData();
+
+  $form['#attached']['library'][] = 'grants_handler/webform-additions';
+
+  if ($selectedCompany != NULL) {
+
+    if (
+      isset($form["elements"]["1_hakijan_tiedot"]["status"]["#default_value"]) &&
+      !ApplicationHandler::isSubmissionEditable(NULL, $form["elements"]["1_hakijan_tiedot"]["status"]["#default_value"])
+    ) {
+      $form["actions"]["submit"]['#disabled'] = TRUE;
+    }
+
+    $grantsProfile = $grantsProfileService->getGrantsProfileContent($selectedCompany);
+
+    // pass variable to Drupal.Settings
+    $form['#attached']['drupalSettings']['grants_handler']['grantsProfile'] = $grantsProfile;
+    $form['#attached']['drupalSettings']['grants_handler']['selectedCompany'] = $selectedCompany;
+    $form['#attached']['drupalSettings']['grants_handler']['formData'] = $formData;
+    $form['#attached']['drupalSettings']['grants_handler']['submissionId'] = $webform_submission->id();
+
+    if ($grantsProfile["businessPurpose"]) {
+      _grants_handler_imported_handler($form["elements"]["3_yhteison_tiedot"]["business_info"]["community_purpose"], $grantsProfile["businessPurpose"], FALSE);
+    }
+    else {
+      _grants_handler_missing_data($form["elements"]["3_yhteison_tiedot"]["business_info"]["community_purpose"],
+        t('Avustushakemukselle tarvitaan kuvaus yhdistyksen toiminnasta.'), t('Lisää toiminnan kuvaus'),
+        t('Oma asiointi > Omat tiedot -osioon, jotta sitä voidaan käyttää tällä hakemuksella.'));
+    }
+
+    if (isset($form["elements"]["1_hakijan_tiedot"]["tilinumero"]["account_number"]["#default_value"])) {
+      $form["elements"]["1_hakijan_tiedot"]["tilinumero"]["account_number_select"]["#default_value"] = $form["elements"]["1_hakijan_tiedot"]["tilinumero"]["account_number"]["#default_value"];
+    }
+
+    $infoelement = [
+      'omat_tiedot_page_infobox' => [
+        '#markup' => '
+  <section aria-label="Notification" class="hds-notification">
+    <div class="hds-notification__content">
+      <div class="hds-notification__label" role="heading" aria-level="2">
+        <span class="hds-icon hds-icon--info-circle-fill" aria-hidden="true"></span>
+        <span>' . t('Some information fetched from personal information') . '</span>
+      </div>
+      <div class="hds-notification__body">
+        ' . t('Check the information on the form before sending the application. You can change your own information from personal information section of the site.') . '
+      </div>
+    </div>
+  </section>
+  ',
+      ],
+    ];
+    $required_fields_info_element = [
+      'required_fields_infobox' => [
+        '#markup' => '
+  <section aria-label="Notification" class="hds-notification">
+    <div class="hds-notification__content">
+      <div class="hds-notification__label" role="heading" aria-level="2">
+        <span class="hds-icon hds-icon--info-circle-fill" aria-hidden="true"></span>
+        <span>' . t('Fields marked with an asterisk * are required, that need to be filled before saving.') . '</span>
+      </div>
+    </div>
+  </section>
+  ',
+      ],
+    ];
+    if (array_key_exists('1_hakijan_tiedot', $form['elements']) && is_array($form['elements']['1_hakijan_tiedot'])) {
+      $form['elements']['1_hakijan_tiedot'] = array_merge($required_fields_info_element, $form['elements']['1_hakijan_tiedot']);
+      $form['elements']['1_hakijan_tiedot'] = array_merge($infoelement, $form['elements']['1_hakijan_tiedot']);
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]["community_official_name"], $grantsProfile["companyName"]);
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteison_lyhenne"]["community_official_name_short"], $grantsProfile["companyNameShort"], FALSE);
+
+      $regDate = new DrupalDateTime($grantsProfile["registrationDate"], 'Europe/Helsinki');
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]['grants_profile__items_container']["registration_date"], $regDate->format('d.m.Y'));
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]['grants_profile__items_container']["company_number"], $selectedCompany['identifier']);
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["perustamisvuosi"]["founding_year"], $grantsProfile["foundingYear"], FALSE);
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]['grants_profile__items_container']["home"], $grantsProfile["companyHome"]);
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]['grants_profile__items_container']["community_status"], $grantsProfile["companyStatus"]);
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]['grants_profile__items_container']["community_status_special"], $grantsProfile["companyStatusSpecial"]);
+
+      _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["verkkosivut"]["homepage"], $grantsProfile["companyHomePage"], FALSE);
+
+    }
+    if (array_key_exists('2_avustustiedot', $form['elements']) && is_array($form['elements']['2_avustustiedot'])) {
+      $form['elements']['2_avustustiedot'] = array_merge($required_fields_info_element, $form['elements']['2_avustustiedot']);
+    }
+    if (array_key_exists('3_yhteison_tiedot', $form['elements']) && is_array($form['elements']['3_yhteison_tiedot'])) {
+      $form['elements']['3_yhteison_tiedot'] = array_merge($required_fields_info_element, $form['elements']['3_yhteison_tiedot']);
+      $form['elements']['3_yhteison_tiedot'] = array_merge($infoelement, $form['elements']['3_yhteison_tiedot']);
+    }
+    if (array_key_exists('lisatiedot_ja_liitteet', $form['elements']) && is_array($form['elements']['lisatiedot_ja_liitteet'])) {
+      $form['elements']['lisatiedot_ja_liitteet'] = array_merge($required_fields_info_element, $form['elements']['lisatiedot_ja_liitteet']);
+    }
+
+  }
+  else {
+    \Drupal::messenger()
+      ->addError(t("You don't have company selected, no fields are prepopulated"));
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_webform_submission_data(&$variables) {
+
+  $block = BlockContent::load(1);
+
+  if ($block !== NULL) {
+    $output = \Drupal::entityTypeManager()
+      ->getViewBuilder('block_content')
+      ->view($block);
+    $render = \Drupal::service('renderer')->render($output);
+
+    $variables['confirm_text'] = '<div>' . $render . '</div><div class="hds-checkbox">
+      <input type="checkbox" id="checkbox" required="required" class="hds-checkbox__input" />
+      <label for="checkbox"  class="hds-checkbox__label">' . t('I have read the terms and accept them') . '</label>
+    </div>';
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_webform_submission(&$variables) {
+  // get submission object
+  /** @var \Drupal\webform\Entity\WebformSubmission $submission */
+  $submission = $variables['webform_submission'];
+  $webform = $submission->getWebform();
+  $data = $submission->getData();
+
+  if (isset($data["application_number"])) {
+    $variables['applicationNumber'] = $data["application_number"];
+  }
+  if (isset($data["business_purpose"])) {
+    $variables["elements"]["data"]["3_yhteison_tiedot"]["#element"]["business_info"]["community_purpose"] = $data["business_purpose"];
+  }
+
+  // parse messages
+  $variables['messages'] = [
+    '#theme' => 'webform_submission_messages',
+    '#submission' => $submission,
+  ];
+
+  // // parse events
+  //  $variables['events'] = [
+  //    '#theme' => 'webform_submission_events',
+  //    '#submission' => $submission,
+  //  ];
+
+  // parse history
+  $variables['history'] = [
+    '#theme' => 'webform_submission_status_history',
+    '#submission' => $submission,
+  ];
+  if (ApplicationHandler::isSubmissionEditable($submission)) {
+    $urlCustom = Url::fromRoute(
+      'grants_handler.edit_application',
+      [
+        'webform' => $webform->id(),
+        'webform_submission' => $submission->id(),
+      ],
+      [
+        'attributes' => [
+          'data-drupal-selector' => 'application-edit-link',
+        ],
+      ]
+    );
+    $variables['editSubmissionUrlCustom'] = $urlCustom;
+  }
+
+}
+
+/**
+ * Add messages to webform submission view.
+ *
+ * @throws \Exception
+ */
+function grants_handler_preprocess_webform_submission_messages(&$variables) {
+
+  $submission = $variables['submission'];
+  $submissionData = $submission->getData();
+
+  $currentUri = \Drupal::request()->getUri();
+  $currentHost = \Drupal::request()->getSchemeAndHttpHost();
+  $currentDestination = str_replace($currentHost, '', $currentUri);
+
+  /** @var \Drupal\grants_handler\ApplicationHandler $applicationHandler */
+  $applicationHandler = \Drupal::service('grants_handler.application_handler');
+
+  $messages = [];
+  if (isset($submissionData['messages']) && is_array($submissionData['messages'])) {
+    foreach ($submissionData['messages'] as $message) {
+      $messages[] = [
+        '#theme' => 'message_list_item',
+        '#message' => $message,
+      ];
+    }
+  }
+  $variables['messages'] = [
+    '#theme' => 'message_list',
+    '#items' => $messages,
+    '#style' => 'default',
+  ];
+
+  // if submission is ok for messaging
+  if (ApplicationHandler::isSubmissionMessageable($submission, NULL)) {
+    // add message form
+    $variables['message_form'] = \Drupal::formBuilder()
+      ->getForm('Drupal\grants_handler\Form\MessageForm', $submission);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * @throws \Exception
+ */
+function grants_handler_preprocess_webform_submission_status_history(&$variables) {
+
+  $submission = $variables['submission'];
+  $submissionData = $submission->getData();
+
+  $history = [];
+  if (isset($submissionData["status_updates"]) && is_array($submissionData["status_updates"])) {
+    foreach (array_reverse($submissionData["status_updates"]) as $event) {
+      $eventDate = new \DateTime($event['timeCreated']);
+      $eventDate->setTimezone(new \DateTimeZone('Europe/Helsinki'));
+      $history[] = t(ucfirst(strtolower($event['citizenCaseStatus']))) . ': ' . $eventDate->format('d.m.Y H:i');
+    }
+  }
+
+  $variables['history'] = [
+    '#theme' => 'item_list',
+    '#list_type' => 'ul',
+    '#title' => t('Hakemuksen tila'),
+    '#items' => $history,
+    '#attributes' => ['class' => 'application-status-history'],
+  // '#wrapper_attributes' => ['class' => 'container'],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * @throws \Exception
+ */
+function grants_handler_preprocess_webform_submission_events(&$variables) {
+
+  $submission = $variables['submission'];
+  $submissionData = $submission->getData();
+
+  $events = [];
+  if (isset($submissionData['events']) && is_array($submissionData['events'])) {
+    foreach ($submissionData['events'] as $event) {
+      $eventDate = new \DateTime($event['timeCreated']);
+      $eventDate->setTimezone(new \DateTimeZone('Europe/Helsinki'));
+      $events[] = [
+        'date' => $eventDate->format('d.m.Y H:i'),
+        'eventSource' => $event['eventSource'] ?? '',
+        'eventDescription' => $event['eventDescription'] ?? '',
+      ];
+    }
+    array_multisort(array_column($events, "date"), SORT_DESC, $events);
+  }
+
+  $table = [
+    '#type' => 'table',
+    '#header' => [
+      'date' => t('Date'),
+      'eventSource' => t('Source'),
+      'eventDescription' => t('Description'),
+    ],
+    '#rows' => $events,
+    '#empty' => t('No events has been found.'),
+  ];
+
+  $variables['events'] = $table;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ *
+ * @throws \Exception
+ */
+function grants_handler_preprocess_webform_submission_message_attachments(&$variables) {
+
+  $submissionAttachments = $variables['attachments'];
+
+  $events = [];
+  if (isset($submissionAttachments) && is_array($submissionAttachments)) {
+    foreach ($submissionAttachments as $attachment) {
+      $events[] = [
+        'fileName' => $attachment['fileName'],
+        'description' => $attachment['description'],
+      ];
+    }
+
+  }
+
+  $table = [
+    '#type' => 'table',
+    // '#header' => [
+    //      'fileName' => t('File name'),
+    //      'description' => t('Description'),
+    //    ],
+    '#rows' => $events,
+    // '#empty' => t('No attachments has been found.'),
+  ];
+
+  $variables['attachments_to_print'] = $table;
+}
+
+/**
+ * Programmatically validate a webform submission.
+ *
+ * @param array $form
+ *   An associative array containing the structure of the form.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The current state of the form.
+ *
+ * @throws \Exception
+ */
+function grants_handler_submission_validation(array &$form, FormStateInterface $form_state) {
+  // /** @var \Drupal\grants_formnavigation\grants_formnavigationHelper $grants_formnavigation_helper */
+  //  $grants_formnavigation_helper = \Drupal::service('grants_formnavigation.helper');
+  //  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+  //  $webform_submission = $form_state->getFormObject()->getEntity();
+  //  $webform = $webform_submission->getWebform();
+  //  $has_errors = FALSE;
+  //  // Ensure each page has been validated.
+  //  $grants_formnavigation_helper->validateAllPages($webform_submission, $form_state);
+  //  // Log the form errors.
+  //  $grants_formnavigation_helper->logPageErrors($webform_submission, $form_state);
+  //  // Clear errors and place the submission errors above them.
+  //  $form_state->clearErrors();
+  //  // Validate our submission values.
+  //  $logged_errors = $grants_formnavigation_helper->getErrors($webform_submission);
+
+  $d = 'asfd';
+
+  // // Set form errors if the values are in-valid.
+  //  foreach ($webform_submission->getWebform()
+  //             ->getPages('edit', $webform_submission) as $page_key => $page) {
+  //    $page_errors = !empty($logged_errors[$page_key]) ? $logged_errors[$page_key] : [];
+  //    if (!empty($page_errors)) {
+  //      $has_errors = TRUE;
+  //      // Set an error on the page to create separation in the error message.
+  //      $page_message = t('<p class="grants_formnavigation-page-title"><strong>@title Page</strong></p>', ['@title' => $page['#title']]);
+  //      $form_state->setErrorByName($page_key, $page_message);
+  //      // Parse through the errors and set a form error for each.
+  //      foreach ($page_errors as $field => $error) {
+  //        $message = t('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• @message', ['@message' => $error]);
+  //        $form_state->setErrorByName($field, $message);
+  //      }
+  //    }
+  //  }
+  //  // Add additional error message if defined in the settings.
+  //  if ($has_errors && !empty($webform->getThirdPartySetting('grants_formnavigation', 'additional_error_message'))) {
+  //    $keys = array_keys($webform->getElementsInitializedAndFlattened());
+  //    $additional_error_message = $webform->getThirdPartySetting('grants_formnavigation', 'additional_error_message');
+  //    $message = t('<br><p class="grants_formnavigation-additional-message">@message</p>', ['@message' => $additional_error_message]);
+  //    $form_state->setErrorByName($keys[1], $message);
+  //  }
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function grants_handler_webform_presave(WebformInterface $webform) {
+  // Set an appropriate default purge setting.
+  if ($purge_setting = $webform->getSetting('purge')) {
+    switch ($purge_setting) {
+      // We need to make sure drafts are purged as well.
+      case WebformSubmissionStorageInterface::PURGE_COMPLETED:
+        $purge = WebformSubmissionStorageInterface::PURGE_ALL;
+        break;
+
+      default:
+        $purge = WebformSubmissionStorageInterface::PURGE_DRAFT;
+        break;
+    }
+  }
+  else {
+    $purge = WebformSubmissionStorageInterface::PURGE_DRAFT;
+  }
+  // Enable the draft save if not already set.
+  $draft_setting = $webform->getSetting('draft');
+  if ($draft_setting !== WebformInterface::DRAFT_ALL) {
+    $webform->setSetting('draft', WebformInterface::DRAFT_ALL);
+  }
+  // Set purge status to prevent clutter in the db.
+  if ($purge_setting !== WebformSubmissionStorageInterface::PURGE_ALL
+    || $purge_setting !== WebformSubmissionStorageInterface::PURGE_DRAFT) {
+    $webform->setSetting('purge', $purge);
+  }
+  // Add a purge time frame if not set.
+  if (empty($webform->getSetting('purge_days'))) {
+    $webform->setSetting('purge_days', 365);
+  }
+  // Enable the linking to wizard pages.
+  if (empty($webform->getSetting('wizard_progress_link'))) {
+    $webform->setSetting('wizard_progress_link', TRUE);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_webform_submission_form(&$variables) {
+
+  /** @var \Drupal\grants_handler\GrantsHandlerNavigationHelper $navigationHelper */
+  $navigationHelper = \Drupal::service('grants_handler.navigation_helper');
+  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
+  $webform_submission = $variables["form"]["#webform_submission"];
+
+  $variables['errors'] = $variables['form']['#errors'];
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_webform_submission_handler_details(&$variables) {
+
+  /** @var \Drupal\webform\Entity\WebformSubmission $submission */
+  $submission = $variables['submission'];
+  $submissionData = $submission->getData();
+
+  $handlerEvents = array_filter($submissionData['events'], function ($event) {
+    if ($event['eventType'] == EventsService::$eventTypes['EVENT_INFO']) {
+      return TRUE;
+    }
+    return FALSE;
+  });
+
+  foreach ($handlerEvents as $handlerEvent) {
+    $variables['handler_strings'][] = $handlerEvent['eventDescription'];
+  }
+  $variables['handlers'] = $handlerEvents;
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_webform_submission_attachment_list(&$variables) {
+
+  /** @var \Drupal\webform\Entity\WebformSubmission $submission */
+  $submission = $variables['submission'];
+  $submissionData = $submission->getData();
+
+  $attachments = [];
+
+  foreach ($submissionData['attachments'] as $att) {
+    if (isset($att['fileName'])) {
+      $attachments[] = $att['fileName'];
+    }
+  }
+
+  $variables['attachments'] = [
+    '#theme' => 'item_list',
+    '#list_type' => 'ul',
+    '#title' => t('Application attachments'),
+    '#items' => $attachments,
+    '#attributes' => ['class' => 'application-attachment-list'],
+  ];
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_application_list_item(&$variables) {
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+  /** @var \Drupal\webform\Entity\WebformSubmission $submission */
+  $submission = $variables['submission'];
+  $webform = $submission->getWebform();
+  $submissionData = $submission->getData();
+
+  $variables['applicationFormName'] = ApplicationHandler::$applicationTypes[$submissionData["application_type"]][$language];
+
+  $variables['applicationNumber'] = $submissionData["application_number"];
+
+  try {
+    $dt = new DateTime($variables['document']->getCreatedAt());
+    $dt->setTimezone(new DateTimeZone('Europe/Helsinki'));
+    $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
+  }
+  catch (Exception $e) {
+  }
+
+  $viewApplicationUrl = Url::fromRoute(
+    'grants_handler.view_application',
+    [
+    'submission_id' => $variables['applicationNumber'],
+    ],
+    [
+      'attributes' => [
+        'target' => '_blank',
+      ],
+    ]
+  );
+
+  $editApplicationUrl = Url::fromRoute(
+    'grants_handler.edit_application',
+    [
+      'webform' => $webform->id(),
+      'webform_submission' => $submission->id(),
+    ],
+    [
+      'attributes' => [
+        'data-drupal-selector' => 'application-edit-link',
+        'target' => '_blank',
+      ],
+    ]
+  );
+  $variables['statusTag'] = [
+    '#theme' => 'application_status_tag',
+    '#applicationID' => $submissionData["application_number"],
+  ];
+
+  $variables['classes'] = [
+    strtolower(ApplicationHandler::$applicationStatuses[$submissionData["status"]]),
+    strtolower($submissionData["application_number"]),
+  ];
+
+  $variables['viewApplicationLink'] = Link::fromTextAndUrl(t('View application <i class="hds-icon icon hds-icon--arrow-right hds-icon--size-s vertical-align-small-or-medium-icon" aria-hidden="true"></i>'), $viewApplicationUrl);
+  $variables['editApplicationLink'] = Link::fromTextAndUrl(t('Edit application <i class="hds-icon icon hds-icon--arrow-right hds-icon--size-s vertical-align-small-or-medium-icon" aria-hidden="true"></i>'), $editApplicationUrl);
+
+  try {
+    if (array_key_exists($submissionData["status"], ApplicationHandler::$applicationStatuses)) {
+      $variables['statusString'] = $submissionData['status'];
+    }
+    else {
+      \Drupal::logger('grants_handler')
+        ->error('Application status not in valid statuses.' . $submissionData["application_number"]);
+    }
+  }
+  catch (\Exception $e) {
+    $variables['statusString'] = '';
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_application_status_tag(&$variables) {
+
+  try {
+    $submissionObject = ApplicationHandler::submissionObjectFromApplicationNumber($variables['applicationID']);
+    $submissionData = $submissionObject->getData();
+    if (array_key_exists($submissionData["status"], ApplicationHandler::$applicationStatuses)) {
+      $config = \Drupal::config('grants_handler.settings');
+      $statusStrings = $config->get('statusStrings');
+      $variables['statusStringHumanReadable'] = t($statusStrings[$submissionData['status']]);
+      $variables['statusString'] = $submissionData['status'];
+    }
+    else {
+      \Drupal::logger('grants_handler')
+        ->error('Application status not in valid statuses.' . $submissionData["application_number"]);
+    }
+  }
+  catch (\Exception $e) {
+    $variables['statusStringHumanReadable'] = '';
+    $variables['statusString'] = '';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_grants_handler_completion(&$variables) {
+  $variables['statusTag'] = [
+    '#theme' => 'application_status_tag',
+    '#applicationID' => $variables["submissionId"],
+  ];
+  $variables['ownApplicationsLink'] = Link::createFromRoute(t('My Applications'), 'grants_oma_asiointi.applications_list')->toRenderable();
+  $variables['ownApplicationsLink']['#title'] = ['#markup' => '<span class="hds-button__label">'.$variables['ownApplicationsLink']['#title'].'</span><span aria-hidden="true" class="hds-icon hds-icon--arrow-right"></span>'];
+  $variables['ownApplicationsLink']['#attributes'] = ['class' => 'hds-button hds-button--primary'];
+  $variables['viewApplicationLink'] = Link::createFromRoute(t('View Application'), 'grants_handler.view_application', ['submission_id' => $variables["submissionId"],])->toRenderable();
+  $variables['viewApplicationLink']['#title'] = ['#markup' => '<span class="hds-button__label">'.$variables['viewApplicationLink']['#title'].'</span><span aria-hidden="true" class="hds-icon hds-icon--eye"></span>'];
+  $variables['viewApplicationLink']['#attributes'] = ['class' => 'hds-button hds-button--secondary'];
+
+  try {
+    $submissionObject = $variables['submissionObject'];
+    $submissionData = $submissionObject->getData();
+    $variables['applicationTimestamp'] = $submissionData['form_timestamp'];
+  }
+  catch (\Exception $e) {
+    $variables['applicationTimestamp'] = '';
+  }
+}
+
+
+/**
+ * Implements hook_preprocess().
+ */
+function grants_handler_preprocess_message_list_item(&$variables) {
+  $currentUri = \Drupal::request()->getUri();
+  $currentHost = \Drupal::request()->getSchemeAndHttpHost();
+  $currentDestination = str_replace($currentHost, '', $currentUri);
+
+  $message = $variables['message'];
+
+  if ($message['messageStatus'] == 'UNREAD') {
+    $markReadUrl = Url::fromRoute('grants_handler.message_read', [
+      'message_id' => $message['messageId'],
+      'application_number' => $message['caseId'],
+    ],
+    [
+      'query' => [
+        'destination' => $currentDestination,
+      ],
+    ]);
+    $markReadLink = Link::fromTextAndUrl(t('Mark read'), $markReadUrl);
+  }
+  else {
+    $markReadLink = '';
+  }
+
+  $variables['markReadLink'] = $markReadLink;
+}
+
+/**
+ * Implements hook_preprocess().
+ */
+function grants_handler_preprocess_message_list(&$variables) {
+
+}
+
+/**
+ * @param $variables
+ *
+ * @return void
+ */
+function grants_handler_preprocess_webform_submission_information(&$variables) {
+
+  /** @var \Drupal\webform\Entity\WebformSubmission $submission */
+  $submission = $variables["webform_submission"];
+  $submissionData = $submission->getData();
+
+  $webform = $submission->getWebForm();
+
+  $printApplicationUrl = Url::fromRoute(
+    'grants_webform_print.submission_print',
+    [
+      'submission_id' => $submissionData['application_number'],
+    ],
+    [
+      'attributes' => [
+        'data-drupal-selector' => 'application-edit-link',
+        'class' => ['hds-button', 'hod-button--secondary'],
+      ],
+    ]
+  );
+
+  $printApplicationLink = Link::fromTextAndUrl(t('Print application'), $printApplicationUrl);
+
+  $editApplicationUrl = Url::fromRoute(
+    'grants_handler.edit_application',
+    [
+      'webform' => $webform->id(),
+      'webform_submission' => $submission->id(),
+    ],
+    [
+      'attributes' => [
+        'data-drupal-selector' => 'application-edit-link',
+        'class' => ['hds-button', 'hod-button--secondary'],
+      ],
+    ]
+  );
+
+  $editApplicationLink = Link::fromTextAndUrl(t('Edit application'), $editApplicationUrl);
+
+  $copyApplicationUrl = Url::fromRoute(
+    'grants_handler.copy_application',
+    [
+      'submission_id' => $submissionData['application_number'],
+    ],
+    [
+      'attributes' => [
+        'data-drupal-selector' => 'application-copy-link',
+        'class' => ['hds-button', 'hod-button--secondary'],
+      ],
+    ]
+  );
+
+  $copyApplicationLink = Link::fromTextAndUrl(t('Copy application'), $copyApplicationUrl);
+
+  $variables['printApplicationLink'] = $printApplicationLink;
+  $variables['editApplicationLink'] = $editApplicationLink;
+  $variables['copyApplicationLink'] = $copyApplicationLink;
+
+  $variables['formTitle'] = $webform->label();
+
+  $variables['printLink'] = '';
+
+  $variables['copyLink'] = '';
+
+  $variables['applicationNumber'] = ApplicationHandler::createApplicationNumber($submission);
+  $variables['applicationSent'] = $submissionData['form_timestamp'];
+  $variables['history'] = [
+    '#theme' => 'webform_submission_status_history',
+    '#submission' => $submission,
+  ];
+
+  $variables['handler'] = [
+    '#theme' => 'webform_submission_handler_details',
+    '#submission' => $submission,
+  ];
+
+  $variables['attachments'] = [
+    '#theme' => 'webform_submission_attachment_list',
+    '#submission' => $submission,
+  ];
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_grants_handler_copy_application(&$variables) {
+
+  $d = 'asdf';
 }

@@ -1,5 +1,5 @@
 uuid: dc7dda01-49c3-40d5-8bb3-181e1d776063
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -18,13 +18,13 @@ bundle: image
 mode: list_of_links
 content:
   field_media_image:
+    type: responsive_image
     label: hidden
-    weight: 0
     settings:
       responsive_image_style: list_of_links__thumbnail
       image_link: ''
     third_party_settings: {  }
-    type: responsive_image
+    weight: 0
     region: content
 hidden:
   created: true

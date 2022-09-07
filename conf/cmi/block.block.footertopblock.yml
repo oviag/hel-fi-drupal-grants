@@ -1,5 +1,5 @@
 uuid: f24f281d-7ff4-48eb-8a46-4e599d8a826f
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -17,6 +17,6 @@ plugin: footer_top_block
 settings:
   id: footer_top_block
   label: 'Footer top block'
-  provider: hdbt_content
   label_display: '0'
+  provider: hdbt_content
 visibility: {  }

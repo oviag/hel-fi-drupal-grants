@@ -1,5 +1,5 @@
 uuid: adab20b4-80d0-4516-95a9-55db1d734489
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -17,13 +17,15 @@ bundle: image
 mode: default
 content:
   field_media_image:
-    label: hidden
-    weight: 0
-    settings:
-      image_style: large
-      image_link: ''
-    third_party_settings: {  }
     type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: large
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true

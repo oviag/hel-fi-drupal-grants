@@ -1,5 +1,5 @@
 uuid: ceeac755-1779-4e0f-ba2c-2a56b59782d6
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -12,8 +12,8 @@ entity_type: paragraph
 type: string
 settings:
   max_length: 255
-  is_ascii: false
   case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1

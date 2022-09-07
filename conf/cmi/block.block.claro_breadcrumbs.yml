@@ -1,5 +1,5 @@
 uuid: ae1ffb20-cab7-42f0-84a7-c29e409e169e
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -17,6 +17,6 @@ plugin: system_breadcrumb_block
 settings:
   id: system_breadcrumb_block
   label: Breadcrumbs
-  provider: system
   label_display: '0'
+  provider: system
 visibility: {  }

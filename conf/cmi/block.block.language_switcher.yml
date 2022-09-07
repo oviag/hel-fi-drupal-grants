@@ -1,5 +1,5 @@
 uuid: 1b8590cb-f03a-4a11-bc89-a3f5f765f5e8
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -17,6 +17,6 @@ plugin: 'language_block:language_content'
 settings:
   id: 'language_block:language_content'
   label: 'Language switcher'
-  provider: language
   label_display: '0'
+  provider: language
 visibility: {  }

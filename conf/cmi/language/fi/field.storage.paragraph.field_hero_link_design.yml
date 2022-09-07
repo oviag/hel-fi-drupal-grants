@@ -1,8 +1,8 @@
 settings:
   allowed_values:
     -
-      label: Täysvärinen
+      label: 'Full colour background'
     -
-      label: Reunustettu
+      label: 'Only borders'
     -
-      label: 'Ei reunuksia tai taustaväriä'
+      label: 'No borders or background colour'

@@ -1,5 +1,5 @@
 uuid: 70cd5ad0-8b0a-4018-9c49-45eab0d98545
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -21,13 +21,13 @@ mode: teaser
 content:
   field_liftup_image:
     type: entity_reference_entity_view
-    weight: 0
-    region: content
     label: hidden
     settings:
       view_mode: content_card
       link: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_content: true
   field_has_hero: true
@@ -35,3 +35,4 @@ hidden:
   field_metatags: true
   langcode: true
   links: true
+  toc_enabled: true

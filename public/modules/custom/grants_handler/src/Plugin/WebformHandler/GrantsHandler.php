@@ -2,15 +2,29 @@
 
 namespace Drupal\grants_handler\Plugin\WebformHandler;
 
+use Drupal\Core\Datetime\DateFormatter;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
-use Drupal\grants_attachments\AttachmentRemover;
-use Drupal\grants_attachments\AttachmentUploader;
+use Drupal\Core\TempStore\TempStoreException;
+use Drupal\Core\TypedData\Exception\ReadOnlyException;
+use Drupal\Core\Url;
+use Drupal\grants_attachments\AttachmentHandler;
+use Drupal\grants_handler\ApplicationHandler;
+use Drupal\grants_handler\GrantsHandlerNavigationHelper;
+use Drupal\grants_profile\GrantsProfileService;
+use Drupal\helfi_atv\AtvDocumentNotFoundException;
+use Drupal\helfi_atv\AtvFailedToConnectException;
+use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
+use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Webform example handler.
@@ -42,49 +56,20 @@ class GrantsHandler extends WebformHandlerBase {
   private array $submittedFormData = [];
 
   /**
-   * Field names for attachments.
-   *
-   * @var array|string[]
-   *
-   * @todo get field names from form where field type is attachment.
-   */
-  private array $attachmentFieldNames = [
-    'vahvistettu_tilinpaatos',
-    'vahvistettu_toimintakertomus',
-    'vahvistettu_tilin_tai_toiminnantarkastuskertomus',
-    'vuosikokouksen_poytakirja',
-    'toimintasuunnitelma',
-    'talousarvio',
-    'muu_liite',
-  ];
-
-  /**
-   * Array containing added file ids for removal & upload.
-   *
-   * @var array
-   */
-  private array $attachmentFileIds;
-
-  /**
-   * Uploader service.
-   *
-   * @var \Drupal\grants_attachments\AttachmentUploader
-   */
-  protected AttachmentUploader $attachmentUploader;
-
-  /**
-   * Remover service.
-   *
-   * @var \Drupal\grants_attachments\AttachmentRemover
-   */
-  protected AttachmentRemover $attachmentRemover;
-
-  /**
    * Application type.
    *
    * @var string
    */
   protected string $applicationType;
+
+  /**
+   * Applicant type.
+   *
+   * Private / registered / UNregistered.
+   *
+   * @var string
+   */
+  protected string $applicantType;
 
   /**
    * Application type ID.
@@ -101,6 +86,15 @@ class GrantsHandler extends WebformHandlerBase {
   protected string $applicationNumber;
 
   /**
+   * Status for updated submission.
+   *
+   * Old one if no update.
+   *
+   * @var string
+   */
+  protected string $newStatus;
+
+  /**
    * Drupal\Core\Session\AccountProxyInterface definition.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
@@ -108,59 +102,125 @@ class GrantsHandler extends WebformHandlerBase {
   protected AccountProxyInterface $currentUser;
 
   /**
-   * Oidc access token.
+   * User data from helsinkiprofiili & auth methods.
+   *
+   * @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData
+   */
+  protected HelsinkiProfiiliUserData $userExternalData;
+
+  /**
+   * Access GRants profile.
+   *
+   * @var \Drupal\grants_profile\GrantsProfileService
+   */
+  protected GrantsProfileService $grantsProfileService;
+
+  /**
+   * Date formatter.
+   *
+   * @var \Drupal\Core\Datetime\DateFormatter
+   */
+  protected DateFormatter $dateFormatter;
+
+  /**
+   * All attachment-related things.
+   *
+   * @var \Drupal\grants_attachments\AttachmentHandler
+   */
+  protected AttachmentHandler $attachmentHandler;
+
+  /**
+   * Process application data from webform to ATV.
+   *
+   * @var \Drupal\grants_handler\ApplicationHandler
+   */
+  protected ApplicationHandler $applicationHandler;
+
+  /**
+   * Save form trigger for methods where form_state is not available.
    *
    * @var string
    */
-  protected string $accessToken;
+  protected string $triggeringElement;
 
   /**
-   * Jwt token.
+   * Save form for methods where form is not available.
    *
-   * @var string
+   * @var array
    */
-  protected string $idToken;
+  protected array $formTemp;
 
   /**
-   * Decoded jwt data.
+   * Help with stored errors.
    *
-   * @var object
+   * @var \Drupal\grants_handler\GrantsHandlerNavigationHelper
    */
-  protected \stdClass $jwtData;
+  protected GrantsHandlerNavigationHelper $grantsFormNavigationHelper;
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $instance = parent::create($container, $configuration, $plugin_id, $plugin_definition);
-    /** @var \Drupal\Core\DependencyInjection\Container $container */
-    $instance->attachmentUploader = $container->get('grants_attachments.attachment_uploader');
-    $instance->attachmentRemover = $container->get('grants_attachments.attachment_remover');
-
-    // Make sure we have empty array as initial value.
-    $instance->attachmentFileIds = [];
 
     $instance->currentUser = $container->get('current_user');
-    $session = $container->get('openid_connect.session');
 
-    // Access token tells us.
-    $at = $session->retrieveAccessToken();
-    if ($at !== NULL) {
-      $instance->accessToken = $at;
-      $instance->idToken = $session->retrieveIdToken();
-      $instance->jwtData = json_decode(base64_decode(str_replace('_', '/', str_replace('-', '+', explode('.', $instance->idToken)[1]))));
-    }
+    $instance->userExternalData = $container->get('helfi_helsinki_profiili.userdata');
+
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $instance->grantsProfileService = \Drupal::service('grants_profile.service');
+
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $instance->dateFormatter = \Drupal::service('date.formatter');
+
+    /** @var \Drupal\grants_attachments\AttachmentHandler */
+    $instance->attachmentHandler = \Drupal::service('grants_attachments.attachment_handler');
+    $instance->attachmentHandler->setDebug($instance->isDebug());
+
+    /** @var \Drupal\grants_handler\ApplicationHandler */
+    $instance->applicationHandler = \Drupal::service('grants_handler.application_handler');
+
+    $instance->grantsFormNavigationHelper = \Drupal::service('grants_handler.navigation_helper');
+
+    $instance->applicationHandler->setDebug($instance->isDebug());
+
+    $instance->triggeringElement = '';
+    $instance->applicationNumber = '';
+    $instance->applicantType = '';
+    $instance->applicationTypeID = '';
+    $instance->applicationType = '';
 
     return $instance;
   }
 
   /**
    * Convert EUR format value to "double" .
+   *
+   * @param string $value
+   *   Value to be converted.
+   *
+   * @return float
+   *   Floated value.
    */
-  private function grantsHandlerConvertToFloat(string $value): string {
+  private function grantsHandlerConvertToFloat(string $value): float {
     $value = str_replace(['€', ',', ' '], ['', '.', ''], $value);
     $value = (float) $value;
-    return "" . $value;
+    return $value;
+  }
+
+  /**
+   * Convert EUR format value to "double" .
+   *
+   * @param string|null $value
+   *   Value to be converted.
+   *
+   * @return float
+   *   Floated value.
+   */
+  public static function convertToFloat(?string $value = ''): float {
+    $value = str_replace(['€', ',', ' '], ['', '.', ''], $value);
+    $value = (float) $value;
+    return $value;
   }
 
   /**
@@ -193,83 +253,622 @@ class GrantsHandler extends WebformHandlerBase {
   }
 
   /**
-   * {@inheritdoc}
+   * Calculate & set total values from added elements in webform.
    */
-  public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    // @todo Is parent::validateForm needed in validateForm?
-    parent::validateForm($form, $form_state, $webform_submission);
+  protected function setTotals() {
 
-    // Get current page.
-    $currentPage = $form["progress"]["#current_page"];
-    // Only validate set forms.
-    if ($currentPage === 'lisatiedot_ja_liitteet' || $currentPage === 'webform_preview') {
-      // Loop through fieldnames and validate fields.
-      foreach ($this->attachmentFieldNames as $fieldName) {
-        $this->validateAttachmentField(
-          $fieldName,
-          $form_state,
-          $form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$fieldName]["#title"]
-        );
+    if (isset($this->submittedFormData['myonnetty_avustus']) &&
+      is_array($this->submittedFormData['myonnetty_avustus'])) {
+      $tempTotal = 0;
+      foreach ($this->submittedFormData['myonnetty_avustus'] as $key => $item) {
+        $amount = $this->grantsHandlerConvertToFloat($item['amount']);
+        $tempTotal += $amount;
       }
+      $this->submittedFormData['myonnetty_avustus_total'] = $tempTotal;
     }
-    $this->debug(__FUNCTION__);
+
+    if (isset($this->submittedFormData['haettu_avustus_tieto']) &&
+      is_array($this->submittedFormData['haettu_avustus_tieto'])) {
+      $tempTotal = 0;
+      foreach ($this->submittedFormData['haettu_avustus_tieto'] as $item) {
+        $amount = $this->grantsHandlerConvertToFloat($item['amount']);
+        $tempTotal += $amount;
+      }
+      $this->submittedFormData['haettu_avustus_tieto_total'] = $tempTotal;
+    }
+
+    // @todo properly get amount
+    $this->submittedFormData['compensation_total_amount'] = $tempTotal;
   }
 
   /**
-   * Validate single attachment field.
-   *
-   * @param string $fieldName
-   *   Name of the field in validation.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
-   *   Form state object.
-   * @param string $fieldTitle
-   *   Field title for errors.
-   *
-   * @todo think about how attachment validation logic could be moved to the
-   *   component.
+   * {@inheritdoc}
    */
-  private function validateAttachmentField(string $fieldName, FormStateInterface $form_state, string $fieldTitle) {
-    // Get value.
-    $values = $form_state->getValue($fieldName);
+  public function access(WebformSubmissionInterface $webform_submission, $operation, AccountInterface $account = NULL) {
+    // @todo Change the autogenerated stub
+    return parent::access($webform_submission, $operation, $account);
+  }
 
-    $args = [];
-    if (isset($values[0]) && is_array($values[0])) {
-      $args = $values;
+  /**
+   * {@inheritdoc}
+   */
+  public function accessElement(array &$element, $operation, AccountInterface $account = NULL) {
+    // @todo Change the autogenerated stub
+    return parent::accessElement($element, $operation, $account);
+  }
+
+  /**
+   * Format form values to be consumed with typedata.
+   *
+   * @param \Drupal\webform\Entity\WebformSubmission $webform_submission
+   *   Submission object.
+   *
+   * @return mixed
+   *   Massaged values.
+   */
+  protected function massageFormValuesFromWebform(WebformSubmission $webform_submission): mixed {
+    $values = $webform_submission->getData();
+    $this->setFromThirdPartySettings($webform_submission->getWebform());
+
+    if (isset($this->applicationType) && $this->applicationType != '') {
+      $values['application_type'] = $this->applicationType;
+    }
+    if (isset($this->applicationTypeID) && $this->applicationTypeID != '') {
+      $values['application_type_id'] = $this->applicationTypeID;
+    }
+
+    if (isset($values['community_address']) && $values['community_address'] !== NULL) {
+      $values += $values['community_address'];
+      unset($values['community_address']);
+      unset($values['community_address_select']);
+    }
+
+    if (isset($values['bank_account']) && $values['bank_account'] !== NULL) {
+      $values['account_number'] = $values['bank_account']['account_number'];
+      unset($values['bank_account']);
+    }
+
+    // If for some reason we don't have application number at this point.
+    if (!isset($this->applicationNumber) || $this->applicationNumber == '') {
+      // But if one is coming from form (hidden field)
+      if (isset($this->submittedFormData['application_number']) && $this->submittedFormData['application_number'] != '') {
+        // Use it.
+        $this->applicationNumber = $this->submittedFormData['application_number'];
+      }
+      else {
+        // But if we have saved webform earlier, we can get the application
+        // number from submission serial.
+        $s = $webform_submission->serial();
+        if ($webform_submission->serial()) {
+          $this->applicationNumber = ApplicationHandler::createApplicationNumber($webform_submission);
+          $this->submittedFormData['application_number'] = $this->applicationNumber;
+          $values['application_number'] = $this->applicationNumber;
+        }
+        // Hopefully we never reach here, but there should be additional checks
+        // for application number to exists.
+        // and it's no biggie since we can always get it from the method above
+        // as long as we have our submission object.
+      }
+    }
+
+    return $values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function preCreate(array &$values) {
+
+    $currentUser = \Drupal::currentUser();
+    $currentUserRoles = $currentUser->getRoles();
+
+    // These both are required to be selected.
+    // probably will change when we have proper company selection process.
+    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $grantsProfile = $this->grantsProfileService->getGrantsProfileContent($selectedCompany);
+
+    $webform = Webform::load($values['webform_id']);
+
+    $this->setFromThirdPartySettings($webform);
+
+    // \Drupal::messenger()->addMessage
+    // ('Message in GrantsHandler::preCreate()');
+    $this->applicantType = $this->grantsProfileService->getApplicantType();
+    if ((in_array('helsinkiprofiili', $currentUserRoles)) &&
+      ($currentUser->id() != '1')) {
+
+      $redirectApplicantType = FALSE;
+
+      if ($this->applicantType === NULL) {
+        $this->messenger()
+          ->addError($this->t("You need to select company you're acting behalf of."));
+        $redirectApplicantType = TRUE;
+      }
+
+      if ($selectedCompany == NULL) {
+        $this->messenger()
+          ->addError($this->t("You need to select company you're acting behalf of."));
+        $redirectApplicantType = TRUE;
+      }
+
+      if ($redirectApplicantType === TRUE) {
+        $url = Url::fromRoute('grants_mandate.mandateform', [
+          'destination' => $values["uri"],
+        ])
+          ->setAbsolute()
+          ->toString();
+        $response = new RedirectResponse($url);
+        $response->send();
+      }
+
+      $redirectToProfile = FALSE;
+
+      if (empty($grantsProfile['officials'])) {
+        $this->messenger()
+          ->addError($this->t("You must have atleast one official for @businessId", ['@businessId' => $selectedCompany["identifier"]]), TRUE);
+        $redirectToProfile = TRUE;
+      }
+      if (empty($grantsProfile['addresses'])) {
+        $this->messenger()
+          ->addError($this->t("You must have atleast one address for @businessId", ['@businessId' => $selectedCompany["identifier"]]), TRUE);
+        $redirectToProfile = TRUE;
+      }
+      if (empty($grantsProfile['bankAccounts'])) {
+        $this->messenger()
+          ->addError($this->t("You must have atleast one bank account for @businessId", ['@businessId' => $selectedCompany["identifier"]]), TRUE);
+        $redirectToProfile = TRUE;
+      }
+
+      if ($redirectToProfile === TRUE) {
+        $url = Url::fromRoute('grants_profile.show', [
+          'destination' => $values["uri"],
+        ])
+          ->setAbsolute()
+          ->toString();
+        $response = new RedirectResponse($url);
+        $response->send();
+      }
+
     }
     else {
-      $args[] = $values;
+      $this->messenger()
+        ->addError($this->t("No prefill for admin"));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @throws \Exception
+   */
+  public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+
+    // \Drupal::messenger()->addMessage
+    // ('Message in GrantsHandler::alterForm()');
+    $this->alterFormNavigation($form, $form_state, $webform_submission);
+
+    $form['#webform_submission'] = $webform_submission;
+    $webform = $webform_submission->getWebform();
+    $form['#form_state'] = $form_state;
+
+    $this->setFromThirdPartySettings($webform_submission->getWebform());
+
+    // If submission has applicant type set, ie we're editing submission
+    // use that, if not then get selected from profile.
+    // we know that.
+    $submissionData = $this->massageFormValuesFromWebform($webform_submission);
+    if (isset($submissionData['applicant_type'])) {
+      $applicantType = $submissionData['applicant_type'];
+    }
+    else {
+      $applicantTypeString = $this->grantsProfileService->getApplicantType();
+      $applicantType = '0';
+      switch ($applicantTypeString) {
+        case 'registered_community':
+          $applicantType = '0';
+          break;
+
+        case 'unregistered_community':
+          $applicantType = '1';
+          break;
+
+        case 'private_person':
+          $applicantType = '2';
+          break;
+      }
     }
 
-    foreach ($args as $value) {
-      // Muu liite is optional.
-      if ($fieldName !== 'muu_liite' && $value === NULL) {
-        $form_state->setErrorByName($fieldName, $this->t('@fieldname field is required', [
-          '@fieldname' => $fieldTitle,
-        ]));
+    $form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]["applicant_type"] = [
+      '#type' => 'hidden',
+      '#value' => $applicantType,
+    ];
+
+    $thisYear = (integer) date('Y');
+    $thisYearPlus1 = $thisYear + 1;
+    $thisYearPlus2 = $thisYear + 2;
+
+    $form["elements"]["2_avustustiedot"]["avustuksen_tiedot"]["acting_year"]["#options"] = [
+      $thisYear => $thisYear,
+      $thisYearPlus1 => $thisYearPlus1,
+      $thisYearPlus2 => $thisYearPlus2,
+    ];
+
+    if ($this->applicationNumber) {
+      $dataIntegrityStatus = $this->applicationHandler->validateDataIntegrity(
+      NULL,
+      $submissionData,
+      $this->applicationNumber,
+      $submissionData['metadata']['saveid'] ?? '');
+
+      if ($dataIntegrityStatus != 'OK') {
+        $form['#disabled'] = TRUE;
+        $this->messenger()->addWarning($this->t('Data integrity mismatch. Please refresh form in a moment'));
       }
-      if ($value !== NULL) {
-        // If attachment is uploaded, make sure no other field is selected.
-        if (isset($value['attachment']) && is_int($value['attachment'])) {
-          if ($value['isDeliveredLater'] === "1") {
-            $form_state->setErrorByName("[" . $fieldName . "][isDeliveredLater]", $this->t('@fieldname has file added, it cannot be added later.', [
-              '@fieldname' => $fieldTitle,
-            ]));
-          }
-          if ($value['isIncludedInOtherFile'] === "1") {
-            $form_state->setErrorByName("[" . $fieldName . "][isIncludedInOtherFile]", $this->t('@fieldname has file added, it cannot belong to other file.', [
-              '@fieldname' => $fieldTitle,
-            ]));
-          }
+    }
+
+    $all_errors = $this->grantsFormNavigationHelper->getAllErrors($webform_submission);
+
+    // Foreach ($all_errors as $page => $errors) {
+    //      /**.
+    /** * @var string $fieldName */
+    /** * @var  \Drupal\Core\StringTranslation\TranslatableMarkup $error */
+    // */
+    //      foreach ($errors as $fieldName => $error) {
+    //        foreach ($form['elements'] as $key1 => $element) {
+    //          foreach ($element as $key2 => $element2) {
+    //            if (!str_starts_with($key2, '#')) {
+    //              // If found on this level.
+    //              if ($fieldName == $key2) {
+    //                $e = 'asdf';
+    //              }
+    //              elseif (is_array($element2)) {
+    //                foreach ($element2 as $key3 => $element3) {
+    //                  if (!str_starts_with($key3, '#')) {
+    //                    // If found on this level.
+    //                    if ($fieldName == $key3) {
+    //                      // $element3['errors'][] = $error;
+    //                      //                      $form['elements'][$key1][$key2][$key3]['#errors'][] = $error;
+    //                    }
+    //                    elseif (is_array($element3)) {
+    //                      foreach ($element3 as $key4 => $element4) {
+    //                        if (!str_starts_with($key4, '#')) {
+    //                          if ($fieldName == $key4) {
+    //                            $e = 'asdf';
+    //                          }
+    //                          if (is_array($element4)) {
+    //                            $d = 'asfd';
+    //                          }
+    //                        }
+    //                      }
+    //                    }
+    //                  }
+    //                }
+    //              }
+    //            }
+    //          }
+    //        }
+    //        $d = 'asdf';
+    //        // $element["toiminnasta_vastaavat_henkilot"]["community_officials"]
+    //      }
+    //    }.
+    $form['#errors'] = $all_errors;
+  }
+
+  /**
+   * Alter navigation elements on forms.
+   *
+   * @param array $form
+   *   Form in question.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Forms state.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   The submission.
+   *
+   * @throws \Exception
+   */
+  public function alterFormNavigation(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+    // Log the current page.
+    $current_page = $webform_submission->getCurrentPage();
+    $webform = $webform_submission->getWebform();
+    // Actions to perform if there are pages.
+    if ($webform->hasWizardPages()) {
+      $validations = [
+        '::validateForm',
+        '::draft',
+      ];
+      // Allow forward access to all but the confirmation page.
+      foreach ($form_state->get('pages') as $page_key => $page) {
+        // Allow user to access all but the confirmation page.
+        if ($page_key != 'webform_confirmation') {
+          $form['pages'][$page_key]['#access'] = TRUE;
+          $form['pages'][$page_key]['#validate'] = $validations;
+        }
+      }
+      // Set our loggers to the draft update if it is set.
+      if (isset($form['actions']['draft'])) {
+        // Add a logger to the next validators.
+        $form['actions']['draft']['#validate'] = $validations;
+      }
+      // Set our loggers to the previous update if it is set.
+      if (isset($form['actions']['wizard_prev'])) {
+        // Add a logger to the next validators.
+        $form['actions']['wizard_prev']['#validate'] = $validations;
+      }
+      // Add a custom validator to the final submit.
+      $form['actions']['submit']['#validate'][] = 'grants_handler_submission_validation';
+      // Log the page visit.
+      $visited = $this->grantsFormNavigationHelper->hasVisitedPage($webform_submission, $current_page);
+      // Log the page if it has not been visited before.
+      if (!$visited) {
+
+        $this->grantsFormNavigationHelper->logPageVisit($webform_submission, $current_page);
+      }
+
+      // If there's errors on the form (any page), disable form submit.
+      $current_errors = $webform->getState('current_errors');
+      if (is_array($current_errors) && !GrantsHandler::emptyRecursive($current_errors)) {
+        $form["actions"]["submit"]['#disabled'] = TRUE;
+      }
+    }
+  }
+
+  /**
+   * Get triggering element name from form state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface|null $form_state
+   *   Form state.
+   *
+   * @return mixed
+   *   Triggering element name if there's one.
+   */
+  public function getTriggeringElementName(?FormStateInterface $form_state): mixed {
+
+    if ($this->triggeringElement == '') {
+      $triggeringElement = $form_state->getTriggeringElement();
+      if (is_string($triggeringElement['#submit'][0])) {
+        $this->triggeringElement = $triggeringElement['#submit'][0];
+      }
+    }
+
+    return $this->triggeringElement;
+  }
+
+  /**
+   * Method to figure out if formUpdate should be false/true?
+   *
+   * The thing is that the Avustus2 is not very smart about when it fetches
+   * data from ATV. Initial import from ATV MUST have fromUpdate FALSE, and
+   * any subsequent update will have to have it as TRUE. The application status
+   * handling makes this possibly very complicated, hence separate method
+   * figuring it out.
+   *
+   * @return bool
+   *   Set form update value either TRUE / FALSE
+   */
+  private function getFormUpdate(): bool {
+
+    $applicationNumber = !empty($this->applicationNumber) ? $this->applicationNumber : $this->submittedFormData["application_number"] ?? '';
+    $newStatus = $this->submittedFormData["status"];
+    $oldStatus = '';
+
+    if ($applicationNumber != '') {
+      // Get document from ATV.
+      try {
+        $document = $this->applicationHandler->getAtvDocument($applicationNumber);
+        $oldStatus = $document->getStatus();
+      }
+      catch (TempStoreException | AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
+      }
+    }
+    // If new status is submitted, ie save to Avus2..
+    if ($newStatus == ApplicationHandler::$applicationStatuses['SUBMITTED']) {
+      // ..and if application is not yet in Avus2, form update needs to be FALSE
+      // or we get error updating nonexistent application
+      if ($oldStatus == ApplicationHandler::$applicationStatuses['DRAFT']) {
+        return FALSE;
+      }
+      // also, if this is new application but put directly to submitted mode,
+      // we need to have update also FALSE.
+      elseif ($oldStatus == '') {
+        return FALSE;
+      }
+      // In all other cases we can have update as TRUE since we want to
+      // actually update data in Avus2 & ATV.
+      else {
+        return TRUE;
+      }
+    }
+
+    // If new status is DRAFT, we don't really care about this value since
+    // these are not uploaded to Avus2 just put it to false in case of some
+    // other things need this.
+    if ($newStatus == ApplicationHandler::$applicationStatuses['DRAFT']) {
+      return FALSE;
+    }
+
+    // In other statuses and situations we can just return true bc we want to
+    // actually update data.
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(
+    array &$form,
+    FormStateInterface $form_state,
+    WebformSubmissionInterface $webform_submission
+  ) {
+
+    parent::validateForm($form, $form_state, $webform_submission);
+
+    $current_page = $webform_submission->getCurrentPage();
+
+    // These need to be set here to the handler object, bc we do the saving to
+    // ATV in postSave and in that method these are not available.
+    // and the triggering element is pivotal in figuring if we're
+    // saving draft or not.
+    $triggeringElement = $this->getTriggeringElementName($form_state);
+    // Form values are needed for parsing attachment in postSave.
+    $this->formTemp = $form;
+    // Does these need to be done in validate??
+    // maybe the submittedData is even not required?
+    $this->submittedFormData = $this->massageFormValuesFromWebform($webform_submission);
+
+    $this->setTotals();
+
+    // Merge form sender data from handler.
+    $this->submittedFormData = array_merge(
+      $this->submittedFormData,
+      $this->applicationHandler->parseSenderDetails());
+
+    $this->submittedFormData['applicant_type'] = $form_state
+      ->getValue('applicant_type');
+
+    foreach ($this->submittedFormData["myonnetty_avustus"] as $key => $value) {
+      $this->submittedFormData["myonnetty_avustus"][$key]['issuerName'] =
+        $value['issuer_name'];
+      unset($this->submittedFormData["myonnetty_avustus"][$key]['issuer_name']);
+    }
+    foreach ($this->submittedFormData["haettu_avustus_tieto"] as $key => $value) {
+      $this->submittedFormData["haettu_avustus_tieto"][$key]['issuerName'] =
+        $value['issuer_name'];
+      unset($this->submittedFormData["haettu_avustus_tieto"][$key]['issuer_name']);
+    }
+
+    // Set form timestamp to current time.
+    // apparently this is always set to latest submission.
+    $dt = new \DateTime();
+    $dt->setTimezone(new \DateTimeZone('Europe/Helsinki'));
+    $this->submittedFormData['form_timestamp'] = $dt->format('Y-m-d\TH:i:s');
+
+    // Get regdate from profile data and format it for Avustus2
+    // This data is immutable for end user so safe to this way.
+    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $grantsProfile = $this->grantsProfileService->getGrantsProfileContent($selectedCompany);
+    $regDate = new DrupalDateTime($grantsProfile["registrationDate"], 'Europe/Helsinki');
+    $this->submittedFormData["registration_date"] = $regDate->format('Y-m-d\TH:i:s');
+
+    // Set form update value based on new & old status + Avus2 logic.
+    $this->submittedFormData["form_update"] = $this->getFormUpdate();
+
+    $this->setFromThirdPartySettings($webform_submission->getWebform());
+
+    // Figure out status for this application.
+    $this->newStatus = $this->applicationHandler->getNewStatus(
+      $triggeringElement,
+      $form,
+      $form_state,
+      $this->submittedFormData,
+      $webform_submission
+    );
+    // Set status for data.
+    $this->submittedFormData['status'] = $this->newStatus;
+
+    // Loop through fieldnames and validate fields.
+    foreach (AttachmentHandler::getAttachmentFieldNames() as $fieldName) {
+      AttachmentHandler::validateAttachmentField(
+        $fieldName,
+        $form_state,
+        $form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$fieldName]["#title"],
+        $triggeringElement
+      );
+    }
+    $current_errors = $this->logErrors($webform_submission, $form_state);
+
+    // If ($triggeringElement == '::next') {
+    // // parent::validateForm($form, $form_state, $webform_submission);.
+    // }
+    // if ($triggeringElement == '::gotoPage') {
+    // }
+    // if ($triggeringElement == '::submitForm') {
+    // }.
+    if ($triggeringElement == '::submit') {
+      $d = 'asdf';
+      if (self::emptyRecursive($current_errors)) {
+        $applicationData = $this->applicationHandler->webformToTypedData(
+          $this->submittedFormData,
+          '\Drupal\grants_metadata\TypedData\Definition\YleisavustusHakemusDefinition',
+          'grants_metadata_yleisavustushakemus'
+        );
+        $violations = $this->applicationHandler->validateApplication(
+          $applicationData,
+          $form,
+          $form_state,
+          $webform_submission
+        );
+
+        if ($violations->count() === 0) {
+          // If we have no violations clear all errors.
+          $form_state->clearErrors();
+          // So we well proceed to confirmForm.
+        }
+        else {
+          // If we HAVE errors, then refresh them from the.
+          $current_errors = $this->logErrors($webform_submission, $form_state);
         }
       }
     }
   }
 
   /**
+   * Is recursive array empty.
+   *
+   * @param array $value
+   *   Array to check.
+   *
+   * @return bool
+   *   Empty or not?
+   */
+  public static function emptyRecursive(array $value): bool {
+    $empty = TRUE;
+    array_walk_recursive($value, function ($item) use (&$empty) {
+      $empty = $empty && empty($item);
+    });
+    return $empty;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $this->debug(__FUNCTION__);
+
+    $triggeringElement = $this->getTriggeringElementName($form_state);
+
+    // Because of funky naming convention, we need to manually
+    // set purpose field value.
+    // This is populated from grants profile so it's just passing this on.
+    if (isset($this->submittedFormData["community_purpose"])) {
+      $this->submittedFormData["business_purpose"] = $this->submittedFormData["community_purpose"];
+    }
+
+    // If for some reason we don't have application number at this point.
+    if (!isset($this->applicationNumber)) {
+      // But if one is coming from form (hidden field)
+      if (isset($this->submittedFormData['application_number'])) {
+        // Use it.
+        $this->applicationNumber = $this->submittedFormData['application_number'];
+      }
+      else {
+        // But if we have saved webform earlier, we can get the application
+        // number from submission serial.
+        if ($webform_submission->id()) {
+          $this->applicationNumber = ApplicationHandler::createApplicationNumber($webform_submission);
+        }
+        // Hopefully we never reach here, but there should be additional checks
+        // for application number to exists.
+        // and it's no biggie since we can always get it from the method above
+        // as long as we have our submission object.
+      }
+    }
+
+    // These need to be set here to the handler object, bc we do the saving to
+    // ATV in postSave and in that method these are not available.
+    // and the triggering element is pivotal in figuring if we're
+    // saving draft or not.
+    $this->triggeringElement = $this->getTriggeringElementName($form_state);
+    // Form values are needed for parsing attachment in postSave.
+    $this->formTemp = $form;
   }
 
   /**
@@ -277,137 +876,258 @@ class GrantsHandler extends WebformHandlerBase {
    */
   public function preSave(WebformSubmissionInterface $webform_submission) {
 
-    // Get data from form submission
-    // and set it to class private variable.
-    $this->submittedFormData = $webform_submission->getData();
+    // don't save ip address.
+    $webform_submission->remote_addr->value = '';
 
-    // Do not save form data if we have debug set up.
-    if (!empty($this->configuration['debug'])) {
-      // Set submission data to empty.
-      // form will still contain submission details, IP time etc etc.
-      $webform_submission->setData([]);
+    if (empty($this->submittedFormData)) {
+      // Submission data is not saved in storage controller,
+      // so save data here for later usage.
+      $this->submittedFormData = $this->massageFormValuesFromWebform($webform_submission);
+
     }
-    $this->debug(__FUNCTION__);
+
+    // If for some reason applicant type is not present, make sure it get's
+    // added otherwise validation fails.
+    if (!isset($this->submittedFormData['applicant_type'])) {
+      $this->submittedFormData['applicant_type'] = $this->grantsProfileService->getApplicantType();
+    }
+
+    if (isset($this->submittedFormData["community_purpose"])) {
+      $this->submittedFormData["business_purpose"] = $this->submittedFormData["community_purpose"];
+    }
+
   }
 
   /**
    * {@inheritdoc}
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
-    $this->debug(__FUNCTION__);
+
+    // let's invalidate cache for this submission.
+    $this->entityTypeManager->getViewBuilder($webform_submission->getWebform()
+      ->getEntityTypeId())->resetCache([
+        $webform_submission,
+      ]);
+
+    if (empty($this->submittedFormData)) {
+      return;
+    }
+
+    if (!isset($this->submittedFormData['application_number']) || $this->submittedFormData['application_number'] == '') {
+      if (!isset($this->applicationNumber) || $this->applicationNumber == '') {
+        $this->applicationNumber = ApplicationHandler::createApplicationNumber($webform_submission);
+      }
+      if (isset($this->applicationTypeID) || $this->applicationTypeID == '') {
+        $this->submittedFormData['application_type_id'] = $this->applicationTypeID;
+      }
+      if (isset($this->applicationType) || $this->applicationType == '') {
+        $this->submittedFormData['application_type'] = $this->applicationType;
+      }
+      if (isset($this->applicationNumber) || $this->applicationNumber == '') {
+        $this->submittedFormData['application_number'] = $this->applicationNumber;
+      }
+    }
+    else {
+      $this->applicationNumber = $this->submittedFormData['application_number'];
+    }
+
+    // If triggering element is either draft save or proper one,
+    // we want to parse attachments from form.
+    if ($this->triggeringElement == '::submitForm') {
+      $webForm = $webform_submission->getWebform();
+
+      // submitForm is triggering element when saving as draft.
+      // Parse attachments to data structure.
+      $this->submittedFormData['attachments'] = $this->attachmentHandler->parseAttachments(
+        $this->formTemp,
+        $this->submittedFormData,
+        $this->applicationNumber
+      );
+
+      try {
+        $applicationData = $this->applicationHandler->webformToTypedData(
+          $this->submittedFormData,
+          '\Drupal\grants_metadata\TypedData\Definition\YleisavustusHakemusDefinition',
+          'grants_metadata_yleisavustushakemus'
+        );
+      }
+      catch (ReadOnlyException $e) {
+        // @todo log errors here.
+      }
+
+      $applicationUploadStatus = $this->applicationHandler->handleApplicationUpload(
+        $applicationData,
+        $this->applicationNumber
+      );
+
+      if ($applicationUploadStatus) {
+        $this->attachmentHandler->handleApplicationAttachments(
+          $this->applicationNumber,
+          $webform_submission
+        );
+
+        $this->messenger()
+          ->addStatus(
+            $this->t(
+              'Grant application (<span id="saved-application-number">@number</span>) saved as DRAFT',
+              [
+                '@number' => $this->applicationNumber,
+              ]
+            ),
+            TRUE
+          );
+
+        // Try to give integration time to do it's
+        // thing before we try to go there.
+        sleep(4);
+
+        $redirectUrl = Url::fromRoute('grants_handler.view_application', [
+          'submission_id' => $this->applicationNumber,
+        ]);
+      }
+      else {
+        $redirectUrl = Url::fromRoute(
+          '<front>',
+          [
+            'attributes' => [
+              'data-drupal-selector' => 'application-saving-failed-link',
+            ],
+          ]
+        );
+
+        $this->messenger()
+          ->addStatus(
+            $this->t(
+              'Grant application (<span id="saved-application-number">@number</span>) saving failed. Please contact support from @link',
+              [
+                '@number' => $this->applicationNumber,
+                '@link' => '<a href="/" >here</a>',
+              ]
+            ),
+            TRUE
+          );
+      }
+      $redirectResponse = new RedirectResponse($redirectUrl->toString());
+      $this->applicationHandler->clearCache($this->applicationNumber);
+      $redirectResponse->send();
+
+      // Return $redirectResponse;.
+    }
+    if ($this->triggeringElement == '::submit') {
+      // Submit is trigger when exiting from confirmation page.
+      // Parse attachments to data structure.
+      $this->submittedFormData['attachments'] = $this->attachmentHandler->parseAttachments(
+        $this->formTemp,
+        $this->submittedFormData,
+        $this->applicationNumber
+      );
+
+      // Try to update status only if it's allowed.
+      if (ApplicationHandler::canSubmissionBeSubmitted($webform_submission, NULL)) {
+        $this->submittedFormData['status'] = ApplicationHandler::$applicationStatuses['SUBMITTED'];
+      }
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function confirmForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+  public function confirmForm(
+    array &$form,
+    FormStateInterface $form_state,
+    WebformSubmissionInterface $webform_submission
+  ) {
 
-    $webformId = $webform_submission->getWebform()->getOriginalId();
+    try {
 
-    // Process only yleisavustushakemukset.
-    if ($webformId === 'yleisavustushakemus') {
+      $this->submittedFormData['status'] = $this->applicationHandler->getNewStatus(
+        $this->triggeringElement,
+        $form,
+        $form_state,
+        $this->submittedFormData,
+        $webform_submission
+      );
 
-      $endpoint = getenv('AVUSTUS2_ENDPOINT');
-      $username = getenv('AVUSTUS2_USERNAME');
-      $password = getenv('AVUSTUS2_PASSWORD');
+      $applicationData = $this->applicationHandler->webformToTypedData(
+        $this->submittedFormData,
+        '\Drupal\grants_metadata\TypedData\Definition\YleisavustusHakemusDefinition',
+        'grants_metadata_yleisavustushakemus'
+      );
 
-      if (!empty($this->configuration['debug'])) {
-        $t_args = [
-          '@endpoint' => $endpoint,
-        ];
+      $applicationUploadStatus = $this->applicationHandler->handleApplicationUpload(
+        $applicationData,
+        $this->applicationNumber
+      );
+
+      if ($applicationUploadStatus) {
+        $this->attachmentHandler->handleApplicationAttachments(
+          $this->applicationNumber,
+          $webform_submission
+        );
+
+        $viewApplicationUrl = Url::fromRoute('grants_handler.view_application', [
+          'submission_id' => $this->applicationNumber,
+        ]);
+
         $this->messenger()
-          ->addMessage($this->t('DEBUG: Endpoint:: @endpoint', $t_args));
-      }
+          ->addStatus(
+            $this->t(
+              'Grant application (<span id="saved-application-number">@number</span>) saved. You can view your new application from @here.',
+              [
+                '@number' => $this->applicationNumber,
+                '@here' => Link::fromTextAndUrl('here', $viewApplicationUrl)
+                  ->toString(),
+              ]
+            )
+          );
 
-      $parsedCompensations = $this->parseCompensations();
-
-      $bankAccountArray = [
-        (object) [
-          "ID" => "accountNumber",
-          "label" => "Tilinumero",
-          "value" => $this->submittedFormData['account_number'],
-          "valueType" => "string",
-        ],
-      ];
-
-      // Build object for json.
-      $compensationObject = (object) [
-        "applicationInfoArray" => $this->parseApplicationInfo($webform_submission),
-        "currentAddressInfoArray" => $this->parseCurrentAddressInfo(),
-        "applicantInfoArray" => $this->parseApplicantInfo(),
-        "applicantOfficialsArray" => $this->parseApplicationOfficials(),
-        "bankAccountArray" => $bankAccountArray,
-        "compensationInfo" => $parsedCompensations['compensationInfo'],
-        "otherCompensationsInfo" => $parsedCompensations['otherCompensations'],
-        "benefitsInfoArray" => $this->parseBenefitsInfo(),
-        "activitiesInfoArray" => $this->parseActivitiesInfo(),
-        "additionalInformation" => $this->submittedFormData['additional_information'],
-        "senderInfoArray" => $this->parseSenderInfo(),
-      ];
-      // attachments' details.
-      $attachmentsInfoObject = [
-        "attachmentsArray" => $this->parseAttachments($form),
-      ];
-      $submitObject = (object) [
-        'compensation' => $compensationObject,
-        'attachmentsInfo' => $attachmentsInfoObject,
-      ];
-      $submitObject->attachmentsInfo = $attachmentsInfoObject;
-      $submitObject->formUpdate = FALSE;
-      $myJSON = json_encode($submitObject, JSON_UNESCAPED_UNICODE);
-
-      // If debug, print out json.
-      if ($this->isDebug()) {
-        $t_args = [
-          '@myJSON' => $myJSON,
-        ];
-        $this->messenger()
-          ->addMessage($this->t('DEBUG: Sent JSON: @myJSON', $t_args));
-      }
-      // If backend mode is dev, then don't post things to backend.
-      if (getenv('BACKEND_MODE') === 'dev') {
-        $this->messenger()
-          ->addWarning($this->t('Backend DEV mode on, no posting to backend is done.'));
+        $form_state->setRedirect(
+                  'grants_handler.completion',
+                  ['submission_id' => $this->applicationNumber],
+                  [
+                    'attributes' => [
+                      'data-drupal-selector' => 'application-saved-successfully-link',
+                    ],
+                  ]
+                );
+        $redirectUrl = Url::fromRoute(
+                  'grants_handler.completion',
+                  ['submission_id' => $this->applicationNumber],
+                  [
+                    'attributes' => [
+                      'data-drupal-selector' => 'application-saved-successfully-link',
+                    ],
+                  ]
+                 );
+        // $redirectResponse->send();
       }
       else {
-
-        try {
-          $client = \Drupal::httpClient();
-          $res = $client->post($endpoint, [
-            'auth' => [$username, $password, "Basic"],
-            'body' => $myJSON,
-          ]);
-
-          $status = $res->getStatusCode();
-
-          if ($status === 201) {
-            $attachmentResult = $this->attachmentUploader->uploadAttachments(
-              $this->attachmentFileIds,
-              $this->applicationNumber,
-              $this->isDebug()
-            );
-
-            // @todo print message for every attachment
-            $this->messenger()
-              ->addStatus('Grant application saved and attachments saved');
-
-            $this->attachmentRemover->removeGrantAttachments(
-              $this->attachmentFileIds,
-              $attachmentResult,
-              $this->applicationNumber,
-              $this->isDebug(),
-              $webform_submission->id()
-            );
-          }
-        }
-        catch (\Exception $e) {
-          $this->messenger()->addError($e->getMessage());
-        }
-
+        $this->messenger()
+          ->addStatus(
+            $this->t(
+              'Grant application (<span id="saved-application-number">@number</span>) saving failed. Please contact support from @link',
+              [
+                '@number' => $this->applicationNumber,
+                '@link' => 'Support link',
+              ]
+            )
+          );
       }
+      // $redirectResponse = new RedirectResponse($redirectUrl->toString());
+      //  return $redirectResponse;
+      $form_state->setRedirect(
+                'grants_handler.completion',
+                ['submission_id' => $this->applicationNumber],
+                [
+                  'attributes' => [
+                    'data-drupal-selector' => 'application-saved-successfully-link',
+                  ],
+                ]
+              );
     }
-
-    $this->debug(__FUNCTION__);
+    catch (\Exception $e) {
+      // @todo log errors properly
+    }
   }
 
   /**
@@ -416,7 +1136,7 @@ class GrantsHandler extends WebformHandlerBase {
    * @return bool
    *   If debug mode is on or not.
    */
-  protected function isDebug(): bool {
+  public function isDebug(): bool {
     return !empty($this->configuration['debug']);
   }
 
@@ -426,9 +1146,10 @@ class GrantsHandler extends WebformHandlerBase {
    * @param string $method_name
    *   The invoked method name.
    * @param string $context1
-   *   Additional parameter passed to the invoked method name.
+   *   Additional parameter passed to the invoked method name. *. *. *. *. *.
+   *   *. *. *. *.
    */
-  protected function debug($method_name, $context1 = NULL) {
+  public function debug($method_name, $context1 = NULL) {
     if (!empty($this->configuration['debug'])) {
       $t_args = [
         '@id' => $this->getHandlerId(),
@@ -450,807 +1171,89 @@ class GrantsHandler extends WebformHandlerBase {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function preprocessConfirmation(array &$variables) {
-    $this->debug(__FUNCTION__);
-  }
-
-  /**
-   * Parse attachments from POST.
+   * Cleans up non-array values from array structure.
    *
-   * @return array[]
-   *   Parsed attchments.
-   */
-  private function parseAttachments($form): array {
-
-    $attachmentsArray = [];
-    foreach ($this->attachmentFieldNames as $attachmentFieldName) {
-      $field = $this->submittedFormData[$attachmentFieldName];
-      $descriptionValue = $form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$attachmentFieldName]["#title"];
-
-      if (isset($form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$attachmentFieldName]["#filetype"])) {
-        $fileType = $form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$attachmentFieldName]["#filetype"];
-      }
-      else {
-        $fileType = '0';
-      }
-
-      // Since we have to support multiple field elements, we need to
-      // handle all as they were a multifield.
-      $args = [];
-      if (isset($field[0]) && is_array($field[0])) {
-        $args = $field;
-      }
-      else {
-        $args[] = $field;
-      }
-
-      // Lppt args & create attachement field.
-      foreach ($args as $fieldElement) {
-        $attachmentsArray[] = $this->getAttachmentByField($fieldElement, $descriptionValue, $fileType);
-      }
-    }
-    return $attachmentsArray;
-  }
-
-  /**
-   * Extract attachments from form data.
+   * This is due to some configuration error with messages/statuses/events
+   * that I'm not able to find.
    *
-   * @param array $field
-   *   The field parsed.
-   * @param string $fieldDescription
-   *   The field description from form element title.
-   * @param string $fileType
-   *   Filetype id from element configuration.
+   * @param array|null $value
+   *   Array we need to flatten.
    *
-   * @return \stdClass[]
-   *   Data for JSON.
+   * @return array
+   *   Fixed array
    */
-  private function getAttachmentByField(array $field, string $fieldDescription, string $fileType): array {
-
+  public static function cleanUpArrayValues(mixed $value): array {
     $retval = [];
-
-    $retval[] = (object) [
-      "ID" => "description",
-      "value" => (isset($field['description']) && $field['description'] !== "") ? $fieldDescription . ': ' . $field['description'] : $fieldDescription,
-      "valueType" => "string",
-    ];
-
-    if (isset($field['attachment']) && $field['attachment'] !== NULL) {
-      $file = File::load($field['attachment']);
-      // Add file id for easier usage in future.
-      $this->attachmentFileIds[] = $field['attachment'];
-
-      $retval[] = (object) [
-        "ID" => "fileName",
-        "value" => $file->getFilename(),
-        "valueType" => "string",
-      ];
-      // @todo check isNewAttachement status
-      $retval[] = (object) [
-        "ID" => "isNewAttachment",
-        "value" => 'true',
-        "valueType" => "bool",
-      ];
-      // @todo check attachment fileType
-      $retval[] = (object) [
-        "ID" => "fileType",
-        "value" => (int) $fileType,
-        "valueType" => "int",
-      ];
-    }
-    if (isset($field['isDeliveredLater'])) {
-      $retval[] = (object) [
-        "ID" => "isDeliveredLater",
-        "value" => $field['isDeliveredLater'] === "1" ? 'true' : 'false',
-        "valueType" => "bool",
-      ];
-    }
-    if (isset($field['isIncludedInOtherFile'])) {
-      $retval[] = (object) [
-        "ID" => "isIncludedInOtherFile",
-        "value" => $field['isIncludedInOtherFile'] === "1" ? 'true' : 'false',
-        "valueType" => "bool",
-      ];
+    if (is_array($value)) {
+      foreach ($value as $k => $v) {
+        if (is_array($v)) {
+          $retval[] = $v;
+        }
+      }
     }
     return $retval;
-
   }
 
   /**
-   * Parse benefits details from POST.
+   * Save logged errors to webform state.
    *
-   * @return object[]
-   *   Parsed objects for JSON request.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   Submission object.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @return array
+   *   All current errors.
    */
-  private function parseBenefitsInfo(): array {
-    $benefitsPremises = $this->submittedFormData['benefits_premises'];
-    $benefitsLoans = $this->submittedFormData['benefits_loans'];
+  public function logErrors(WebformSubmissionInterface $webform_submission, FormStateInterface $form_state): array {
+    try {
 
-    return [
-      (object) [
-        "ID" => "premises",
-        "label" => "Tilat, jotka kaupunki on antanut korvauksetta tai vuokrannut hakijan käyttöön (osoite, pinta-ala ja tiloista maksettava vuokra €/kk",
-        "value" => $benefitsPremises,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "loans",
-        "label" => "Kaupungilta saadut lainat ja/tai takaukset",
-        "value" => $benefitsLoans,
-        "valueType" => "string",
-      ],
-    ];
+      $fe = $form_state->getErrors();
+
+      // Log current errors.
+      $current_errors = $this->grantsFormNavigationHelper->logPageErrors($webform_submission, $form_state);
+
+      // And add existing ones to form state to be processed in theme files.
+      $webform = $webform_submission->getWebform();
+      $webform->setState('current_errors', $current_errors);
+    }
+    catch (\Exception $e) {
+      $current_errors = [];
+      // @todo add logger
+    }
+    return $current_errors;
   }
 
   /**
-   * Parse sender details from POST.
+   * Parse things from form 3rd party settings to this application.
    *
-   * @return object[]
-   *   Array of sender details for JSON.
+   * @param \Drupal\webform\Entity\Webform $webform
+   *   Webform used.
    */
-  private function parseSenderInfo(): array {
-
-    // Check.
-    $senderInfoFirstname = "Tiina";
-    $senderInfoLastname = "Testaaja";
-    $senderInfoPersonID = "123456-7890";
-    $senderInfoUserID = "Testatii";
-    $senderInfoEmail = "tiina.testaaja@testiyhdistys.fi";
-
-    return [
-      (object) [
-        "ID" => "firstname",
-        "label" => "Etunimi",
-        "value" => $senderInfoFirstname,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "lastname",
-        "label" => "Sukunimi",
-        "value" => $senderInfoLastname,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "personID",
-        "label" => "Henkilötunnus",
-        "value" => $senderInfoPersonID,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "userID",
-        "label" => "Käyttäjätunnus",
-        "value" => $senderInfoUserID,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "email",
-        "label" => "Sähköposti",
-        "value" => $senderInfoEmail,
-        "valueType" => "string",
-      ],
-    ];
-  }
-
-  /**
-   * Parse activities from POST.
-   *
-   * @return object[]
-   *   Activities objects for JSON.
-   */
-  private function parseActivitiesInfo(): array {
-    // Check.
-    // @todo check business purpose.
-    $businessPurpose = "Meidän toimintamme tarkoituksena on että ...";
-    $communityPracticesBusiness = "false";
-
-    $membersApplicantPersonGlobal = $this->submittedFormData['members_applicant_person_global'];
-    $membersApplicantPersonLocal = $this->submittedFormData['members_applicant_person_local'];
-    $membersApplicantCommunityLocal = $this->submittedFormData['members_applicant_community_local'];
-    $membersApplicantCommunityGlobal = $this->submittedFormData['members_applicant_community_global'];
-
-    $feePerson = $this->grantsHandlerConvertToFloat($this->submittedFormData['fee_person']);
-    $feeCommunity = $this->grantsHandlerConvertToFloat($this->submittedFormData['fee_community']);
-
-    return [
-      (object) [
-        "ID" => "businessPurpose",
-        "label" => "Toiminnan tarkoitus",
-        "value" => $businessPurpose,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "communityPracticesBusiness",
-        "label" => "Yhteisö harjoittaa liiketoimintaa",
-        "value" => $communityPracticesBusiness,
-        "valueType" => "bool",
-      ],
-      (object) [
-        "ID" => "membersApplicantPersonGlobal",
-        "label" => "Hakijayhteisö, henkilöjäseniä",
-        "value" => $membersApplicantPersonGlobal,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "membersApplicantPersonLocal",
-        "label" => "Hakijayhteisö, helsinkiläisiä henkilöjäseniä",
-        "value" => $membersApplicantPersonLocal,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "membersApplicantCommunityGlobal",
-        "label" => "Hakijayhteisö, yhteisöjäseniä",
-        "value" => $membersApplicantCommunityGlobal,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "membersApplicantCommunityLocal",
-        "label" => "Hakijayhteisö, helsinkiläisiä yhteisöjäseniä",
-        "value" => $membersApplicantCommunityLocal,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "feePerson",
-        "label" => "Jäsenmaksun suuruus, Henkiöjäsen euroa",
-        "value" => $feePerson,
-        "valueType" => "float",
-      ],
-      (object) [
-        "ID" => "feeCommunity",
-        "label" => "Jäsenmaksun suuruus, Yhteisöjäsen euroa",
-        "value" => $feeCommunity,
-        "valueType" => "float",
-      ],
-    ];
-  }
-
-  /**
-   * Parse address details from POST.
-   *
-   * @return object[]
-   *   Address details objects for JSON.
-   */
-  private function parseCurrentAddressInfo(): array {
-
-    $contactPerson = $this->submittedFormData['contact_person'];
-    $phoneNumber = $this->submittedFormData['contact_person_phone_number'];
-    $street = $this->submittedFormData['contact_person_street'];
-    $city = $this->submittedFormData['contact_person_city'];
-    $postCode = $this->submittedFormData['contact_person_post_code'];
-    $country = $this->submittedFormData['contact_person_country'];
-
-    return [
-      (object) [
-        "ID" => "contactPerson",
-        "label" => "Yhteyshenkilö",
-        "value" => $contactPerson,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "phoneNumber",
-        "label" => "Puhelinnumero",
-        "value" => $phoneNumber,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "street",
-        "label" => "Katuosoite",
-        "value" => $street,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "city",
-        "label" => "Postitoimipaikka",
-        "value" => $city,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "postCode",
-        "label" => "Postinumero",
-        "value" => $postCode,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "country",
-        "label" => "Maa",
-        "value" => $country,
-        "valueType" => "string",
-      ],
-    ];
-  }
-
-  /**
-   * PArse applicant details from POST.
-   *
-   * @return object[]
-   *   Applicant objects for JSON.
-   */
-  private function parseApplicantInfo(): array {
-
-    $applicantType = "" . $this->submittedFormData['applicant_type'];
-    $companyNumber = $this->submittedFormData['company_number'];
-    $communityOfficialName = $this->submittedFormData['community_official_name'];
-    $communityOfficialNameShort = $this->submittedFormData['community_official_name_short'];
-    $registrationDate = $this->submittedFormData['registration_date'];
-    $foundingYear = $this->submittedFormData['founding_year'];
-    $home = $this->submittedFormData['home'];
-    $webpage = $this->submittedFormData['homepage'];
-    $email = $this->submittedFormData['email'];
-
-    return [
-      (object) [
-        "ID" => "applicantType",
-        "label" => "Hakijan tyyppi",
-        "value" => $applicantType,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "companyNumber",
-        "label" => "Rekisterinumero",
-        "value" => $companyNumber,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "communityOfficialName",
-        "label" => "Yhteisön nimi",
-        "value" => $communityOfficialName,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "communityOfficialNameShort",
-        "label" => "Yhteisön lyhenne",
-        "value" => $communityOfficialNameShort,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "registrationDate",
-        "label" => "Rekisteröimispäivä",
-        "value" => $registrationDate,
-        "valueType" => "datetime",
-      ],
-      (object) [
-        "ID" => "foundingYear",
-        "label" => "Perustamisvuosi",
-        "value" => $foundingYear,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "home",
-        "label" => "Kotipaikka",
-        "value" => $home,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "homePage",
-        "label" => "www-sivut",
-        "value" => $webpage,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "email",
-        "label" => "Sähköpostiosoite",
-        "value" => $email,
-        "valueType" => "string",
-      ],
-    ];
-  }
-
-  /**
-   * Parse basic application info from form values.
-   *
-   * @param \Drupal\webform\Entity\WebformSubmission $webform_submission
-   *   Submission object from Webform.
-   *
-   * @return object[]
-   *   Application details for JSON.
-   */
-  private function parseApplicationInfo(
-    WebformSubmission $webform_submission): array {
-
-    $this->applicationType = $webform_submission->getWebform()
-      ->getThirdPartySetting('grants_metadata', 'applicationType');
-    $this->applicationTypeID = $webform_submission->getWebform()
-      ->getThirdPartySetting('grants_metadata', 'applicationTypeID');
-    $this->applicationNumber = "DRUPAL-" . sprintf('%08d', $webform_submission->id());
-
-    // Check.
-    // @todo Check status.
-    $status = "Vastaanotettu";
-
-    $actingYear = "" . $this->submittedFormData['acting_year'];
-
-    return [
-      (object) [
-        "ID" => "applicationType",
-        "label" => "Hakemustyyppi",
-        "value" => $this->applicationType,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "applicationTypeID",
-        "label" => "Hakemustyypin numero",
-        "value" => $this->applicationTypeID,
-        "valueType" => "int",
-      ],
-      (object) [
-        "ID" => "formTimeStamp",
-        "label" => "Hakemuksen/sanoman lähetyshetki",
-        "value" => gmdate("Y-m-d\TH:i:s.v\Z"),
-        "valueType" => "datetime",
-      ],
-      (object) [
-        "ID" => "applicationNumber",
-        "label" => "Hakemusnumero",
-        "value" => $this->applicationNumber,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "status",
-        "label" => "Tila",
-        "value" => $status,
-        "valueType" => "string",
-      ],
-      (object) [
-        "ID" => "actingYear",
-        "label" => "Hakemusvuosi",
-        "value" => $actingYear,
-        "valueType" => "int",
-      ],
-    ];
-  }
-
-  /**
-   * Parse compensation data from form values.
-   *
-   * @return array[]
-   *   Compensation details for JSON.
-   */
-  private function parseCompensations(): array {
-    $compensations = [];
-    $compensationTotalAmount = 0.0;
-
-    // Toiminta-avustus.
-    if (array_key_exists('subventions_type_1', $this->submittedFormData) && $this->submittedFormData['subventions_type_1'] == 1) {
-      $compensations[] = [
-        'subventionType' => '1',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_1_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_1_sum']);
-    }
-    // Palkkausavustus.
-    if (array_key_exists('subventions_type_2', $this->submittedFormData) && $this->submittedFormData['subventions_type_2'] == 1) {
-      $compensations[] = [
-        'subventionType' => '2',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_2_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_2_sum']);
-    }
-    // Projektiavustus.
-    if (array_key_exists('subventions_type_4', $this->submittedFormData) && $this->submittedFormData['subventions_type_4'] == 1) {
-      $compensations[] = [
-        'subventionType' => '4',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_4_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_4_sum']);
-    }
-    // Vuokra-avustus.
-    if (array_key_exists('subventions_type_5', $this->submittedFormData) && $this->submittedFormData['subventions_type_5'] == 1) {
-      $compensations[] = [
-        'subventionType' => '5',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_5_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_5_sum']);
-    }
-    // Yleisavustus.
-    if (array_key_exists('subventions_type_6', $this->submittedFormData) && $this->submittedFormData['subventions_type_6'] == 1) {
-      $compensations[] = [
-        'subventionType' => '6',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_6_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_6_sum']);
-    }
-    // Työttömien koulutusavustus.
-    if (array_key_exists('subventions_type_7', $this->submittedFormData) && $this->submittedFormData['subventions_type_7'] == 1) {
-      $compensations[] = [
-        'subventionType' => '7',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_7_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_7_sum']);
-    }
-    // Korot ja lyhennykset.
-    if (array_key_exists('subventions_type_8', $this->submittedFormData) && $this->submittedFormData['subventions_type_8'] == 1) {
-      $compensations[] = [
-        'subventionType' => '8',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_8_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_8_sum']);
-    }
-    // Muu.
-    if (array_key_exists('subventions_type_9', $this->submittedFormData) && $this->submittedFormData['subventions_type_9'] == 1) {
-      $compensations[] = [
-        'subventionType' => '9',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_9_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_9_sum']);
-    }
-    // Leiriavustus.
-    if (array_key_exists('subventions_type_12', $this->submittedFormData) && $this->submittedFormData['subventions_type_12'] == 1) {
-      $compensations[] = [
-        'subventionType' => '12',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_12_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_12_sum']);
-    }
-    // Lisäavustus.
-    if (array_key_exists('subventions_type_14', $this->submittedFormData) && $this->submittedFormData['subventions_type_14'] == 1) {
-      $compensations[] = [
-        'subventionType' => '14',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_14_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_14_sum']);
-    }
-    // Suunnistuskartta-avustus.
-    if (array_key_exists('subventions_type_15', $this->submittedFormData) && $this->submittedFormData['subventions_type_15'] == 1) {
-      $compensations[] = [
-        'subventionType' => '15',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_15_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_15_sum']);
-    }
-    // Toiminnan kehittämisavustus.
-    if (array_key_exists('subventions_type_17', $this->submittedFormData) && $this->submittedFormData['subventions_type_17'] == 1) {
-      $compensations[] = [
-        'subventionType' => '17',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_17_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_17_sum']);
-    }
-    // Kehittämisavustukset / Helsingin malli.
-    if (array_key_exists('subventions_type_29', $this->submittedFormData) && $this->submittedFormData['subventions_type_29'] == 1) {
-      $compensations[] = [
-        'subventionType' => '29',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_29_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_29_sum']);
-    }
-    // Starttiavustus.
-    if (array_key_exists('subventions_type_31', $this->submittedFormData) && $this->submittedFormData['subventions_type_31'] == 1) {
-      $compensations[] = [
-        'subventionType' => '31',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_31_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_31_sum']);
-    }
-    // Tilankäyttöavustus.
-    if (array_key_exists('subventions_type_32', $this->submittedFormData) && $this->submittedFormData['subventions_type_32'] == 1) {
-      $compensations[] = [
-        'subventionType' => '32',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_32_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_32_sum']);
-    }
-    // Taiteen perusopetus.
-    if (array_key_exists('subventions_type_34', $this->submittedFormData) && $this->submittedFormData['subventions_type_34'] == 1) {
-      $compensations[] = [
-        'subventionType' => '34',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_34_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_34_sum']);
-    }
-    // Varhaiskasvatus.
-    if (array_key_exists('subventions_type_35', $this->submittedFormData) && $this->submittedFormData['subventions_type_35'] == 1) {
-      $compensations[] = [
-        'subventionType' => '35',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_35_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_35_sum']);
-    }
-    // Vapaa sivistystyö.
-    if (array_key_exists('subventions_type_36', $this->submittedFormData) && $this->submittedFormData['subventions_type_36'] == 1) {
-      $compensations[] = [
-        'subventionType' => '36',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_36_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_36_sum']);
-    }
-    // Tapahtuma-avustus.
-    if (array_key_exists('subventions_type_37', $this->submittedFormData) && $this->submittedFormData['subventions_type_37'] == 1) {
-      $compensations[] = [
-        'subventionType' => '37',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_37_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_37_sum']);
-    }
-    // Pienavustus.
-    if (array_key_exists('subventions_type_38', $this->submittedFormData) && $this->submittedFormData['subventions_type_38'] == 1) {
-      $compensations[] = [
-        'subventionType' => '38',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_38_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_38_sum']);
-    }
-    // Kotouttamisavustus.
-    if (array_key_exists('subventions_type_39', $this->submittedFormData) && $this->submittedFormData['subventions_type_39'] == 1) {
-      $compensations[] = [
-        'subventionType' => '39',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_39_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_39_sum']);
-    }
-    // Harrastushaku.
-    if (array_key_exists('subventions_type_40', $this->submittedFormData) && $this->submittedFormData['subventions_type_40'] == 1) {
-      $compensations[] = [
-        'subventionType' => '40',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_40_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_40_sum']);
-    }
-    // Laitosavustus.
-    if (array_key_exists('subventions_type_41', $this->submittedFormData) && $this->submittedFormData['subventions_type_41'] == 1) {
-      $compensations[] = [
-        'subventionType' => '41',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_41_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_42_sum']);
-    }
-    // Muiden liikuntaa edistävien yhteisöjen avustus.
-    if (array_key_exists('subventions_type_42', $this->submittedFormData) && $this->submittedFormData['subventions_type_42'] == 1) {
-      $compensations[] = [
-        'subventionType' => '42',
-        'amount' => $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_42_sum']),
-      ];
-      $compensationTotalAmount .= $this->grantsHandlerConvertToFloat($this->submittedFormData['subventions_type_42_sum']);
+  protected function setFromThirdPartySettings(Webform $webform): void {
+    // Make sure we have application type id set.
+    if (!isset($this->applicationTypeID) || $this->applicationTypeID == '') {
+      if (isset($this->submittedFormData['application_type_id'])) {
+        $this->applicationTypeID = $this->submittedFormData['application_type_id'];
+      }
+      else {
+        $this->applicationTypeID = $webform
+          ->getThirdPartySetting('grants_metadata', 'applicationTypeID');
+        $this->submittedFormData['application_type_id'] = $this->applicationTypeID;
+      }
     }
 
-    $otherCompensations = [];
-
-    $otherCompensationsTotal = 0;
-    foreach ($this->submittedFormData['myonnetty_avustus'] as $otherCompensationsData) {
-      $otherCompensations[] = [
-        (object) [
-          "ID" => "issuer",
-          "label" => "Myöntäjä",
-          "value" => $otherCompensationsData['issuer'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "issuerName",
-          "label" => "Myöntäjän nimi",
-          "value" => $otherCompensationsData['issuer_name'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "year",
-          "label" => "Vuosi",
-          "value" => $otherCompensationsData['year'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "amount",
-          "label" => "Euroa",
-          "value" => $this->grantsHandlerConvertToFloat($otherCompensationsData['amount']),
-          "valueType" => "float",
-        ],
-        (object) [
-          "ID" => "purpose",
-          "label" => "Tarkoitus",
-          "value" => $otherCompensationsData['purpose'],
-          "valueType" => "string",
-        ],
-      ];
-
-      $otherCompensationsTotal .= $this->grantsHandlerConvertToFloat($otherCompensationsData['amount']);
+    // Make sure we have our application type set.
+    if (!isset($this->applicationType) || $this->applicationType == '') {
+      if (isset($this->submittedFormData['application_type']) && $this->submittedFormData['application_type'] != '') {
+        $this->applicationTypeID = $this->submittedFormData['application_type'];
+      }
+      else {
+        $this->applicationType = $webform
+          ->getThirdPartySetting('grants_metadata', 'applicationType');
+        $this->submittedFormData['application_type'] = $this->applicationType;
+      }
     }
-
-    $compensatiosArray = [];
-    foreach ($compensations as $compensation) {
-      $compensatiosArray[] = [
-        (object) [
-          "ID" => "subventionType",
-          "label" => "Avustuslaji",
-          "value" => $compensation['subventionType'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "amount",
-          "label" => "Euroa",
-          "value" => $compensation['amount'],
-          "valueType" => "float",
-        ],
-      ];
-    };
-
-    $compensationPurpose = $this->submittedFormData['compensation_purpose'];
-    $compensationBoolean = ($this->submittedFormData['compensation_boolean'] == "Olen saanut Helsingin kaupungilta avustusta samaan käyttötarkoitukseen edellisenä vuonna." ? 'true' : 'false');
-    $compensationExplanation = $this->submittedFormData['compensation_explanation'];
-
-    $compensationInfoData = (object) [
-      "generalInfoArray" => [
-        (object) [
-          "ID" => "totalAmount",
-          "label" => "Haettavat avustukset yhteensä",
-          "value" => $compensationTotalAmount,
-          "valueType" => "float",
-        ],
-        (object) [
-          "ID" => "compensationPreviousYear",
-          "label" => "En ole saanut Helsingin kaupungilta avustusta samaan käyttötarkoitukseen edellisenä vuonna",
-          "value" => $compensationBoolean,
-          "valueType" => "string",
-        ],
-
-        (object) [
-          "ID" => "purpose",
-          "label" => "Haetun avustuksen käyttötarkoitus",
-          "value" => $compensationPurpose,
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "explanation",
-          "label" => "Selvitys edellisen avustuksen käytöstä",
-          "value" => $compensationExplanation,
-          "valueType" => "string",
-        ],
-      ],
-      "compensationArray" => $compensatiosArray,
-    ];
-
-    $otherCompensationsInfoData = (object) [
-      "otherCompensationsArray" =>
-      $otherCompensations,
-      "otherCompensationsTotal" => $otherCompensationsTotal . "",
-    ];
-
-    return [
-      'compensations' => $compensations,
-      'compensationArray' => $compensatiosArray,
-      'compensationInfo' => $compensationInfoData,
-      'otherCompensations' => $otherCompensationsInfoData,
-      'compensationTotalAmount' => $compensationTotalAmount . "",
-      'otherCompensationsTotal' => $otherCompensationsTotal . "",
-    ];
-
-  }
-
-  /**
-   * Parse application officials' details from form.
-   *
-   * @return array[]
-   *   Application officials' objects for JSON.
-   */
-  private function parseApplicationOfficials(): array {
-    $applicantOfficialsData = [];
-    foreach ($this->submittedFormData['applicant_officials'] as $official) {
-      $applicantOfficialsData[] = [
-        (object) [
-          "ID" => "email",
-          "label" => "Sähköposti",
-          "value" => $official['official_email'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "role",
-          "label" => "Rooli",
-          "value" => $official['official_role'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "name",
-          "label" => "Nimi",
-          "value" => $official['official_name'],
-          "valueType" => "string",
-        ],
-        (object) [
-          "ID" => "phone",
-          "label" => "Puhelinnumero",
-          "value" => $official['official_phone'],
-          "valueType" => "string",
-        ],
-      ];
-    }
-
-    return $applicantOfficialsData;
   }
 
 }

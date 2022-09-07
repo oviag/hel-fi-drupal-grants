@@ -1,4 +1,5 @@
 content:
   field_gallery_slides:
     settings:
-      title: Paragraf
+      title: Paragraph
+      title_plural: Paragraphs

@@ -1,5 +1,5 @@
 uuid: e3168d24-e1ae-43b7-9dd7-3ce70d8cabfa
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -15,21 +15,22 @@ mode: media_library
 content:
   name:
     type: string_textfield
+    weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
-    weight: 0
     third_party_settings: {  }
-    region: content
   translation:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   field_media_file: true
   langcode: true
   path: true
+  replace_file: true
   status: true
   uid: true

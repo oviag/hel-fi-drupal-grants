@@ -3,8 +3,8 @@ langcode: en
 status: true
 dependencies:
   module:
-    - ctools
     - hdbt_content
+    - node
   theme:
     - helfi_grant_applications
 _core:
@@ -12,20 +12,21 @@ _core:
 id: helfi_grant_applications_heroblock
 theme: helfi_grant_applications
 region: before_content
-weight: -5
+weight: -11
 provider: null
 plugin: hero_block
 settings:
   id: hero_block
   label: 'Hero block'
-  provider: hdbt_content
   label_display: '0'
+  provider: hdbt_content
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles:
-      landing_page: landing_page
-      page: page
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles:
+      form_page: form_page
+      landing_page: landing_page
+      page: page

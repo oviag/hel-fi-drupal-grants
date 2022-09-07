@@ -1,0 +1,42 @@
+services:
+  grants_handler_linkmodifier:
+    class: Drupal\grants_handler\LinkModifierService
+    tags:
+      - { name: path_processor_inbound, priority: 200 }
+    arguments: [ '@request_stack' ]
+
+  grants_handler.message_service:
+    class: Drupal\grants_handler\MessageService
+    arguments: [
+        '@helfi_helsinki_profiili.userdata',
+        '@http_client',
+        '@logger.factory',
+        '@grants_handler.events_service',
+        '@helfi_atv.atv_service'
+    ]
+
+  grants_handler.application_handler:
+    class: Drupal\grants_handler\ApplicationHandler
+    arguments: [ '@http_client',
+                 '@helfi_helsinki_profiili.userdata',
+                 '@helfi_atv.atv_service',
+                 '@grants_metadata.atv_schema',
+                 '@grants_profile.service',
+                 '@logger.factory',
+                 '@messenger',
+                 '@grants_handler.events_service',
+                 '@database'
+    ]
+  grants_handler.navigation_helper:
+    class: \Drupal\grants_handler\GrantsHandlerNavigationHelper
+    arguments: [
+        '@database', '@messenger',
+        '@entity_type.manager',
+        '@form_builder',
+        '@helfi_helsinki_profiili.userdata',
+        '@tempstore.private'
+    ]
+
+  grants_handler.events_service:
+    class: Drupal\grants_handler\EventsService
+    arguments: [ '@http_client', '@logger.factory' ]

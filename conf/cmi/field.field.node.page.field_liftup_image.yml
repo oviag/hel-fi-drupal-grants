@@ -1,5 +1,5 @@
 uuid: 4418a863-ccdc-4be9-9b44-f1c1ad184f5b
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -15,7 +15,7 @@ bundle: page
 label: 'Liftup image'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

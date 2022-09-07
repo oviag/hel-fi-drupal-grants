@@ -1,5 +1,5 @@
 uuid: 82b0673c-50f9-4a75-9e2c-887940aeb5fb
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -12,8 +12,8 @@ entity_type: paragraph
 type: string
 settings:
   max_length: 255
-  is_ascii: false
   case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1

@@ -1,6 +1,6 @@
 settings:
   allowed_values:
     -
-      label: Keskitetty
+      label: 'Aligned to the center'
     -
-      label: 'Tasattu vasemmalle'
+      label: 'Aligned to the left'

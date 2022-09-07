@@ -1,5 +1,5 @@
 uuid: 933dff1a-6f56-4d19-b2e5-585f613dfb30
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -20,10 +20,10 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: ''
   file_extensions: 'txt doc docx pdf xls xlsx'
   max_filesize: ''
   description_field: false
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: file

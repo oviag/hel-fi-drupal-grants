@@ -10,39 +10,54 @@
         "ext-json": "*",
         "composer/installers": "^1.9",
         "cweagans/composer-patches": "^1.6.7",
-        "dompdf/dompdf": "^1.0",
         "druidfi/omen": "^0.2.0",
         "drupal/api_tools": "^1.0",
+        "drupal/better_exposed_filters": "^5.2",
         "drupal/config_filter": "^2.2",
         "drupal/config_ignore": "^2.3",
         "drupal/content_access": "^1.0@alpha",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-recommended": "^9.1",
+        "drupal/datatables": "^2.0",
         "drupal/devel": "^4.1",
         "drupal/entity": "^1.0",
-        "drupal/entity_print": "dev-dogit-3227262-8.x-2.x as 2.2",
+        "drupal/entityreference_filter": "^1.4",
+        "drupal/error_page": "^2.0",
+        "drupal/eu_cookie_compliance": "1.19",
         "drupal/externalauth": "^1.4",
+        "drupal/filelog": "^2.1",
         "drupal/filename_transliteration": "^1.0",
-        "drupal/hdbt": "^1.0",
+        "drupal/hdbt": "^2.0",
         "drupal/hdbt_admin": "^1.0",
         "drupal/helfi_ahjo": "^1.0",
+        "drupal/helfi_atv": "dev-develop",
+        "drupal/helfi_drupal_tools": "dev-main",
+        "drupal/helfi_formtool_embed": "dev-develop",
         "drupal/helfi_hauki": "^1.0",
-        "drupal/helfi_platform_config": "^1.1",
+        "drupal/helfi_helsinki_profiili": "dev-develop",
+        "drupal/helfi_platform_config": "2.9.19",
         "drupal/helfi_tpr": "^1.0",
         "drupal/helfi_tunnistamo": "^2.0",
+        "drupal/helfi_yjdh": "dev-develop",
+        "drupal/http_client_log": "^1.0",
+        "drupal/listjs": "^1.4",
+        "drupal/menu_export": "^1.3",
         "drupal/menu_link_attributes": "^1.2",
+        "drupal/multivalue_form_element": "^1.0@beta",
+        "drupal/oembed_providers": "^2.0",
         "drupal/webform": "^6.0",
         "drupal/webform_rest": "^4.0",
-        "drupal/webform_views": "^5.0@alpha",
+        "drupal/webform_views": "^5.0@beta",
         "drush/drush": "^10.4",
-        "mikehaertl/phpwkhtmltopdf": "~2.1",
-        "tecnickcom/tcpdf": "~6"
+        "globalcitizen/php-iban": "^4.1",
+        "ramsey/uuid": "^4.3"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
         "drupal/coder": "^8.3",
         "drupal/core-dev": "^9.1",
         "phpspec/prophecy-phpunit": "^2",
+        "phpstan/phpstan": "^1.7",
         "phpunit/phpunit": "~9.4.0"
     },
     "conflict": {
@@ -50,10 +65,27 @@
     },
     "config": {
         "optimize-autoloader": true,
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "drupal/core-composer-scaffold": true
+        }
     },
     "extra": {
         "composer-exit-on-patch-failure": true,
+        "patches": {
+            "drupal/core": {
+                "Fix missing wrapper from core form": "patches/fix-form-wrapper.patch"
+            },
+            "drupal/content_lock": {
+              "Fix missing types": "https://www.drupal.org/files/issues/2021-10-15/array_filter_issue-3243486-a.patch"
+            },
+            "drupal/menu_export": {
+                "Integrity constraint violation: 1062 Duplicate entry": "https://git.drupalcode.org/project/menu_export/-/merge_requests/3.patch"
+              }
+        },
         "drupal-scaffold": {
             "allowed-packages": [
                 "drupal/core"
@@ -88,7 +120,7 @@
             "public/themes/custom/{$name}": [
                 "type:drupal-custom-theme"
             ],
-            "drush/{$name}": [
+            "drush/Commands/{$name}": [
                 "type:drupal-drush"
             ]
         }
@@ -98,10 +130,6 @@
             "type": "composer",
             "url": "https://repository.drupal.hel.ninja"
         },
-	{
-	    "type": "vcs",
-	    "url": "https://git.drupalcode.org/issue/entity_print-3217497"
-	},
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
@@ -115,6 +143,7 @@
         "post-update-cmd": [
             "@copy-commit-message-script"
         ],
-        "phpcs": "vendor/bin/phpcs public/modules/custom --standard=Drupal"
+        "phpcs": "vendor/bin/phpcs public/modules/custom --standard=Drupal",
+        "phpcbf": "vendor/bin/phpcbf public/modules/custom --standard=Drupal"
     }
 }

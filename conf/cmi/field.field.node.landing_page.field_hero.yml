@@ -1,5 +1,5 @@
 uuid: 8c324313-11a3-4435-9fdf-f9b4c6515338
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -23,9 +23,9 @@ default_value_callback: ''
 settings:
   handler: 'default:paragraph'
   handler_settings:
-    negate: 0
     target_bundles:
       hero: hero
+    negate: 0
     target_bundles_drag_drop:
       columns:
         weight: 10
@@ -37,8 +37,8 @@ settings:
         weight: 12
         enabled: false
       hero:
-        enabled: true
         weight: 13
+        enabled: true
       image:
         weight: 14
         enabled: false

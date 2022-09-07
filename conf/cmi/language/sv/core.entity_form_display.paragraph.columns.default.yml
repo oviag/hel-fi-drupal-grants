@@ -1,7 +1,9 @@
 content:
   field_columns_left_column:
     settings:
-      title: Paragraf
+      title: Paragraph
+      title_plural: Paragraphs
   field_columns_right_column:
     settings:
-      title: Paragraf
+      title: Paragraph
+      title_plural: Paragraphs

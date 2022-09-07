@@ -1,5 +1,5 @@
 uuid: 5f53e690-cab7-4971-b772-7debb15dd069
-langcode: en
+langcode: fi
 status: true
 dependencies:
   module:
@@ -17,8 +17,8 @@ plugin: system_branding_block
 settings:
   id: system_branding_block
   label: 'Site branding'
-  provider: system
   label_display: '0'
+  provider: system
   use_site_logo: true
   use_site_name: false
   use_site_slogan: false

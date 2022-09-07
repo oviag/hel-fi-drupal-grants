@@ -1,0 +1,96 @@
+grants_profile.show:
+  path: '/oma-asiointi/hakuprofiili'
+  defaults:
+    _title: 'Show Grants profile'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::ownProfile'
+  requirements:
+    _permission: 'view own grants_profile'
+
+grants_profile.edit:
+  path: '/oma-asiointi/hakuprofiili/muokkaa'
+  defaults:
+    _form: '\Drupal\grants_profile\Form\GrantsProfileForm'
+    _title: 'Edit Application profile.'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.company_addresses:
+  path: '/oma-asiointi/hakuprofiili/address'
+  defaults:
+    _title: 'Saved addresses'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::ownAddresses'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.company_addresses.remove:
+  path: '/oma-asiointi/hakuprofiili/address/{address_id}/delete'
+  defaults:
+    _title: 'Delete addresses'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::deleteAddress'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.company_address_modal_form:
+  path: '/oma-asiointi/hakuprofiili/address-modal/{address_id}/{nojs}'
+  defaults:
+    _form: '\Drupal\grants_profile\Form\ModalAddressForm'
+    _title: 'Edit address'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.application_official:
+  path: '/oma-asiointi/hakuprofiili/application-officials'
+  defaults:
+    _title: 'Address'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::applicationOfficials'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.application_official_modal_form:
+  path: '/oma-asiointi/hakuprofiili/application-official-modal/{official_id}/{nojs}'
+  defaults:
+    _form: '\Drupal\grants_profile\Form\ModalApplicationOfficialForm'
+    _title: 'Edit official'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.application_official.remove:
+  path: '/oma-asiointi/hakuprofiili/application-officials/{official_id}/delete'
+  defaults:
+    _title: 'Delete official'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::deleteOfficial'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.bank_account:
+  path: '/oma-asiointi/hakuprofiili/bank-accounts'
+  defaults:
+    _title: 'Bank account'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::bankAccounts'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.bank_account_form_modal_form:
+  path: '/oma-asiointi/hakuprofiili/bank-accounts-modal/{bank_account_id}/{nojs}'
+  defaults:
+    _form: '\Drupal\grants_profile\Form\ModalBankAccountForm'
+    _title: 'Edit bank account'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.bank_account.remove:
+  path: '/oma-asiointi/hakuprofiili/bank-accounts/{bank_account_id}/delete'
+  defaults:
+    _title: 'Delete bank account'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::deleteBankAccount'
+  requirements:
+    _permission: 'administer own grants_profile'
+
+grants_profile.bank_account_delete_attachment:
+  path: '/oma-asiointi/hakuprofiili/bank-accounts/{bank_account_id}/delete-confirmation'
+  defaults:
+    _title: 'Delete confirmation'
+    _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::deleteBankAccountAttachment'
+  requirements:
+    _permission: 'administer own grants_profile'
+

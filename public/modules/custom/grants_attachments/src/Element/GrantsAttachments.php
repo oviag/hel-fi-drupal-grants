@@ -3,6 +3,7 @@
 namespace Drupal\grants_attachments\Element;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\grants_handler\EventsService;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
@@ -24,6 +25,129 @@ class GrantsAttachments extends WebformCompositeBase {
     return parent::getInfo() + ['#theme' => 'grants_attachments'];
   }
 
+  // @codingStandardsIgnoreStart
+
+  /**
+   * Build webform element based on data in ATV document.
+   *
+   * @param array $element
+   *   Element that is being processed.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   * @param array $complete_form
+   *   Full form.
+   *
+   * @return array[]
+   *   Form API element for webform element.
+   */
+  public static function processWebformComposite(&$element, FormStateInterface $form_state, &$complete_form): array {
+
+    $element['#tree'] = TRUE;
+    $element = parent::processWebformComposite($element, $form_state, $complete_form);
+
+    $submission = $form_state->getFormObject()->getEntity();
+    $submissionData = $submission->getData();
+
+    $attachmentEvents = EventsService::filterEvents($submissionData['events'] ?? [], 'INTEGRATION_INFO_ATT_OK');
+
+    if (isset($submissionData[$element['#webform_key']]) && is_array($submissionData[$element['#webform_key']])) {
+
+      $dataForElement = $element['#value'];
+
+      if (isset($dataForElement["fileType"])) {
+        $element["fileType"]["#value"] = $dataForElement["fileType"];
+      }
+      elseif (isset($element["#filetype"])) {
+        $element["fileType"]["#value"] = $element["#filetype"];
+      }
+
+      if (isset($dataForElement["integrationID"])) {
+        $element["integrationID"]["#value"] = $dataForElement["integrationID"];
+      }
+
+      if (isset($dataForElement['isDeliveredLater'])) {
+        $element["isDeliveredLater"]["#default_value"] = $dataForElement['isDeliveredLater'] == 'true';
+        if ($element["isDeliveredLater"]["#default_value"] == TRUE) {
+          $element["fileStatus"]["#value"] = 'deliveredLater';
+        }
+        if ($dataForElement['isDeliveredLater'] == '1') {
+          $element["isDeliveredLater"]['#default_value'] = TRUE;
+        }
+      }
+      if (isset($dataForElement['isIncludedInOtherFile'])) {
+        $element["isIncludedInOtherFile"]["#default_value"] = ($dataForElement['isIncludedInOtherFile'] == 'true' || $dataForElement['isIncludedInOtherFile'] == '1');
+        if ($element["isIncludedInOtherFile"]["#default_value"] == TRUE) {
+          $element["fileStatus"]["#value"] = 'otherFile';
+        }
+      }
+      if (isset($dataForElement['fileName'])) {
+        $element['attachmentName'] = [
+          '#type' => 'textfield',
+          '#default_value' => $dataForElement['fileName'],
+          '#value' => $dataForElement['fileName'],
+          '#readonly' => TRUE,
+          '#attributes' => ['readonly' => 'readonly'],
+        ];
+
+        $element["isIncludedInOtherFile"]["#disabled"] = TRUE;
+        $element["isDeliveredLater"]["#disabled"] = TRUE;
+
+        $element["attachment"]["#access"] = FALSE;
+        $element["attachment"]["#readonly"] = TRUE;
+        $element["attachment"]["#attributes"] = ['readonly' => 'readonly'];
+
+        if (isset($element["isNewAttachment"])) {
+          $element["isNewAttachment"]["#value"] = FALSE;
+        }
+
+        $element["fileStatus"]["#value"] = 'uploaded';
+
+        // $element["description"]["#disabled"] = TRUE;
+        $element["description"]["#readonly"] = TRUE;
+        $element["description"]["#attributes"] = ['readonly' => 'readonly'];
+      }
+      if (isset($dataForElement['attachmentName']) && $dataForElement['attachmentName'] !== "") {
+        $element['attachmentName'] = [
+          '#type' => 'textfield',
+          '#default_value' => $dataForElement['attachmentName'],
+          '#value' => $dataForElement['attachmentName'],
+          '#readonly' => TRUE,
+          '#attributes' => ['readonly' => 'readonly'],
+        ];
+
+        $element["isIncludedInOtherFile"]["#disabled"] = TRUE;
+        $element["isDeliveredLater"]["#disabled"] = TRUE;
+
+        $element["attachment"]["#access"] = FALSE;
+        $element["attachment"]["#readonly"] = TRUE;
+        $element["attachment"]["#attributes"] = ['readonly' => 'readonly'];
+
+        if (isset($element["isNewAttachment"])) {
+          $element["isNewAttachment"]["#value"] = FALSE;
+        }
+
+        $element["fileStatus"]["#value"] = 'uploaded';
+
+        // $element["description"]["#disabled"] = TRUE;
+        $element["description"]["#readonly"] = TRUE;
+        $element["description"]["#attributes"] = ['readonly' => 'readonly'];
+      }
+      if (isset($dataForElement['description'])) {
+        $element["description"]["#default_value"] = $dataForElement['description'];
+      }
+
+      if (isset($dataForElement['fileType']) && $dataForElement['fileType'] == '6') {
+        if (isset($dataForElement['attachmentName']) && $dataForElement['attachmentName'] !== ""){
+          $element["fileStatus"]["#value"] = 'uploaded';
+        }
+      }
+    }
+
+    return $element;
+  }
+
+  // @codingStandardsIgnoreEnd
+
   /**
    * Form elements for attachments.
    *
@@ -39,13 +163,21 @@ class GrantsAttachments extends WebformCompositeBase {
       '#title' => t('Attachment'),
       '#multiple' => FALSE,
       '#uri_scheme' => 'private',
-      '#file_extensions' => 'pdf',
+      '#file_extensions' => 'doc,docx,gif,jpg,jpeg,pdf,png,ppt,pptx,rtf,txt,xls,xlsx,zip',
       '#upload_validators' => [
-        'file_validate_extensions' => 'pdf',
+        'file_validate_extensions' => 'doc,docx,gif,jpg,jpeg,pdf,png,ppt,pptx,rtf,txt,xls,xlsx,zip',
       ],
       '#upload_location' => 'private://grants_attachments',
       '#sanitize' => TRUE,
+      // '#value_callback' => [self::class, 'valueMFCallback'],
     ];
+
+    $elements['attachmentName'] = [
+      '#type' => 'textfield',
+      '#readonly' => TRUE,
+      '#attributes' => ['readonly' => 'readonly'],
+    ];
+
     $elements['description'] = [
       '#type' => 'textfield',
       '#title' => t('Attachment description'),
@@ -59,6 +191,18 @@ class GrantsAttachments extends WebformCompositeBase {
       '#type' => 'checkbox',
       '#title' => t('Attachment already delivered'),
       '#element_validate' => ['\Drupal\grants_attachments\Element\GrantsAttachments::validateIncludedOtherFileCheckbox'],
+    ];
+    $elements['fileStatus'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
+    ];
+    $elements['fileType'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
+    ];
+    $elements['integrationID'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
     ];
 
     return $elements;

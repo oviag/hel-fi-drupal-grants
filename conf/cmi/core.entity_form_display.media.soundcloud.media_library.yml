@@ -1,5 +1,5 @@
 uuid: 889776a6-e17b-48dd-8923-34a49ab38919
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -15,17 +15,17 @@ mode: media_library
 content:
   name:
     type: string_textfield
+    weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
-    weight: 0
     third_party_settings: {  }
-    region: content
   translation:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   field_media_soundcloud: true

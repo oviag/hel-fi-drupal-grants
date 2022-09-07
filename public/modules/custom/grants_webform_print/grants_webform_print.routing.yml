@@ -1,0 +1,21 @@
+# Printable version of the webform on a single page
+
+entity.webform.print_page:
+  path: '/form/{webform}/print'
+  defaults:
+    _controller: '\Drupal\grants_webform_print\Controller\GrantsWebformPrintController::page'
+    _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
+  options:
+    parameters:
+      webform:
+        type: 'entity:webform'
+  requirements:
+    _entity_access: 'edit own webform submission'
+
+grants_webform_print.submission_print:
+  path: '/hakemus/{submission_id}/tulosta'
+  defaults:
+    _title: 'Print Application'
+    _controller: '\Drupal\grants_webform_print\Controller\GrantsWebformSubmissionPrintController::build'
+  requirements:
+    _permission: 'edit own webform submission'

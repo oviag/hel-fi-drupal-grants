@@ -1,10 +1,10 @@
 settings:
   allowed_values:
     -
-      label: 'Pienet kortit'
+      label: 'Small cards'
     -
-      label: 'Suuret kortit'
+      label: 'Large cards'
     -
-      label: 'Pienet kortit, harmaa tausta'
+      label: 'Small cards, grey background'
     -
-      label: 'Suuret kortit, harmaa tausta'
+      label: 'Large cards, grey background'

@@ -11,12 +11,12 @@ _core:
 id: helfi_grant_applications_lowercontentblock
 theme: helfi_grant_applications
 region: after_content
-weight: -6
+weight: -11
 provider: null
 plugin: lower_content_block
 settings:
   id: lower_content_block
   label: 'Lower content block'
-  provider: hdbt_content
   label_display: '0'
+  provider: hdbt_content
 visibility: {  }
