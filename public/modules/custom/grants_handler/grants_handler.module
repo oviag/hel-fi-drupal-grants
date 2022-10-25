@@ -1234,12 +1234,12 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
  */
 function grants_handler_user_logout(AccountInterface $account) {
 
-  // Instantiate our event.
-  $event = new UserLogoutEvent($account);
-
-  // Get the event_dispatcher service and dispatch the event.
-  $event_dispatcher = \Drupal::service('event_dispatcher');
-  $event_dispatcher->dispatch($event, UserLogoutEvent::EVENT_NAME);
+//  // Instantiate our event.
+//  $event = new UserLogoutEvent($account);
+//
+//  // Get the event_dispatcher service and dispatch the event.
+//  $event_dispatcher = \Drupal::service('event_dispatcher');
+//  $event_dispatcher->dispatch($event, UserLogoutEvent::EVENT_NAME);
 }
 
 /**
@@ -1254,5 +1254,21 @@ function grants_handler_node_access(EntityInterface $entity, $operation, Account
     }
   }
   return $result;
+}
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function grants_handler_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if (str_contains($form["#id"], 'application-search')) {
+
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $grantsProfileService = \Drupal::service('grants_profile.service');
+    $applicantType = $grantsProfileService->getApplicantType();
+
+    $form["hakija"]["#default_value"] = $applicantType;
+
+
+    $d = 'asdf';
+  }
 }

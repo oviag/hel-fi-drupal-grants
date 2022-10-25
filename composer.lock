@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "77c09c1f47a868487bf5a797a51a3ee7",
+    "content-hash": "8d93eab5fee6cc02567f96b34fe65c9d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5215,16 +5215,16 @@
         },
         {
             "name": "drupal/helfi_api_base",
-            "version": "2.3.2",
+            "version": "2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base.git",
-                "reference": "43048a8a41a3e28cd3f8de6c6282a84bbbe09fab"
+                "reference": "403c56e5dc436ba0c404c240546e59de944eae2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/43048a8a41a3e28cd3f8de6c6282a84bbbe09fab",
-                "reference": "43048a8a41a3e28cd3f8de6c6282a84bbbe09fab",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-api-base/zipball/403c56e5dc436ba0c404c240546e59de944eae2e",
+                "reference": "403c56e5dc436ba0c404c240546e59de944eae2e",
                 "shasum": ""
             },
             "require": {
@@ -5247,10 +5247,10 @@
             ],
             "description": "Helfi - API Base",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.3.2",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/tree/2.3.3",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-api-base/issues"
             },
-            "time": "2022-10-14T09:42:58+00:00"
+            "time": "2022-10-24T06:09:19+00:00"
         },
         {
             "name": "drupal/helfi_atv",
@@ -5670,19 +5670,20 @@
         },
         {
             "name": "drupal/helfi_tunnistamo",
-            "version": "2.2.0",
+            "version": "dev-UHF-6865",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo.git",
-                "reference": "3210bb0ed5c6bcef282234e000702545a50e271b"
+                "reference": "910e7fe3f4385ba20491c11002be68b20de1002a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tunnistamo/zipball/3210bb0ed5c6bcef282234e000702545a50e271b",
-                "reference": "3210bb0ed5c6bcef282234e000702545a50e271b",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-tunnistamo/zipball/910e7fe3f4385ba20491c11002be68b20de1002a",
+                "reference": "910e7fe3f4385ba20491c11002be68b20de1002a",
                 "shasum": ""
             },
             "require": {
+                "drupal/helfi_api_base": "*",
                 "drupal/openid_connect": "^3.0"
             },
             "require-dev": {
@@ -5695,10 +5696,10 @@
             ],
             "description": "Tunnistamo integration",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/tree/2.2.0",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/tree/UHF-6865",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-tunnistamo/issues"
             },
-            "time": "2022-10-18T06:24:47+00:00"
+            "time": "2022-10-24T07:02:09+00:00"
         },
         {
             "name": "drupal/helfi_yjdh",
@@ -19389,6 +19390,7 @@
         "drupal/helfi_drupal_tools": 20,
         "drupal/helfi_formtool_embed": 20,
         "drupal/helfi_helsinki_profiili": 20,
+        "drupal/helfi_tunnistamo": 20,
         "drupal/helfi_yjdh": 20,
         "drupal/multivalue_form_element": 10,
         "drupal/potx": 15,

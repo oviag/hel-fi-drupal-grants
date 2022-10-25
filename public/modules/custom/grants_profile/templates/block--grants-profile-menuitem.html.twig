@@ -53,12 +53,12 @@
     <a class="grants-profile--menuitem--logout" href="{{ path('grants_mandate.mandateform', {}, {}) }}">
       <span class="grants-profile--menuitem--roleswitcher-triggertext">{{ 'Switch role'|t }}</span>
     </a>
-    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {'query': {'destination': path('<current>') }}) }}">
+    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {}) }}">
       <span aria-hidden="true" class="hds-icon hds-icon--signout hds-icon--size-m"></span>
       <span class="grants-profile--menuitem--logout-triggertext">{{ 'Signout'|t }}</span>
     </a>
   {% else %}
-    <a class="grants-profile--menuitem--login" href="{{ path('user.login', {}, {'query': {'destination': path('<current>') }}) }}">
+    <a class="grants-profile--menuitem--login" href="{{ path('user.login', {}, {}) }}">
       <span aria-hidden="true" class="hds-icon hds-icon--signin hds-icon--size-m"></span>
       <span class="grants-profile--menuitem--login-triggertext">{{ 'Sign in'|t }}</span>
     </a>

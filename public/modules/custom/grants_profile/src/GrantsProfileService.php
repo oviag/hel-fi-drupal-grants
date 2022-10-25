@@ -790,7 +790,7 @@ class GrantsProfileService {
       $data = $this->getFromCache('applicant_type');
       return $data['selected_type'];
     }
-    return '';
+    return 'non_auth';
   }
 
   /**
@@ -816,7 +816,9 @@ class GrantsProfileService {
 
     try {
       if ($key == '') {
-        $this->tempStore->deleteAllUser();
+        if (method_exists($this->tempStore, 'deleteAllUser')) {
+          $this->tempStore->deleteAllUser();
+        }
       }
       else {
         $this->tempStore->delete($key);
