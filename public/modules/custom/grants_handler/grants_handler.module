@@ -933,21 +933,32 @@ function grants_handler_preprocess_application_list_item(&$variables) {
 
   $variables['applicationNumber'] = $submissionData["application_number"];
 
+  $errorMarkup = t('Timestamp not available');
+
   try {
-    if ($submissionData['status'] == 'DRAFT') {
+    // If application is in DRAFT status, we show initial creation time.
+    if ($submissionData['status'] == ApplicationHandler::$applicationStatuses['DRAFT']) {
       if (isset($submissionData["form_timestamp"]) && !empty($submissionData["form_timestamp"])) {
         $dt = new DateTime($submissionData["form_timestamp"], new DateTimeZone('Europe/Helsinki'));
         $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
       }
+      else {
+        $variables['applicationSubmitted'] = $errorMarkup;
+      }
     }
     else {
-      if (isset($submissionData["form_timestamp_created"]) && !empty($submissionData["form_timestamp_created"])) {
-        $dt = new DateTime($submissionData["form_timestamp_created"], new DateTimeZone('Europe/Helsinki'));
+      // If application is in any other state, then show submitted timestamp.
+      if (isset($submissionData["form_timestamp_submitted"]) && !empty($submissionData["form_timestamp_submitted"])) {
+        $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
         $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
+      }
+      else {
+        $variables['applicationSubmitted'] = $errorMarkup;
       }
     }
   }
   catch (\Exception $e) {
+    $variables['applicationSubmitted'] = $errorMarkup;
   }
 
   $deleteAppUrl = Url::fromRoute('grants_handler.clear-navigations', [
