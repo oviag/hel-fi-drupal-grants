@@ -1,0 +1,6 @@
+# Custom module library for general purposes.
+grants_modal:
+  js:
+    js/grants_modal.webform_unsaved.js: {}
+  dependencies:
+    - core/jquery
