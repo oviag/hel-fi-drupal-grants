@@ -1,64 +1,3 @@
-18:
-  id:
-    value: '18'
-  uuid:
-    value: ada20fc6-a716-42ff-9cc2-3dab6fe51dc3
-  revision_id:
-    value: '1'
-  langcode:
-    value: en
-  bundle:
-    value: menu_link_content
-  revision_created:
-    value: '1660553694'
-  revision_user:
-    target_id: '0'
-  revision_log_message: false
-  enabled:
-    value: '1'
-  title:
-    value: Yleisavustushakemus
-  description: false
-  menu_name:
-    value: main
-  link:
-    uri: 'internal:/yleisavustuslomake'
-    title: ''
-    options:
-      attributes:
-        class: {  }
-  external:
-    value: '0'
-  rediscover:
-    value: '1'
-  weight:
-    value: '0'
-  expanded:
-    value: '0'
-  parent: false
-  changed:
-    value: '1660553694'
-  default_langcode:
-    value: '1'
-  revision_default:
-    value: '1'
-  revision_translation_affected:
-    value: '1'
-  metatag: false
-  link_override:
-    uri: null
-    title: null
-    options: null
-  content_translation_source:
-    value: und
-  content_translation_outdated:
-    value: '0'
-  content_translation_uid:
-    target_id: '1'
-  content_translation_status:
-    value: '1'
-  content_translation_created:
-    value: '1647264636'
 23:
   id:
     value: '23'
@@ -74,14 +13,12 @@
     value: '1661414530'
   revision_user:
     target_id: '0'
-  revision_log_message:
-    value: ''
+  revision_log_message: false
   enabled:
     value: '1'
   title:
     value: 'Oma asiointi'
-  description:
-    value: ''
+  description: false
   menu_name:
     value: main
   link:
@@ -95,13 +32,12 @@
   rediscover:
     value: '1'
   weight:
-    value: '-47'
+    value: '-46'
   expanded:
     value: '0'
-  parent:
-    value: ''
+  parent: false
   changed:
-    value: '1666088904'
+    value: '1667361242'
   default_langcode:
     value: '1'
   revision_default:
@@ -156,13 +92,13 @@
   rediscover:
     value: '1'
   weight:
-    value: '-49'
+    value: '-50'
   expanded:
     value: '0'
   parent:
     value: 'menu_link_content:3d721bbd-3076-46ab-a6bc-ec4c7895ec29'
   changed:
-    value: '1668073223'
+    value: '1667561574'
   default_langcode:
     value: '1'
   revision_default:
@@ -276,8 +212,7 @@
     value: '-48'
   expanded:
     value: '0'
-  parent:
-    value: 'menu_link_content:3d721bbd-3076-46ab-a6bc-ec4c7895ec29'
+  parent: false
   changed:
     value: '1667361242'
   default_langcode:
@@ -362,155 +297,26 @@
     value: '1'
   content_translation_created:
     value: '1667361286'
-33:
+30:
   id:
-    value: '33'
-  uuid:
-    value: 4d89efc6-24b2-4bd8-bbb9-78f429d4c524
-  revision_id:
-    value: '31'
-  langcode:
-    value: fi
-  bundle:
-    value: menu_link_content
-  revision_created:
-    value: '1665751436'
-  revision_user:
-    target_id: '0'
-  revision_log_message:
-    value: ''
-  enabled:
-    value: '1'
-  title:
-    value: 'Avustukset ja apurahat'
-  description:
-    value: ''
-  menu_name:
-    value: main
-  link:
-    uri: 'entity:node/20'
-    title: null
-    options: {  }
-  external:
-    value: '0'
-  rediscover:
-    value: '0'
-  weight:
-    value: '-48'
-  expanded:
-    value: '0'
-  parent:
-    value: ''
-  changed:
-    value: '1667361242'
-  default_langcode:
-    value: '1'
-  revision_default:
-    value: '1'
-  revision_translation_affected:
-    value: '1'
-  metatag: false
-  link_override:
-    uri: null
-    title: null
-    options: null
-  content_translation_source:
-    value: und
-  content_translation_outdated:
-    value: '0'
-  content_translation_uid:
-    target_id: '1'
-  content_translation_status:
-    value: '1'
-  content_translation_created:
-    value: '1665751436'
-34:
-  id:
-    value: '34'
-  uuid:
-    value: 9ace04b3-2b84-4f75-8dab-a9f1dd3b3b55
-  revision_id:
-    value: '32'
-  langcode:
-    value: fi
-  bundle:
-    value: menu_link_content
-  revision_created:
-    value: '1666076247'
-  revision_user:
-    target_id: '0'
-  revision_log_message:
-    value: ''
-  enabled:
-    value: '1'
-  title:
-    value: Palvelut
-  description:
-    value: ''
-  menu_name:
-    value: main
-  link:
-    uri: 'route:<nolink>'
-    title: ''
-    options:
-      attributes:
-        class: {  }
-  external:
-    value: '0'
-  rediscover:
-    value: '0'
-  weight:
-    value: '0'
-  expanded:
-    value: '0'
-  parent:
-    value: ''
-  changed:
-    value: '1667361286'
-  default_langcode:
-    value: '1'
-  revision_default:
-    value: '1'
-  revision_translation_affected:
-    value: '1'
-  metatag: false
-  link_override:
-    uri: null
-    title: null
-    options: null
-  content_translation_source:
-    value: und
-  content_translation_outdated:
-    value: '0'
-  content_translation_uid:
-    target_id: '1'
-  content_translation_status:
-    value: '1'
-  content_translation_created:
-    value: '1666076247'
-35:
-  id:
-    value: '35'
+    value: '30'
   uuid:
     value: 7c5d28b3-6c9a-4b65-9657-291f03f8e792
   revision_id:
-    value: '33'
+    value: '28'
   langcode:
     value: fi
   bundle:
     value: menu_link_content
   revision_created:
-    value: '1666076364'
-  revision_user:
-    target_id: '0'
-  revision_log_message:
-    value: ''
+    value: '1667361307'
+  revision_user: false
+  revision_log_message: false
   enabled:
     value: '1'
   title:
-    value: 'Kaupunginhallitus, yleisavustushakemus'
-  description:
-    value: ''
+    value: UKK
+  description: false
   menu_name:
     value: main
   link:

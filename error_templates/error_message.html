@@ -1,2 +1,14 @@
-<p>There was an unexpected problem serving your request. Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
-<p>{{ error_report }}</p>
+<style>
+  .error {
+    background-color: #e5eff8;
+    padding: 2em;
+  }
+  h2 {
+    margin-top: 0;
+  }
+</style>
+
+<div class="error">
+  <p>There was an unexpected problem serving your request. Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
+  <p>{{ error_report }}</p>
+</div>

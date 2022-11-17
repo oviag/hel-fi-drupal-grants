@@ -1,10 +1,21 @@
 <html>
 <head>
     <title>We cannot serve your request</title>
+    <style>
+      .error {
+        background-color: #e5eff8;
+        padding: 2em;
+      }
+      h2 {
+        margin-top: 0;
+      }
+    </style>
 </head>
 <body>
-<h2>Tämä on teemattava virhesivu, joka löytyy error_templates -kansiosta.</h2>
-<p>Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
-<!--<p>{{ error_report }}</p>-->
+  <div class="error">
+    <h2>Tämä on teemattava virhesivu, joka löytyy error_templates -kansiosta.</h2>
+    <p>Please try again and contact us if the problem persist including <em>{{ uuid }}</em> in your message.</p>
+    <!--<p>{{ error_report }}</p>-->
+  </div>
 </body>
 </html>

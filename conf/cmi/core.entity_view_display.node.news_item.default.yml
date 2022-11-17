@@ -133,7 +133,7 @@ content:
     type: timestamp
     label: hidden
     settings:
-      date_format: publication_date_format
+      date_format: long
       custom_date_format: ''
       timezone: ''
     third_party_settings: {  }
