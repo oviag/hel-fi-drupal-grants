@@ -1,0 +1,6 @@
+msgctxt,msgid,msgid_plural,flags,references,extractedComments,comments,msgstr[0]
+,Webform Printify,,,modules/custom/grants_webform_print/grants_webform_print.info.yml:0,,,
+,Create a printable view of an unfilled webform.,,,modules/custom/grants_webform_print/grants_webform_print.info.yml:0,,,
+,helfi,,,modules/custom/grants_webform_print/grants_webform_print.info.yml:0,,,
+,Print Application,,,modules/custom/grants_webform_print/grants_webform_print.routing.yml:0,,,
+,Here we print submission data when coming NOT from form.,,,modules/custom/grants_webform_print/src/Controller/GrantsWebformSubmissionPrintController.php:59,,,

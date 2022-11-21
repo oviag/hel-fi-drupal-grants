@@ -958,7 +958,7 @@ class GrantsHandler extends WebformHandlerBase {
         );
       }
       catch (\Exception $e) {
-        $this->getLogger('grants_handler')->error($e->getMessage());
+        $this->getLogger('grants_handler')->error('Error: @error',['@error' => $e->getMessage()]);
       }
 
       // Try to update status only if it's allowed.

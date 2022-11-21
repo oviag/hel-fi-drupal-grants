@@ -1,0 +1,4 @@
+msgctxt,msgid,msgid_plural,flags,references,extractedComments,comments,msgstr[0]
+,Grants User Fields changes,,,modules/custom/grants_user_fields/grants_user_fields.info.yml:0,,,
+,Provides user changes from other sources.,,,modules/custom/grants_user_fields/grants_user_fields.info.yml:0,,,
+,helfi,,,modules/custom/grants_user_fields/grants_user_fields.info.yml:0,,,

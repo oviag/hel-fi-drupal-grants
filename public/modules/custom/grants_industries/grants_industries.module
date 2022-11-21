@@ -31,7 +31,7 @@ function grants_industries_form_alter(&$form, \Drupal\Core\Form\FormStateInterfa
   if ($form_id == 'user_form') {
     $currentUser = \Drupal::currentUser();
     $roles = $currentUser->getRoles();
-    if (!in_array(['admin','grants_admin'], $roles)) {
+    if (!in_array(['admin', 'grants_admin'], $roles)) {
       $form["field_industry"]["#disabled"] = TRUE;
     }
   }
@@ -136,9 +136,9 @@ function grants_industries_openid_connect_post_authorize(UserInterface $account,
       try {
         // And try to save account.
         $account->save();
-      }
-      catch (Exception $e) {
-        \Drupal::logger('grants_industries')->error($e->getMessage());
+      } catch (Exception $e) {
+        \Drupal::logger('grants_industries')
+          ->error('Error: @error', ['@error' => $e->getMessage()]);
       }
     }
   }

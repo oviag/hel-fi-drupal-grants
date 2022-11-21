@@ -116,13 +116,13 @@ function grants_metadata_webform_presave(Webform $entity) {
       $page->save();
       \Drupal::messenger()
         ->addStatus(t('Service page @nodetitle updated', ['@nodetitle' => $page->label()]));
-    }
-    catch (EntityStorageException $e) {
+    } catch (EntityStorageException $e) {
       \Drupal::messenger()
         ->addStatus(t('Service page @nodetitle update failed.', ['@nodetitle' => $page->label()]));
       \Drupal::messenger()
         ->addStatus(t('Service page @nodetitle updated', ['@nodetitle' => $page->label()]));
-      \Drupal::logger('grants_metadata')->error($e->getMessage());
+      \Drupal::logger('grants_metadata')
+        ->error('Error: @error', ['@error' => $e->getMessage()]);
     }
   }
 }

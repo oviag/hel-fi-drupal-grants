@@ -1,0 +1,12 @@
+msgctxt,msgid,msgid_plural,flags,references,extractedComments,comments,msgstr[0]
+,Grants mandates,,,modules/custom/grants_mandate/grants_mandate.info.yml:0,,,
+,Get authorisation mandates from valtuutukset.suomi.fi,,,modules/custom/grants_mandate/grants_mandate.info.yml:0,,,
+,Helfi,,,modules/custom/grants_mandate/grants_mandate.info.yml:0,,,
+,Get mandates from DVV,,,modules/custom/grants_mandate/grants_mandate.permissions.yml:0,,,
+,Use valtuutuspalvelu,,,modules/custom/grants_mandate/grants_mandate.permissions.yml:0,,,
+,Select Applicant Type,,,modules/custom/grants_mandate/grants_mandate.routing.yml:0;0;0;0,,,
+,Error in user mandates. Error: @error. RequestId: @requestId,,,modules/custom/grants_mandate/src/GrantsMandateService.php:287,,,
+,Error in user mandates. Url: @url. RequestId: @requestId,,,modules/custom/grants_mandate/src/GrantsMandateService.php:289,,,
+,"Code exchange error. @error: @error_desc. State: @state, Error URI: @error_uri",,,modules/custom/grants_mandate/src/Controller/GrantsMandateController.php:136,,,
+,Error: %error,,,modules/custom/grants_mandate/src/Controller/GrantsMandateController.php:144,,,
+,Select role & authorize mandate,,,modules/custom/grants_mandate/src/Form/ApplicantMandateForm.php:94,,,

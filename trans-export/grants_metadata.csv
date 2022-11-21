@@ -1,0 +1,12 @@
+msgctxt,msgid,msgid_plural,flags,references,extractedComments,comments,msgstr[0]
+,Application details,,,modules/custom/grants_metadata/grants_metadata.module:21,,,
+,Application Type,,,modules/custom/grants_metadata/grants_metadata.module:28,,,
+,Application Type ID,,,modules/custom/grants_metadata/grants_metadata.module:35,,,
+,Grant Applications: Form Metadata,,,modules/custom/grants_metadata/grants_metadata.info.yml:0,,,
+,Creates additional fields for the Grant Applications forms,,,modules/custom/grants_metadata/grants_metadata.info.yml:0,,,
+,Hel.fi,,,modules/custom/grants_metadata/grants_metadata.info.yml:0,,,
+,"@field failed parsing, check setup.",,,modules/custom/grants_metadata/src/AtvSchema.php:510,,,
+,Compensation types,,,modules/custom/grants_metadata/src/Plugin/DataType/CompensationTypeData.php:8,,,
+,Attachment,,,modules/custom/grants_metadata/src/Plugin/DataType/GrantsAttachmentData.php:7,,,
+,Other Compensation,,,modules/custom/grants_metadata/src/Plugin/DataType/OtherCompensationData.php:7,,,
+,Yleisavustushakemus,,,modules/custom/grants_metadata/src/Plugin/DataType/YleisavustusHakemusData.php:7,,,

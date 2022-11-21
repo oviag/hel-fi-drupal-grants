@@ -314,13 +314,13 @@ class GrantsAttachments extends WebformCompositeBase {
       // Set error to form.
       $form_state->setError($element, 'File upload failed, error has been logged.');
       // Log error.
-      \Drupal::logger('grants_attachments')->error($e->getMessage());
+      \Drupal::logger('grants_attachments')->error('Error: @error',['@error' => $e->getMessage()]);
     }
     catch (GuzzleException $e) {
       // Set error to form.
       $form_state->setError($element, 'File upload failed, error has been logged.');
       // Log error.
-      \Drupal::logger('grants_attachments')->error($e->getMessage());
+      \Drupal::logger('grants_attachments')->error('Error: @error',['@error' => $e->getMessage()]);
     }
   }
 

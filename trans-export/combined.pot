@@ -1,0 +1,1525 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  /app/public/modules/custom/grants_announcements/grants_announcements.install: n/a
+#  /app/public/modules/custom/grants_announcements/grants_announcements.info.yml: n/a
+#  /app/public/modules/custom/grants_announcements/grants_announcements.links.menu.yml: n/a
+#  /app/public/modules/custom/grants_announcements/src/Plugin/Block/AnnoucementListBlock.php: n/a
+#  /app/public/modules/custom/grants_announcements/grants_announcements.permissions.yml: n/a
+#  /app/public/modules/custom/grants_announcements/grants_announcements.routing.yml: n/a
+#  /app/public/modules/custom/grants_announcements/src/Form/SettingsForm.php: n/a
+#  /app/public/modules/custom/grants_announcements/src/Controller/GrantsAnnouncementsController.php: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2022-11-21 12:18+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.install:75
+msgid "Grants Announcements status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.install:76
+msgid "Grants Announcements value: @value"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.info.yml:0 /app/public/modules/custom/grants_announcements/grants_announcements.links.menu.yml:0 /app/public/modules/custom/grants_announcements/src/Plugin/Block/AnnoucementListBlock.php:7
+msgid "Grants Announcements"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.info.yml:0
+msgid "Module for handling various parts of the grants announcements, such as listing etc."
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.info.yml:0
+msgid "Hel.fi Grants"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.links.menu.yml:0
+msgid "Configure Grants Announcements."
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.permissions.yml:0
+msgid "Administer grants_announcements configuration"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.permissions.yml:0
+msgid "Optional description."
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.routing.yml:0 /app/public/modules/custom/grants_announcements/src/Form/SettingsForm.php:33
+msgid "Example"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/grants_announcements.routing.yml:0
+msgid "Grants Announcements settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/src/Controller/GrantsAnnouncementsController.php:19 /app/public/modules/custom/grants_announcements/src/Plugin/Block/AnnoucementListBlock.php:23
+msgid "It works!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/src/Form/SettingsForm.php:44
+msgid "The value is not correct."
+msgstr ""
+
+#: /app/public/modules/custom/grants_announcements/src/Plugin/Block/AnnoucementListBlock.php:7
+msgid "Grants Annoucements Listing Block"
+msgstr ""
+
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.module:85 /app/public/modules/custom/grants_attachments/grants_attachments.routing.yml:0
+msgid "Delete attachment"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.install:88
+msgid "grants_attachments status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.install:89
+msgid "grants_attachments value: @value"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.info.yml:0
+msgid "grants_attachments"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.info.yml:0
+msgid "Module to handle attachments webform components"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.info.yml:0
+msgid "Hel.fi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.permissions.yml:0
+msgid "Administer grants_attachments configuration"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/grants_attachments.permissions.yml:0
+msgid "Optional description."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:209
+msgid "@fieldname field is required"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:218
+msgid "@fieldname has file added, it cannot be added later."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:223
+msgid "@fieldname has file added, it cannot belong to other file."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:232
+msgid "@fieldname has no file uploaded, it must be either delivered later or be included in other file."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:498
+msgid "Bank account confirmation file attachment failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:502;538
+msgid "Confirmation for account @accountNumber"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:726
+msgid "Attachment (@filename) uploaded"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:735
+msgid "Attachment (@filename) upload failed with message: @msg. Event has been logged."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentHandler.php:360;494
+msgid "Error: %msg"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentRemover.php:151
+msgid "Removed file entity & db log row: @filename"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentRemover.php:172
+msgid "Upload failed, files are saved for retry."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentRemover.php:176
+msgid "Upload failed, removal failed, adding db row failed: @filename"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentRemover.php:239
+msgid "Error purging leftover attachments"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentUploader.php:199
+msgid "Grants attachment(@filename) upload succeeded: Response statusCode = @status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentUploader.php:210
+msgid "Removed db log row: @filename"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentUploader.php:222
+msgid "Grants attachment upload failed: Response statusCode = @status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/AttachmentUploader.php:232;247
+msgid "Grants attachment upload failed: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Controller/GrantsAttachmentsController.php:117
+msgid "Document file attachment deleted."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Controller/GrantsAttachmentsController.php:150
+msgid "Application updated."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Controller/GrantsAttachmentsController.php:162
+msgid "Document attachment not found. IntegrationID: %inteId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:168
+msgid "Attachment"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:188
+msgid "Attachment description"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:192
+msgid "Attachment will delivered at later time"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:197
+msgid "Attachment already delivered"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:388
+msgid "You cannot send file and have it delivered later"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:424
+msgid "You cannot send file and have it in another file"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Element/GrantsAttachments.php:317;323
+msgid "Error: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Plugin/WebformElement/GrantsAttachments.php:109
+msgid "Attachment filetype"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Plugin/WebformElement/GrantsAttachments.php:11
+msgid "Grants attachments"
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Plugin/WebformElement/GrantsAttachments.php:11
+msgid "Provides a grants attachment element."
+msgstr ""
+
+#: /app/public/modules/custom/grants_attachments/src/Plugin/WebformElement/GrantsAttachments.php:11
+msgid "Hel.fi elements"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/grants_formnavigation.module:21
+msgid "About"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/grants_formnavigation.module:22
+msgid "Allows users to navigate forwards and backwards through multi-page webforms using the wizard progress bar."
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/grants_formnavigation.info.yml:0 /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:11
+msgid "Grants Webform Navigation"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/grants_formnavigation.info.yml:0
+msgid "Creates a navigation setting for webform that allows users to navigate forwards and backwards through wizard pages when the wizard navigation progress bar is enabled."
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/grants_formnavigation.info.yml:0
+msgid "Webform"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/config/schema/grants_formnavigation.schema.yml:0
+msgid "Webform Navigation settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/config/schema/grants_formnavigation.schema.yml:0
+msgid "Forward Navigation"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:68
+msgid "Development settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:72
+msgid "Enable debugging"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:73
+msgid "If checked, every handler method invoked will be displayed onscreen to all users."
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:196
+msgid "Invoked @id: @class_name:@method_name @context1"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:11
+msgid "Helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_formnavigation/src/Plugin/WebformHandler/GrantsFormNavigationHandler.php:11
+msgid "A webform submission handler for the webformnavigation module."
+msgstr ""
+
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:513
+msgid "You need a description of the community purpose for the application."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:513
+msgid "Add description of purpose"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:514
+msgid "to My Services > My Information so it can be used on the application."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:528
+msgid "Some information fetched from personal information"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:531
+msgid "Check the information on the form before sending the application. You can change your own information from personal information section of the site."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:545
+msgid "Fields marked with an asterisk * are required, that need to be filled before saving."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:589
+msgid "You don't have company selected, no fields are prepopulated"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:781
+msgid "Date"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:782
+msgid "Source"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:783
+msgid "Description"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:786
+msgid "No events have been found."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1007;1204
+msgid "Edit application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1008
+msgid "View application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1081
+msgid "Grants profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1085
+msgid "View Application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1120
+msgid "Mark read"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1125
+msgid "Oma viesti"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1127
+msgid "Applications Helsinki"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1185
+msgid "Print application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1226
+msgid "Copy application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1031
+msgid "Application status not in valid statuses: %number"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/grants_handler.module:1062
+msgid "Application status not in valid statuses: %appno"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:726
+msgid "@label: @msg"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:981
+msgid "Application saving failed, error has been logged."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:929
+msgid "DEBUG: Endpoint: %endpoint"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:935
+msgid "DEBUG: Sent JSON: %myJSON"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:969
+msgid "Data sent to integration, response status: @status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:811
+msgid "Sender details parsing threw error: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:982
+msgid "Error saving application: %msg"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:1306
+msgid "No submissiondata when trying to validate saveid: %application_number @saveid"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:1331
+msgid "Save ids not matching  %application_number ATV:@saveid, Local: %local_save_id"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:1343
+msgid "Data not saved to Avus. %application_number ATV:@saveid, Local: %local_save_id"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/ApplicationHandler.php:1385
+msgid "File upload not finished.  %application_number ATV:@saveid, Local: %local_save_id"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/EventsService.php:141
+msgid "Event ID: %eventId, JSON:  %json"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/EventsService.php:157
+msgid "Event logged: %eventId, message sent."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/GrantsHandlerSubmissionStorage.php:156
+msgid "Document %appno not found when loading WebformSubmission: %submission. Error: %msg"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/MessageService.php:180
+msgid "New message for @applicationNumber."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/MessageService.php:168
+msgid "MSG id: %msgId, JSON: %json"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/MessageService.php:186
+msgid "MSG id: %nextId, message sent. Event logged: %eventId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/MessageService.php:196
+msgid "%error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Breadcrumb/GrantsHandlerSubmissionBreadcrumbsBuilder.php:69 /app/public/modules/custom/grants_handler/src/Breadcrumb/GrantsHandlerWebformBreadcrumbsBuilder.php:73
+msgid "Front page"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/ApplicationController.php:219
+msgid "Application saving process not done, data on this page is not yet updated."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/ApplicationController.php:223
+msgid "File uploads are pending. Data on this page is not fully updated."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/CompletionController.php:41
+msgid "Completion page for @submissionId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/MessageController.php:127;130
+msgid "Message marked as read"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/MessageController.php:137
+msgid "Message marking as read failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/MessageController.php:141
+msgid "Message already read."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/MessageController.php:134 /app/public/modules/custom/grants_handler/src/Controller/WebformNavigationController.php:80;116 /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:1045
+msgid "Error: %error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/WebformNavigationController.php:79;115
+msgid "Deleting draft failed. Error has been logged, please contact support."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Controller/WebformNavigationController.php:91
+msgid "Only DRAFT status submissions are deletable"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/BankAccountComposite.php:41
+msgid "Bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/BankAccountComposite.php:72
+msgid "Select account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityAddressComposite.php:41;97
+msgid "Select address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityAddressComposite.php:48
+msgid "Street address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityAddressComposite.php:52
+msgid "Post code"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityAddressComposite.php:56
+msgid "City"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityAddressComposite.php:60
+msgid "Country"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityOfficialsComposite.php:42;98
+msgid "Select official"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityOfficialsComposite.php:54
+msgid "Name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityOfficialsComposite.php:58
+msgid "Role"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityOfficialsComposite.php:62
+msgid "Email"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CommunityOfficialsComposite.php:66
+msgid "Phone"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CompensationsComposite.php:36
+msgid "Subvention name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CompensationsComposite.php:41 /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CompensationsComposite.php:90
+msgid "Subvention type"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Element/CompensationsComposite.php:46
+msgid "Subvention amount"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/EventSubscriber/ForceCompanyAuthorisationSubscriber.php:152
+msgid "You must select company & authorise it."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationForm.php:102
+msgid "Copy application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationForm.php:133
+msgid "Grant application copied(<span id=\"saved-application-number\">@number</span>)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationModalForm.php:136
+msgid "See this form as a modal."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationModalForm.php:160
+msgid "Use application as base"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationModalForm.php:215
+msgid "Grant application copied, new id: <span id=\"saved-application-number\">@number</span>"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/CopyApplicationModalForm.php:264
+msgid "Errors"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:96
+msgid "Message"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:105
+msgid "Attachment"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:114
+msgid "Add attachment to your message"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:118
+msgid "Attachment description"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:127
+msgid "Send"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:158
+msgid "webformSubmission not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:203
+msgid "Attachment (@filename) uploaded"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:212
+msgid "Attachment (@filename) upload failed with message: @msg. Event has been logged."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:233
+msgid "Your message has been sent. Please note that it will take some time it appears on application."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:235
+msgid "Your message: @message"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Form/MessageForm.php:239
+msgid "Sending of your message failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/BankAccountComposite.php:8
+msgid "Community bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/BankAccountComposite.php:8
+msgid "Provides a bank account element for company."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/BankAccountComposite.php:8 /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityAddressComposite.php:8 /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityOfficialsComposite.php:9
+msgid "Helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityAddressComposite.php:8
+msgid "Community address composite"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityAddressComposite.php:8 /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityOfficialsComposite.php:9
+msgid "Provides a address element for company."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CommunityOfficialsComposite.php:9
+msgid "Community officials composite"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CompensationsComposite.php:9
+msgid "Grants Compensations"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CompensationsComposite.php:9
+msgid "Element for compensations element"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformElement/CompensationsComposite.php:9
+msgid "Grants"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:242
+msgid "Development settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:246
+msgid "Enable debugging"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:247
+msgid "If checked, every handler method invoked will be displayed onscreen to all users."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:452
+msgid "Application data is not yet fully saved, please refresh page in few moments."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:897
+msgid "Grant application (<span id=\"saved-application-number\">@number</span>) saved as DRAFT"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:925;1025
+msgid "Grant application (<span id=\"saved-application-number\">@number</span>) saving failed. Please contact support."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:1004
+msgid "Grant application (<span id=\"saved-application-number\">@number</span>) saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:1078
+msgid "Invoked @id: @class_name:@method_name @context1"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:937;941
+msgid "Error uploadind application: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:961
+msgid "Error: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:29
+msgid "Grants Handler"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:29
+msgid "helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/src/Plugin/WebformHandler/GrantsHandler.php:29
+msgid "Grants webform handler"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:11
+msgid "Draft expired"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:20
+msgid "Delete application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:28
+msgid "Print application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:40
+msgid "Draft saved time"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:51
+msgid "This application is not open"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:61 /app/public/modules/custom/grants_handler/templates/grants-handler-completion.html.twig:28
+msgid "Submission date"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list-item.html.twig:68 /app/public/modules/custom/grants_handler/templates/grants-handler-completion.html.twig:32
+msgid "Application number"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:8
+msgid "Search for an application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:15
+msgid "Search for application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:22
+msgid "Show only applications being processed"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:27;51
+msgid "Applications"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:29
+msgid "Sort"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:32
+msgid "Sort by"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:33
+msgid "Submitted time (oldest first)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:34
+msgid "Submitted time (newest first)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:35
+msgid "Status (a-z)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:36
+msgid "Status (z-a)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:37
+msgid "Name (a-z)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:38
+msgid "Name (z-a)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:39
+msgid "Application number (a-z)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/application-list.html.twig:40
+msgid "Application number (z-a)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-completion.html.twig:25
+msgid "Grant application sent successfully"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-completion.html.twig:41
+msgid "Make sure that the status of the application changes from “Submitted” to “Received”. The application is only fully received when the status reads “Received”."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-completion.html.twig:44
+msgid "The status change can take from seconds to few minutes."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-copy-application-modal.html.twig:1
+msgid "Olet kopioimassa hakemusta"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-copy-application-modal.html.twig:2
+msgid "Voit kopioida ja käyttää tämän hakemuksen tietoja uudessa hakemuksessa. Hakemuksen liitetiedostot eivät kopioidu uuteen hakemukseen."
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/grants-handler-example-summary.html.twig:19
+msgid "Debugging is enabled"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/message-list-item.html.twig:4
+msgid "New message"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/webform-submission-messages.html.twig:24
+msgid "Messages"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/webform-submission-messages.html.twig:25
+msgid "You can send a message to the handler of the application or provide a missing attachment"
+msgstr ""
+
+#: /app/public/modules/custom/grants_handler/templates/webform-submission-messages.html.twig:27
+msgid "Sent messages"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.module:141
+msgid "Error: @error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.install:31
+msgid "grants_industries status"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.install:32
+msgid "grants_industries value: @value"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.info.yml:0 /app/public/modules/custom/grants_industries/grants_industries.links.menu.yml:0
+msgid "grants_industries"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.info.yml:0
+msgid "Handle access etc for industry specific things"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.info.yml:0
+msgid "Helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.links.menu.yml:0
+msgid "Configure grants_industries."
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.permissions.yml:0
+msgid "Administer grants_industries configuration"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.permissions.yml:0
+msgid "Optional description."
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/grants_industries.routing.yml:0
+msgid "grants_industries settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/src/Form/SettingsForm.php:62
+msgid "Map local roles to AD ones.."
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/src/Form/SettingsForm.php:75
+msgid "Ad group"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/src/Form/SettingsForm.php:79
+msgid "Role"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/src/Form/SettingsForm.php:92
+msgid "Remove this"
+msgstr ""
+
+#: /app/public/modules/custom/grants_industries/src/Form/SettingsForm.php:108
+msgid "Add one more"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.info.yml:0
+msgid "Grants mandates"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.info.yml:0
+msgid "Get authorisation mandates from valtuutukset.suomi.fi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.info.yml:0
+msgid "Helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.permissions.yml:0
+msgid "Get mandates from DVV"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.permissions.yml:0
+msgid "Use valtuutuspalvelu"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/grants_mandate.routing.yml:0;0;0;0
+msgid "Select Applicant Type"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/GrantsMandateService.php:287
+msgid "Error in user mandates. Error: @error. RequestId: @requestId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/GrantsMandateService.php:289
+msgid "Error in user mandates. Url: @url. RequestId: @requestId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Controller/GrantsMandateController.php:136
+msgid "Code exchange error. @error: @error_desc. State: @state, Error URI: @error_uri"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Controller/GrantsMandateController.php:144
+msgid "Error: %error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Form/ApplicantMandateForm.php:90
+msgid "Choose the applicant role you want to use for the application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Form/ApplicantMandateForm.php:104
+msgid "Registered community"
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Form/ApplicantMandateForm.php:106
+msgid "This is a short description of the applicant role."
+msgstr ""
+
+#: /app/public/modules/custom/grants_mandate/src/Form/ApplicantMandateForm.php:111
+msgid "Select role & authorize mandate"
+msgstr ""
+
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.info.yml:0 /app/public/modules/custom/grants_oma_asiointi/src/Plugin/Block/OmaAsiointiBlock.php:15
+msgid "Oma Asiointi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.info.yml:0
+msgid "Module for person/company own details &amp; things related to them."
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.info.yml:0
+msgid "Helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.permissions.yml:0
+msgid "Access Oma Asiointi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.permissions.yml:0
+msgid "Access to oma asiointi services."
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.permissions.yml:0
+msgid "Administer grants_oma_asiointi configuration"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.permissions.yml:0
+msgid "Optional description."
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/grants_oma_asiointi.routing.yml:0
+msgid "Community applications"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Controller/ApplicationsListController.php:183
+msgid "My applications"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Controller/GrantsOmaAsiointiController.php:153
+msgid "Applications in progress"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Controller/GrantsOmaAsiointiController.php:160
+msgid "Sent applications"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Plugin/Block/OmaAsiointiBlock.php:15
+msgid "Grants Oma Asiointi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Plugin/Derivative/DynamicLocalTasks.php:24
+msgid "My Services"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/src/Plugin/Derivative/DynamicLocalTasks.php:29;34
+msgid "Grants profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_oma_asiointi/templates/grants-oma-asiointi-front.html.twig:9
+msgid "New message"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.info.yml:0 /app/public/modules/custom/grants_profile/src/Plugin/Block/GrantsProfileMenuItemBlock.php:7 /app/public/modules/custom/grants_profile/src/Plugin/DataType/GrantsProfileData.php:8
+msgid "Grants Profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.info.yml:0
+msgid "Module to handle all interactions with users data in ATV"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.info.yml:0
+msgid "Hel.fi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.permissions.yml:0
+msgid "Administer grants_profile configuration"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.permissions.yml:0;0;0
+msgid "Optional description."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.permissions.yml:0
+msgid "View own grants profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.permissions.yml:0
+msgid "Administer own grants profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Show Application profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Edit Application profile."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Saved addresses"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0 /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:181
+msgid "Delete address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Edit address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Saved officials"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Edit official"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Delete official"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Saved bank accounts"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Edit bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Delete bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/grants_profile.routing.yml:0
+msgid "Delete confirmation"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:248
+msgid "Confirmation file saved for account %account. You can now use this account as receipient of grants."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:255;286
+msgid "Confirmation file saving failed for %account. This account cannot be used with applications without valid confirmation file."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:264
+msgid "File deleted: %id."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:221
+msgid "Grants profile POSTed, transactionID: %transId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:300
+msgid "Grants profile PATCHed, transactionID: %transactionId"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:271
+msgid "File deleting failed: %id."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/GrantsProfileService.php:279
+msgid "No file found: %id."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:33;127;172
+msgid "It works!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:52
+msgid "No profile data available, select company"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:102
+msgid "Edit profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:208
+msgid "Bank account confirmation successfully deleted"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:223
+msgid "Bank account confirmation deleting failed. Issue has been logged."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:252
+msgid "Address deleted."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:259
+msgid "Address deleting failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:290
+msgid "Official deleted."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:297
+msgid "Official deleted & profile saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:339
+msgid "Bank account deleted"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:353
+msgid "Bank account deletion failed, and error has been logged."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Controller/GrantsProfileController.php:221;257;295;351
+msgid "Profile saving failed. Message: %msg"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:57 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:78
+msgid "Chairperson"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:58 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:79
+msgid "Contact person"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:59 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:80
+msgid "Other"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:60 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:81
+msgid "Financial officer"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:61 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:82
+msgid "Auditor"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:62 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:83
+msgid "Secretary"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:63 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:84
+msgid "Vice Chairperson"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:91
+msgid "Community details not found in registries. Please contact customer service"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:115;119 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:40;43
+msgid "Founding year"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:126;130
+msgid "Community short name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:136;140
+msgid "Community www address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:146
+msgid "Community Purpose"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:150
+msgid "Description of business purpose (max. 500 characters)"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:157
+msgid "Briefly describe the purpose for which the community is working and how the community is fulfilling its purpose. For example, you can use the text \"Community purpose and forms of action\" in the Community rules. Please do not describe the purpose of the grant here, it will be asked later when completing the grant application."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:163;183 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:92;94
+msgid "Addresses"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:172;229;281 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:196
+msgid "Delete"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:187
+msgid "Street Address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:191 /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:140
+msgid "City"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:195 /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:134
+msgid "Post code"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:199 /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:146
+msgid "Country"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:216;240 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:111;113
+msgid "Officials"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:220
+msgid "Select"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:243 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:146
+msgid "Name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:248 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:152
+msgid "Role"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:252 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:160
+msgid "Email"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:256 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:166
+msgid "Phone"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:271;295 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:139;141
+msgid "Bank accounts"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:299 /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:131
+msgid "Bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:304
+msgid "Saved confirmation of account owner or copy of account statement"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:309
+msgid "Banks confirmation of account owner or copy of account statement"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:337
+msgid "Save profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:350
+msgid "grantsProfileContent not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:475
+msgid "grantsProfileData not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:498
+msgid "Grantsprofile for %c (%s) saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:94
+msgid "Error fetching community data. Error: %error"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/GrantsProfileForm.php:492
+msgid "Grants profile saving failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:101 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:119 /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:104
+msgid "In order to show a modal dialog by clicking on a link, that link has to have class <code>use-ajax</code> and <code>data-dialog-type=\"modal\"</code>. This link has those attributes."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:105 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:123 /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:108
+msgid "See this form as a modal."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:128
+msgid "Street address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:161
+msgid "Save address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:242
+msgid "addressData not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:253
+msgid "Address has been saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalAddressForm.php:283 /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:305 /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:286
+msgid "Errors"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:182
+msgid "Save official"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:265
+msgid "applicationOfficialData not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalApplicationOfficialForm.php:275
+msgid "Official has been saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:147
+msgid "Confirmation file"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:157
+msgid "Confirm this bank account."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:172
+msgid "Save bank account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:236
+msgid "bankAccountData not found!"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:249
+msgid "Bank account has been saved."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Form/ModalBankAccountForm.php:255
+msgid "Bank account saving failed."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/Block/GrantsProfileMenuItemBlock.php:7
+msgid "Menu Items For Profile"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/DataType/AddressData.php:7
+msgid "Address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/DataType/ApplicationOfficialData.php:7
+msgid "Application Official"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/DataType/BankAccountData.php:7
+msgid "Bank Account"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/Validation/Constraint/NotEmptyValue.php:7
+msgctxt "Validation"
+msgid "Not empty value"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/src/Plugin/Validation/Constraint/ValidIban.php:7
+msgctxt "Validation"
+msgid "Valid Finnish IBAN number"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/block--grants-profile-menuitem.html.twig:42;57
+msgid "Sign in"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/block--grants-profile-menuitem.html.twig:48
+msgid "Switch role"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/block--grants-profile-menuitem.html.twig:52
+msgid "Signout"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:6 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:6
+msgid "Community information"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:7 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:7
+msgid "Applying for a grant requires filling out community information. When making a grant application the information will be filled automatically."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:8 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:8
+msgid "Basic Information"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:12 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:12
+msgid "Community name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:19 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:19
+msgid "Business ID"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:23 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:23
+msgid "Community location"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:27 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:27
+msgid "Registration date"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile-form.html.twig:34 /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:33
+msgid "Marked fields have been retreived from PRH and cannot be edited."
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:53;56
+msgid "Short name"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:66;69
+msgid "Home page address"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:79
+msgid "Community purpose"
+msgstr ""
+
+#: /app/public/modules/custom/grants_profile/templates/own-profile.html.twig:82
+msgid "Description of the business purpose of the registered community"
+msgstr ""
+
+#: /app/public/modules/custom/grants_user_fields/grants_user_fields.info.yml:0
+msgid "Grants User Fields changes"
+msgstr ""
+
+#: /app/public/modules/custom/grants_user_fields/grants_user_fields.info.yml:0
+msgid "Provides user changes from other sources."
+msgstr ""
+
+#: /app/public/modules/custom/grants_user_fields/grants_user_fields.info.yml:0
+msgid "helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_print/grants_webform_print.info.yml:0
+msgid "Webform Printify"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_print/grants_webform_print.info.yml:0
+msgid "Create a printable view of an unfilled webform."
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_print/grants_webform_print.info.yml:0
+msgid "helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_print/grants_webform_print.routing.yml:0
+msgid "Print Application"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_print/src/Controller/GrantsWebformSubmissionPrintController.php:59
+msgid "Here we print submission data when coming NOT from form."
+msgstr ""
+
+
+#: /app/public/modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0 /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8
+msgid "Grants Webform Summation Field"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0
+msgid "Provides a webform summation field to collect the values of other fields."
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0
+msgid "helfi"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:52
+msgid "webform summation field settings"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:57
+msgid "Collect Fields"
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:59
+msgid "Which fields should be collected."
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8
+msgid "Provide a webform summation field field for grants applications."
+msgstr ""
+
+#: /app/public/modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8
+msgid "Advanced elements"
+msgstr ""
+
+
+
+
+

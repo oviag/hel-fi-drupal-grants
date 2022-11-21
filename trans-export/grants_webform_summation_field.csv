@@ -1,0 +1,9 @@
+msgctxt,msgid,msgid_plural,flags,references,extractedComments,comments,msgstr[0]
+,Grants Webform Summation Field,,,modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0 modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8,,,
+,Provides a webform summation field to collect the values of other fields.,,,modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0,,,
+,helfi,,,modules/custom/grants_webform_summation_field/grants_webform_summation_field.info.yml:0,,,
+,webform summation field settings,,,modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:52,,,
+,Collect Fields,,,modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:57,,,
+,Which fields should be collected.,,,modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:59,,,
+,Provide a webform summation field field for grants applications.,,,modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8,,,
+,Advanced elements,,,modules/custom/grants_webform_summation_field/src/Plugin/WebformElement/GrantsWebformSummationField.php:8,,,
