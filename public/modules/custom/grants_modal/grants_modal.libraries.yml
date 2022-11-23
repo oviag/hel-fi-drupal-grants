@@ -4,3 +4,4 @@ grants_modal:
     js/grants_modal.webform_unsaved.js: {}
   dependencies:
     - core/jquery
+    - core/drupal.dialog.ajax #Required for dialogs
