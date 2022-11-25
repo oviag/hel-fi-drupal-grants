@@ -1,0 +1,18 @@
+_core:
+  default_config_hash: E99p-j2YC4tVqQ7Gz4-I4cALOq2a8XHkvlQnxoV5EWY
+langcode: fi
+session_limit_max: 1
+session_limit_masquerade_ignore: false
+session_limit_behaviour: 1
+session_limit_logged_out_message_severity: warning
+session_limit_admin_inclusion: 0
+session_limit_roles:
+  authenticated: 0
+  read_only: 0
+  helsinkiprofiili: 0
+  content_producer_industry: 0
+  content_producer: 0
+  grants_producer: 0
+  ad_user: 0
+  grants_admin: -1
+  admin: -1

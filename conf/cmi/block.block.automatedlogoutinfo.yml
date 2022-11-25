@@ -1,0 +1,20 @@
+uuid: 1f0701cb-6c7f-4384-b737-4a3671c23988
+langcode: fi
+status: true
+dependencies:
+  module:
+    - autologout
+  theme:
+    - helfi_grant_applications
+id: automatedlogoutinfo
+theme: helfi_grant_applications
+region: header_bottom
+weight: -13
+provider: null
+plugin: autologout_warning_block
+settings:
+  id: autologout_warning_block
+  label: 'Automated logout info'
+  label_display: '0'
+  provider: autologout
+visibility: {  }
