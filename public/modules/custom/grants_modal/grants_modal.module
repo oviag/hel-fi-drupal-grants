@@ -9,5 +9,6 @@
  * @see https://www.drupal.org/node/2217931
  */
 function grants_modal_page_attachments(&$variables) {
+  $build['#attached']['library'][] = 'core/drupal.dialog.ajax';
   $variables['#attached']['library'][] = 'grants_modal/grants_modal';
 }

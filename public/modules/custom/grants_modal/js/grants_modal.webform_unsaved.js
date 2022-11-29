@@ -5,5 +5,5 @@
  */
 
 (function ($, Drupal) {
-
+  console.log('aaa')
 })(jQuery, Drupal);
