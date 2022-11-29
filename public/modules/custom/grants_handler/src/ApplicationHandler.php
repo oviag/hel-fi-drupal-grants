@@ -838,6 +838,7 @@ class ApplicationHandler {
     $atvDocument->setTosRecordId(getenv('ATV_TOS_RECORD_ID'));
     $atvDocument->setBusinessId($selectedCompany['identifier']);
     $atvDocument->setDraft(TRUE);
+    $atvDocument->setDeletable(FALSE);
 
     $atvDocument->setMetadata([
       'appenv' => self::getAppEnv(),
@@ -1370,7 +1371,7 @@ class ApplicationHandler {
       }
       else {
         if (
-          isset($fileField['fileName']) &&
+          (isset($fileField['fileName']) && !empty($fileField['fileName'])) &&
           (isset($fileField['fileStatus']) && $fileField['fileStatus'] !== 'justUploaded')
         ) {
           if (!in_array($fileField['fileName'], $attachmentEvents["event_targets"])) {
