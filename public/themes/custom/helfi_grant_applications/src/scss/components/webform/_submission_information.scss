@@ -44,6 +44,9 @@
     }
   }
   &__supportlinks {
+    .hds-loading-spinner {
+      left: 0; /* LTR */
+    }
     display: flex;
     flex-flow: row nowrap;
   }

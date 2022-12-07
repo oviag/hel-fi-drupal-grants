@@ -43,7 +43,7 @@ module.exports = (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       chunkFilename: 'js/async/[name].chunk.js',
-      pathinfo: true,
+      pathinfo: isDev,
       filename: 'js/[name].min.js',
       publicPath: '../',
       clean: true,
@@ -105,11 +105,12 @@ module.exports = (env, argv) => {
       extensions: ['.js', '.json'],
     },
     plugins: [
-      new SvgToSprite(
-        path.resolve(__dirname, 'src/icons/**/*.svg'),
-        'icons/grants-sprite.svg',
-        'icons.json'
-      ),
+      // Uncomment following lines to create svg icon sprite.
+      // new SvgToSprite(
+      //   path.resolve(__dirname, 'src/icons/**/*.svg'),
+      //   'icons/hdbt-subtheme-sprite.svg',
+      //   'icons.json'
+      // ),
       new FriendlyErrorsWebpackPlugin(),
       new RemoveEmptyScriptsPlugin(),
       new MiniCssExtractPlugin({
