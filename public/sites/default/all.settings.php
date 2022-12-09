@@ -27,7 +27,7 @@ $config['openid_connect.client.tunnistamoadmin']['settings']['client_secret'] = 
 $config['openid_connect.client.tunnistamoadmin']['settings']['client_scopes'] = getenv('TUNNISTAMOADMIN_CLIENT_SCOPES');
 
 
-$config['helfi_proxy.settings']['default_proxy_domain'] = 'helfi-proxy.docker.so';
+//$config['helfi_proxy.settings']['default_proxy_domain'] = 'helfi-proxy.docker.so';
 $config['helfi_proxy.settings']['prefixes'] = [
   'en' => 'grants',
   'fi' => 'avustukset',
