@@ -1,6 +1,6 @@
   {% if (message.messageStatus == 'UNREAD' and message.sentBy == 'Avustusten kasittelyjarjestelma') %}
     <div class="webform-submission-messages__new-message">
-      <i class="hds-icon icon hds-icon--alert-circle hds-icon--size-s vertical-align-small-or-medium-icon" aria-hidden="true"></i>
+      <i class="hds-icon icon hds-icon--alert-circle hel-icon--size-s vertical-align-small-or-medium-icon" aria-hidden="true"></i>
       <span>{{ "New message"|t }}</span>
     </div>
   {% endif %}
@@ -10,7 +10,7 @@
   {% if message.attachments %}
     <ul class="webform-submission-messages__message__attachments">
       {% for attachment in message.attachments %}
-        <li class="webform-submission-messages__message__attachment"><i class="hds-icon icon hds-icon--paperclip hds-icon--size-xs vertical-align-small-or-medium-icon" aria-hidden="true"></i> <strong>{{ attachment.fileName }}</strong> - {{ attachment.description }}</li>
+        <li class="webform-submission-messages__message__attachment"><i class="hds-icon icon hds-icon--paperclip hel-icon--size-xs vertical-align-small-or-medium-icon" aria-hidden="true"></i> <strong>{{ attachment.fileName }}</strong> - {{ attachment.description }}</li>
       {% endfor %}
     </ul>
   {% endif %}

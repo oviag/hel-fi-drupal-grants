@@ -127,7 +127,7 @@ function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
   $view = $variables['view'];
 
   if ($view->id() === 'application_search') {
-    $dateIcon = '<span aria-hidden="true" class="hds-icon hds-icon--calendar-clock hds-icon--size-s"></span>';
+    $dateIcon = '<span aria-hidden="true" class="hel-icon hel-icon--calendar-clock hel-icon--size-s"></span>';
     if ($view->field['field_application_continuous']->original_value == '1') {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . t('Continuous application') . '</span>');
       unset($variables['fields']['field_application_continuous']);
@@ -137,6 +137,7 @@ function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
       unset($variables['fields']['field_application_continuous']);
     }
     unset($variables['fields']['field_application_open']);
+
     $variables['fields']['view_node']->content = Markup::create(html_entity_decode($variables['fields']['view_node']->content));
     $variables['fields']['field_content']->content = Markup::create(html_entity_decode($variables['fields']['field_content']->content));
   }
