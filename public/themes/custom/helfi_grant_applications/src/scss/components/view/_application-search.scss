@@ -1,4 +1,5 @@
 .application_search {
+
   &--filter-wrapper {
     background: var(--color-black-5);
     form {
@@ -76,6 +77,10 @@
       width: calc(calc(100% / 3) - var(--spacing-m));
     }
   }
+  .paragraph-summary {
+    margin-bottom: var(--spacing-l);
+  }
+
   .paragraph-formatter {
     display: block;
     .paragraphs-description {

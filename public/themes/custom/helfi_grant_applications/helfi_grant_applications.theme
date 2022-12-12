@@ -128,14 +128,21 @@ function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
 
   if ($view->id() === 'application_search') {
     $dateIcon = '<span aria-hidden="true" class="hel-icon hel-icon--calendar-clock hel-icon--size-s"></span>';
-    if ($view->field['field_application_continuous']->original_value == '1') {
+
+    $continous = $variables['fields']['field_application_continuous']->content->__toString();
+
+    // To get this working on development mode.
+    $continous = preg_replace('/<!--(.|\s)*?-->/', '', $continous);
+    $continous = str_replace(array("\n", "\r"), '', $continous);
+
+    if ($continous == "1") {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . t('Continuous application') . '</span>');
-      unset($variables['fields']['field_application_continuous']);
     }
     else {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . $variables['fields']['field_application_period']->content . '</span>');
-      unset($variables['fields']['field_application_continuous']);
     }
+    unset($variables['fields']['field_application_continuous']);
+
     unset($variables['fields']['field_application_open']);
 
     $variables['fields']['view_node']->content = Markup::create(html_entity_decode($variables['fields']['view_node']->content));
