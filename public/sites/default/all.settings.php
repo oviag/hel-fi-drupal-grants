@@ -28,12 +28,12 @@ $config['openid_connect.client.tunnistamoadmin']['settings']['client_scopes'] = 
 
 
 //$config['helfi_proxy.settings']['default_proxy_domain'] = 'helfi-proxy.docker.so';
-//$config['helfi_proxy.settings']['prefixes'] = [
-//  'en' => 'grants',
-//  'fi' => 'avustukset',
-//  'sv' => 'bidrags'
-//];
-//$config['helfi_proxy.settings']['asset_path'] = 'avustukset-assets';
+$config['helfi_proxy.settings']['prefixes'] = [
+  'en' => 'grants',
+  'fi' => 'avustukset',
+  'sv' => 'bidrags'
+];
+$config['helfi_proxy.settings']['asset_path'] = 'avustukset-assets';
 
 
 if ($robots_header_enabled = getenv('DRUPAL_X_ROBOTS_TAG_HEADER')) {
