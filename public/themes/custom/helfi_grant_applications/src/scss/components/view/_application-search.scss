@@ -1,6 +1,25 @@
+.view-application-search .main-content {
+  margin-top: var(--spacing-layout-s);
+
+  .container {
+  display: flex;
+  flex-flow: column-reverse;
+
+    .view-footer {
+      margin-bottom: var(--spacing-layout-s);
+    }
+  }
+}
+
 .application_search {
   &--filter-wrapper {
     background: var(--color-black-5);
+
+    h2 {
+      margin-bottom: var(--spacing-layout-s);
+      margin-top: var(--spacing-layout-s);
+    }
+
     form {
       display: flex;
       flex-flow: row wrap;
@@ -29,6 +48,26 @@
           width: 100%;
           min-width: 250px;
         }
+      }
+      .form-item-combine {
+        order: 1;
+      }
+      .form-item-avustuslaji {
+        order: 2;
+      }
+      .form-item-hakija {
+        order: 3;
+      }
+      .form-actions {
+        order: 4;
+      }
+      .form-item-field-application-open-value {
+        order: 5;
+      }
+      [data-drupal-selector='edit-reset'] {
+        background-color: transparent;
+        color: var(--color-black);
+        border: 0;
       }
     }
     .hds-koros svg pattern {
@@ -130,7 +169,37 @@
     font-weight: bold;
     font-size: var(--fontsize-body-s);
     &_1 {
-      background: var(--color-brick-medium-light)
+      background: var(--color-brick-medium-light);
+    }
+    &_2 {
+      background: var(--color-copper);
+    }
+    &_3 {
+      background: var(--color-metro-medium-light);
+    }
+    &_4 {
+      background: var(--color-suomenlinna-medium-light);
+    }
+    &_5 {
+      background: var(--color-engel);
+    }
+    &_6 {
+      background: var(--color-bus-medium-light);
+    }
+    &_7 {
+      background: var(--color-coat-of-arms-medium-light);
+    }
+    &_8 {
+      background: var(--color-gold-medium-light);
+    }
+    &_9 {
+      background: var(--color-tram-medium-light);
+    }
+    &_10 {
+      background: var(--color-summer-light);
+    }
+    &_11 {
+      background: var(--color-fog);
     }
   }
 }

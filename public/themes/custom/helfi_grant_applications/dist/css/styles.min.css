@@ -4271,8 +4271,28 @@ div.grants-handler--prefilled-field .hds-text-input__label, .grants-profile-prh-
   color: var(--color-black);
 }
 
+.view-application-search .main-content {
+  margin-top: var(--spacing-layout-s);
+}
+.view-application-search .main-content .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-flow: column-reverse;
+          flex-flow: column-reverse;
+}
+.view-application-search .main-content .container .view-footer {
+  margin-bottom: var(--spacing-layout-s);
+}
+
 .application_search--filter-wrapper {
   background: var(--color-black-5);
+}
+.application_search--filter-wrapper h2 {
+  margin-bottom: var(--spacing-layout-s);
+  margin-top: var(--spacing-layout-s);
 }
 .application_search--filter-wrapper form {
   display: -webkit-box;
@@ -4314,6 +4334,36 @@ div.grants-handler--prefilled-field .hds-text-input__label, .grants-profile-prh-
 .application_search--filter-wrapper form .form-actions input {
   width: 100%;
   min-width: 250px;
+}
+.application_search--filter-wrapper form .form-item-combine {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+.application_search--filter-wrapper form .form-item-avustuslaji {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+}
+.application_search--filter-wrapper form .form-item-hakija {
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3;
+}
+.application_search--filter-wrapper form .form-actions {
+  -webkit-box-ordinal-group: 5;
+      -ms-flex-order: 4;
+          order: 4;
+}
+.application_search--filter-wrapper form .form-item-field-application-open-value {
+  -webkit-box-ordinal-group: 6;
+      -ms-flex-order: 5;
+          order: 5;
+}
+.application_search--filter-wrapper form [data-drupal-selector=edit-reset] {
+  background-color: transparent;
+  color: var(--color-black);
+  border: 0;
 }
 .application_search--filter-wrapper .hds-koros svg pattern {
   color: var(--color-black-5);
@@ -4405,6 +4455,36 @@ div.grants-handler--prefilled-field .hds-text-input__label, .grants-profile-prh-
 }
 .application_search--row .tag_avustuslaji_1 {
   background: var(--color-brick-medium-light);
+}
+.application_search--row .tag_avustuslaji_2 {
+  background: var(--color-copper);
+}
+.application_search--row .tag_avustuslaji_3 {
+  background: var(--color-metro-medium-light);
+}
+.application_search--row .tag_avustuslaji_4 {
+  background: var(--color-suomenlinna-medium-light);
+}
+.application_search--row .tag_avustuslaji_5 {
+  background: var(--color-engel);
+}
+.application_search--row .tag_avustuslaji_6 {
+  background: var(--color-bus-medium-light);
+}
+.application_search--row .tag_avustuslaji_7 {
+  background: var(--color-coat-of-arms-medium-light);
+}
+.application_search--row .tag_avustuslaji_8 {
+  background: var(--color-gold-medium-light);
+}
+.application_search--row .tag_avustuslaji_9 {
+  background: var(--color-tram-medium-light);
+}
+.application_search--row .tag_avustuslaji_10 {
+  background: var(--color-summer-light);
+}
+.application_search--row .tag_avustuslaji_11 {
+  background: var(--color-fog);
 }
 
 .page-type--news-item .sidebar-second h2 {

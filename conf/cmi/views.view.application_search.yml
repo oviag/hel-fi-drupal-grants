@@ -493,7 +493,7 @@ display:
           admin_label: ''
           plugin_id: field
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -733,15 +733,17 @@ display:
           output_url_as_text: false
           absolute: false
       pager:
-        type: mini
+        type: full
         options:
           offset: 0
-          items_per_page: 10
+          items_per_page: 9
           total_pages: null
           id: 0
           tags:
-            next: ››
-            previous: ‹‹
+            next: ''
+            previous: ''
+            first: «
+            last: »
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -750,6 +752,7 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          quantity: 9
       exposed_form:
         type: bef
         options:
@@ -868,10 +871,14 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-              admin: '0'
-              content_producer: '0'
               read_only: '0'
               helsinkiprofiili: '0'
+              content_producer_industry: '0'
+              content_producer: '0'
+              grants_producer: '0'
+              ad_user: '0'
+              grants_admin: '0'
+              admin: '0'
             placeholder: 'Etsi nimellä tai hakusanalla, esim toiminta-avustus'
           is_grouped: false
           group_info:
@@ -889,8 +896,8 @@ display:
             title: title
             field_errand_service: field_errand_service
             field_hakijatyyppi: field_hakijatyyppi
-            field_webform: field_webform
             field_target_group: field_target_group
+            field_webform: field_webform
         field_avustuslaji_target_id_entityreference_filter:
           id: field_avustuslaji_target_id_entityreference_filter
           table: node__field_avustuslaji
@@ -985,6 +992,61 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+        field_application_open_value:
+          id: field_application_open_value
+          table: node__field_application_open
+          field: field_application_open_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Application open'
+            description: ''
+            use_operator: false
+            operator: field_application_open_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_application_open_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              read_only: '0'
+              helsinkiprofiili: '0'
+              content_producer_industry: '0'
+              content_producer: '0'
+              grants_producer: '0'
+              ad_user: '0'
+              grants_admin: '0'
+              admin: '0'
+          is_grouped: true
+          group_info:
+            label: 'Näytä vain julkaistut sisällöt'
+            description: ''
+            identifier: field_application_open_value
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: 'Application open'
+                operator: '='
+                value: '1'
+              2:
+                title: 'Application not open'
+                operator: '='
+                value: '0'
       filter_groups:
         operator: AND
         groups:
@@ -1008,7 +1070,17 @@ display:
           query_tags: {  }
       relationships: {  }
       header: {  }
-      footer: {  }
+      footer:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: '<strong>@total</strong> hakutulosta'
       display_extenders: {  }
     cache_metadata:
       max-age: -1
