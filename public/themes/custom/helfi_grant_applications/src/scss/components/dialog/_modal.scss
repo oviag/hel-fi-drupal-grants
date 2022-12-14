@@ -16,10 +16,20 @@
       background: none;
       border: none;
     }
+    .ui-dialog-title {
+      display: none;
+    }
   }
   &-title {
 
   }
+}
+.ui-dialog div.ui-dialog-titlebar {
+  padding: 0;
+}
+.ui-dialog .ui-dialog-titlebar-close {
+  top: -40px;
+  z-index: 1001;
 }
 .ui-widget-content {
   h3 {
@@ -27,14 +37,11 @@
   }
 }
 
-.ui-widget.ui-widget-content {
+div.ui-widget.ui-widget-content {
   border-top: 60px solid var(--color-engel);
-  position: fixed;
-  height: auto;
-  width: 25%;
-  top: 210.82px;
-  left: 643.5px;
-
+  padding-top: 0;
+  min-width: 300px;
+  max-width: 100vw;
 }
 .ui-dialog .ui-dialog-content {
   position: initial;
