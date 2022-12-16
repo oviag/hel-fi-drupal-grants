@@ -1,0 +1,4 @@
+audience_config:
+  audience_host: 'https://api.hel.fi/'
+  service_name: 'avustusasiointi'
+
