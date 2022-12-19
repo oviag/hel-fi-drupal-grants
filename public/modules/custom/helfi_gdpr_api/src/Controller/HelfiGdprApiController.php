@@ -15,7 +15,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Language\ContextProvider\CurrentLanguageContext;
-use Drupal\helfi_api_base\Environment\EnvironmentResolverInterface;
+use Drupal\helfi_atv\AtvAuthFailedException;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_atv\AtvFailedToConnectException;
 use Drupal\helfi_atv\AtvService;
@@ -24,10 +24,6 @@ use Drupal\helfi_helsinki_profiili\TokenExpiredException;
 use Drupal\user\Entity\User;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
-use Okta\JwtVerifier\Adaptors\FirebasePhpJwt;
-use Okta\JwtVerifier\Discovery\Oauth;
-use Okta\JwtVerifier\Discovery\Oidc;
-use Okta\JwtVerifier\JwtVerifierBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Carbon\Carbon;
@@ -123,18 +119,16 @@ class HelfiGdprApiController extends ControllerBase {
     $this->debug = $debug;
   }
 
-
-
   /**
    * CompanyController constructor.
    */
   public function __construct(
-    RequestStack             $request,
+    RequestStack $request,
     HelsinkiProfiiliUserData $helsinkiProfiiliUserData,
-    AtvService               $atvService,
-    ClientInterface          $http_client,
-    CurrentLanguageContext   $currentLanguageContext,
-    Connection               $connection
+    AtvService $atvService,
+    ClientInterface $http_client,
+    CurrentLanguageContext $currentLanguageContext,
+    Connection $connection
   ) {
     $this->request = $request;
     $this->helsinkiProfiiliUserData = $helsinkiProfiiliUserData;
@@ -142,7 +136,6 @@ class HelfiGdprApiController extends ControllerBase {
     $this->httpClient = $http_client;
     $this->currentLanguageContext = $currentLanguageContext;
     $this->connection = $connection;
-
 
     $this->audienceConfig = $this->config('helfi_gdpr_api.settings')
       ->get('audience_config');
@@ -165,8 +158,6 @@ class HelfiGdprApiController extends ControllerBase {
     );
   }
 
-
-
   /**
    * Builds the response.
    */
@@ -174,18 +165,26 @@ class HelfiGdprApiController extends ControllerBase {
 
     // Decode the json data.
     try {
-      $data = Json::encode($this->getData());
-    } catch (AtvDocumentNotFoundException $e) {
+      $data = $this->getData();
+    }
+    catch (AtvDocumentNotFoundException $e) {
       return new JsonResponse(NULL, 404);
-    } catch (AtvFailedToConnectException $e) {
+    }
+    catch (AtvFailedToConnectException $e) {
       return new JsonResponse(NULL, 500);
-    } catch (TokenExpiredException $e) {
+    }
+    catch (TokenExpiredException $e) {
       return new JsonResponse(NULL, 401);
-    } catch (GuzzleException $e) {
+    }
+    catch (GuzzleException $e) {
       return new JsonResponse(NULL, 500);
     }
 
-    return new JsonResponse($data);
+    if (empty($data)) {
+      return new JsonResponse(NULL, 404);
+    }
+
+    return new JsonResponse(Json::encode($data));
 
   }
 
@@ -201,23 +200,29 @@ class HelfiGdprApiController extends ControllerBase {
       $user->delete();
 
       $this->atvService->deleteGdprData($this->jwtData['sub']);
-    } catch (AtvDocumentNotFoundException $e) {
+    }
+    catch (AtvDocumentNotFoundException $e) {
       return new JsonResponse(NULL, 404);
-    } catch (AtvFailedToConnectException $e) {
+    }
+    catch (AtvFailedToConnectException $e) {
       return new JsonResponse(NULL, 500);
-    } catch (TokenExpiredException $e) {
+    }
+    catch (TokenExpiredException $e) {
       return new JsonResponse(NULL, 401);
-    } catch (GuzzleException $e) {
+    }
+    catch (GuzzleException $e) {
       return new JsonResponse(NULL, 500);
-    } catch (EntityStorageException $e) {
+    }
+    catch (EntityStorageException $e) {
       return new JsonResponse(NULL, 404);
+    }
+    catch (AtvAuthFailedException $e) {
+      return new JsonResponse(NULL, 403);
     }
 
     return new JsonResponse(NULL, 204);
 
   }
-
-
 
   /**
    * Checks access for this controller.
@@ -226,12 +231,13 @@ class HelfiGdprApiController extends ControllerBase {
 
     $this->debug('GDPR Api access called. JWT token: @token', ['@token' => $this->jwtToken]);
 
-    return AccessResult::allowed();
-
-
-    if (getenv('APP_ENV') == 'localj') {
+    if (str_contains(strtolower(getenv('APP_ENV')), 'local')) {
       $this->debug('Local access granted. JWT token: @token', ['@token' => $this->jwtToken]);
       return AccessResult::allowed();
+    }
+
+    if (!$this->helsinkiProfiiliUserData->verifyJwtToken($this->jwtToken)) {
+      return AccessResult::forbidden('Token verfication failed.');
     }
 
     // If audience does not match, forbid access.
@@ -410,6 +416,9 @@ class HelfiGdprApiController extends ControllerBase {
 
     // Get data.
     $gdprData = $this->atvService->getGdprData($this->jwtData['sub']);
+    if ($gdprData["total_deletable"] == 0 && $gdprData["total_undeletable"] == 0) {
+      return [];
+    }
 
     // If we have data, then parse it.
     if ($gdprData) {
@@ -539,15 +548,14 @@ class HelfiGdprApiController extends ControllerBase {
    * Print to debug stream.
    *
    * @param string $msg
-   *  Message
+   *   Message.
    * @param array $options
-   *  Options
+   *   Options.
    */
   private function debug(string $msg, array $options = []) {
     if ($this->isDebug()) {
       $this->getLogger('helf_gdpr_api')->debug($msg, $options);
     }
   }
-
 
 }

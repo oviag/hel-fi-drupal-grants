@@ -15,11 +15,3 @@ helfi_gdpr_api.endpoint_delete:
     _controller: '\Drupal\helfi_gdpr_api\Controller\HelfiGdprApiController::delete'
   requirements:
     _custom_access: '\Drupal\helfi_gdpr_api\Controller\HelfiGdprApiController::access'
-
-helfi_gdpr_api.test_enpoint:
-  path: '/helfi-gdpr-api/testenpoint'
-  defaults:
-    _title: 'Example'
-    _controller: '\Drupal\helfi_gdpr_api\Controller\TestGdprApi::build'
-  requirements:
-    _permission: 'access content'

@@ -1,0 +1,6 @@
+_core:
+  default_config_hash: MokOxi26VkTuRjOV05dMjFBfsPRtzN2VfkXnK8FuB_0
+audience_config:
+  audience_host: 'https://api.hel.fi/'
+  service_name: avustusasiointi
+langcode: fi
