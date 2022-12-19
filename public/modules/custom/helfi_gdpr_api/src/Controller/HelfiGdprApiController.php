@@ -161,7 +161,7 @@ class HelfiGdprApiController extends ControllerBase {
   /**
    * Builds the response.
    */
-  public function get() {
+  public function get($userId) {
 
     // Decode the json data.
     try {
@@ -193,7 +193,7 @@ class HelfiGdprApiController extends ControllerBase {
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    */
-  public function delete() {
+  public function delete($userId) {
 
     try {
       $user = $this->getUser();
@@ -227,7 +227,7 @@ class HelfiGdprApiController extends ControllerBase {
   /**
    * Checks access for this controller.
    */
-  public function access(): AccessResultForbidden|AccessResultAllowed {
+  public function access($userId): AccessResultForbidden|AccessResultAllowed {
 
     $this->debug('GDPR Api access called. JWT token: @token', ['@token' => $this->jwtToken]);
 
@@ -243,7 +243,7 @@ class HelfiGdprApiController extends ControllerBase {
     // If audience does not match, forbid access.
     if ($this->jwtData['aud'] != $this->audienceConfig["audience_host"] . $this->audienceConfig["service_name"]) {
       $this->debug(
-        'Local access DENIED. Reason: @reason. JWT token: @token',
+        'Access DENIED. Reason: @reason. JWT token: @token',
         [
           '@token' => $this->jwtToken,
           '@reason' => 'Audience mismatch',
