@@ -16,6 +16,7 @@ use Drupal\grants_attachments\AttachmentHandler;
 use Drupal\grants_metadata\AtvSchema;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocument;
+use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_atv\AtvService;
 use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
 use Drupal\helfi_helsinki_profiili\ProfileDataException;
@@ -578,6 +579,9 @@ class ApplicationHandler {
         ],
         $refetch
       );
+      if (empty($document)) {
+        throw new AtvDocumentNotFoundException('Document not found');
+      }
       /** @var \Drupal\helfi_atv\AtvDocument $document */
       $document = reset($document);
     }

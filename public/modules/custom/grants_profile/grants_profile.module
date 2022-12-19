@@ -74,6 +74,12 @@ function grants_profile_theme(): array {
       'notifications' => NULL,
     ],
   ];
+  $theme['edit-label-with-icon'] = [
+    'variables' => [
+      'icon' => NULL,
+      'text_label' => NULL,
+    ]
+  ];
 
   return $theme;
 }

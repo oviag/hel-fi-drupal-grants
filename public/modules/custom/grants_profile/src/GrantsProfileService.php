@@ -237,7 +237,7 @@ class GrantsProfileService {
             // Generate file name for file.
             // just md5 account number to avoid any confusions with different
             // naming conventions.
-            $fileName = md5($bank_account['bankAccount']) . '.pdf';
+            $fileName = $fileEntity->getFilename();
             // Set filename.
             $documentContent['bankAccounts'][$key]['confirmationFile'] = $fileName;
             // Upload the thing.

@@ -99,7 +99,12 @@ class GrantsProfileController extends ControllerBase {
         ],
       ]
     );
-    $editProfileText = Markup::create('<span aria-hidden="true" class="hds-icon hds-icon--pen-line"></span><span class="hds-button__label">' . $this->t('Edit profile') . '</span>');
+    $editProfileText = [
+      '#theme' => 'edit-label-with-icon',
+      '#icon' => 'pen-line',
+      '#text_label' => $this->t('Edit profile'),
+    ];
+
     $build['#editProfileLink'] = Link::fromTextAndUrl($editProfileText, $editProfileUrl);
 
     $build['#attached']['library'][] = 'grants_profile/tabs';

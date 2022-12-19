@@ -1,5 +1,5 @@
 const fs = require('fs');
-const md5 = require('md5')
+const md5 = require('md5');
 const path = require('path');
 const glob = require('glob');
 const SVGSpriter = require('svg-sprite');
@@ -7,24 +7,21 @@ const SVGSpriter = require('svg-sprite');
 // Generates styles for each icon.
 class svgToSprite {
   constructor(inputPattern, outputSvgSpriteFilename, outputIconJsonFilename) {
+    // Current theme name.
+    this.themeName = path.basename(path.resolve(process.cwd())).replace(/_/g, '-');
 
     // Input and output patterns.
     this.inputPattern = inputPattern;
     this.svgSpriteFilename = outputSvgSpriteFilename;
-    this.svgToCssOutputFilename = `css/hdbt-icons.css`;
-    this.svgToCkeditorCssOutputFilename = `css/ckeditor-icons.css`;
+    this.svgToCssOutputFilename = `css/${this.themeName}-icons.css`;
     this.svgToJsonOutputFilename = outputIconJsonFilename;
-
-    // Icon class.
-    this.iconClass = 'hel';
 
     // Mapped SVG files.
     this.files = [];
     this.cssVariables = [];
-    this.ckeditorVariables = [];
     this.classes = [];
 
-    // Sprite configuration.
+    // Sprite configurations.
     this.spriteHashFilename = '';
   }
 
@@ -91,7 +88,6 @@ class svgToSprite {
     // SVG to CSS.
     // Create styles for the icons.
     compiler.hooks.emit.tapAsync('svgToCss', (compilation, callback) => {
-      let useOldClass = true; // TODO: Remove once hdbt-icon class has been removed.
 
       // Create --hel-icon--{icon name} CSS variables.
       let cssVariables = [];
@@ -100,7 +96,7 @@ class svgToSprite {
         let fullFilename = this.cssVariables.shift();
         let filename = fullFilename.replace(/^.*[\\\/]/, '')
         let name = filename.split('.');
-        cssVariables.push(`--${this.iconClass}-icon--${name[0]}:url(../../../../contrib/hdbt/dist/${this.spriteHashFilename}#${name[0]})`);
+        cssVariables.push(`--${this.themeName}-icon--${name[0]}:url(../${this.spriteHashFilename}#${name[0]})`);
       }
       cssVariables = `:root{${ cssVariables.join(';') }}`;
 
@@ -110,29 +106,16 @@ class svgToSprite {
         let fullFilename = this.classes.shift();
         let filename = fullFilename.replace(/^.*[\\\/]/, '')
         let name = filename.split('.');
-        cssClasses += `.${this.iconClass}-icon--${name[0]}{--url:var(--${this.iconClass}-icon--${name[0]})}`;
-
-        // TODO: Remove once hdbt-icon class has been removed.
-        if (useOldClass) {
-          cssClasses += `.hdbt-icon--${name[0]}{--url:var(--${this.iconClass}-icon--${name[0]})}`;
-        }
+        cssClasses += `.${this.themeName}-icon--${name[0]}{--url:var(--${this.themeName}-icon--${name[0]})}`;
       }
 
       // Add a URL as a CSS variable to the hel-icon mask-image.
       // If icons are used elsewhere (f.e. in a separate theme or module) this
       // variable will provide the correct URL for the icon.
-      let hdbtIconUrl = `.${this.iconClass}-icon{` +
+      let hdbtIconUrl = `.${this.themeName}-icon{` +
         `-webkit-mask-image:var(--url);` +
         `mask-image:var(--url)` +
-      `}`;
-
-      // TODO: Remove once hdbt-icon class has been removed.
-      if (useOldClass) {
-        hdbtIconUrl += `.hdbt-icon::before{` +
-          `-webkit-mask-image:var(--url);` +
-          `mask-image:var(--url)` +
         `}`;
-      }
 
       // Combine CSS variables and classes.
       let filelist = cssVariables + cssClasses + hdbtIconUrl;
@@ -150,38 +133,6 @@ class svgToSprite {
     });
     compiler.hooks.environment.tap('svgToCss', this.checkForFiles.bind(this));
     compiler.hooks.watchRun.tap('svgToCss', this.checkForFiles.bind(this));
-
-    // SVG to Ckeditor CSS.
-    // Create styles for the icons for CKEditor.
-    compiler.hooks.emit.tapAsync('svgToCkeditorCss', (compilation, callback) => {
-      // Create [data-selected-icon={icon name}]::before styles.
-      let cssClasses = '';
-      while(this.ckeditorVariables.length) {
-        let fullFilename = this.ckeditorVariables.shift();
-        let filename = fullFilename.replace(/^.*[\\\/]/, '')
-        let name = filename.split('.');
-        cssClasses += `[data-selected-icon=${name[0]}]::before{` +
-          `-webkit-mask-image:var(--${this.iconClass}-icon--${name[0]});` +
-          `mask-image:var(--${this.iconClass}-icon--${name[0]})` +
-          `}`;
-      }
-
-      // Combine CSS variables and classes.
-      let filelist = cssClasses;
-
-      // Compile the assets.
-      compilation.assets[this.svgToCkeditorCssOutputFilename] = {
-        source: function() {
-          return filelist;
-        },
-        size: function() {
-          return filelist.length;
-        }
-      };
-      callback();
-    });
-    compiler.hooks.environment.tap('svgToCkeditorCss', this.checkForFiles.bind(this));
-    compiler.hooks.watchRun.tap('svgToCkeditorCss', this.checkForFiles.bind(this));
 
     // SVG to JSON
     // Create a list of icons in JSON format.
@@ -221,7 +172,6 @@ class svgToSprite {
       if (stats.isFile()) {
         this.classes = [...new Set([...this.classes, pathname])];
         this.cssVariables = [...new Set([...this.cssVariables, pathname])];
-        this.ckeditorVariables = [...new Set([...this.ckeditorVariables, pathname])];
         this.files = [...new Set([...this.files, pathname])];
       }
     });

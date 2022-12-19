@@ -28,11 +28,11 @@ settings:
   handler_settings:
     target_bundles:
       article: article
+      page: page
       landing_page: landing_page
       news_item: news_item
-      page: page
       service: service
-      faq: faq
+      page: page
     sort:
       field: title
       direction: ASC
