@@ -1,19 +1,10 @@
 // stylelint-disable at-rule-empty-line-before
 // This file includes styling for WYSIWYG editor.
 
-@import 'hds';
+@import 'hdbt';
 
 @import '~breakpoint-sass';
 
-@import '../../../../contrib/hdbt/src/scss/00_functions/_index';
-@import '../../../../contrib/hdbt/src/scss/01_variables/_index';
-@import '../../../../contrib/hdbt/src/scss/02_mixins/_index';
-
-// /* Content is created after this point */
-@import '../../../../contrib/hdbt/src/scss/03_generic/_index';
-@import '../../../../contrib/hdbt/src/scss/04_elements/_index';
-@import '../../../../contrib/hdbt/src/scss/05_objects/_index';
-@import '../../../../contrib/hdbt/src/scss/06_components/paragraphs/text';
 
 [data-selected-icon]::before,
 [data-is-external]::after,

@@ -17,3 +17,18 @@ function grants_mandate_preprocess_html(&$variables) {
     $variables['html_attributes']['class'] = 'page--select-applicant-role';
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function grants_mandate_theme() :array {
+  return [
+    'select_applicant_role' => [
+      'variables' => [
+        'icon' => NULL,
+        'role' =>  NULL,
+        'role_description' => NULL,
+      ]
+    ]
+  ];
+}

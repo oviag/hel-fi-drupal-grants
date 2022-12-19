@@ -152,6 +152,21 @@ function grants_handler_theme(): array {
       'render element' => 'form',
       'template' => 'grants-handler-copy-application-modal',
     ],
+
+    'profile_data_icon' => [
+      'variables' => [
+        'text_value' => NULL,
+        'class' => NULL,
+      ],
+    ],
+
+    'hds_notification' => [
+      'variables' => [
+        'type' => NULL,
+        'label' => NULL,
+        'body' => NULL,
+        ]
+    ]
   ];
 }
 
@@ -401,6 +416,27 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
 }
 
 /**
+ * Handle text value for the description fields.
+ *
+ * @param string|array $textValue
+ *   String or array containing text values.
+ *
+ * @return array
+ *   Returns render array.
+ */
+function _grants_handler_add_checkmark_to_text(string|array $textValue) : array {
+  $description = is_array($textValue)
+    ? implode(', ', $textValue)
+    : $textValue;
+
+  return [
+    '#theme' => 'profile_data_icon',
+    '#text_value' => $description,
+    '#class' => 'hel-icon--size-s',
+  ];
+}
+
+/**
  * Add icons to some.
  *
  * @param mixed $array
@@ -421,8 +457,7 @@ function _grants_handler_imported_handler(
 
   $array["#value"] = $value;
   $array['#attributes'] = ['readonly' => 'readonly', 'style' => 'display:none'];
-  $array['#description'] = FieldFilteredMarkup::create($show_checkmark ? $value .
-    ' <span aria-hidden="true" class="hds-icon hds-icon--check-circle-fill hds-icon--size-s"></span>' : $value);
+  $array['#description'] = $show_checkmark ? _grants_handler_add_checkmark_to_text($value) : $value;
   $array['#wrapper_attributes']['class'][] = 'grants-handler--prefilled-field';
 }
 
@@ -454,19 +489,12 @@ function _grants_handler_missing_data(
     'readonly' => 'readonly',
     'style' => 'display:none',
   ];
-  $element['#description'] = '
-  <section aria-label="Notification" class="hds-notification hds-notification--alert">
-    <div class="hds-notification__content">
-      <div class="hds-notification__label" role="heading" aria-level="2">
-        <span class="hds-icon hds-icon--alert-circle-fill" aria-hidden="true"></span>
-        <span>' . $str1 . '</span>
-      </div>
-      <div class="hds-notification__body">' .
-    Link::createFromRoute($str2, 'grants_profile.show')
-      ->toString() . ' ' . $str3 . '</div>
-    </div>
-  </section>
-  ';
+  $element['#description'] = [
+    '#theme' => 'hds_notification',
+    '#type' => 'alert',
+    '#label' => $str1,
+    '#body' => Link::createFromRoute($str2, 'grants_profile.show')->toString() . ' ' . $str3,
+  ];
 }
 
 /**
@@ -521,34 +549,19 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
 
     $infoelement = [
       'omat_tiedot_page_infobox' => [
-        '#markup' => '
-  <section aria-label="Notification" class="hds-notification">
-    <div class="hds-notification__content">
-      <div class="hds-notification__label" role="heading" aria-level="2">
-        <span class="hds-icon hds-icon--info-circle-fill" aria-hidden="true"></span>
-        <span>' . t('Some information fetched from personal information') . '</span>
-      </div>
-      <div class="hds-notification__body">
-        ' . t('Check the information on the form before sending the application. You can change your own information from personal information section of the site.') . '
-      </div>
-    </div>
-  </section>
-  ',
+        '#theme' => 'hds_notification',
+        '#type' => 'notification',
+        '#label' => t('Some information fetched from personal information'),
+        '#body' => t('Check the information on the form before sending the application. You can change your own information from personal information section of the site.'),
       ],
     ];
     $required_fields_info_element = [
-      'required_fields_infobox' => [
-        '#markup' => '
-  <section aria-label="Notification" class="hds-notification">
-    <div class="hds-notification__content">
-      <div class="hds-notification__label" role="heading" aria-level="2">
-        <span class="hds-icon hds-icon--info-circle-fill" aria-hidden="true"></span>
-        <span>' . t('Fields marked with an asterisk * are required, that need to be filled before saving.') . '</span>
-      </div>
-    </div>
-  </section>
-  ',
-      ],
+      'required_fields_infobox' =>
+        [
+          '#theme' => 'hds_notification',
+          '#type' => 'notification',
+          '#label' => t('Fields marked with an asterisk * are required, that need to be filled before saving.'),
+        ],
     ];
 
     if (!$isClosed && array_key_exists('1_hakijan_tiedot', $form['elements']) && is_array($form['elements']['1_hakijan_tiedot'])) {
@@ -907,7 +920,9 @@ function grants_handler_preprocess_webform_submission_attachment_list(&$variable
 
   $attachments = [];
 
-  foreach ($submissionData['attachments'] as $att) {
+  $attachmentsData = array_merge($submissionData['attachments'], $submissionData['muu_liite']);
+
+  foreach ($attachmentsData as $att) {
     if (isset($att['fileName'])) {
       try {
         $fileUploadTime = AttachmentHandler::getAttachmentUploadTime($attachmentEventsHandler['events'], $att['fileName']);
@@ -966,8 +981,8 @@ function grants_handler_preprocess_application_list_item(&$variables) {
       }
     }
     else {
-      if (isset($submissionData["form_timestamp_created"]) && !empty($submissionData["form_timestamp_created"])) {
-        $dt = new DateTime($submissionData["form_timestamp_created"], new DateTimeZone('Europe/Helsinki'));
+      if (isset($submissionData["form_timestamp_submitted"]) && !empty($submissionData["form_timestamp_submitted"])) {
+        $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
         $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
         $variables['applicationSubmittedSortable'] = $dt->format('Y-m-d\TH:i:s');
       }
@@ -1088,18 +1103,34 @@ function grants_handler_preprocess_application_status_tag(&$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function grants_handler_preprocess_grants_handler_completion(&$variables) {
+
+  $theme_handler = \Drupal::service('theme_handler');
+  $theme_path = '/' . $theme_handler->getTheme('hdbt')->getPath();
+
   $variables['statusTag'] = [
     '#theme' => 'application_status_tag',
     '#applicationID' => $variables["submissionId"],
   ];
-  $variables['ownApplicationsLink'] = Link::createFromRoute(t('Grants profile'), 'grants_oma_asiointi.front')
-    ->toRenderable();
-  $variables['ownApplicationsLink']['#title'] = ['#markup' => '<span class="hds-button__label">' . $variables['ownApplicationsLink']['#title'] . '</span><span aria-hidden="true" class="hds-icon hds-icon--arrow-right"></span>'];
-  $variables['ownApplicationsLink']['#attributes'] = ['class' => 'hds-button hds-button--primary'];
-  $variables['viewApplicationLink'] = Link::createFromRoute(t('View Application'), 'grants_handler.view_application', ['submission_id' => $variables["submissionId"]])
-    ->toRenderable();
-  $variables['viewApplicationLink']['#title'] = ['#markup' => '<span class="hds-button__label">' . $variables['viewApplicationLink']['#title'] . '</span><span aria-hidden="true" class="hds-icon hds-icon--eye"></span>'];
-  $variables['viewApplicationLink']['#attributes'] = ['class' => 'hds-button hds-button--secondary'];
+  $variables['ownApplicationsLink'] = twig_render_template(
+    $theme_path . '/templates/navigation/link-button.html.twig',
+    [
+      'type' => 'primary',
+      'icon' => TRUE,
+      'icon_type' => 'arrow-right',
+      'url' => Url::fromRoute('grants_oma_asiointi.front'),
+      'label' => t('My applications'),
+      'theme_hook_original' => '',
+    ]);
+  $variables['viewApplicationLink'] = twig_render_template(
+    $theme_path . '/templates/navigation/link-button.html.twig',
+    [
+      'type' => 'secondary',
+      'icon' => TRUE,
+      'icon_type' => 'eye',
+      'url' => Url::fromRoute('grants_handler.view_application', ['submission_id' => $variables["submissionId"]]),
+      'label' => t('View Application'),
+      'theme_hook_original' => '',
+    ]);
 
   try {
     $submissionObject = $variables['submissionObject'];
@@ -1195,8 +1226,12 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
       ],
     ]
   );
+  $printApplicationLinkText = [
+    '#theme' => 'edit-label-with-icon',
+    '#icon' => 'printer',
+    '#text_label' => t('Print application'),
+  ];
 
-  $printApplicationLinkText = Markup::create('<span aria-hidden="true" class="hds-icon hds-icon--printer"></span><span class="hds-button__label">' . t('Print application') . '</span>');
   $printApplicationLink = Link::fromTextAndUrl($printApplicationLinkText, $printApplicationUrl);
   $variables['printApplicationLink'] = $printApplicationLink;
 
@@ -1215,7 +1250,12 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
   );
 
   if (ApplicationHandler::isSubmissionEditable($submission)) {
-    $editApplicationLinkText = Markup::create('<span class="hds-button__label">' . t('Edit application') . '</span><span aria-hidden="true" class="hds-icon hds-icon--pen-line"></span>');
+
+    $editApplicationLinkText = [
+      '#theme' => 'edit-label-with-icon',
+      '#icon' => 'pen-line',
+      '#text_label' => t('Edit application'),
+    ];
     $editApplicationLink = Link::fromTextAndUrl($editApplicationLinkText, $editApplicationUrl);
     $variables['editApplicationLink'] = $editApplicationLink;
   }
@@ -1237,7 +1277,11 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
         ],
       ]
     );
-    $copyApplicationLinkText = Markup::create('<span aria-hidden="true" class="hds-icon hds-icon--copy"></span><span class="hds-button__label">' . t('Copy application') . '</span>');
+    $copyApplicationLinkText = [
+      '#theme' => 'edit-label-with-icon',
+      '#icon' => 'copy',
+      '#text_label' => t('Copy application'),
+    ];
     $copyApplicationLink = Link::fromTextAndUrl($copyApplicationLinkText, $copyApplicationUrl);
     $variables['copyApplicationLink'] = $copyApplicationLink;
   }
@@ -1253,7 +1297,7 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
 
   try {
     $dt = new \DateTime($submissionData['form_timestamp'], new \DateTimeZone('Europe/Helsinki'));
-    $variables['applicationSent'] = $dt->format('Y-m-d H:i');
+    $variables['applicationSent'] = $dt->format('d.m.Y H:i');
   }
   catch (Exception $e) {
   }
@@ -1313,5 +1357,13 @@ function grants_handler_node_access(EntityInterface $entity, $operation, Account
       $result = AccessResult::forbidden();
     }
   }
+
   return $result;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function grants_handler_preprocess_compensation_composite(&$variables) {
+  // Empty method just to shut up log warnings.
 }
