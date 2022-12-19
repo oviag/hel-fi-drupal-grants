@@ -231,17 +231,12 @@ class HelfiGdprApiController extends ControllerBase {
 
     $this->debug('GDPR Api access called. JWT token: @token', ['@token' => $this->jwtToken]);
 
-    if (str_contains(strtolower(getenv('APP_ENV')), 'local')) {
-      $this->debug('Local access granted. JWT token: @token', ['@token' => $this->jwtToken]);
-      return AccessResult::allowed();
-    }
-
     if (!$this->helsinkiProfiiliUserData->verifyJwtToken($this->jwtToken)) {
       return AccessResult::forbidden('Token verfication failed.');
     }
 
     // If audience does not match, forbid access.
-    if ($this->jwtData['aud'] != $this->audienceConfig["audience_host"] . $this->audienceConfig["service_name"]) {
+    if ($this->jwtData['aud'] != $this->audienceConfig["audience_host"] .'/'. $this->audienceConfig["service_name"]) {
       $this->debug(
         'Access DENIED. Reason: @reason. JWT token: @token',
         [
@@ -277,6 +272,7 @@ class HelfiGdprApiController extends ControllerBase {
           'Local access DENIED. Reason: @reason. JWT token: @token',
           [
             '@token' => $this->jwtToken,
+            '@config' => Json::encode($this->audienceConfig),
             '@reason' => 'Incorrect scope',
           ]);
         // If no host/scope setting in jwt data, forbid access.
