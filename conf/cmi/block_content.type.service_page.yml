@@ -1,8 +1,0 @@
-uuid: ff1ad496-ec3f-4173-9967-33b2db3efebd
-langcode: fi
-status: true
-dependencies: {  }
-id: service_page
-label: 'Service Page'
-revision: 0
-description: 'Lohkot palvelukuvaussivuille'

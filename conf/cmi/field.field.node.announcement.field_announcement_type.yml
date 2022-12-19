@@ -13,7 +13,7 @@ id: node.announcement.field_announcement_type
 field_name: field_announcement_type
 entity_type: node
 bundle: announcement
-label: Type
+label: Tyyppi
 description: ''
 required: true
 translatable: false
