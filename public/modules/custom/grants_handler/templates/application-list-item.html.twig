@@ -7,7 +7,7 @@
   <div class="application-list__item__row" data-open-start="{{ openStartDate }}" data-open-end="{{ openEndDate }}">
     {% if (statusString == 'DRAFT' and errorType == 'NOT_OPEN') %}
       <div data-status="ERROR" class="hide-spinner application-list__item--status application-list__item--status--error" data-application-number="{{ applicationNumber }}">
-        <span class="hds-icon hds-icon--alert-circle hds-icon--size-s" aria-hidden="true"></span>
+        <span class="hel-icon hel-icon--alert-circle hel-icon--size-s" aria-hidden="true"></span>
         <span>{{ "Draft expired"|t }}</span>
       </div>
     {% else %}
@@ -16,7 +16,7 @@
     {% if (statusString == 'DRAFT') %}
         <div class="application-list__item--delete">
           <a class="hds-link hds-link--medium" href="{{ deleteApplicationUrl }}">
-            <span aria-hidden="true" class="hds-icon hds-icon--trash hds-icon--size-s"></span><span class="link-label">
+            <span aria-hidden="true" class="hel-icon hel-icon--trash hel-icon--size-s"></span><span class="link-label">
           {{ "Delete application"|t }}
         </span>
           </a>
@@ -24,7 +24,7 @@
     {% else %}
       <div class="application-list__item--print">
         <a class="hds-link hds-link--medium" href="{{ printApplicationUrl }}">
-          <span aria-hidden="true" class="hds-icon hds-icon--printer hds-icon--size-s"></span><span class="link-label">
+          <span aria-hidden="true" class="hel-icon hel-icon--printer hel-icon--size-s"></span><span class="link-label">
           {{ "Print application"|t }}
         </span>
         </a>
@@ -47,7 +47,7 @@
         <div class="hds-notification hds-notification--error">
           <div class="hds-notification__content">
             <div class="hds-notification__label" role="heading" aria-level="2">
-              <span class="hds-icon hds-icon--alert-circle-fill" aria-hidden="true"></span>
+              <span class="hel-icon hel-icon--alert-circle-fill" aria-hidden="true"></span>
               <span>{{ "This application is not open"|t }}</span>
             </div>
             <div class="hds-notification__body">
@@ -72,11 +72,11 @@
   </div>
   {% if (statusString == 'DRAFT') %}
     <div class="application-list__item__link">
-      {{ editApplicationLink }}&nbsp;<i class="hds-icon icon hds-icon--arrow-right hds-icon--size-m vertical-align-small-or-medium-icon" aria-hidden="true"></i>
+      {{ editApplicationLink }}&nbsp;<i class="hel-icon icon hel-icon--arrow-right hel-icon--size-m vertical-align-small-or-medium-icon" aria-hidden="true"></i>
     </div>
   {% else %}
     <div class="application-list__item__link">
-      {{ viewApplicationLink }}&nbsp;<i class="hds-icon icon hds-icon--arrow-right hds-icon--size-m vertical-align-small-or-medium-icon" aria-hidden="true"></i>
+      {{ viewApplicationLink }}&nbsp;<i class="hel-icon icon hel-icon--arrow-right hel-icon--size-m vertical-align-small-or-medium-icon" aria-hidden="true"></i>
     </div>
   {% endif %}
 </li>

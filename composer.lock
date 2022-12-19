@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60fbbd03da738614a7e58cde37a641c4",
+    "content-hash": "fb362f4ebe301d90da70393cd5e2b403",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5398,12 +5398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv.git",
-                "reference": "8b73769ad01c8922bc12c90665da3622e9d3230f"
+                "reference": "63c570108852bf6dcde7b5b631209cc0fc260d5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-atv/zipball/8b73769ad01c8922bc12c90665da3622e9d3230f",
-                "reference": "8b73769ad01c8922bc12c90665da3622e9d3230f",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-atv/zipball/63c570108852bf6dcde7b5b631209cc0fc260d5a",
+                "reference": "63c570108852bf6dcde7b5b631209cc0fc260d5a",
                 "shasum": ""
             },
             "require": {
@@ -5423,7 +5423,7 @@
                 "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv/tree/develop",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv/issues"
             },
-            "time": "2022-12-13T10:52:40+00:00"
+            "time": "2022-11-24T13:56:37+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
@@ -5463,12 +5463,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-tools.git",
-                "reference": "9edd96c790bb0b74544195066d37e1ea797cd34f"
+                "reference": "57f9220970391c53bb51c7f3558672fb2d315bf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-tools/zipball/9edd96c790bb0b74544195066d37e1ea797cd34f",
-                "reference": "9edd96c790bb0b74544195066d37e1ea797cd34f",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-tools/zipball/57f9220970391c53bb51c7f3558672fb2d315bf7",
+                "reference": "57f9220970391c53bb51c7f3558672fb2d315bf7",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5481,7 +5481,7 @@
                 "source": "https://github.com/City-of-Helsinki/drupal-tools/tree/main",
                 "issues": "https://github.com/City-of-Helsinki/drupal-tools/issues"
             },
-            "time": "2022-12-12T11:46:44+00:00"
+            "time": "2022-12-07T07:51:28+00:00"
         },
         {
             "name": "drupal/helfi_formtool_embed",
@@ -5774,47 +5774,6 @@
                 "issues": "https://github.com/City-of-Helsinki/drupal-helfi-platform-config/issues"
             },
             "time": "2022-12-01T09:49:10+00:00"
-        },
-        {
-            "name": "drupal/helfi_proxy",
-            "version": "3.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-proxy.git",
-                "reference": "569383371028ec22e3a82c9ebc2c20ddced5a075"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-proxy/zipball/569383371028ec22e3a82c9ebc2c20ddced5a075",
-                "reference": "569383371028ec22e3a82c9ebc2c20ddced5a075",
-                "shasum": ""
-            },
-            "require": {
-                "drupal/helfi_api_base": "*",
-                "drupal/purge": "^3.0",
-                "drupal/varnish_purge": "^2.1",
-                "ext-dom": "*",
-                "ext-libxml": "*",
-                "php": "^8.0"
-            },
-            "conflict": {
-                "drupal/helfi_tunnistamo": "<=2.2.1"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-                "drupal/coder": "^8.3",
-                "phpspec/prophecy-phpunit": "^2"
-            },
-            "type": "drupal-module",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "Provides various fixes so we can serve multiple Drupal instances in one domain.",
-            "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-proxy/tree/3.0.0",
-                "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-proxy/issues"
-            },
-            "time": "2022-11-10T04:53:14+00:00"
         },
         {
             "name": "drupal/helfi_tpr",
@@ -7609,65 +7568,6 @@
             }
         },
         {
-            "name": "drupal/purge",
-            "version": "3.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/purge.git",
-                "reference": "8.x-3.4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/purge-8.x-3.4.zip",
-                "reference": "8.x-3.4",
-                "shasum": "deb4eccfe88af35445e8064a9a4a8a056bfb917f"
-            },
-            "require": {
-                "drupal/core": "^9.2 || ^10"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-3.4",
-                    "datestamp": "1663189449",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "branch-alias": {
-                    "dev-8.x-3.x": "3.x-dev"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Niels van Mourik",
-                    "homepage": "http://www.nielsvm.org"
-                },
-                {
-                    "name": "japerry",
-                    "homepage": "https://www.drupal.org/user/45640"
-                },
-                {
-                    "name": "nielsvm",
-                    "homepage": "https://www.drupal.org/user/163285"
-                },
-                {
-                    "name": "SqyD",
-                    "homepage": "https://www.drupal.org/user/106525"
-                }
-            ],
-            "description": "Provides a generic external cache invalidation API and queue service.",
-            "homepage": "https://www.drupal.org/project/purge",
-            "support": {
-                "source": "https://git.drupalcode.org/project/purge"
-            }
-        },
-        {
             "name": "drupal/radioactivity",
             "version": "4.0.3",
             "source": {
@@ -8623,66 +8523,6 @@
             }
         },
         {
-            "name": "drupal/varnish_purge",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/varnish_purge.git",
-                "reference": "8.x-2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/varnish_purge-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "695eb7d81816e013e81d36207cfac162dd3cbe9f"
-            },
-            "require": {
-                "drupal/core": "^8 || ^9"
-            },
-            "require-dev": {
-                "drupal/purge": "*",
-                "drupal/purge_tokens": "*",
-                "drupal/varnish_purger-varnish_purger": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1615977068",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "MiSc",
-                    "homepage": "https://www.drupal.org/user/382892"
-                },
-                {
-                    "name": "deadbeef",
-                    "homepage": "https://www.drupal.org/user/93644"
-                },
-                {
-                    "name": "javivf",
-                    "homepage": "https://www.drupal.org/user/2789335"
-                },
-                {
-                    "name": "littlethoughts",
-                    "homepage": "https://www.drupal.org/user/2479724"
-                }
-            ],
-            "homepage": "https://www.drupal.org/project/varnish_purge",
-            "support": {
-                "source": "https://git.drupalcode.org/project/varnish_purge"
-            }
-        },
-        {
             "name": "drupal/view_unpublished",
             "version": "1.0.0",
             "source": {
@@ -8957,12 +8797,12 @@
                 "drupal/telephone_validation": "~2.0",
                 "drupal/token": "~1.0",
                 "drupal/variationcache": "~1.0",
-                "drupal/webform-webform_group": "*",
                 "drupal/webform_access": "*",
                 "drupal/webform_attachment": "*",
                 "drupal/webform_clientside_validation": "*",
                 "drupal/webform_devel": "*",
                 "drupal/webform_entity_print": "*",
+                "drupal/webform_group": "*",
                 "drupal/webform_node": "*",
                 "drupal/webform_options_limit": "*",
                 "drupal/webform_scheduled_email": "*",
@@ -18071,16 +17911,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.27",
+            "version": "9.5.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a2bc7ffdca99f92d959b3f2270529334030bba38"
+                "reference": "851867efcbb6a1b992ec515c71cdcf20d895e9d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a2bc7ffdca99f92d959b3f2270529334030bba38",
-                "reference": "a2bc7ffdca99f92d959b3f2270529334030bba38",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/851867efcbb6a1b992ec515c71cdcf20d895e9d2",
+                "reference": "851867efcbb6a1b992ec515c71cdcf20d895e9d2",
                 "shasum": ""
             },
             "require": {
@@ -18153,7 +17993,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.27"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.26"
             },
             "funding": [
                 {
@@ -18169,7 +18009,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-09T07:31:23+00:00"
+            "time": "2022-10-28T06:00:21+00:00"
         },
         {
             "name": "sebastian/cli-parser",
