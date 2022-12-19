@@ -920,7 +920,9 @@ function grants_handler_preprocess_webform_submission_attachment_list(&$variable
 
   $attachments = [];
 
-  foreach ($submissionData['attachments'] as $att) {
+  $attachmentsData = array_merge($submissionData['attachments'], $submissionData['muu_liite']);
+
+  foreach ($attachmentsData as $att) {
     if (isset($att['fileName'])) {
       try {
         $fileUploadTime = AttachmentHandler::getAttachmentUploadTime($attachmentEventsHandler['events'], $att['fileName']);
@@ -979,8 +981,8 @@ function grants_handler_preprocess_application_list_item(&$variables) {
       }
     }
     else {
-      if (isset($submissionData["form_timestamp_created"]) && !empty($submissionData["form_timestamp_created"])) {
-        $dt = new DateTime($submissionData["form_timestamp_created"], new DateTimeZone('Europe/Helsinki'));
+      if (isset($submissionData["form_timestamp_submitted"]) && !empty($submissionData["form_timestamp_submitted"])) {
+        $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
         $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
         $variables['applicationSubmittedSortable'] = $dt->format('Y-m-d\TH:i:s');
       }
@@ -1295,7 +1297,7 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
 
   try {
     $dt = new \DateTime($submissionData['form_timestamp'], new \DateTimeZone('Europe/Helsinki'));
-    $variables['applicationSent'] = $dt->format('Y-m-d H:i');
+    $variables['applicationSent'] = $dt->format('d.m.Y H:i');
   }
   catch (Exception $e) {
   }

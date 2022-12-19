@@ -37,7 +37,7 @@ ad_role_mappings:
   sl_avustustest_ta_sote_kayttajat:
     - ad_user
     - content_producer_industry
-  sl_avustus_paakayttajat:
+  sl_avustus_kanslia_paakayttajat:
     - ad_user
     - grants_admin
   sl_avustus_pk_kanslia:

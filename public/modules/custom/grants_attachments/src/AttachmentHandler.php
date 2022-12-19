@@ -288,6 +288,7 @@ class AttachmentHandler {
             $fileType = $fieldElement["fileType"];
           }
           else {
+            // @todo Is this really necessary. Please, please try to debug so that this can be removed.
             if (isset($form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$attachmentFieldName]["#filetype"])) {
               $fileType = $form["elements"]["lisatiedot_ja_liitteet"]["liitteet"][$attachmentFieldName]["#filetype"];
             }

@@ -7,7 +7,9 @@ dependencies:
     - node.type.announcement
     - node.type.article
     - node.type.landing_page
+    - node.type.news_item
     - node.type.page
+    - node.type.service
 _core:
   default_config_hash: UwT_yrGRrynRfR0F0zXFhepRZ13vlW6y5AJEMPmZ8dY
 id: node.announcement.field_announcement_content_pages
@@ -25,8 +27,10 @@ settings:
   handler_settings:
     target_bundles:
       article: article
-      page: page
       landing_page: landing_page
+      news_item: news_item
+      service: service
+      page: page
     sort:
       field: title
       direction: ASC
