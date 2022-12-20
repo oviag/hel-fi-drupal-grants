@@ -198,7 +198,7 @@ class HelfiGdprApiController extends ControllerBase {
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   JsonResponse.
    */
-  public function delete($userId) {
+  public function delete($userId): JsonResponse {
 
     try {
       $user = $this->getUser();
