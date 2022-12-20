@@ -33,8 +33,6 @@ use Carbon\Carbon;
  */
 class HelfiGdprApiController extends ControllerBase {
 
-
-
   /**
    * Profiili data access.
    *
@@ -106,14 +104,20 @@ class HelfiGdprApiController extends ControllerBase {
   protected bool $debug;
 
   /**
+   * Is debug on?
+   *
    * @return bool
+   *   Debug on / off?
    */
   public function isDebug(): bool {
     return $this->debug;
   }
 
   /**
+   * Set debug value.
+   *
    * @param bool $debug
+   *   True / False?
    */
   public function setDebug(bool $debug): void {
     $this->debug = $debug;
@@ -141,7 +145,7 @@ class HelfiGdprApiController extends ControllerBase {
       ->get('audience_config');
 
     $this->setDebug(getenv('DEBUG') == 'true' || getenv('DEBUG') == TRUE);
-    $this->parseJWT();
+    $this->parseJwt();
   }
 
   /**
@@ -184,7 +188,7 @@ class HelfiGdprApiController extends ControllerBase {
       return new JsonResponse(NULL, 404);
     }
 
-    return new JsonResponse(Json::encode($data));
+    return new JsonResponse($data);
 
   }
 
@@ -192,6 +196,7 @@ class HelfiGdprApiController extends ControllerBase {
    * Builds the response.
    *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   JsonResponse.
    */
   public function delete($userId) {
 
@@ -200,6 +205,7 @@ class HelfiGdprApiController extends ControllerBase {
       $user->delete();
 
       $this->atvService->deleteGdprData($this->jwtData['sub']);
+
     }
     catch (AtvDocumentNotFoundException $e) {
       return new JsonResponse(NULL, 404);
@@ -236,7 +242,7 @@ class HelfiGdprApiController extends ControllerBase {
     }
 
     // If audience does not match, forbid access.
-    if ($this->jwtData['aud'] != $this->audienceConfig["audience_host"] .'/'. $this->audienceConfig["service_name"]) {
+    if ($this->jwtData['aud'] != $this->audienceConfig["audience_host"] . '/' . $this->audienceConfig["service_name"]) {
       $this->debug(
         'Access DENIED. Reason: @reason. JWT token: @token',
         [
@@ -246,7 +252,8 @@ class HelfiGdprApiController extends ControllerBase {
       return AccessResult::forbidden('Audience mismatch');
     }
 
-    // Check the expiration time - note this will cause an error if there is no 'exp' claim in the token.
+    // Check the expiration time - note this will cause an error if there
+    // is no 'exp' claim in the token.
     $expiration = Carbon::createFromTimestamp($this->jwtData['exp']);
     $tokenExpired = (Carbon::now()->diffInSeconds($expiration, FALSE) < 0);
 
@@ -315,9 +322,9 @@ class HelfiGdprApiController extends ControllerBase {
   }
 
   /**
-   * @return void
+   * Parse jwt token data from token in request.
    */
-  public function parseJWT() {
+  public function parseJwt(): void {
 
     $currentRequest = $this->request->getCurrentRequest();
     $jwtToken = str_replace('Bearer ', '', $currentRequest->headers->get('authorization'));
@@ -527,6 +534,7 @@ class HelfiGdprApiController extends ControllerBase {
    * Get user from database.
    *
    * @return \Drupal\Core\Entity\EntityBase|\Drupal\Core\Entity\EntityInterface|\Drupal\user\Entity\User|null
+   *   User or some other types.
    */
   public function getUser(): User|EntityBase|EntityInterface|null {
     $query = $this->connection->select('users', 'u',);

@@ -101,7 +101,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['registered']['info'] = [
       '#theme' => 'select_applicant_role',
       '#icon' => 'group',
-      '#role' =>  $this->t('Registered community'),
+      '#role' => $this->t('Registered community'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
     $form['actions']['registered']['submit'] = [

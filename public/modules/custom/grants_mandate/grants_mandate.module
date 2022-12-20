@@ -26,9 +26,9 @@ function grants_mandate_theme() :array {
     'select_applicant_role' => [
       'variables' => [
         'icon' => NULL,
-        'role' =>  NULL,
+        'role' => NULL,
         'role_description' => NULL,
-      ]
-    ]
+      ],
+    ],
   ];
 }

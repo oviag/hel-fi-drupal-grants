@@ -78,7 +78,7 @@ function grants_profile_theme(): array {
     'variables' => [
       'icon' => NULL,
       'text_label' => NULL,
-    ]
+    ],
   ];
 
   return $theme;
