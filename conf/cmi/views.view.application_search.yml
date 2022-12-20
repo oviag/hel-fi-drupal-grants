@@ -1029,7 +1029,7 @@ display:
               admin: '0'
           is_grouped: true
           group_info:
-            label: 'Näytä vain julkaistut sisällöt'
+            label: 'Näytä vain haettavissa olevat avustukset'
             description: ''
             identifier: field_application_open_value
             optional: true
