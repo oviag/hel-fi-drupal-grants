@@ -10,51 +10,51 @@ clients:
   hp_user_client: tunnistamo
   hp_admin_client: tunnistamoadmin
 ad_role_mappings:
-  sl_AvustusTest_paakayttajat:
+  sl_avustustest_paakayttajat:
     - ad_user
     - grants_admin
-  sl_AvustusTest_PK_Kanslia_kayttajat:
-    - ad_user
-    - content_producer_industry
-  sl_AvustusTest_TA_Kasko_käyttajat:
-    - ad_user
-    - content_producer_industry
-  sl_AvustusTest_PK_Pel_käyttajat:
-    - ad_user
-    - content_producer_industry
-  sl_AvustusTest_TA_Kymp_käyttajat:
-    - ad_user
-    - content_producer_industry
-  sl_AvustusTest_TA_Kuva_käyttajat:
-    - ad_user
-    - content_producer_industry
-  sl_AvustusTest_TA_Sote_kayttajat:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_paakayttajat:
-    - ad_user
-    - grants_admin
-  sl_Avustus_PK_Kanslia:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_TA_Kasko:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_TA_Kymp:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_PK_Pel:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_TA_Kuva:
-    - ad_user
-    - content_producer_industry
-  sl_Avustus_TA_Sote:
-    - ad_user
-    - content_producer_industry
   sl_kanslia_owakayttajat:
     - ad_user
-    - content_producer_industry
+    - grants_admin
   sg_kanslia_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_pk_kanslia_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kasko_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_pk_pel_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kymp_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kuva_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_sote_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_kanslia_paakayttajat:
+    - ad_user
+    - grants_admin
+  sl_avustus_pk_kanslia:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kasko:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kymp:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_pk_pel:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kuva:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_sote:
     - ad_user
     - content_producer_industry

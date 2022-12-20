@@ -16,6 +16,58 @@ use Drupal\taxonomy\Entity\Term;
  */
 
 /**
+ * Implements hook_preprocess_HOOK().
+ */
+function helfi_grant_applications_preprocess_block(&$variables) {
+  if (isset($variables['elements']['#id'])) {
+    $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function helfi_grant_applications_theme_suggestions_block_alter(&$suggestions) {
+  // Load theme suggestions for blocks from parent theme.
+  foreach ($suggestions as &$suggestion) {
+    $suggestion = str_replace('hdbt_subtheme_', '', $suggestion);
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ *
+ * Provide block based menu suggestions.
+ */
+function helfi_grant_applications_theme_suggestions_menu_alter(&$suggestions, $variables) {
+  if (isset($variables['attributes']['block_id'])) {
+    $block_id = str_replace('hdbt_subtheme_', '', $variables['attributes']['block_id']);
+
+    switch ($block_id) {
+      case 'mobile_navigation':
+        $suggestions[] = 'menu__mobile';
+        break;
+
+      case 'mainnavigation':
+        $suggestions[] = 'menu__main__desktop';
+        break;
+
+      case 'main_navigation_level_2':
+        $suggestions[] = 'menu__main__sidebar';
+        break;
+
+      case 'brandingnavigation':
+        $suggestions[] = 'menu__main__branding';
+        break;
+
+      default:
+        $suggestions[] = 'menu__' . $variables['attributes']['block_id'];
+        break;
+    }
+  }
+}
+
+/**
  * Helper function to get the icons path.
  *
  * @return string|null
@@ -75,16 +127,24 @@ function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
   $view = $variables['view'];
 
   if ($view->id() === 'application_search') {
-    $dateIcon = '<span aria-hidden="true" class="hds-icon hds-icon--calendar-clock hds-icon--size-s"></span>';
-    if ($view->field['field_application_continuous']->original_value == '1') {
+    $dateIcon = '<span aria-hidden="true" class="hel-icon hel-icon--calendar-clock hel-icon--size-s"></span>';
+
+    $continous = $variables['fields']['field_application_continuous']->content->__toString();
+
+    // To get this working on development mode.
+    $continous = preg_replace('/<!--(.|\s)*?-->/', '', $continous);
+    $continous = str_replace(array("\n", "\r"), '', $continous);
+
+    if ($continous == "1") {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . t('Continuous application') . '</span>');
-      unset($variables['fields']['field_application_continuous']);
     }
     else {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . $variables['fields']['field_application_period']->content . '</span>');
-      unset($variables['fields']['field_application_continuous']);
     }
+    unset($variables['fields']['field_application_continuous']);
+
     unset($variables['fields']['field_application_open']);
+
     $variables['fields']['view_node']->content = Markup::create(html_entity_decode($variables['fields']['view_node']->content));
     $variables['fields']['field_content']->content = Markup::create(html_entity_decode($variables['fields']['field_content']->content));
   }

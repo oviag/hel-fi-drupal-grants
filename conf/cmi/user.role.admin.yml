@@ -17,6 +17,9 @@ dependencies:
     - node.type.service
     - taxonomy.vocabulary.avustuslaji
     - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.news_group
+    - taxonomy.vocabulary.news_neighbourhoods
+    - taxonomy.vocabulary.news_tags
     - taxonomy.vocabulary.target_group
     - taxonomy.vocabulary.ukk_kategoriat
     - taxonomy.vocabulary.unit_type
@@ -59,7 +62,7 @@ dependencies:
 _core:
   default_config_hash: fnOpQQ5r1eprWvQPrJPWRfDqxozQiZnwIdYFPKb0lbM
 id: admin
-label: Admin
+label: Administrator
 weight: -1
 is_admin: null
 permissions:
@@ -162,6 +165,7 @@ permissions:
   - 'create soundcloud media'
   - 'create terms in avustuslaji'
   - 'create terms in keywords'
+  - 'create terms in news_tags'
   - 'create terms in target_group'
   - 'create terms in ukk_kategoriat'
   - 'create terms in unit_type'
@@ -200,6 +204,9 @@ permissions:
   - 'delete service revisions'
   - 'delete terms in avustuslaji'
   - 'delete terms in keywords'
+  - 'delete terms in news_group'
+  - 'delete terms in news_neighbourhoods'
+  - 'delete terms in news_tags'
   - 'delete terms in target_group'
   - 'delete terms in ukk_kategoriat'
   - 'delete terms in unit_type'
@@ -229,6 +236,7 @@ permissions:
   - 'edit own webform submission'
   - 'edit remote entities'
   - 'edit terms in keywords'
+  - 'edit terms in news_tags'
   - 'edit webform assets'
   - 'edit webform source'
   - 'edit webform twig'

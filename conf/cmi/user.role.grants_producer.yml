@@ -14,6 +14,7 @@ dependencies:
     - node.type.service
     - taxonomy.vocabulary.avustuslaji
     - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.news_tags
     - taxonomy.vocabulary.target_group
     - taxonomy.vocabulary.ukk_kategoriat
     - taxonomy.vocabulary.unit_type
@@ -22,6 +23,7 @@ dependencies:
     - content_translation
     - media
     - menu_link_content
+    - path
     - system
     - taxonomy
     - toolbar
@@ -44,17 +46,21 @@ permissions:
   - 'create soundcloud media'
   - 'create terms in avustuslaji'
   - 'create terms in keywords'
+  - 'create terms in news_tags'
   - 'create terms in target_group'
   - 'create terms in ukk_kategoriat'
   - 'create terms in unit_type'
+  - 'create url aliases'
   - 'create webform'
   - 'delete content translations'
   - 'delete terms in avustuslaji'
   - 'delete terms in keywords'
+  - 'delete terms in news_tags'
   - 'delete terms in target_group'
   - 'delete terms in ukk_kategoriat'
   - 'delete terms in unit_type'
   - 'edit any webform'
+  - 'edit terms in news_tags'
   - 'translate article node'
   - 'translate avustuslaji taxonomy_term'
   - 'translate block_content'

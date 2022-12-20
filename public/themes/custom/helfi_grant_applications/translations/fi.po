@@ -60,3 +60,6 @@ msgstr "Etsi avustusta"
 
 msgid "Filter search"
 msgstr "Rajaa hakua"
+
+msgid "Continuous application"
+msgstr "Jatkuva haku"

@@ -149,7 +149,7 @@ msgid "No profile data available, select company"
 msgstr ""
 
 #: modules/custom/grants_profile/src/Controller/GrantsProfileController.php:99
-msgid "Edit profile <i class=\"hds-icon icon hds-icon--arrow-right hds-icon--size-s vertical-align-small-or-medium-icon\" aria-hidden=\"true\"></i>"
+msgid "Edit profile <i class=\"hel-icon icon hel-icon--arrow-right hel-icon--size-s vertical-align-small-or-medium-icon\" aria-hidden=\"true\"></i>"
 msgstr ""
 
 #: modules/custom/grants_profile/src/Controller/GrantsProfileController.php:204

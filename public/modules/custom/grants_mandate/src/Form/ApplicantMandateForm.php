@@ -99,12 +99,10 @@ class ApplicantMandateForm extends FormBase {
       '#suffix' => '</div>',
     ];
     $form['actions']['registered']['info'] = [
-      '#markup' => '
-      <span aria-hidden="true" class="hds-icon hds-icon--group hds-icon--size-m"></span>
-      <h2 class="hds-card__heading-m heading-m" role="heading" aria-level="2">' . $this->t('Registered community') . '</h2>
-      <div class="hds-card__text">
-        ' . $this->t('This is a short description of the applicant role.') . '
-      </div>',
+      '#theme' => 'select_applicant_role',
+      '#icon' => 'group',
+      '#role' =>  $this->t('Registered community'),
+      '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
     $form['actions']['registered']['submit'] = [
       '#type' => 'submit',

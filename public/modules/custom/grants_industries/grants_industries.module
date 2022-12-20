@@ -16,6 +16,8 @@ declare(strict_types=1);
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\node\NodeInterface;
 use Drupal\user\Entity\User;
@@ -26,12 +28,12 @@ const GRANTS_INDUSTRIES_GID = 123;
 /**
  * Implements hook_form_alter().
  */
-function grants_industries_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function grants_industries_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   if ($form_id == 'user_form') {
     $currentUser = \Drupal::currentUser();
     $roles = $currentUser->getRoles();
-    if (!in_array(['admin','grants_admin'], $roles)) {
+    if (!in_array(['admin', 'grants_admin'], $roles)) {
       $form["field_industry"]["#disabled"] = TRUE;
     }
   }
@@ -97,6 +99,14 @@ function grants_industries_openid_connect_post_authorize(UserInterface $account,
 
   // If user has AD groups.
   if (isset($context["user_data"]["ad_groups"]) && !empty($context["user_data"]["ad_groups"])) {
+
+    Drupal::logger('grants_industries')
+      ->debug('User @username, AdGroups: @adgroups',
+        [
+          '@username' => $account->getAccountName(),
+          '@adgroups' => Json::encode($context["user_data"]["ad_groups"]),
+        ]);
+
     $industryKeys = [];
     // Loop them.
     foreach ($context["user_data"]["ad_groups"] as $ad_group) {

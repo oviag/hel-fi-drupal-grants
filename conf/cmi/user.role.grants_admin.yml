@@ -9,14 +9,17 @@ dependencies:
     - media.type.remote_video
     - media.type.soundcloud
     - node.type.address
+    - node.type.announcement
     - node.type.article
     - node.type.faq
     - node.type.form_page
     - node.type.landing_page
+    - node.type.news_item
     - node.type.page
     - node.type.service
     - taxonomy.vocabulary.avustuslaji
     - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.news_tags
     - taxonomy.vocabulary.target_group
     - taxonomy.vocabulary.ukk_kategoriat
     - taxonomy.vocabulary.unit_type
@@ -25,14 +28,14 @@ dependencies:
     - content_lock
     - content_translation
     - entity_usage
+    - external_entities
     - helfi_tpr
     - media
     - menu_link_content
     - node
     - path
     - pathauto
-    - redirect
-    - responsive_image
+    - publication_date
     - role_delegation
     - scheduler
     - system
@@ -61,20 +64,9 @@ permissions:
   - 'access webform overview'
   - 'access webform submission log'
   - 'access webform submission user'
-  - 'administer account settings'
-  - 'administer media'
-  - 'administer media types'
   - 'administer menu'
   - 'administer nodes'
-  - 'administer redirect settings'
-  - 'administer redirects'
-  - 'administer responsive images'
-  - 'administer scheduler'
   - 'administer taxonomy'
-  - 'administer tpr_ontology_word_details'
-  - 'administer tpr_service'
-  - 'administer tpr_unit'
-  - 'administer url aliases'
   - 'administer users'
   - 'administer webform'
   - 'administer webform element access'
@@ -83,19 +75,23 @@ permissions:
   - 'break content lock'
   - 'change own username'
   - 'create address content'
+  - 'create announcement content'
   - 'create article content'
   - 'create content translations'
   - 'create faq content'
   - 'create file media'
   - 'create helfi_chart media'
+  - 'create helfi_news external entity'
   - 'create image media'
   - 'create landing_page content'
+  - 'create news_item content'
   - 'create page content'
   - 'create remote_video media'
   - 'create service content'
   - 'create soundcloud media'
   - 'create terms in avustuslaji'
   - 'create terms in keywords'
+  - 'create terms in news_tags'
   - 'create terms in target_group'
   - 'create terms in ukk_kategoriat'
   - 'create terms in unit_type'
@@ -103,7 +99,9 @@ permissions:
   - 'create webform'
   - 'delete address revisions'
   - 'delete all revisions'
+  - 'delete announcement revisions'
   - 'delete any address content'
+  - 'delete any announcement content'
   - 'delete any article content'
   - 'delete any faq content'
   - 'delete any file media'
@@ -111,6 +109,7 @@ permissions:
   - 'delete any helfi_chart media'
   - 'delete any image media'
   - 'delete any landing_page content'
+  - 'delete any news_item content'
   - 'delete any page content'
   - 'delete any remote_video media'
   - 'delete any service content'
@@ -122,32 +121,41 @@ permissions:
   - 'delete faq revisions'
   - 'delete form_page revisions'
   - 'delete landing_page revisions'
+  - 'delete news_item revisions'
+  - 'delete own announcement content'
   - 'delete own article content'
   - 'delete own faq content'
   - 'delete own form_page content'
   - 'delete own landing_page content'
+  - 'delete own news_item content'
   - 'delete own page content'
   - 'delete own service content'
   - 'delete page revisions'
   - 'delete service revisions'
   - 'delete terms in avustuslaji'
   - 'delete terms in keywords'
+  - 'delete terms in news_tags'
   - 'delete terms in target_group'
   - 'delete terms in ukk_kategoriat'
   - 'delete terms in unit_type'
   - 'edit any address content'
+  - 'edit any announcement content'
   - 'edit any article content'
   - 'edit any faq content'
   - 'edit any form_page content'
   - 'edit any landing_page content'
+  - 'edit any news_item content'
   - 'edit any page content'
   - 'edit any service content'
   - 'edit any webform'
   - 'edit any webform submission'
+  - 'edit own announcement content'
+  - 'edit own news_item content'
   - 'edit own webform'
   - 'edit own webform submission'
   - 'edit terms in avustuslaji'
   - 'edit terms in keywords'
+  - 'edit terms in news_tags'
   - 'edit terms in target_group'
   - 'edit terms in ukk_kategoriat'
   - 'edit terms in unit_type'
@@ -158,13 +166,19 @@ permissions:
   - 'notify of path changes'
   - 'revert address revisions'
   - 'revert all revisions'
+  - 'revert announcement revisions'
   - 'revert article revisions'
   - 'revert faq revisions'
   - 'revert form_page revisions'
   - 'revert landing_page revisions'
+  - 'revert news_item revisions'
   - 'revert page revisions'
   - 'revert service revisions'
+  - 'schedule publishing of nodes'
   - 'select account cancellation method'
+  - 'set announcement published on date'
+  - 'set news_item published on date'
+  - 'translate announcement node'
   - 'translate article node'
   - 'translate avustuslaji taxonomy_term'
   - 'translate block_content'
@@ -174,6 +188,8 @@ permissions:
   - 'translate keywords taxonomy_term'
   - 'translate landing_page node'
   - 'translate menu_link_content'
+  - 'translate news_item node'
+  - 'translate news_tags taxonomy_term'
   - 'translate remote_video media'
   - 'translate service node'
   - 'translate target_group taxonomy_term'
@@ -183,13 +199,16 @@ permissions:
   - 'update content translations'
   - 'view address revisions'
   - 'view all revisions'
+  - 'view announcement revisions'
   - 'view any webform submission'
   - 'view article revisions'
   - 'view faq revisions'
   - 'view landing_page revisions'
+  - 'view news_item revisions'
   - 'view own unpublished content'
   - 'view own unpublished media'
   - 'view page revisions'
+  - 'view scheduled content'
   - 'view service revisions'
   - 'view the administration theme'
   - 'view unpublished tpr_errand_service'

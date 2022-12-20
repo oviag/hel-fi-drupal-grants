@@ -16,6 +16,7 @@ use Drupal\grants_attachments\AttachmentHandler;
 use Drupal\grants_metadata\AtvSchema;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocument;
+use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_atv\AtvService;
 use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
 use Drupal\helfi_helsinki_profiili\ProfileDataException;
@@ -578,6 +579,9 @@ class ApplicationHandler {
         ],
         $refetch
       );
+      if (empty($document)) {
+        throw new AtvDocumentNotFoundException('Document not found');
+      }
       /** @var \Drupal\helfi_atv\AtvDocument $document */
       $document = reset($document);
     }
@@ -614,6 +618,41 @@ class ApplicationHandler {
       return $submissionObject;
     }
     return NULL;
+  }
+
+  /**
+   * Check if application is open.
+   *
+   * In reality check if given date is between other dates.
+   *
+   * @param \Drupal\webform\Entity\Webform $webform
+   *   Webform.
+   *
+   * @return bool
+   *   Is or not open.
+   */
+  public static function isApplicationOpen(Webform $webform): bool {
+
+    $thirdPartySettings = $webform->getThirdPartySettings('grants_metadata');
+    $applicationContinuous = $thirdPartySettings["applicationContinuous"] == 1;
+
+    try {
+      $now = new \DateTime();
+      $from = new \DateTime($thirdPartySettings["applicationOpen"]);
+      $to = new \DateTime($thirdPartySettings["applicationClose"]);
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('application_handler')->error('isApplicationOpen date error: @error', ['@error' => $e->getMessage()]);
+      return $applicationContinuous;
+    }
+
+    // If today is between open & close dates return true.
+    if ($now->getTimestamp() > $from->getTimestamp() && $now->getTimestamp() < $to->getTimestamp()) {
+      return TRUE;
+    }
+    // Otherwise return true if is continuous, false if not.
+    return $applicationContinuous;
+
   }
 
   /**
@@ -838,6 +877,7 @@ class ApplicationHandler {
     $atvDocument->setTosRecordId(getenv('ATV_TOS_RECORD_ID'));
     $atvDocument->setBusinessId($selectedCompany['identifier']);
     $atvDocument->setDraft(TRUE);
+    $atvDocument->setDeletable(FALSE);
 
     $atvDocument->setMetadata([
       'appenv' => self::getAppEnv(),
@@ -1370,7 +1410,7 @@ class ApplicationHandler {
       }
       else {
         if (
-          isset($fileField['fileName']) &&
+          (isset($fileField['fileName']) && !empty($fileField['fileName'])) &&
           (isset($fileField['fileStatus']) && $fileField['fileStatus'] !== 'justUploaded')
         ) {
           if (!in_array($fileField['fileName'], $attachmentEvents["event_targets"])) {
