@@ -229,8 +229,8 @@ display:
           type: boolean
           settings:
             format: custom
-            format_custom_false: Julkaisematon
-            format_custom_true: Julkaistu
+            format_custom_false: Unpublished
+            format_custom_true: Published
         changed:
           id: changed
           table: node_field_data
@@ -238,7 +238,7 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-          label: Päivitetty
+          label: Updated
           exclude: false
           alter:
             alter_text: false
@@ -465,11 +465,11 @@ display:
             default_group_multiple: {  }
             group_items:
               1:
-                title: Julkaistu
+                title: Published
                 operator: '='
                 value: '1'
               2:
-                title: Julkaisematon
+                title: Unpublished
                 operator: '='
                 value: '0'
         langcode:
@@ -492,7 +492,7 @@ display:
           exposed: true
           expose:
             operator_id: langcode_op
-            label: Kieli
+            label: Language
             description: ''
             use_operator: false
             operator: langcode_op

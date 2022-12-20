@@ -11,7 +11,7 @@ id: paragraph.list_of_links_item.field_list_of_links_desc
 field_name: field_list_of_links_desc
 entity_type: paragraph
 bundle: list_of_links_item
-label: Kuvaus
+label: Description
 description: 'Voit lisätä lyhyen kuvauksen linkkiin.'
 required: false
 translatable: true

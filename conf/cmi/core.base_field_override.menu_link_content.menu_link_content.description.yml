@@ -10,7 +10,7 @@ id: menu_link_content.menu_link_content.description
 field_name: description
 entity_type: menu_link_content
 bundle: menu_link_content
-label: Kuvaus
+label: Description
 description: 'Näytetään vietäessä hiirtä linkin yli.'
 required: false
 translatable: true
