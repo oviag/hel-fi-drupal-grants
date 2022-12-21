@@ -140,10 +140,6 @@ class GrantsMandateService {
 
     $url = $callbackUrl->toString();
 
-    $url = str_replace('/fi', '', $url);
-    $url = str_replace('/sv', '', $url);
-    $url = str_replace('/ru', '', $url);
-
     return $this->webApiUrl . '/oauth/authorize?client_id=' . $this->clientId . '&response_type=code&redirect_uri=' . $url . '&user=' . $sessionData['userId'];
   }
 

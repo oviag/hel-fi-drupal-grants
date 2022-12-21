@@ -32,7 +32,7 @@ third_party_settings:
       children:
         - field_news_item_links_title
         - field_news_item_links_link
-      label: Links
+      label: Linkit
       region: content
       parent_name: group_news_item_links_wrapper
       weight: 19
@@ -47,7 +47,7 @@ third_party_settings:
     group_news_item_links_wrapper:
       children:
         - group_news_item_links
-      label: Links
+      label: Linkit
       region: content
       parent_name: ''
       weight: 18
@@ -99,8 +99,8 @@ content:
     weight: 17
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: Lohko
+      title_plural: Lohkot
       edit_mode: open
       closed_mode: summary
       autocollapse: none

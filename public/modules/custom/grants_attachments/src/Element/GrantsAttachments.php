@@ -227,9 +227,9 @@ class GrantsAttachments extends WebformCompositeBase {
     $webformKey = $element["#parents"][0];
     $triggeringElement = $form_state->getTriggeringElement();
 
-    // work only on uploaded files.
+    // Work only on uploaded files.
     if (isset($element["#files"]) && !empty($element["#files"])) {
-      // reset index.
+      // Reset index.
       $index = 0;
 
       /** @var \Drupal\webform\WebformSubmissionForm $form_object */
@@ -239,14 +239,14 @@ class GrantsAttachments extends WebformCompositeBase {
       // Get data from webform.
       $webformData = $webformSubmission->getData();
 
-      // figure out paths on form & element.
+      // Figure out paths on form & element.
       $valueParents = $element["#parents"];
       array_pop($valueParents);
 
       $arrayParents = $element["#array_parents"];
       array_splice($arrayParents, -4);
 
-      // get webform data element from submitted data.
+      // Get webform data element from submitted data.
       if (in_array('items', $valueParents)) {
         end($valueParents);
         $index = prev($valueParents);
@@ -274,7 +274,7 @@ class GrantsAttachments extends WebformCompositeBase {
       if (!isset($webformData['application_number'])) {
         return;
       }
-      // get application number from data.
+      // Get application number from data.
       $application_number = $webformData['application_number'];
 
       /** @var \Drupal\grants_handler\ApplicationHandler $applicationHandler */
@@ -282,15 +282,15 @@ class GrantsAttachments extends WebformCompositeBase {
       /** @var \Drupal\helfi_atv\AtvService $atvService */
       $atvService = \Drupal::service('helfi_atv.atv_service');
 
-      // if upload button is clicked
+      // If upload button is clicked.
       if (str_contains($triggeringElement["#name"], 'attachment_upload_button')) {
 
-        // try to find filetype via array parents
+        // Try to find filetype via array parents.
         $formFiletype = NestedArray::getValue($form, [
           ...$arrayParents,
           '#filetype',
         ]);
-        // if not, then brute force value from form
+        // If not, then brute force value from form.
         if (!$formFiletype) {
           foreach (self::recursiveFind($form, $webformKey) as $value) {
             if ($value != NULL) {

@@ -15,13 +15,13 @@ settings:
   allowed_values:
     -
       value: with-image
-      label: Kuvallinen
+      label: 'With image'
     -
       value: without-image
-      label: 'Ilman kuvaa'
+      label: 'Without image'
     -
       value: without-image-desc
-      label: 'Ilman kuvaa ja kuvausta'
+      label: 'Without image and description'
   allowed_values_function: ''
 module: options
 locked: false

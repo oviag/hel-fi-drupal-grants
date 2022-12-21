@@ -30,8 +30,3 @@ regions:
 libraries:
   - helfi_grant_applications/global-styling
   - helfi_grant_applications/global-scripting
-
-libraries-override:
-  autologout/drupal.autologout:
-    js:
-      js/autologout.js: dist/js/autologout.min.js
