@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation       A resource file with Tunnistamo related keywords
-Library             SeleniumLibrary
+Library             Browser
 
 *** Keywords ***
 
@@ -14,22 +14,23 @@ Choose Company Profile With Tunnistamo
     Click Choose Company And Continue
 
 Click Identification Method
-    Wait Until Element Is Visible   fakevetuma2         30s
-    Click Element                   fakevetuma2
-    Title Should Be                 Testitunnistaja
+    Wait For Elements State       \#fakevetuma2         visible       30s
+    Click                   \#fakevetuma2
+    Get Title           ==    Testitunnistaja
 
 Input Demo Hetu
-    Input Text                      hetu_input          ${TUNNISTAMO_HETU}
-    Click Button                    tunnistaudu
-    Title Should Be                 Suomi.fi-tunnistus
+    Type Text                      \#hetu_input          ${TUNNISTAMO_HETU}
+    Click                    \#tunnistaudu
+    Wait Until Network Is Idle
+    Get Title           ==    Suomi.fi-tunnistus
 
 Continue Identification
-    Click Button                    continue-button
+    Click                    \#continue-button
 
 Click Company Row
-    Wait Until Element Is Visible   class:fi-radio-button_label     30s
-    Click Element                   css:.fi-radio-button_input[value="${TUNNISTAMO_COMPANY_ID}"] ~ .fi-radio-button_label
-    Element Should Be Visible       class:fi-chip--content
+    Wait For Elements State       .Kapa-Table     visible    30s
+    Click                   .fi-radio-button_input[value="${TUNNISTAMO_COMPANY_ID}"] ~ .fi-radio-button_label
+    Wait For Elements State       .fi-chip--content   visible
 
 Click Choose Company And Continue
-    Click Element                   css:form[name="authorizeForm"] button[type="submit"]
+    Click                   form[name="authorizeForm"] button[type="submit"]
