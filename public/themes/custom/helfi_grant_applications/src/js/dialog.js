@@ -503,7 +503,7 @@
     _title: function( title ) {
       if ( this.options.title ) {
         title.text( this.options.title );
-        $('<span class="hel-icon hel-icon--alert-circle " aria-hidden="true"></span> ').prependTo(title)
+        $('<span class="hel-icon hel-icon--alert-circle " aria-hidden="true"></span>').prependTo(title)
       } else {
         title.html( "&#160;" );
       }
