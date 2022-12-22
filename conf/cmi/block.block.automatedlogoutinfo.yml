@@ -1,6 +1,6 @@
 uuid: 1f0701cb-6c7f-4384-b737-4a3671c23988
 langcode: fi
-status: true
+status: false
 dependencies:
   module:
     - autologout
