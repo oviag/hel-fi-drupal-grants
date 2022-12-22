@@ -17,7 +17,8 @@
       border: none;
     }
     .ui-dialog-title {
-      display: none;
+      display: block;
+      padding: var(--spacing-layout-2-xs);
     }
   }
   &-title {
