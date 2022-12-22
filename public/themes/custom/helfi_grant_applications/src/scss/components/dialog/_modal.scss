@@ -2,6 +2,9 @@
   z-index: 99;
 }
 .ui-dialog {
+  .ui-button:hover {
+    border-width: 2px;
+  }
   .hds-koros {
     position: absolute;
     top: -40px;
@@ -19,6 +22,7 @@
     .ui-dialog-title {
       display: block;
       padding: var(--spacing-layout-2-xs);
+      font-size: var(--fontsize-heading-s);
     }
   }
   &-title {
