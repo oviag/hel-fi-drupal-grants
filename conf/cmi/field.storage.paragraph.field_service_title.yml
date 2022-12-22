@@ -1,11 +1,13 @@
-uuid: 9d41ad3f-c95a-437f-8711-29caa8f29a88
+uuid: 6565ea52-caa4-49ff-b716-a4fc00935c7f
 langcode: fi
 status: true
 dependencies:
   module:
     - paragraphs
-id: paragraph.field_popular_services_title
-field_name: field_popular_services_title
+_core:
+  default_config_hash: L-ez8mpqXV7zQs6pbohTK5VN7xKBPHB9ZwXhohLatzo
+id: paragraph.field_service_title
+field_name: field_service_title
 entity_type: paragraph
 type: string
 settings:
