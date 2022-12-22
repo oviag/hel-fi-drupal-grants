@@ -6,11 +6,11 @@ dependencies:
     - hdbt_content
     - node
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: nH8M6u66xNnGzjplyiDZAKKeyzDR6NFyTMXNwDYzldk
-id: helfi_grant_applications_heroblock
-theme: helfi_grant_applications
+id: hdbt_subtheme_heroblock
+theme: hdbt_subtheme
 region: before_content
 weight: -12
 provider: null

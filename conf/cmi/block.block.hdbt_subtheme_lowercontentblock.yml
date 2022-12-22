@@ -5,11 +5,11 @@ dependencies:
   module:
     - hdbt_content
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: tNA-kZeJYbWgoVL9w2tJxX5TkbOqzXQVOVardatKtk8
-id: helfi_grant_applications_lowercontentblock
-theme: helfi_grant_applications
+id: hdbt_subtheme_lowercontentblock
+theme: hdbt_subtheme
 region: after_content
 weight: -11
 provider: null

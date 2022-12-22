@@ -4,7 +4,7 @@
 
 HDBT Subtheme is a so called "starterkit" which you can start using by enabling it in `/admin/appearance`.
 
-Or if you don't accept the theme name, you can rename every `helfi_grant_applications` file with `your_theme_name` and renaming every `helfi_grant_applications_*` variable/reference with `your_theme_name_*`. And then enable it in `/admin/appearance`.
+Or if you don't accept the theme name, you can rename every `hdbt_subtheme` file with `your_theme_name` and renaming every `hdbt_subtheme_*` variable/reference with `your_theme_name_*`. And then enable it in `/admin/appearance`.
 
 Of course you have a choice to not use it at all by just deleting the whole folder.
 
@@ -50,7 +50,7 @@ Build the minified versions of CSS/JS into dist with
 ## Structure for files and folders
 
 ```
-helfi_grant_applications
+hdbt_subtheme
 │   README.md
 └───templates
 │   └───block
@@ -90,7 +90,7 @@ Running `nvm use && npm i && npm run build` will collect the icon to the sprite.
 The icons can be used in twig like so:
 
     {# HDBT Subtheme specific icons #}
-    {% include "@helfi_grant_applications/misc/icon.twig" with {icon: 'my-awesome-icon'} %}
+    {% include "@hdbt_subtheme/misc/icon.twig" with {icon: 'my-awesome-icon'} %}
 
     {# HDBT specific icons #}
     {% include "@hdbt/misc/icon.twig" with {icon: 'google-view'} %}

@@ -7,11 +7,11 @@ dependencies:
   module:
     - system
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: z1s_0oxpOjcA1atdCgI_EmNSXDJj76BuQclUwezMmcw
-id: helfi_grant_applications_tools
-theme: helfi_grant_applications
+id: hdbt_subtheme_tools
+theme: hdbt_subtheme
 region: tools
 weight: -10
 provider: null

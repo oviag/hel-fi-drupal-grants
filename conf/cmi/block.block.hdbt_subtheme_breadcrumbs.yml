@@ -5,11 +5,11 @@ dependencies:
   module:
     - system
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: X6F3oSAls1r1jwOVU5n7EG6Uaz0yFqo-GQcEXDzxxLk
-id: helfi_grant_applications_breadcrumbs
-theme: helfi_grant_applications
+id: hdbt_subtheme_breadcrumbs
+theme: hdbt_subtheme
 region: breadcrumb
 weight: -11
 provider: null

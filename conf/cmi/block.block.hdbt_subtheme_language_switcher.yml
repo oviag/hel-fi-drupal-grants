@@ -5,11 +5,11 @@ dependencies:
   module:
     - language
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: jDpKvB-ZNjf7l-dHk_CINYgToXHW1HAv6Yf9ZBphRYQ
-id: helfi_grant_applications_language_switcher
-theme: helfi_grant_applications
+id: hdbt_subtheme_language_switcher
+theme: hdbt_subtheme
 region: header_branding
 weight: -10
 provider: null

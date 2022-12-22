@@ -6,9 +6,9 @@ dependencies:
     - hdbt_content
     - node
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: sidebarcontentblock
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: sidebar_first
 weight: -10
 provider: null

@@ -9,9 +9,9 @@ dependencies:
     - node
     - system
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: paavalikko
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: sidebar_first
 weight: 0
 provider: null

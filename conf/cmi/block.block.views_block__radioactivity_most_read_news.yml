@@ -8,9 +8,9 @@ dependencies:
     - system
     - views
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: views_block__radioactivity_most_read_news
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: sidebar_second
 weight: 0
 provider: null
