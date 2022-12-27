@@ -1,5 +1,5 @@
-uuid: 815ca838-d3d3-412b-b712-8459236a5705
-langcode: fi
+uuid: 7a327c24-9ef7-491a-94c0-2cec0fc12036
+langcode: en
 status: true
 dependencies:
   config:
@@ -15,7 +15,7 @@ dependencies:
     - select2_icon
     - text
 _core:
-  default_config_hash: cUl5PG2elS-k5_0QkIjSKWmdrnqkv8IfEZC7PTqQWYc
+  default_config_hash: 4k3Vv4YhxAg7eoc4j06MIAQ-EsUX6P3BnCOtc0oAn9k
 id: paragraph.banner.default
 targetEntityType: paragraph
 bundle: banner
@@ -36,15 +36,16 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_banner_link:
-    type: link_target_field_widget
+    type: link_target_icon_field_widget
     weight: 4
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      link_target: ''
-      linkit_auto_link_text: 0
       linkit_profile: tpr_content
+      linkit_auto_link_text: 0
+      link_target: ''
+      icon: ''
     third_party_settings: {  }
   field_banner_link_design:
     type: design_field_widget

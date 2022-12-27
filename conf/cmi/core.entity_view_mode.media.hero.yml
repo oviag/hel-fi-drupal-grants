@@ -1,5 +1,5 @@
-uuid: cfce9d08-528a-4d7e-8013-7751fd8f9cbe
-langcode: fi
+uuid: 64483d4f-2701-4f2c-bcd5-57358b633447
+langcode: en
 status: true
 dependencies:
   module:
@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: XHi0bUTi0UQU5CFI90xrtRS1tLLlwUSrMhNft4fY_XA
 id: media.hero
-label: Hero-lohko
+label: Hero
 targetEntityType: media
 cache: true

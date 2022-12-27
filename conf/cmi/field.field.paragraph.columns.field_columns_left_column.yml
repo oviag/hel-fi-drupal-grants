@@ -1,5 +1,5 @@
-uuid: aef4abe0-3e79-44ff-948c-65dfaa373acd
-langcode: fi
+uuid: 85709438-31d2-470e-bbda-5f7142bc82b7
+langcode: en
 status: true
 dependencies:
   config:
@@ -15,7 +15,7 @@ id: paragraph.columns.field_columns_left_column
 field_name: field_columns_left_column
 entity_type: paragraph
 bundle: columns
-label: 'Vasen palsta'
+label: 'Left column'
 description: ''
 required: true
 translatable: false

@@ -1,5 +1,5 @@
-uuid: 50794f12-acb3-4a13-980b-28ac371ead12
-langcode: fi
+uuid: 60f35a1b-9861-48bd-b4e6-43ae6d6bef6a
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,8 +7,10 @@ dependencies:
     - field.field.paragraph.image.field_image_caption
     - field.field.paragraph.image.field_original_aspect_ratio
     - paragraphs.paragraphs_type.image
+  module:
+    - helfi_content
 _core:
-  default_config_hash: WOIjdvfdwRn0wIU-TyaRDV4PKTm77QLskpKljuLGk5Q
+  default_config_hash: CyIGn-WUC2tx_La6KCOli1lPT8vEb_8MQwz6Ls6niO8
 id: paragraph.image.default
 targetEntityType: paragraph
 bundle: image
@@ -24,7 +26,7 @@ content:
     weight: 0
     region: content
   field_image_caption:
-    type: basic_string
+    type: text_span
     label: inline
     settings: {  }
     third_party_settings: {  }

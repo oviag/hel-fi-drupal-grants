@@ -1,5 +1,5 @@
-uuid: ebf8a3aa-8c7e-4b4a-b9c1-67200c9fe540
-langcode: fi
+uuid: 31cb18e5-f634-497c-bd7e-573494f84c8b
+langcode: en
 status: true
 dependencies:
   module:
@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: h3BeHVei4Lnyqbkao3YiF4KqoY-DhRvUNfEgKG8Rgjg
 id: paragraph.preview
-label: Esikatselu
+label: Preview
 targetEntityType: paragraph
 cache: true

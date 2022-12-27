@@ -1,12 +1,12 @@
-uuid: bff8531f-d1cf-449c-bc6d-b1b613e75d2d
-langcode: fi
+uuid: bd79bdab-01d8-4c10-90c5-b0a8ca732cdc
+langcode: en
 status: true
 dependencies:
   module:
     - options
     - paragraphs
 _core:
-  default_config_hash: qGel2F-fciDzT6Jjy6u0MvZv_ZPV24Q6-q0d42YrxHU
+  default_config_hash: zZ661kERU722BOWyFdnw3UIzhMePsDzfGXd2TsHAJYc
 id: paragraph.field_hero_design
 field_name: field_hero_design
 entity_type: paragraph
@@ -15,28 +15,19 @@ settings:
   allowed_values:
     -
       value: without-image-left
-      label: 'Ilman kuvaa, tasattu vasemmalle'
-    -
-      value: without-image-center
-      label: 'Ilman kuvaa, tasattu keskelle'
+      label: 'Without image, align left'
     -
       value: with-image-right
-      label: 'Kuva oikealla'
+      label: 'Image on the right'
     -
       value: with-image-left
-      label: 'Kuva vasemmalla'
+      label: 'Image on the left'
     -
       value: with-image-bottom
-      label: 'Kuva alhaalla'
-    -
-      value: background-image
-      label: Taustakuva
+      label: 'Image on the bottom'
     -
       value: diagonal
-      label: Diagonaalinen
-    -
-      value: no-background
-      label: 'No Background'
+      label: Diagonal
   allowed_values_function: ''
 module: options
 locked: false

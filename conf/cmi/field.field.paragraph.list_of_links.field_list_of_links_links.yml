@@ -1,5 +1,5 @@
-uuid: 32b5fffd-4f19-4335-aad4-d37a33ab7f68
-langcode: fi
+uuid: 7b9b307a-d8fe-41f7-a914-a30529b49ab3
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,8 +14,8 @@ id: paragraph.list_of_links.field_list_of_links_links
 field_name: field_list_of_links_links
 entity_type: paragraph
 bundle: list_of_links
-label: Linkit
-description: 'Linkkilistan linkit.'
+label: Links
+description: 'The links that you want the paragraph to display.'
 required: true
 translatable: false
 default_value: {  }

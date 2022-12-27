@@ -1,5 +1,5 @@
-uuid: 26ef5b79-fcf7-430c-a019-b53a249825b3
-langcode: fi
+uuid: 629f2100-c8da-4901-b8cc-2ae7a6ed998c
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ id: paragraph.gallery_slide.field_gallery_slide_caption
 field_name: field_gallery_slide_caption
 entity_type: paragraph
 bundle: gallery_slide
-label: 'Kuvateksti kuvalle'
+label: 'Caption for the image'
 description: ''
 required: false
 translatable: false

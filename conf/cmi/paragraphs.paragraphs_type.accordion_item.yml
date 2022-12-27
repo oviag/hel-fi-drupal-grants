@@ -1,12 +1,12 @@
-uuid: 7f3015dc-a73a-412c-82ce-716c4c73ee88
-langcode: fi
+uuid: 33561f7b-1fe6-4299-97be-824d50dd72d7
+langcode: en
 status: true
 dependencies: {  }
 _core:
   default_config_hash: DAeI-rU8N6t2oPB9MB8U-i0Jz_3PpbeRfNkllyPuVzM
 id: accordion_item
-label: 'Haitarin sisältökohta'
+label: 'Accordion item'
 icon_uuid: null
 icon_default: null
-description: 'Yksittäinen haitarin sisältökohta, jossa on otsikko ja sisältö.'
+description: 'One item in an accordion that includes title and content.'
 behavior_plugins: {  }

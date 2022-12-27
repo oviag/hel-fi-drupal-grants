@@ -1,5 +1,5 @@
-uuid: 86527ef7-b5ba-4ed1-95be-6f4ea3dec074
-langcode: fi
+uuid: 7810f263-2160-4c16-9d6f-e4c2b3853321
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,6 +13,8 @@ dependencies:
   module:
     - media_library
     - text
+_core:
+  default_config_hash: qSkwIQxrNOeGUKAPLra9v-ou0FCbThJJLugm5cS-_FE
 id: paragraph.remote_video.default
 targetEntityType: paragraph
 bundle: remote_video

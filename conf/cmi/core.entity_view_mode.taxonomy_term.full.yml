@@ -1,5 +1,5 @@
-uuid: 41f315db-5db1-4c0b-848d-07930b9b8e9c
-langcode: fi
+uuid: 73b39149-ce85-47da-bbfb-65124f025afb
+langcode: en
 status: true
 dependencies:
   module:
@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: '-PPKjsNQPvoIDjOuUAvlLocYD976MNjb9Zpgyz5_BWE'
 id: taxonomy_term.full
-label: 'Luokittelusanojen sivu'
+label: 'Taxonomy term page'
 targetEntityType: taxonomy_term
 cache: true

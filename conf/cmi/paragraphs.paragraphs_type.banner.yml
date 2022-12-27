@@ -1,12 +1,17 @@
-uuid: 92f833e1-5745-48f4-9faf-f3c6de2daa8a
-langcode: fi
+uuid: e36d7b9a-053d-4748-a552-2722a9cb8126
+langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - paragraphs_library
+third_party_settings:
+  paragraphs_library:
+    allow_library_conversion: true
 _core:
-  default_config_hash: zaZVGfy2puLJ985O9lxNqODW1qzpWSQ66LahLMxozow
+  default_config_hash: 5psLSGdGhJB25T2TTd44M1_ObQNb2ii3jKv5ebjaDT4
 id: banner
-label: Banneri
+label: Banner
 icon_uuid: null
 icon_default: null
-description: 'Banneri on leveä elementti, jonka avulla voit korostaa esimerkiksi tärkeitä linkkejä tai puhelinnumeroita. '
+description: 'Banner is a simple full-width element that you can use to promote for example important links or phone numbers. '
 behavior_plugins: {  }

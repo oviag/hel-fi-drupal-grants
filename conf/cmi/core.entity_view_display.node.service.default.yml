@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.service.field_lower_content
     - field.field.node.service.field_metatags
     - field.field.node.service.field_service_channel
+    - field.field.node.service.field_sidebar_content
     - field.field.node.service.field_target_group
     - field.field.node.service.field_webform
     - node.type.service
@@ -101,6 +102,15 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  field_sidebar_content:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 9
     region: content
   links:
     settings: {  }

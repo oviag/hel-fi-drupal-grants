@@ -1,5 +1,5 @@
-uuid: d3aeda43-cc79-44a6-a1c8-1f38ddfd03f5
-langcode: fi
+uuid: e8abeae5-1012-42ae-95d7-2f0cad43b3f0
+langcode: en
 status: true
 dependencies:
   module:
@@ -15,13 +15,13 @@ settings:
   allowed_values:
     -
       value: primary
-      label: Täysvärinen
+      label: 'Full colour background'
     -
       value: secondary
-      label: Reunustettu
+      label: 'Only borders'
     -
       value: supplementary
-      label: 'Ei reunuksia tai taustaväriä'
+      label: 'No borders or background colour'
   allowed_values_function: ''
 module: options
 locked: false

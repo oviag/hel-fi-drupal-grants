@@ -1,23 +1,25 @@
-uuid: 603f7dc8-87f4-4b92-b597-f4fee7a933e6
-langcode: fi
+uuid: 5c029692-db49-42a9-b135-057a59b2f1a4
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_lower_content
     - node.type.page
     - paragraphs.paragraphs_type.accordion
-    - paragraphs.paragraphs_type.chart
+    - paragraphs.paragraphs_type.banner
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
-    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: 5ydggezdLvSya94HTfqxkHwlW7wYGqM5MhljAS8bfC8
+  default_config_hash: m3xEEqrJpbhjtfAE6LgZJaEi6RDOUbOFcGLGzfvY1mQ
 id: node.page.field_lower_content
 field_name: field_lower_content
 entity_type: node
@@ -36,11 +38,15 @@ settings:
       columns: columns
       accordion: accordion
       image: image
-      gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
+      content_liftup: content_liftup
+      banner: banner
+      from_library: from_library
+      phasing: phasing
+      remote_video: remote_video
+      contact_card_listing: contact_card_listing
       chart: chart
-      news_list: news_list
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -51,19 +57,31 @@ settings:
         enabled: false
       banner:
         weight: -21
-        enabled: false
+        enabled: true
       chart:
         weight: 25
         enabled: true
       columns:
         weight: -28
         enabled: true
+      contact_card:
+        weight: 30
+        enabled: false
+      contact_card_listing:
+        weight: 31
+        enabled: true
       content_cards:
         weight: -23
         enabled: true
+      content_liftup:
+        weight: -22
+        enabled: true
+      from_library:
+        weight: 21
+        enabled: true
       gallery:
         weight: -25
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: -20
         enabled: false
@@ -82,13 +100,19 @@ settings:
       list_of_links_item:
         weight: -17
         enabled: false
-      news_list:
-        weight: 30
+      phasing:
+        weight: 50
         enabled: true
+      phasing_item:
+        weight: 30
+        enabled: false
+      remote_video:
+        weight: 32
+        enabled: true
+      social_media_link:
+        weight: 46
+        enabled: false
       text:
         weight: -29
         enabled: true
-      unit_search:
-        weight: -16
-        enabled: false
 field_type: entity_reference_revisions

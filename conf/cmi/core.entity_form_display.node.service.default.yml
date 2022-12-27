@@ -17,6 +17,7 @@ dependencies:
     - field.field.node.service.field_lower_content
     - field.field.node.service.field_metatags
     - field.field.node.service.field_service_channel
+    - field.field.node.service.field_sidebar_content
     - field.field.node.service.field_target_group
     - field.field.node.service.field_webform
     - node.type.service
@@ -29,6 +30,7 @@ dependencies:
     - metatag
     - paragraphs
     - path
+    - publication_date
     - scheduler
     - webform
 third_party_settings:
@@ -254,6 +256,16 @@ content:
   field_service_channel:
     type: entity_reference_autocomplete
     weight: 10
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_sidebar_content:
+    type: entity_reference_revisions_autocomplete
+    weight: 30
     region: content
     settings:
       match_operator: CONTAINS

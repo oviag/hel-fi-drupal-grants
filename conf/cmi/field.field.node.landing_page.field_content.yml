@@ -1,22 +1,23 @@
-uuid: 10603cf8-662e-41fc-9a6e-1eb597ebc9f2
-langcode: fi
+uuid: ab9beb70-3ab0-42b6-bc09-1ad8d92a7dbd
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
     - paragraphs.paragraphs_type.banner
-    - paragraphs.paragraphs_type.bloc
-    - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
-    - paragraphs.paragraphs_type.news_list
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.remote_video
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: Ehe5PsrXLNpnzHecyqqxXskELf3RoW8Sw5EKsEAnz74
+  default_config_hash: NMDaoBJkCtTwLvelvbzhNf-bqshGCunTGiZmSV4eT6g
 id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
@@ -36,9 +37,11 @@ settings:
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
       content_cards: content_cards
+      content_liftup: content_liftup
+      from_library: from_library
+      remote_video: remote_video
+      phasing: phasing
       chart: chart
-      news_list: news_list
-      bloc: bloc
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -47,14 +50,8 @@ settings:
       accordion_item:
         weight: -21
         enabled: false
-      asiointipalvelu:
-        weight: 30
-        enabled: false
       banner:
         weight: -26
-        enabled: true
-      bloc:
-        weight: 32
         enabled: true
       chart:
         weight: 25
@@ -63,14 +60,14 @@ settings:
         weight: -27
         enabled: true
       content_cards:
-        weight: -23
+        weight: -33
         enabled: true
       content_liftup:
-        weight: 35
-        enabled: false
+        weight: -32
+        enabled: true
       from_library:
-        weight: 36
-        enabled: false
+        weight: 21
+        enabled: true
       gallery:
         weight: -20
         enabled: false
@@ -92,34 +89,16 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
-      news_list:
-        weight: 30
-        enabled: true
-      paragraph_verkkolomake:
-        weight: 45
-        enabled: false
       phasing:
-        weight: 46
-        enabled: false
+        weight: 50
+        enabled: true
       phasing_item:
-        weight: 47
+        weight: 30
         enabled: false
       remote_video:
-        weight: 48
-        enabled: false
-      service_list:
-        weight: 49
-        enabled: false
-      sidebar_text:
-        weight: 50
-        enabled: false
+        weight: 27
+        enabled: true
       text:
         weight: -15
-        enabled: false
-      unit_search:
-        weight: 52
-        enabled: false
-      webform:
-        weight: 54
         enabled: false
 field_type: entity_reference_revisions

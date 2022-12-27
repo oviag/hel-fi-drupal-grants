@@ -1,5 +1,5 @@
-uuid: 3795ce85-9c90-455c-b74d-7466e1b47f04
-langcode: fi
+uuid: 23b6db1e-c2ff-44ad-8608-91a2868bded6
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,8 +14,8 @@ id: paragraph.gallery.field_gallery_slides
 field_name: field_gallery_slides
 entity_type: paragraph
 bundle: gallery
-label: 'Gallerian diat'
-description: 'Luo dia galleriaan valitsemalla kuva media-kirjastosta ja  kirjoita sille halutessasi kuvateksti.'
+label: 'Gallery slides'
+description: 'Create gallery slides here by choosing image from media library and optionally writing a caption to go with it.'
 required: true
 translatable: false
 default_value: {  }

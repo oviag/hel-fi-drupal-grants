@@ -1,5 +1,5 @@
-uuid: 0f2865b4-b226-4d59-ba72-fe7b75c495b3
-langcode: fi
+uuid: 81d0baae-64c2-409b-b6dd-b30a2556d82f
+langcode: en
 status: true
 dependencies:
   module:
@@ -15,40 +15,40 @@ settings:
   allowed_values:
     -
       value: coat-of-arms
-      label: Vaakuna
+      label: 'Coat of Arms'
     -
       value: gold
-      label: Kulta
+      label: Gold
     -
       value: silver
-      label: Hopea
+      label: Silver
     -
       value: brick
-      label: Tiili
+      label: Brick
     -
       value: bus
-      label: Bussi
+      label: Bus
     -
       value: copper
-      label: Kupari
+      label: Copper
     -
       value: engel
       label: Engel
     -
       value: fog
-      label: Sumu
+      label: Fog
     -
       value: metro
       label: Metro
     -
       value: summer
-      label: Kesä
+      label: Summer
     -
       value: suomenlinna
       label: Suomenlinna
     -
       value: tram
-      label: Spåra
+      label: Tram
   allowed_values_function: ''
 module: options
 locked: false

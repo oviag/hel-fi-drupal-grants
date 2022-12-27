@@ -1,0 +1,23 @@
+uuid: 77876800-2da3-4664-8682-29b1d2f1759c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_sidebar_content
+    - node.type.service
+  module:
+    - entity_reference_revisions
+id: node.service.field_sidebar_content
+field_name: field_sidebar_content
+entity_type: node
+bundle: service
+label: 'Sidebar content'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings: {  }
+field_type: entity_reference_revisions

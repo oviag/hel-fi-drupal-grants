@@ -1,5 +1,5 @@
-uuid: cda72e79-61ee-4e04-9dc2-cd914c1a69c1
-langcode: fi
+uuid: e5efd2c2-66cb-41a5-a034-254649d511c3
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,7 +14,7 @@ field_name: field_liftup_with_image_desc
 entity_type: paragraph
 bundle: liftup_with_image
 label: Description
-description: 'Vapaaehtoinen lyhyt kuvaus nostolohkolle.'
+description: 'Optional short description for liftup block.'
 required: false
 translatable: false
 default_value: {  }
