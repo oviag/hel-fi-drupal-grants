@@ -8,3 +8,18 @@ $config['helfi_proxy.settings']['prefixes'] = [
   'fi' => 'dev-avustukset',
   'sv' => 'dev-bidrags'
 ];
+
+$schemes = [
+  'azure' => [
+    'driver' => 'helfi_azure',
+    'config' => [
+      'name' => getenv('AZURE_BLOB_STORAGE_NAME'),
+      'token' => getenv('BLOBSTORAGE-SAS-TOKEN'),
+      'endpointSuffix' => 'core.windows.net',
+      'protocol' => 'https',
+    ],
+    'cache' => TRUE,
+  ],
+];
+$config['helfi_azure_fs.settings']['use_blob_storage'] = TRUE;
+$settings['flysystem'] = $schemes;
