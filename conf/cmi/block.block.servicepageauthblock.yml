@@ -7,9 +7,9 @@ dependencies:
     - node
     - user
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: servicepageauthblock
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: sidebar_first
 weight: -11
 provider: null
