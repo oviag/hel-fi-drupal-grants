@@ -1,15 +1,15 @@
-uuid: 5fb8e713-3437-459d-b86d-2b4d0b798b5d
-langcode: en
+uuid: 8174c1da-1fad-45b2-8471-486a8a873cb2
+langcode: fi
 status: true
 dependencies:
   config:
-    - field.field.paragraph.popular_services.field_popular_services_title
     - field.field.paragraph.popular_services.field_service_items
     - paragraphs.paragraphs_type.popular_services
+    - field.field.paragraph.popular_services.field_popular_services_title
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: pbYzbO2KgSMbkl4N1WvFAGnHduZ8kZ367EIozSvDzWE
+  default_config_hash: DfuejILO91pLFq8mDo7HRJ16ZarFCTdVjVLI62R9dCE
 id: paragraph.popular_services.default
 targetEntityType: paragraph
 bundle: popular_services

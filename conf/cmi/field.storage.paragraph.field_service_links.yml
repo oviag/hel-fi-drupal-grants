@@ -1,12 +1,12 @@
-uuid: 6d2e9c3a-e513-4b03-b2f1-005b351c4aa3
-langcode: en
+uuid: b8fc4413-1e52-4de3-8b46-b9288c886ab0
+langcode: fi
 status: true
 dependencies:
   module:
     - link
     - paragraphs
 _core:
-  default_config_hash: nXXijMFANLZJu895Vskk0wODSNmfF_qGO3GaidFmGT4
+  default_config_hash: XELen2xrLqgw7EgLuPx5iKWwTNgmN9HwfqxxBTaRmrc
 id: paragraph.field_service_links
 field_name: field_service_links
 entity_type: paragraph
