@@ -28,6 +28,7 @@ dependencies:
     - content_translation
     - file
     - helfi_api_base
+    - locale
     - media
     - menu_link_content
     - node
@@ -179,6 +180,7 @@ permissions:
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
+  - 'translate interface'
   - 'translate keywords taxonomy_term'
   - 'translate landing_page node'
   - 'translate menu_link_content'
