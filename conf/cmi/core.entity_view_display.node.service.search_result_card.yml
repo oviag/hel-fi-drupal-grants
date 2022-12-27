@@ -88,4 +88,5 @@ hidden:
   field_target_group: true
   field_webform: true
   langcode: true
+  published_at: true
   toc_enabled: true
