@@ -20,6 +20,7 @@ dependencies:
   module:
     - content_translation
     - file
+    - locale
     - media
     - node
     - paragraphs
@@ -74,6 +75,7 @@ permissions:
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
+  - 'translate interface'
   - 'translate landing_page node'
   - 'translate page node'
   - 'translate remote_video media'

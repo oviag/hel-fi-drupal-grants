@@ -11,10 +11,10 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\grants_handler\ApplicationException;
 use Drupal\grants_handler\ApplicationHandler;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
+use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformRequestInterface;
@@ -332,15 +332,31 @@ class ApplicationController extends ControllerBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \Drupal\helfi_atv\AtvFailedToConnectException
-   * @throws \GuzzleHttp\Exception\GuzzleException|\Drupal\helfi_helsinki_profiili\ProfileDataException
-   * @throws \Drupal\grants_handler\ApplicationException
+   * @throws \Drupal\helfi_helsinki_profiili\ProfileDataException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function newApplication(string $webform_id): RedirectResponse {
 
     $webform = Webform::load($webform_id);
 
     if (!ApplicationHandler::isApplicationOpen($webform)) {
-      throw new ApplicationException('Application is not open');
+      // Add message if application is not open.
+      $this->messenger()->addError('Application is not open', TRUE);
+
+      // Get service page node.
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'service')
+        ->condition('field_webform', $webform_id);
+      $res = $query->execute();
+      $node = Node::load(reset($res));
+
+      // Redirect user to service page with message.
+      return $this->redirect(
+        'entity.node.canonical',
+        [
+          'node' => $node->id(),
+        ]
+      );
     }
 
     $newSubmission = $this->applicationHandler->initApplication($webform->id());

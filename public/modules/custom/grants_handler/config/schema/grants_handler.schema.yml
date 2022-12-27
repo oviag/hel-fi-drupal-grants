@@ -15,3 +15,11 @@ grants_handler.statusStrings:
     message:
       type: text
       label: 'Message'
+
+block.settings.grants_handler_service_page_auth_block:
+  type: block_settings
+  label: 'Service Page Block block'
+  mapping:
+    foo:
+      type: string
+      label: Foo
