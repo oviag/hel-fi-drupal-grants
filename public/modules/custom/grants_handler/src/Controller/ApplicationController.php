@@ -11,7 +11,6 @@ use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\grants_handler\ApplicationException;
 use Drupal\grants_handler\ApplicationHandler;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
@@ -341,21 +340,21 @@ class ApplicationController extends ControllerBase {
     $webform = Webform::load($webform_id);
 
     if (!ApplicationHandler::isApplicationOpen($webform)) {
-      // add message if application is not open
+      // Add message if application is not open.
       $this->messenger()->addError('Application is not open', TRUE);
 
-      // get service page node
+      // Get service page node.
       $query = \Drupal::entityQuery('node')
         ->condition('type', 'service')
         ->condition('field_webform', $webform_id);
       $res = $query->execute();
       $node = Node::load(reset($res));
 
-      // redirect user to service page with message
+      // Redirect user to service page with message.
       return $this->redirect(
         'entity.node.canonical',
         [
-          'node' => $node->id()
+          'node' => $node->id(),
         ]
       );
     }

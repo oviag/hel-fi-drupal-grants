@@ -182,8 +182,21 @@ function grants_handler_entity_type_alter(array &$entity_types) {
  */
 function grants_handler_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'grants_handler/application-status-check';
-  $attachments['#attached']['drupalSettings']['grants_handler']['site_url'] = \Drupal::request()
-    ->getSchemeAndHttpHost();
+
+  // Get baseurl.
+  $base_url = \Drupal::request()->getSchemeAndHttpHost();
+
+  /** @var \Drupal\helfi_proxy\ActiveSitePrefix $service */
+  $service = \Drupal::service('helfi_proxy.active_prefix');
+
+  // Get current language.
+  $currentLanguage = Drupal::languageManager()->getCurrentLanguage();
+
+  // Get url prefix for proxy.
+  $prefix = $service->getPrefix($currentLanguage->getId());
+
+  // Set url to variable.
+  $attachments['#attached']['drupalSettings']['grants_handler']['site_url'] = $base_url . '/' . $currentLanguage->getId() . '/' . $prefix;
 
 }
 
