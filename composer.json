@@ -63,6 +63,7 @@
         "firebase/php-jwt": "^6.3",
         "globalcitizen/php-iban": "^4.1",
         "league/uri": "^6.7",
+        "nesbot/carbon": "^2.64",
         "ramsey/uuid": "^4.3"
     },
     "require-dev": {
