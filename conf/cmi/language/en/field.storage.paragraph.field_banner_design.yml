@@ -1,6 +1,0 @@
-settings:
-  allowed_values:
-    -
-      label: 'Aligned to the center'
-    -
-      label: 'Aligned to the left'

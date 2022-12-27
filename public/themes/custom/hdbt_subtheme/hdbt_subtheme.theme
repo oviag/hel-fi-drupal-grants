@@ -16,15 +16,6 @@ use Drupal\taxonomy\Entity\Term;
  */
 
 /**
- * Implements hook_preprocess_HOOK().
- */
-function hdbt_subtheme_preprocess_block(&$variables) {
-  if (isset($variables['elements']['#id'])) {
-    $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
-  }
-}
-
-/**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
 function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions) {
@@ -441,4 +432,19 @@ function _hdbt_subtheme_preprocess_help(array &$variables, $title_parents = ['la
 
   // Replace $variables with new render array containing help.
   $target_element = $build;
+}
+
+
+/**
+ * @file
+ * Functions to support theming in the HDBT Subtheme.
+ */
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_block(&$variables) {
+  if (isset($variables['elements']['#id'])) {
+    $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
+  }
 }
