@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_announcement_content_pages
     - node.type.announcement
     - node.type.article
+    - node.type.faq
     - node.type.landing_page
     - node.type.news_item
     - node.type.page

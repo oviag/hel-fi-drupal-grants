@@ -307,7 +307,7 @@ display:
       tags: {  }
   block_1:
     id: block_1
-    display_title: Lohko
+    display_title: Block
     display_plugin: block
     position: 1
     display_options:

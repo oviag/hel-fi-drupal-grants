@@ -14,7 +14,6 @@ dependencies:
     - field.field.node.service.field_has_hero
     - field.field.node.service.field_hero
     - field.field.node.service.field_industry
-    - field.field.node.service.field_lead_in
     - field.field.node.service.field_liftup_image
     - field.field.node.service.field_lower_content
     - field.field.node.service.field_metatags
@@ -54,7 +53,6 @@ hidden:
   field_has_hero: true
   field_hero: true
   field_industry: true
-  field_lead_in: true
   field_lower_content: true
   field_metatags: true
   field_service_channel: true

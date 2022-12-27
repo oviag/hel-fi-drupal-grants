@@ -8,5 +8,5 @@ id: gallery_slide
 label: 'Gallerian dia'
 icon_uuid: null
 icon_default: null
-description: 'One slide in the gallery that can include image and caption.'
+description: 'Using this paragraph you can create galleries from multiple images.'
 behavior_plugins: {  }
