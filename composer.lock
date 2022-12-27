@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "d2ff55e312c111a707081f03da03e05b",
+=======
+    "content-hash": "64bd675ec1821832a730781f9f1ad201",
+>>>>>>> origin/develop
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5554,12 +5558,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili.git",
-                "reference": "e77ba3c504c0f999113b6fdd0b906191360bc02c"
+                "reference": "deb6d07c843002a8be259a4eecc11c0e55396dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/zipball/e77ba3c504c0f999113b6fdd0b906191360bc02c",
-                "reference": "e77ba3c504c0f999113b6fdd0b906191360bc02c",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/zipball/deb6d07c843002a8be259a4eecc11c0e55396dde",
+                "reference": "deb6d07c843002a8be259a4eecc11c0e55396dde",
                 "shasum": ""
             },
             "require": {
@@ -5587,7 +5591,7 @@
                 "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/tree/develop",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/issues"
             },
-            "time": "2022-12-22T10:39:30+00:00"
+            "time": "2022-12-23T06:03:36+00:00"
         },
         {
             "name": "drupal/helfi_media_formtool",
@@ -11356,6 +11360,108 @@
             "time": "2016-07-25T17:07:32+00:00"
         },
         {
+            "name": "nesbot/carbon",
+            "version": "2.64.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/briannesbitt/Carbon.git",
+                "reference": "889546413c97de2d05063b8cb7b193c2531ea211"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/889546413c97de2d05063b8cb7b193c2531ea211",
+                "reference": "889546413c97de2d05063b8cb7b193c2531ea211",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.1.8 || ^8.0",
+                "symfony/polyfill-mbstring": "^1.0",
+                "symfony/polyfill-php80": "^1.16",
+                "symfony/translation": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.0 || ^3.1.4",
+                "doctrine/orm": "^2.7",
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "kylekatarnls/multi-tester": "^2.0",
+                "ondrejmirtes/better-reflection": "*",
+                "phpmd/phpmd": "^2.9",
+                "phpstan/extension-installer": "^1.0",
+                "phpstan/phpstan": "^0.12.99 || ^1.7.14",
+                "phpunit/php-file-iterator": "^2.0.5 || ^3.0.6",
+                "phpunit/phpunit": "^7.5.20 || ^8.5.26 || ^9.5.20",
+                "squizlabs/php_codesniffer": "^3.4"
+            },
+            "bin": [
+                "bin/carbon"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-3.x": "3.x-dev",
+                    "dev-master": "2.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Carbon\\Laravel\\ServiceProvider"
+                    ]
+                },
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Carbon\\": "src/Carbon/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Nesbitt",
+                    "email": "brian@nesbot.com",
+                    "homepage": "https://markido.com"
+                },
+                {
+                    "name": "kylekatarnls",
+                    "homepage": "https://github.com/kylekatarnls"
+                }
+            ],
+            "description": "An API extension for DateTime that supports 281 different languages.",
+            "homepage": "https://carbon.nesbot.com",
+            "keywords": [
+                "date",
+                "datetime",
+                "time"
+            ],
+            "support": {
+                "docs": "https://carbon.nesbot.com/docs",
+                "issues": "https://github.com/briannesbitt/Carbon/issues",
+                "source": "https://github.com/briannesbitt/Carbon"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/kylekatarnls",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/Carbon#sponsor",
+                    "type": "opencollective"
+                },
+                {
+                    "url": "https://tidelift.com/subscription/pkg/packagist-nesbot-carbon?utm_source=packagist-nesbot-carbon&utm_medium=referral&utm_campaign=readme",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-11-26T17:36:00+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.15.2",
             "source": {
@@ -17017,21 +17123,21 @@
         },
         {
             "name": "mglaman/phpstan-drupal",
-            "version": "1.1.25",
+            "version": "1.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mglaman/phpstan-drupal.git",
-                "reference": "480245d5d0bd1858e01c43d738718dab85be0ad2"
+                "reference": "5e8b527e4d9b9f23f37eac727b31aeff278bbe43"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/480245d5d0bd1858e01c43d738718dab85be0ad2",
-                "reference": "480245d5d0bd1858e01c43d738718dab85be0ad2",
+                "url": "https://api.github.com/repos/mglaman/phpstan-drupal/zipball/5e8b527e4d9b9f23f37eac727b31aeff278bbe43",
+                "reference": "5e8b527e4d9b9f23f37eac727b31aeff278bbe43",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^1.6.0",
+                "phpstan/phpstan": "^1.9.0",
                 "symfony/finder": "~3.4.5 ||^4.2 || ^5.0 || ^6.0",
                 "symfony/yaml": "~3.4.5 || ^4.2|| ^5.0 || ^6.0",
                 "webflo/drupal-finder": "^1.2"
@@ -17101,7 +17207,7 @@
             "description": "Drupal extension and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/mglaman/phpstan-drupal/issues",
-                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.1.25"
+                "source": "https://github.com/mglaman/phpstan-drupal/tree/1.1.26"
             },
             "funding": [
                 {
@@ -17117,7 +17223,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-18T17:17:55+00:00"
+            "time": "2022-12-22T14:42:15+00:00"
         },
         {
             "name": "mikey179/vfsstream",

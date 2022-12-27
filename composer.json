@@ -63,6 +63,7 @@
         "firebase/php-jwt": "^6.3",
         "globalcitizen/php-iban": "^4.1",
         "league/uri": "^6.7",
+        "nesbot/carbon": "^2.64",
         "ramsey/uuid": "^4.3"
     },
     "require-dev": {
@@ -105,7 +106,10 @@
             },
             "drupal/menu_export": {
                 "Integrity constraint violation: 1062 Duplicate entry": "https://git.drupalcode.org/project/menu_export/-/merge_requests/3.patch"
-              }
+              },
+            "drupal/hdbt": {
+                "Add service nodetype to sidebar.": "patches/add-service-type-sidebar.patch"
+            }
         },
         "drupal-scaffold": {
             "allowed-packages": [
