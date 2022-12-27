@@ -336,3 +336,6 @@ msgstr "Olet kopioimassa hakemusta"
 
 msgid "New application"
 msgstr "Uusi hakemus"
+
+msgid "Application is not open"
+msgstr "Hakemus ei ole avoinna"
