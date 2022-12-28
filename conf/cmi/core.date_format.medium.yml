@@ -1,10 +1,10 @@
-uuid: 22b4c6f0-0e64-41f6-8bc7-def062fad65f
-langcode: fi
+uuid: f21a6199-1226-40f7-83a9-85a87106db0d
+langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: haMnRrhw_MHcbhSUNVxrURYqqHmAELhJmaH3o88id84
+  default_config_hash: nzL5d024NjXIX_8TlT6uFAu973lmfkmHklJC-2i9rAE
 id: medium
-label: 'Päivämäärä keskipitkässä muodossa'
+label: 'Default medium date'
 locked: false
-pattern: 'j. F\t\a Y'
+pattern: 'jS F Y'

@@ -1,10 +1,10 @@
-uuid: 54466310-a7fe-4181-b5d6-add0bad2a2bb
-langcode: fi
+uuid: 71624f82-08f6-4a43-8924-ed8549e9fb43
+langcode: en
 status: true
 dependencies: {  }
 _core:
   default_config_hash: wKD4WsoV_wFgv2vgI4mcAAFSIzrye17ykzdwrnApkfY
 id: html_week
-label: 'HTML Viikko'
+label: 'HTML Week'
 locked: true
 pattern: Y-\WW

@@ -1,10 +1,10 @@
-uuid: b51bcae0-23b0-4d5f-909a-d647248f5314
-langcode: fi
+uuid: 909f96ef-5610-4437-bb30-a3bed40f1252
+langcode: en
 status: true
 dependencies: {  }
 _core:
   default_config_hash: M7yqicYkU36hRy5p9drAaGBBihhUD1OyujFrAaQ93ZE
 id: html_time
-label: 'HTML Aika'
+label: 'HTML Time'
 locked: true
 pattern: 'H:i:s'
