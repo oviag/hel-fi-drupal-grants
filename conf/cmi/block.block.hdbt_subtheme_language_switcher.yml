@@ -11,7 +11,7 @@ _core:
 id: hdbt_subtheme_language_switcher
 theme: hdbt_subtheme
 region: header_branding
-weight: -10
+weight: -13
 provider: null
 plugin: 'language_block:language_content'
 settings:

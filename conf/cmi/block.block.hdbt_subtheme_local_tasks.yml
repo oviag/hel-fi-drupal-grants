@@ -9,7 +9,7 @@ _core:
 id: hdbt_subtheme_local_tasks
 theme: hdbt_subtheme
 region: content
-weight: -11
+weight: -14
 provider: null
 plugin: local_tasks_block
 settings:

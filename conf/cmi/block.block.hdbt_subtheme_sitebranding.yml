@@ -11,7 +11,7 @@ _core:
 id: hdbt_subtheme_sitebranding
 theme: hdbt_subtheme
 region: header_branding
-weight: -11
+weight: -14
 provider: null
 plugin: system_branding_block
 settings:

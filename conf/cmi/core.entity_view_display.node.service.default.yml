@@ -105,13 +105,13 @@ content:
     region: content
   field_sidebar_content:
     type: entity_reference_revisions_entity_view
-    label: above
+    label: hidden
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
     weight: 9
-    region: content
+    region: sidebar_second
   links:
     settings: {  }
     third_party_settings: {  }
