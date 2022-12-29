@@ -5,7 +5,7 @@ dependencies:
   module:
     - autologout
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: automatedlogoutinfo
 theme: helfi_grant_applications
 region: header_bottom

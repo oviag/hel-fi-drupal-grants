@@ -6,7 +6,7 @@ dependencies:
     - hdbt_content
     - node
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: sidebarcontentblock_2
 theme: helfi_grant_applications
 region: sidebar_second
