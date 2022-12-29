@@ -987,9 +987,10 @@ function grants_handler_preprocess_application_list_item(&$variables) {
   try {
     if ($submissionData['status'] == 'DRAFT') {
       if (isset($submissionData["form_timestamp"]) && !empty($submissionData["form_timestamp"])) {
+
         $dt = new DateTime($submissionData["form_timestamp"], new DateTimeZone('Europe/Helsinki'));
         $variables['applicationSubmitted'] = $dt->format('d.m.Y H:i');
-        $variables['applicationSubmittedSortable'] = $dt->format('html_datetime');
+        $variables['applicationSubmittedSortable'] = $dt->format('Y-m-d\TH:i:s');
       }
     }
     else {
@@ -1308,7 +1309,7 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
     ->getRouteName();
 
   try {
-    $dt = new \DateTime($submissionData['form_timestamp'], new \DateTimeZone('Europe/Helsinki'));
+    $dt = new \DateTime($submissionData['form_timestamp_submitted'], new \DateTimeZone('Europe/Helsinki'));
     $variables['applicationSent'] = $dt->format('d.m.Y H:i');
   }
   catch (Exception $e) {
