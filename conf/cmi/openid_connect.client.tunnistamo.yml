@@ -10,6 +10,7 @@ plugin: tunnistamo
 settings:
   client_id: dev
   client_secret: dev
+  iss_allowed_domains: ''
   is_production: 0
   auto_login: 0
   environment_url: 'https://tunnistamo.test.hel.ninja'
