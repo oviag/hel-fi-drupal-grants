@@ -11,7 +11,7 @@
  * Install HDBT and HDBT admin themes and make them as default themes.
  */
 function grant_applications_config_install() {
-  \Drupal::service('theme_installer')->install(['helfi_grant_applications']);
+  \Drupal::service('theme_installer')->install(['hdbt_subtheme']);
   $system_theme = \Drupal::configFactory()->getEditable('system.theme');
-  $system_theme->set('default', 'helfi_grant_applications')->set('admin', 'hdbt_admin')->save();
+  $system_theme->set('default', 'hdbt_subtheme')->set('admin', 'hdbt_admin')->save();
 }

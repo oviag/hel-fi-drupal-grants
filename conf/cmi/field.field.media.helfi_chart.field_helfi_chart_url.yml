@@ -1,5 +1,5 @@
-uuid: 035a11af-dcdb-4ac3-8420-25bbccbb7f5b
-langcode: fi
+uuid: a44b8d39-238b-43a0-ad4a-aa98e5545aeb
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,7 +14,7 @@ field_name: field_helfi_chart_url
 entity_type: media
 bundle: helfi_chart
 label: URL
-description: 'Syötä kaavion URL-osoite muodossa <i>https://app.powerbi.com/view?r=eyJrIjo..</i>.'
+description: "Enter the Chart URL. Should be in format <i>https://app.powerbi.com/view?r=eyJrIjo..</i>.\r\n"
 required: true
 translatable: false
 default_value: {  }

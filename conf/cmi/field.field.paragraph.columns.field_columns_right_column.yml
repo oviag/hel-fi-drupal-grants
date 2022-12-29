@@ -1,5 +1,5 @@
-uuid: 963a1dfb-b219-4138-afa2-6c4578ef57a7
-langcode: fi
+uuid: 8836aaa9-fe59-430d-a7b9-a49f7e20cff1
+langcode: en
 status: true
 dependencies:
   config:
@@ -15,7 +15,7 @@ id: paragraph.columns.field_columns_right_column
 field_name: field_columns_right_column
 entity_type: paragraph
 bundle: columns
-label: 'Oikea palsta'
+label: 'Right column'
 description: ''
 required: true
 translatable: false

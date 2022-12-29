@@ -18,7 +18,7 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Implements hook_preprocess_HOOK().
  */
-function helfi_grant_applications_preprocess_block(&$variables) {
+function hdbt_subtheme_preprocess_block(&$variables) {
   if (isset($variables['elements']['#id'])) {
     $variables['content']['#attributes']['block_id'] = $variables['elements']['#id'];
   }
@@ -27,7 +27,7 @@ function helfi_grant_applications_preprocess_block(&$variables) {
 /**
  * Implements hook_theme_suggestions_HOOK_alter().
  */
-function helfi_grant_applications_theme_suggestions_block_alter(&$suggestions) {
+function hdbt_subtheme_theme_suggestions_block_alter(&$suggestions) {
   // Load theme suggestions for blocks from parent theme.
   foreach ($suggestions as &$suggestion) {
     $suggestion = str_replace('hdbt_subtheme_', '', $suggestion);
@@ -39,7 +39,7 @@ function helfi_grant_applications_theme_suggestions_block_alter(&$suggestions) {
  *
  * Provide block based menu suggestions.
  */
-function helfi_grant_applications_theme_suggestions_menu_alter(&$suggestions, $variables) {
+function hdbt_subtheme_theme_suggestions_menu_alter(&$suggestions, $variables) {
   if (isset($variables['attributes']['block_id'])) {
     $block_id = str_replace('hdbt_subtheme_', '', $variables['attributes']['block_id']);
 
@@ -73,11 +73,11 @@ function helfi_grant_applications_theme_suggestions_menu_alter(&$suggestions, $v
  * @return string|null
  *   Returns path for the icons SVG or null.
  */
-function helfi_grant_applications_get_icons_path() {
+function hdbt_subtheme_get_icons_path() {
   static $icon_path;
   if (!isset($icon_path)) {
     $theme_handler = \Drupal::service('theme_handler');
-    $icon_path = '/' . $theme_handler->getTheme('helfi_grant_applications')->getPath() . '/dist/icons/sprite.svg';
+    $icon_path = '/' . $theme_handler->getTheme('hdbt_subtheme')->getPath() . '/dist/icons/sprite.svg';
 
     // Add icons path as a global variable.
     if (!empty($icon_path)) {
@@ -90,15 +90,15 @@ function helfi_grant_applications_get_icons_path() {
 /**
  * Implements hook_preprocess().
  */
-function helfi_grant_applications_preprocess(&$variables) {
-  $variables['helfi_grant_applications_icons_path'] = helfi_grant_applications_get_icons_path();
-  $variables['#attached']['drupalSettings']['helfigrantapplicationsIconsPath'] = $variables['helfi_grant_applications_icons_path'];
+function hdbt_subtheme_preprocess(&$variables) {
+  $variables['hdbt_subtheme_icons_path'] = hdbt_subtheme_get_icons_path();
+  $variables['#attached']['drupalSettings']['helfigrantapplicationsIconsPath'] = $variables['hdbt_subtheme_icons_path'];
 }
 
 /**
  * Implements hook_aggregator_fetcher_info_alter().
  */
-function helfi_grant_applications_preprocess_views_view(&$variables) {
+function hdbt_subtheme_preprocess_views_view(&$variables) {
   $view = $variables['view'];
 
   // Operate only on ukk view.
@@ -123,7 +123,7 @@ function helfi_grant_applications_preprocess_views_view(&$variables) {
 /**
  * Preprocess views view fields.
  */
-function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
+function hdbt_subtheme_preprocess_views_view_fields(&$variables) {
   $view = $variables['view'];
 
   if ($view->id() === 'application_search') {
@@ -153,7 +153,7 @@ function helfi_grant_applications_preprocess_views_view_fields(&$variables) {
 /**
  * Implements hook_field_widget_paragraphs_form_alter().
  */
-function helfi_grant_applications_field_widget_paragraphs_form_alter(&$element, FormStateInterface &$form_state, $context) {
+function hdbt_subtheme_field_widget_paragraphs_form_alter(&$element, FormStateInterface &$form_state, $context) {
   switch ($element['#paragraph_type']) {
     case 'myparagraphs':
       $term = $form_state->getFormObject()->getEntity();
@@ -276,7 +276,7 @@ function grants_webform_print_preprocess_webform_submission_data(&$vars) {
  * @see template_preprocess_webform_section()
  * @see /webform/templates/webform-section.html.twig
  */
-function helfi_grant_applications_preprocess_form_element(array &$variables, $title_parents = ['label']) {
+function hdbt_subtheme_preprocess_form_element(array &$variables, $title_parents = ['label']) {
 
   $element = &$variables['element'];
   $type = $element['#type'] ?? '';
@@ -347,7 +347,7 @@ function helfi_grant_applications_preprocess_form_element(array &$variables, $ti
   }
 
   // Add help to title (aka label).
-  _helfi_grant_applications_preprocess_help($variables, $title_parents);
+  _hdbt_subtheme_preprocess_help($variables, $title_parents);
 
   // Hide 'item' label[for].
   if ($type === 'item') {
@@ -358,7 +358,7 @@ function helfi_grant_applications_preprocess_form_element(array &$variables, $ti
 /**
  * Append #help to title or element variable.
  */
-function _helfi_grant_applications_preprocess_help(array &$variables, $title_parents = ['label']) {
+function _hdbt_subtheme_preprocess_help(array &$variables, $title_parents = ['label']) {
 
   $element = &$variables['element'];
   $type = $element['#type'] ?? '';

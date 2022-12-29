@@ -7,11 +7,11 @@ dependencies:
   module:
     - menu_block_current_language
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 _core:
   default_config_hash: TqKhplHg19l9TlmwIC4Uta9DJOMllkU8lkKEEmvyTRc
 id: headertopnavigation
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: header_top
 weight: 0
 provider: null

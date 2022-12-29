@@ -5,11 +5,11 @@ dependencies:
   module:
     - system
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: sivunotsikko
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: content
-weight: -12
+weight: -15
 provider: null
 plugin: page_title_block
 settings:

@@ -333,3 +333,9 @@ msgstr "Voit kopioida ja käyttää tämän hakemuksen tietoja uudessa hakemukse
 
 msgid "You are copying an application"
 msgstr "Olet kopioimassa hakemusta"
+
+msgid "New application"
+msgstr "Uusi hakemus"
+
+msgid "Application is not open"
+msgstr "Hakemus ei ole avoinna"

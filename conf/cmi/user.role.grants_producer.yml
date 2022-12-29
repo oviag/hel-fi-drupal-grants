@@ -21,6 +21,7 @@ dependencies:
   module:
     - block_content
     - content_translation
+    - locale
     - media
     - menu_link_content
     - path
@@ -67,6 +68,7 @@ permissions:
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
+  - 'translate interface'
   - 'translate keywords taxonomy_term'
   - 'translate landing_page node'
   - 'translate menu_link_content'

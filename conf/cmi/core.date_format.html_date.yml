@@ -1,10 +1,10 @@
-uuid: 6be2aefa-fbf6-4f15-aeb8-7037107df180
-langcode: fi
+uuid: cdb54070-0d4a-4f93-b34f-f437fa9437e5
+langcode: en
 status: true
 dependencies: {  }
 _core:
   default_config_hash: EOQltUQPmgc6UQ2rcJ4Xi_leCEJj5ui0TR-12duS-Tk
 id: html_date
-label: 'HTML Päivämäärä'
+label: 'HTML Date'
 locked: true
 pattern: Y-m-d

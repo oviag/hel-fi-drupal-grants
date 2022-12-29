@@ -1,5 +1,5 @@
-uuid: fbfc0a32-298c-4781-9463-60f28fcbe505
-langcode: fi
+uuid: 5bc83d5d-43e9-4b48-b072-ae878afeb982
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,6 +7,8 @@ dependencies:
     - paragraphs.paragraphs_type.accordion
   module:
     - options
+_core:
+  default_config_hash: Njd4TsBh_iVsjSjzTPokGFk04Ud5veMBNxkgZ4nSoNw
 id: paragraph.accordion.field_accordion_title_level
 field_name: field_accordion_title_level
 entity_type: paragraph

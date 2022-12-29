@@ -7,9 +7,9 @@ dependencies:
     - system
     - user
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: grantsomaasiointi
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: before_content
 weight: -11
 provider: null

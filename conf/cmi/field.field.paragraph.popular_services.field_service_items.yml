@@ -1,5 +1,5 @@
-uuid: 85cb5d4e-f3b5-48ea-96e8-1066d212b735
-langcode: fi
+uuid: 35d2bffc-ae12-421e-b5d5-818776e44149
+langcode: en
 status: true
 dependencies:
   config:
@@ -9,7 +9,7 @@ dependencies:
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: 0ddJrtexrKteDoii5212VeduC6M0wuP3xND_Q2DJ-CE
+  default_config_hash: XnI5YJu389I49QYs_IRTB5q20YGxITyHr63VcZ76FUY
 id: paragraph.popular_services.field_service_items
 field_name: field_service_items
 entity_type: paragraph

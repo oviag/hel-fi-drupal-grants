@@ -1,5 +1,5 @@
-uuid: 70cd5ad0-8b0a-4018-9c49-45eab0d98545
-langcode: fi
+uuid: 5f657fd3-0764-4af0-9851-a64ef418f144
+langcode: en
 status: true
 dependencies:
   config:
@@ -35,4 +35,5 @@ hidden:
   field_metatags: true
   langcode: true
   links: true
+  published_at: true
   toc_enabled: true

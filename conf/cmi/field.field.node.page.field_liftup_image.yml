@@ -1,5 +1,5 @@
-uuid: 4418a863-ccdc-4be9-9b44-f1c1ad184f5b
-langcode: fi
+uuid: 80b461e6-3257-4850-bc2f-e404a906e5a7
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,13 +7,13 @@ dependencies:
     - media.type.image
     - node.type.page
 _core:
-  default_config_hash: F6wBhij8loESl_c6bpPWHJSiCOWOkwkSj4uEiolmzdY
+  default_config_hash: HnNX7GzhZeJlJrJoD5s1zgpCSG-TT5PEgL9tSbc97Qg
 id: node.page.field_liftup_image
 field_name: field_liftup_image
 entity_type: node
 bundle: page
-label: Nostokuva
-description: ''
+label: 'Liftup image'
+description: 'Image is visible on the content page, content listings, search results and on social media.'
 required: false
 translatable: false
 default_value: {  }

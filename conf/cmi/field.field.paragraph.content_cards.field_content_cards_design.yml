@@ -1,5 +1,5 @@
-uuid: ba4e2a7e-4af4-4741-85b4-496ac6a72e86
-langcode: fi
+uuid: 553777a0-1f47-4132-8c9c-502a2bdbb8e1
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,8 +13,8 @@ id: paragraph.content_cards.field_content_cards_design
 field_name: field_content_cards_design
 entity_type: paragraph
 bundle: content_cards
-label: Tyyli
-description: 'Valitse lohkon tyyli alasvetovalikosta.'
+label: Design
+description: 'Choose the paragraph design from the dropdown.'
 required: true
 translatable: false
 default_value:

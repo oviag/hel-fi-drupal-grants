@@ -1,5 +1,5 @@
-uuid: 6440f214-276d-488a-b97c-51d36fffe359
-langcode: fi
+uuid: 02a6e019-322f-49f7-aeaf-8fd4fd0c270a
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,8 +11,8 @@ id: paragraph.liftup_with_image.field_liftup_with_image_title
 field_name: field_liftup_with_image_title
 entity_type: paragraph
 bundle: liftup_with_image
-label: Otsikko
-description: 'Näkyvä otsikko lohkolle.'
+label: Title
+description: 'Title for the liftup with image block.'
 required: true
 translatable: false
 default_value: {  }

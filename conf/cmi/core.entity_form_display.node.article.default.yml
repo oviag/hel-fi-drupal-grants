@@ -1,5 +1,5 @@
-uuid: f2112401-4120-4dd2-81ea-fd31975ca57b
-langcode: fi
+uuid: 6cc11bbf-8b81-46ee-8782-ebf3da5fbafe
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.article.field_metatags
     - node.type.article
   module:
+    - hdbt_admin_editorial
     - media_library
     - metatag
     - paragraphs
@@ -18,7 +19,7 @@ dependencies:
     - scheduler
     - select2
 _core:
-  default_config_hash: vE1ebRQw1g5wxCHlrC52xufxcAnGWkut8bOLaO37CyE
+  default_config_hash: 6rXVT3BlE3mfxdEeXEG7HkTF-djBkSvX8okBYDbkD74
 id: node.article.default
 targetEntityType: node
 bundle: article
@@ -43,8 +44,8 @@ content:
     weight: 5
     region: content
     settings:
-      title: Lohko
-      title_plural: Lohkot
+      title: Paragraph
+      title_plural: Paragraphs
       edit_mode: open
       closed_mode: summary
       autocollapse: none
@@ -94,7 +95,7 @@ content:
     weight: 0
     region: content
     settings:
-      include_locked: true
+      include_locked: false
     third_party_settings: {  }
   path:
     type: path
