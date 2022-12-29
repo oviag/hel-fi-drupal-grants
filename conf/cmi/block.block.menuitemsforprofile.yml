@@ -1,15 +1,15 @@
-uuid: 657a194f-7ccc-442d-a09e-c20c6502cc9f
-langcode: fi
+uuid: cf7620ef-835c-4c6b-9738-c2b90fc95c75
+langcode: en
 status: true
 dependencies:
   module:
     - grants_profile
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: menuitemsforprofile
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: header_branding
-weight: -7
+weight: -12
 provider: null
 plugin: grants_profile_menuitem
 settings:

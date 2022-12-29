@@ -1,5 +1,5 @@
-uuid: 320f63fa-4df9-4ea0-a3ad-57c938026c8a
-langcode: fi
+uuid: c567be44-d26e-4ebd-9708-c4dce76da05d
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,14 +7,16 @@ dependencies:
     - field.field.node.page.field_content
     - field.field.node.page.field_has_hero
     - field.field.node.page.field_hero
+    - field.field.node.page.field_lead_in
     - field.field.node.page.field_liftup_image
     - field.field.node.page.field_lower_content
     - field.field.node.page.field_metatags
+    - field.field.node.page.field_sidebar_content
     - node.type.page
   module:
     - user
 _core:
-  default_config_hash: MRAVzHlsoY1rxTh7jEc-VYWFJRAXuhf9AlK63nBfUIs
+  default_config_hash: vFk4AH5HEcybJhfYNUFCYwD1tyJKnbp3UxnSELgFN8E
 id: node.page.teaser
 targetEntityType: node
 bundle: page
@@ -33,8 +35,10 @@ hidden:
   field_content: true
   field_has_hero: true
   field_hero: true
+  field_lead_in: true
   field_lower_content: true
   field_metatags: true
+  field_sidebar_content: true
   langcode: true
   links: true
   published_at: true

@@ -1,5 +1,5 @@
-uuid: 49bc7d89-db48-43d0-b2b0-21d08fdc46e5
-langcode: fi
+uuid: 362c2898-c16a-4e31-b095-e7088e41c96f
+langcode: en
 status: true
 dependencies:
   config:
@@ -62,6 +62,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  replace_file:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     weight: 8
@@ -84,5 +89,4 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden:
-  replace_file: true
+hidden: {  }

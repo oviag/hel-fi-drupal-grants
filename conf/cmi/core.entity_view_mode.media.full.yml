@@ -1,5 +1,5 @@
-uuid: 6ec2e791-d457-4cae-92c9-e6c38f5c52c4
-langcode: fi
+uuid: 838c4c9f-4b58-44ec-9014-f40841286960
+langcode: en
 status: false
 dependencies:
   module:
@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: 6NBUEuGmlkClK8Fb76tSMMpO2eZ4LWCBdbUk4z7CuP0
 id: media.full
-label: 'Koko sisältö'
+label: 'Full content'
 targetEntityType: media
 cache: true

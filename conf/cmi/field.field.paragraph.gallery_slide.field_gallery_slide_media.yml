@@ -1,5 +1,5 @@
-uuid: 8cdd0962-c4b0-4c9d-a85a-a721f8b63045
-langcode: fi
+uuid: d934ff94-aa99-40e1-91fe-44d073a65920
+langcode: en
 status: true
 dependencies:
   config:
@@ -12,7 +12,7 @@ id: paragraph.gallery_slide.field_gallery_slide_media
 field_name: field_gallery_slide_media
 entity_type: paragraph
 bundle: gallery_slide
-label: Kuva
+label: Image
 description: ''
 required: true
 translatable: false

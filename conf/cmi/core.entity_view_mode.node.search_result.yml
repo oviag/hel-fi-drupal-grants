@@ -1,5 +1,5 @@
-uuid: 3933add9-77bd-46e4-9822-403af59b6024
-langcode: fi
+uuid: c66879b3-3a62-4a94-93ba-6e4334e6d713
+langcode: en
 status: false
 dependencies:
   module:
@@ -7,6 +7,6 @@ dependencies:
 _core:
   default_config_hash: 6GCOQ-jP2RbdbHA5YWQ6bT8CfGbqrBYKOSC_XY4E3ZM
 id: node.search_result
-label: 'Valittu hakutulos'
+label: 'Search result highlighting input'
 targetEntityType: node
 cache: true

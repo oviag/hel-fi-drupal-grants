@@ -1,5 +1,5 @@
-uuid: 53362f08-1881-493d-a860-bbdd91ab7b03
-langcode: fi
+uuid: 55a9a6a2-75d3-4a67-831a-1f6861757518
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,8 +11,8 @@ id: node.page.field_has_hero
 field_name: field_has_hero
 entity_type: node
 bundle: page
-label: Hero-lohko
-description: 'Valitse haluatko näyttää hero-nostoelementin sivulla. Jos valitset heron, sen otsikkoa käytetään sivun pääotsikkona.'
+label: Hero
+description: 'Check this box if you want to use hero-block on the page. If you choose this the heros title field will define the heading level 1 title for the page.'
 required: false
 translatable: true
 default_value:

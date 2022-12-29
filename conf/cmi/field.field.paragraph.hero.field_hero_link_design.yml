@@ -1,5 +1,5 @@
-uuid: dd34486e-2db1-4657-849a-18c90743701c
-langcode: fi
+uuid: 244b2111-44f2-4079-b84e-dfb30eec9e45
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,8 +13,8 @@ id: paragraph.hero.field_hero_link_design
 field_name: field_hero_link_design
 entity_type: paragraph
 bundle: hero
-label: 'Linkin tyyli'
-description: 'Valitse minkälaisen tyylin haluat linkkipainikkeelle.'
+label: 'Link design'
+description: 'Choose what kind of design you want to use for the link button. '
 required: true
 translatable: false
 default_value:

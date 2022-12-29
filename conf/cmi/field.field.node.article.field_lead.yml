@@ -1,18 +1,18 @@
-uuid: 0d2424f9-751a-40e5-9201-cdd806e27de1
-langcode: fi
+uuid: 74b6e227-cd4b-473c-b058-732b9e8aea0d
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_lead
     - node.type.article
 _core:
-  default_config_hash: UpidPkJhIQUXDr4jTw0GyPITTFySAehEK6KObN5e22I
+  default_config_hash: E1t_Gg9tn4z6eA4cKT2_XMmnL04AdnluDFjo_Ohuq5c
 id: node.article.field_lead
 field_name: field_lead
 entity_type: node
 bundle: article
 label: Lead
-description: ''
+description: 'Lead is visible on the content page, content listings, search results and on social media.'
 required: false
 translatable: true
 default_value: {  }

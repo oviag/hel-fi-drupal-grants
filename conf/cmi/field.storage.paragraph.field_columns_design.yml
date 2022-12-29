@@ -1,5 +1,5 @@
-uuid: 0dd1e07c-6362-4977-b775-f624e015daa3
-langcode: fi
+uuid: 05bb9244-c486-49ed-a523-5e78ff8771f7
+langcode: en
 status: true
 dependencies:
   module:
@@ -15,13 +15,13 @@ settings:
   allowed_values:
     -
       value: 50-50
-      label: 'Palstat 50/50'
+      label: 'Divided 50/50'
     -
       value: 30-70
-      label: 'Palstat 30/70'
+      label: 'Divided 30/70'
     -
       value: 70-30
-      label: 'Palstat 70/30'
+      label: 'Divided 70/30'
   allowed_values_function: ''
 module: options
 locked: false

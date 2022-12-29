@@ -15,10 +15,10 @@ id: node.service.field_sidebar_content
 field_name: field_sidebar_content
 entity_type: node
 bundle: service
-label: 'Sidebar Content'
+label: 'Sidebar content'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
