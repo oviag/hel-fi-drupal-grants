@@ -8,5 +8,5 @@ index df64b6f7..e336f5eb 100644
      'tpr_service' => 'tpr_service',
 +    'service' => 'node'
    ];
- 
+
    // Trigger hook_sidebar_visibility_allowed_entities_alter().

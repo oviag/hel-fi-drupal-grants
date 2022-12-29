@@ -35,7 +35,7 @@
         "drupal/hdbt_admin": "^1.0",
         "drupal/helfi_ahjo": "^1.0",
         "drupal/helfi_atv": "dev-develop",
-        "drupal/helfi_azure_fs": "^1.0",
+        "drupal/helfi_azure_fs": "^1.1",
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_formtool_embed": "dev-develop",
         "drupal/helfi_hauki": "^1.0",
@@ -102,11 +102,11 @@
                 "Add ability to delete all from tempstore": "https://www.drupal.org/files/issues/2020-10-23/get_delete_all_temp-2475719-31.patch"
             },
             "drupal/content_lock": {
-              "Fix missing types": "https://www.drupal.org/files/issues/2021-10-15/array_filter_issue-3243486-a.patch"
+                "Fix missing types": "https://www.drupal.org/files/issues/2021-10-15/array_filter_issue-3243486-a.patch"
             },
             "drupal/menu_export": {
                 "Integrity constraint violation: 1062 Duplicate entry": "https://git.drupalcode.org/project/menu_export/-/merge_requests/3.patch"
-              },
+            },
             "drupal/hdbt": {
                 "Add service nodetype to sidebar.": "patches/add-service-type-sidebar.patch"
             }
