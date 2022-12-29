@@ -112,7 +112,6 @@
             },
             "drupal/hdbt": {
                 "Add service nodetype to sidebar.": "patches/add-service-type-sidebar.patch"
-            }
             },
             "drupal/jstimer": {
                 "Drupal 9 compatibility": "https://www.drupal.org/files/issues/2022-09-29/3140556-20.patch"

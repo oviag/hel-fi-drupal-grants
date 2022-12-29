@@ -1,6 +1,6 @@
 uuid: c405e532-e79c-4df2-8739-062fcd31b945
 langcode: fi
-status: true
+status: false
 dependencies:
   module:
     - hdbt_content
@@ -9,7 +9,7 @@ dependencies:
     - hdbt_subtheme
 id: lowercontentblock_2
 theme: helfi_grant_applications
-region: after_content
+region: ''
 weight: 0
 provider: null
 plugin: lower_content_block

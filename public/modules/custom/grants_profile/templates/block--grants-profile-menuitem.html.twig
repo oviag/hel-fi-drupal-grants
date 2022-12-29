@@ -47,7 +47,7 @@
     <a class="grants-profile--menuitem--mandate" href="{{ path('grants_mandate.mandateform', {}, {}) }}">
       <span class="grants-profile--menuitem--roleswitcher-triggertext">{{ 'Switch role'|t }}</span>
     </a>
-    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {'query': {'destination': path('<current>') }}) }}">
+    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {}) }}">
       <span aria-hidden="true" class="hel-icon hel-icon--signout hel-icon--size-m"></span>
       <span class="grants-profile--menuitem--logout-triggertext">{{ 'Signout'|t }}</span>
     </a>
