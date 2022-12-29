@@ -5,9 +5,9 @@ dependencies:
   module:
     - helfi_announcements
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: announcements_2
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: before_content
 weight: -13
 provider: null

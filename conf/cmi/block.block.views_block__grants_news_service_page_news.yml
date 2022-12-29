@@ -8,9 +8,9 @@ dependencies:
     - node
     - views
   theme:
-    - helfi_grant_applications
+    - hdbt_subtheme
 id: views_block__grants_news_service_page_news
-theme: helfi_grant_applications
+theme: hdbt_subtheme
 region: messages
 weight: 0
 provider: null

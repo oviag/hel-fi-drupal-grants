@@ -1,5 +1,5 @@
-uuid: 87b3f855-5530-4f84-85d5-a3530c3ef2b1
-langcode: fi
+uuid: d4c123ce-d355-4da1-9c74-9d28db255ff3
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,8 +11,8 @@ id: media.image.field_photographer
 field_name: field_photographer
 entity_type: media
 bundle: image
-label: Kuvaaja
-description: 'Kirjoita tähän kuvaajan nimi.'
+label: Photographer
+description: 'Write here the name of the photographer of the image.'
 required: false
 translatable: true
 default_value: {  }

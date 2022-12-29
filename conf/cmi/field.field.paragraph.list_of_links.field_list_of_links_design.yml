@@ -1,5 +1,5 @@
-uuid: a015d719-7b3f-4710-990f-67931b6fd339
-langcode: fi
+uuid: c6924096-14a4-46e3-94b8-428d9475c493
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,8 +13,8 @@ id: paragraph.list_of_links.field_list_of_links_design
 field_name: field_list_of_links_design
 entity_type: paragraph
 bundle: list_of_links
-label: Tyyli
-description: 'Valitse lohkon tyyli alasvetovalikosta. Tarvittavat tiedot riippuvat siitä minkä tyylin valitset.'
+label: Design
+description: 'Choose the paragraph design from the dropdown. Depending on what design you choose there may be different fields that you need to fill.'
 required: true
 translatable: false
 default_value:

@@ -1,0 +1,10 @@
+uuid: 027a6703-e10e-42f4-9ce6-3cfdf7f42078
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: BkpFqSItc6gSqoNEgRUBLDpW-ZIo_cOcHnd2Cvmt4b4
+id: publication_date_format
+label: 'Publication date format'
+locked: false
+pattern: 'j.n.Y G:i'

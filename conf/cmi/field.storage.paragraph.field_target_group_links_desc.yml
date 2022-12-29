@@ -1,0 +1,21 @@
+uuid: daf95841-d54f-4974-8fd5-716a11d079a8
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - text
+_core:
+  default_config_hash: spCFJn2_iQdsj2fr9h_EOZPf4EWBcYUr3lo5kaG2Dy0
+id: paragraph.field_target_group_links_desc
+field_name: field_target_group_links_desc
+entity_type: paragraph
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

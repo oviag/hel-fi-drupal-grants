@@ -25,11 +25,13 @@ dependencies:
     - taxonomy.vocabulary.unit_type
   module:
     - block_content
+    - config_translation
     - content_lock
     - content_translation
     - entity_usage
     - external_entities
     - helfi_tpr
+    - locale
     - media
     - menu_link_content
     - node
@@ -182,9 +184,11 @@ permissions:
   - 'translate article node'
   - 'translate avustuslaji taxonomy_term'
   - 'translate block_content'
+  - 'translate configuration'
   - 'translate editable entities'
   - 'translate file media'
   - 'translate image media'
+  - 'translate interface'
   - 'translate keywords taxonomy_term'
   - 'translate landing_page node'
   - 'translate menu_link_content'

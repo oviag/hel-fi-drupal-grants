@@ -1,10 +1,12 @@
-uuid: 0d7576c6-6054-4508-b5e1-0d05b15b1ed2
-langcode: fi
+uuid: 2864c2c5-9214-402c-80f0-a0f7e99f23cd
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_remote_video_video_title
     - paragraphs.paragraphs_type.remote_video
+_core:
+  default_config_hash: Bp1tvXNbkNozGjMop7bTopoVYSimcgFctt5eELalVbY
 id: paragraph.remote_video.field_remote_video_video_title
 field_name: field_remote_video_video_title
 entity_type: paragraph

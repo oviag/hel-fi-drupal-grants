@@ -16,8 +16,3 @@ RUN chmod +x /crons/*
 
 # Copy nginx overrides.
 COPY docker/openshift/custom.locations /etc/nginx/conf.d/custom.locations
-
-# Make files writable on testing environments.
-# TODO: Remove in production
-RUN chgrp -R 0 /var/www/html/public/modules && chmod g+w -R /var/www/html/public/modules
-RUN chgrp -R 0 /var/www/html/public/core/modules && chmod g+w -R /var/www/html/public/core/modules

@@ -1,5 +1,5 @@
-uuid: 3e614e3e-d1cf-421d-a2a3-78d159f51149
-langcode: fi
+uuid: 3ca85263-f6b3-48ed-ab9d-2510318d3332
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,14 +7,15 @@ dependencies:
     - node.type.article
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
-    - paragraphs.paragraphs_type.gallery
+    - paragraphs.paragraphs_type.from_library
     - paragraphs.paragraphs_type.image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.remote_video
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: sd97ognTVgckfNOfCIDuo9sB2tWzdkZFB5tNhMCesnc
+  default_config_hash: BvFdVXir65VaPvxsRZKF_IbZXjpzpQj0d5LJo4ltLu4
 id: node.article.field_content
 field_name: field_content
 entity_type: node
@@ -32,9 +33,10 @@ settings:
       text: text
       columns: columns
       image: image
-      gallery: gallery
       list_of_links: list_of_links
       content_cards: content_cards
+      from_library: from_library
+      remote_video: remote_video
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -52,9 +54,12 @@ settings:
       content_cards:
         weight: -22
         enabled: true
+      from_library:
+        weight: 21
+        enabled: true
       gallery:
         weight: -24
-        enabled: true
+        enabled: false
       gallery_slide:
         weight: -19
         enabled: false
@@ -73,6 +78,9 @@ settings:
       list_of_links_item:
         weight: -17
         enabled: false
+      remote_video:
+        weight: 27
+        enabled: true
       text:
         weight: -27
         enabled: true

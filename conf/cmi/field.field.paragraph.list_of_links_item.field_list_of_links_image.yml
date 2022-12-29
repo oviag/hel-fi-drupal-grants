@@ -1,5 +1,5 @@
-uuid: f199f519-9a3c-43fb-ac00-7aede46df994
-langcode: fi
+uuid: 99307527-94e2-4939-844d-0a2b3f8f33a8
+langcode: en
 status: true
 dependencies:
   config:
@@ -12,8 +12,8 @@ id: paragraph.list_of_links_item.field_list_of_links_image
 field_name: field_list_of_links_image
 entity_type: paragraph
 bundle: list_of_links_item
-label: Kuva
-description: 'Kuva jota käytetään linkin yhteydessä.'
+label: Image
+description: 'Image to be used as thumbnail of the link.'
 required: false
 translatable: true
 default_value: {  }

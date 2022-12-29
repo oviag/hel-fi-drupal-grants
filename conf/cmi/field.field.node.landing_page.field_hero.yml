@@ -1,5 +1,5 @@
-uuid: 8c324313-11a3-4435-9fdf-f9b4c6515338
-langcode: fi
+uuid: f2ab367b-a2f1-4735-8493-4bfbf14c5cf3
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,7 +14,7 @@ id: node.landing_page.field_hero
 field_name: field_hero
 entity_type: node
 bundle: landing_page
-label: Hero-lohko
+label: Hero
 description: ''
 required: false
 translatable: true

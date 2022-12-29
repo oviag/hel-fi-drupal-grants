@@ -1,5 +1,5 @@
-uuid: 0d0c542e-ca83-48f5-a418-3a3a3b67a0c7
-langcode: fi
+uuid: 86b446df-5b55-4813-91c1-10e629cd77a4
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ id: paragraph.accordion_item.field_accordion_item_heading
 field_name: field_accordion_item_heading
 entity_type: paragraph
 bundle: accordion_item
-label: Otsikko
+label: Heading
 description: ''
 required: true
 translatable: false

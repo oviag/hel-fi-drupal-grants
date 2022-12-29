@@ -1,5 +1,5 @@
-uuid: 9af201a4-ea4e-4c76-8a1d-18b222a8f2d4
-langcode: fi
+uuid: 0649fa8d-b12a-4531-83ad-e77d15c120e6
+langcode: en
 status: true
 dependencies:
   config:
@@ -13,8 +13,8 @@ id: paragraph.columns.field_columns_design
 field_name: field_columns_design
 entity_type: paragraph
 bundle: columns
-label: Tyyli
-description: 'Valitse lohkon tyyli alasvetovalikosta.'
+label: Design
+description: 'Choose the paragraph design from the dropdown.'
 required: true
 translatable: false
 default_value:

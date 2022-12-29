@@ -95,7 +95,7 @@ class ApplicationHandler {
   protected LoggerChannel $logger;
 
   /**
-   * Show messages messages.
+   * Show messages.
    *
    * @var \Drupal\Core\Messenger\MessengerInterface
    */
@@ -1009,7 +1009,7 @@ class ApplicationHandler {
           ->debug('Data sent to integration, response status: @status', $t_args);
       }
 
-      if ($status === 201) {
+      if ($status === 200) {
         $this->atvService->clearCache($applicationNumber);
         return TRUE;
       }

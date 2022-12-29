@@ -1,5 +1,5 @@
-uuid: e3cc357f-c010-482e-bc1c-739f8904f7a5
-langcode: fi
+uuid: b6be5622-1493-4d98-8ec2-355606948691
+langcode: en
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ dependencies:
     - hdbt_admin_editorial
     - media_library
 _core:
-  default_config_hash: U-gNAaUoB_zo65wA8j_8yoVi4ZXBwhsrIEyzS8OMkeg
+  default_config_hash: jfHJZwLuH17r7PFmMseZ4ISpcNgvIU-9UJlqgZB3i5g
 id: paragraph.list_of_links_item.default
 targetEntityType: paragraph
 bundle: list_of_links_item
@@ -39,9 +39,9 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      link_target: ''
-      linkit_auto_link_text: 0
       linkit_profile: tpr_content
+      linkit_auto_link_text: 0
+      link_target: ''
     third_party_settings: {  }
 hidden:
   created: true

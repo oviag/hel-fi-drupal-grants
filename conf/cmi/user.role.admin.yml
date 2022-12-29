@@ -26,6 +26,7 @@ dependencies:
   module:
     - block
     - block_content
+    - config_translation
     - content_translation
     - easy_breadcrumb
     - entity_usage
@@ -62,7 +63,7 @@ dependencies:
 _core:
   default_config_hash: fnOpQQ5r1eprWvQPrJPWRfDqxozQiZnwIdYFPKb0lbM
 id: admin
-label: Administrator
+label: Admin
 weight: -1
 is_admin: null
 permissions:
@@ -257,6 +258,7 @@ permissions:
   - 'select account cancellation method'
   - 'translate any entity'
   - 'translate article node'
+  - 'translate configuration'
   - 'translate editable entities'
   - 'translate file media'
   - 'translate hauki_resource'

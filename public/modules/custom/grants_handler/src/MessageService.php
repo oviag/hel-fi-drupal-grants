@@ -172,7 +172,7 @@ class MessageService {
         ]);
       }
 
-      if ($res->getStatusCode() == 201) {
+      if ($res->getStatusCode() == 200) {
         try {
           $this->atvService->clearCache($messageData['caseId']);
           $event = $this->eventsService->logEvent(

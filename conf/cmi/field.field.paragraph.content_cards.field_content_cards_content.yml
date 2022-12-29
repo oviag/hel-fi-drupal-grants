@@ -1,5 +1,5 @@
-uuid: 255c4924-d236-4433-a3ac-145fff6a76aa
-langcode: fi
+uuid: 24b4767a-b6a1-4e4e-bbf5-8a4bb45bccd0
+langcode: en
 status: true
 dependencies:
   config:
@@ -14,7 +14,7 @@ id: paragraph.content_cards.field_content_cards_content
 field_name: field_content_cards_content
 entity_type: paragraph
 bundle: content_cards
-label: Sisältö
+label: Content
 description: 'Add here the content that you want to appear as cards to the block.'
 required: true
 translatable: false

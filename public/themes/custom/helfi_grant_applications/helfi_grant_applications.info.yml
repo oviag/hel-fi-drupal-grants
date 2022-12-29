@@ -4,9 +4,7 @@ type: theme
 base theme: hdbt
 tags: sub-theme
 core_version_requirement: ^9 || ^10
-screenshot: helfi_grant_applications.png
-'interface translation project': helfi-grant-applications
-'interface translation server pattern': themes/custom/helfi_grant_applications/translations/%language.po
+screenshot: hdbt_subtheme.png
 
 # Regions
 regions:
@@ -28,8 +26,8 @@ regions:
 
 # Libraries
 libraries:
-  - helfi_grant_applications/global-styling
-  - helfi_grant_applications/global-scripting
+  - hdbt_subtheme/global-styling
+  - hdbt_subtheme/global-scripting
 
 libraries-override:
   core/drupal.dialog:
