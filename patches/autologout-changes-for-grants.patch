@@ -1,0 +1,160 @@
+diff --git a/js/autologout.js b/js/autologout.js
+index 04b2d49..c6e99ea 100644
+--- a/js/autologout.js
++++ b/js/autologout.js
+@@ -11,21 +11,21 @@
+    * Used to lower the cpu burden for activity tracking on browser events.
+    */
+   function debounce(f) {
+-      var timeout;
+-      return function () {
+-          var savedContext = this;
+-          var savedArguments = arguments;
+-          var finalRun = function () {
+-              timeout = null;
+-              f.apply(savedContext, savedArguments);
+-          };
+-
+-          if (!timeout) {
+-            f.apply(savedContext, savedArguments);
+-          }
+-          clearTimeout(timeout);
+-          timeout = setTimeout(finalRun, 500);
++    var timeout;
++    return function () {
++      var savedContext = this;
++      var savedArguments = arguments;
++      var finalRun = function () {
++        timeout = null;
++        f.apply(savedContext, savedArguments);
+       };
++
++      if (!timeout) {
++        f.apply(savedContext, savedArguments);
++      }
++      clearTimeout(timeout);
++      timeout = setTimeout(finalRun, 500);
++    };
+   }
+ 
+   /**
+@@ -104,15 +104,15 @@
+             // Clear timer if one exists.
+             clearTimeout(activityResetTimer);
+ 
+-            // Set a timer that goes off and resets this activity indicator after
+-            // a minute, otherwise sessions never timeout.
++            // Set a timer that goes off and resets this activity indicator
++            // after a minute, otherwise sessions never timeout.
+             activityResetTimer = setTimeout(function () {
+               activity = false;
+             }, 60000);
+           });
+ 
+-          // On pages where the user should be logged out, set the timer to popup
+-          // and log them out.
++          // On pages where the user should be logged out, set the timer to
++          // popup and log them out.
+           t = setTimeout(init, localSettings.timeout);
+         }
+       }
+@@ -137,7 +137,8 @@
+               t = setTimeout(init, time);
+             }
+             else {
+-              // Logout user right away without displaying a confirmation dialog.
++              // Logout user right away without displaying a confirmation
++              // dialog.
+               if (noDialog) {
+                 logout();
+                 return;
+@@ -196,6 +197,10 @@
+         });
+       }
+ 
++      function getPrefixedPath() {
++        return drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix
++      }
++
+       function triggerLogoutEvent(logoutMethod, logoutUrl) {
+         const logoutEvent = new CustomEvent('autologout', {
+           detail: {
+@@ -208,14 +213,14 @@
+ 
+       function logout() {
+         if (localSettings.use_alt_logout_method) {
+-          var logoutUrl = drupalSettings.path.baseUrl + "autologout_alt_logout";
++          var logoutUrl = getPrefixedPath() + "autologout_alt_logout";
+           triggerLogoutEvent('alternative', logoutUrl);
+ 
+           window.location = logoutUrl;
+         }
+         else {
+           $.ajax({
+-            url: drupalSettings.path.baseUrl + "autologout_ajax_logout",
++            url: getPrefixedPath() + "autologout_ajax_logout",
+             type: "POST",
+             beforeSend: function (xhr) {
+               xhr.setRequestHeader('X-Requested-With', {
+@@ -256,7 +261,7 @@
+           return false;
+         }
+         ajax.options.submit = {
+-          uactive : activity
++          uactive: activity
+         };
+         ajax.options.success = function (response, status) {
+           if (typeof response == 'string') {
+@@ -286,9 +291,9 @@
+       Drupal.Ajax['autologout.getTimeLeft'] = Drupal.ajax({
+         base: null,
+         element: document.body,
+-        url: drupalSettings.path.baseUrl + 'autologout_ajax_get_time_left',
++        url: getPrefixedPath() + 'autologout_ajax_get_time_left',
+         submit: {
+-          uactive : activity
++          uactive: activity
+         },
+         event: 'autologout.getTimeLeft',
+         error: function (XMLHttpRequest, textStatus) {
+@@ -317,14 +322,16 @@
+             response = $.parseJSON(response);
+           }
+           if (typeof response[0].command === 'string' && response[0].command === 'alert') {
+-            // In the event of an error, we can assume the user has been logged out.
++            // In the event of an error, we can assume the user has been logged
++            // out.
+             window.location = localSettings.redirect_url;
+           }
+ 
+           t = setTimeout(timerfunction, localSettings.timeout);
+           activity = false;
+ 
+-          // Wrap response data in timer markup to prevent detach of all behaviors.
++          // Wrap response data in timer markup to prevent detach of all
++          // behaviors.
+           response[0].data = '<div id="timer" style="display: none;">' + response[0].data + '</div>';
+ 
+           // Let Drupal.ajax handle the JSON response.
+@@ -342,7 +349,7 @@
+       Drupal.Ajax['autologout.refresh'] = Drupal.ajax({
+         base: null,
+         element: document.body,
+-        url: drupalSettings.path.baseUrl + 'autologout_ajax_set_last',
++        url: getPrefixedPath() + 'autologout_ajax_set_last',
+         event: 'autologout.refresh',
+         error: function (XMLHttpRequest, textStatus) {
+           // Disable error reporting to the screen.
+diff --git a/src/AutologoutManager.php b/src/AutologoutManager.php
+index d62171d..d8efe5d 100644
+--- a/src/AutologoutManager.php
++++ b/src/AutologoutManager.php
+@@ -250,7 +250,7 @@ class AutologoutManager implements AutologoutManagerInterface {
+    * {@inheritdoc}
+    */
+   public function getRemainingTime() {
+-    if ($this->configFactory->get('logout_regardless_of_activity')) {
++    if ($this->autoLogoutSettings->get('logout_regardless_of_activity')) {
+       $time_passed = $this->time->getRequestTime() - $_COOKIE['Drupal_visitor_autologout_login'];
+     }
+     else {
