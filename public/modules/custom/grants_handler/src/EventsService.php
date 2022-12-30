@@ -153,7 +153,7 @@ class EventsService {
         'body' => $eventDataJson,
       ]);
 
-      if ($res->getStatusCode() == 201) {
+      if ($res->getStatusCode() == 200) {
         $this->logger->info('Event logged: %eventId, message sent.', ['%eventId' => $eventData['eventID']]);
         return $eventData;
       }
