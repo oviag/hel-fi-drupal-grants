@@ -5,6 +5,8 @@ namespace Drupal\grants_profile\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -39,6 +41,17 @@ class GrantsProfileForm extends FormBase {
     );
   }
 
+  /**
+   * Helper method so we can have consistent dialog options.
+   *
+   * @return string[]
+   *   An array of jQuery UI elements to pass on to our dialog form.
+   */
+  public static function getDataDialogOptions(): array {
+    return [
+      'width' => '25%',
+    ];
+  }
   /**
    * {@inheritdoc}
    */
@@ -172,15 +185,19 @@ class GrantsProfileForm extends FormBase {
     if (empty($addressValues)) {
       $addressValues[0]['address_id'] = 0;
     }
-
-    $deleteAddressLink = Link::createFromRoute(t('Delete'), 'grants_profile.company_addresses.remove', [
-      'address_id' => '{address_delta}',
-    ],
-      [
-        'attributes' => [
-          'class' => ['hds-button', 'hds-button--secondary'],
+    $deleteAddressLinkText = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.company_address_modal_form', [
+        'address_id' => '{address_delta}', 'nojs' => 'ajax']),
+        '#attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => json_encode(static::getDataDialogOptions()),
         ],
-      ]);
+    ];
 
     $form['addressWrapper']['addresses'] = [
       '#type' => 'multivalue',
@@ -207,10 +224,7 @@ class GrantsProfileForm extends FormBase {
         '#type' => 'hidden',
       ],
       // Address delta is replaced with alter hook in module file.
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => $deleteAddressLink->toString(),
-      ],
+      'deleteButton' => $deleteAddressLinkText,
       '#default_value' => $addressValues,
     ];
     $form['addressWrapper']['addresses']['#attributes']['class'][] = 'webform--large';

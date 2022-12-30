@@ -147,3 +147,15 @@ fieldset.webform-composite-hidden-title {
   margin-top: -1em;
   margin-bottom: var(--spacing-layout-xs);
 }
+
+.grants-profile-grants-profile {
+  table {
+    thead {
+      th {
+        h4 {
+          margin: 0;
+        }
+      }
+    }
+  }
+}

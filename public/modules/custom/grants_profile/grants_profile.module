@@ -17,6 +17,17 @@ use Drupal\grants_profile\Form\ModalApplicationOfficialForm;
  * Implements hook_theme().
  */
 function grants_profile_theme(): array {
+  $theme['delete_button_link'] = [
+    'render element' => 'build',
+    'variables' => [
+      'attributes' => NULL,
+      'button_type' => NULL,
+      'icon_right' => NULL,
+      'icon_left' => NULL,
+      'text_label' => NULL,
+      'url' => NULL,
+    ],
+  ];
   $theme['view_application'] = [
     'render element' => 'build',
     'variables' => [
@@ -215,11 +226,12 @@ function grants_profile_preprocess_own_profile_form(&$variables) {
       if (isset($variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"])) {
         if ($value["address_id"]["#value"] != "") {
           /** @var \Drupal\Core\GeneratedLink $link */
-          $link = $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#markup"];
-          $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#markup"] = str_replace('%7Baddress_delta%7D', $value["address_id"]["#value"], $link->getGeneratedLink());
+          $url = $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#url"];
+          $url->setRouteParameter('address_id', $value["address_id"]["#value"]);
+          $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#url"] = $url;
         }
         else {
-          $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#markup"] = '';
+          $variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"]["#url"] = null;
         }
       }
     }
