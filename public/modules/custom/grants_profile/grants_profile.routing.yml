@@ -101,7 +101,7 @@ grants_profile.bank_account.remove:
     _controller: '\Drupal\grants_profile\Controller\GrantsProfileController::deleteBankAccount'
   requirements:
     _permission: 'administer own grants_profile'
- 
+
 grants_profile.bank_account.remove_confirm_modal:
   path: '/oma-asiointi/hakuprofiili/application-bank-accounts/{bank_account_id}/delete_confirm/{nojs}'
   defaults:
