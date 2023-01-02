@@ -6,7 +6,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Render\Markup;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -185,12 +186,12 @@ class GrantsProfileForm extends FormBase {
     if (empty($addressValues)) {
       $addressValues[0]['address_id'] = 0;
     }
-    $deleteAddressLinkText = [
+    $deleteAddressButton = [
       '#theme' => 'delete_button_link',
       '#icon_left' => 'trash',
       '#text_label' => t('Delete'),
       '#button_type' => 'secondary',
-      '#url' => Url::fromRoute('grants_profile.company_address_modal_form', [
+      '#url' => Url::fromRoute('grants_profile.company_addresses.remove_confirm_modal', [
         'address_id' => '{address_delta}', 'nojs' => 'ajax']),
         '#attributes' => [
           'class' => ['use-ajax'],
@@ -224,7 +225,7 @@ class GrantsProfileForm extends FormBase {
         '#type' => 'hidden',
       ],
       // Address delta is replaced with alter hook in module file.
-      'deleteButton' => $deleteAddressLinkText,
+      'deleteButton' => $deleteAddressButton,
       '#default_value' => $addressValues,
     ];
     $form['addressWrapper']['addresses']['#attributes']['class'][] = 'webform--large';
@@ -244,14 +245,19 @@ class GrantsProfileForm extends FormBase {
       $officialValues[$delta]['official_id'] = $delta;
     }
 
-    $deleteOfficialLink = Link::createFromRoute(t('Delete'), 'grants_profile.application_official.remove', [
-      'official_id' => '{official_delta}',
-    ],
-      [
-        'attributes' => [
-          'class' => ['hds-button', 'hds-button--secondary'],
-        ],
-      ]);
+    $deleteOfficialButton = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.application_official.remove_confirm_modal', [
+        'official_id' => '{official_delta}', 'nojs' => 'ajax']),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(static::getDataDialogOptions()),
+      ],
+    ];
 
     $form['officialWrapper']['officials'] = [
       '#type' => 'multivalue',
@@ -276,10 +282,8 @@ class GrantsProfileForm extends FormBase {
       'official_id' => [
         '#type' => 'hidden',
       ],
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => $deleteOfficialLink->toString(),
-      ],
+      'deleteButton' => $deleteOfficialButton,
+
       '#default_value' => $officialValues,
     ];
     $form['officialWrapper']['officials']['#attributes']['class'][] = 'webform--large';
@@ -296,14 +300,19 @@ class GrantsProfileForm extends FormBase {
       $bankAccountValues[$k]['bank_account_id'] = $k;
     }
 
-    $deleteBankAccountLink = Link::createFromRoute(t('Delete'), 'grants_profile.bank_account.remove', [
-      'bank_account_id' => '{bank_account_delta}',
-    ],
-    [
-      'attributes' => [
-        'class' => ['hds-button', 'hds-button--secondary'],
+    $deleteBankAccountButton = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.bank_account.remove_confirm_modal', [
+        'bank_account_id' => '{bank_account_delta}', 'nojs' => 'ajax']),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(static::getDataDialogOptions()),
       ],
-    ]);
+    ];
 
     $sessionHash = sha1(\Drupal::service('session')->getId());
     $upload_location = 'private://grants_profile/' . $sessionHash;
@@ -338,10 +347,7 @@ class GrantsProfileForm extends FormBase {
       'bank_account_id' => [
         '#type' => 'hidden',
       ],
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => $deleteBankAccountLink->toString(),
-      ],
+      'deleteButton' => $deleteBankAccountButton,
       '#default_value' => $bankAccountValues,
     ];
 
