@@ -41,6 +41,9 @@ $breakpoint-xl: 1248px;
 
 .webform-section {
   padding-bottom: var(--spacing-layout-2-xs);
+  table:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .hds-text-input {
@@ -103,9 +106,6 @@ $breakpoint-xl: 1248px;
   }
 }
 
-.hds-text-input .hds-text-input__input {
-  width: auto;
-}
 form .hds-text-input__input-wrapper, .hds-text-input__input-wrapper  {
   input, textarea,  {
     &.webform--small {
@@ -146,4 +146,16 @@ form .hds-checkbox {
 fieldset.webform-composite-hidden-title {
   margin-top: -1em;
   margin-bottom: var(--spacing-layout-xs);
+}
+
+.grants-profile-grants-profile {
+  table {
+    thead {
+      th {
+        h4 {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
