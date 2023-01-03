@@ -1,13 +1,11 @@
-uuid: 741b75c9-1086-4905-a32f-f459012b6717
-langcode: en
+uuid: 81649922-ed01-446c-b21e-14b2f2f81e06
+langcode: fi
 status: true
 dependencies:
   config:
     - filter.format.minimal
   module:
     - ckeditor
-_core:
-  default_config_hash: HEqlBl4yZwyvwM419DdClQNeHaD3d5x3pSB-0brI7oM
 format: minimal
 editor: ckeditor
 settings:
@@ -15,7 +13,7 @@ settings:
     rows:
       -
         -
-          name: Formatting
+          name: Muotoilu
           items:
             - Bold
             - Italic
@@ -25,19 +23,23 @@ settings:
             - DrupalLink
             - DrupalUnlink
         -
-          name: Lists
+          name: Listat
           items:
             - BulletedList
             - NumberedList
         -
+          name: Media
+          items:
+            - Blockquote
+            - DrupalImage
+        -
           name: Tools
           items:
-            - language_selector
             - Source
   plugins:
     drupallink:
-      linkit_enabled: true
-      linkit_profile: helfi
+      linkit_enabled: false
+      linkit_profile: ''
 image_upload:
   status: false
   scheme: public
