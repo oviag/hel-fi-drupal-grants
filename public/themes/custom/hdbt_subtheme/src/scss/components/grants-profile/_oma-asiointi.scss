@@ -4,6 +4,45 @@
     background: var(--color-white);
   }
 }
+.oma-asiointi-block {
+  background-color: var(--color-silver-medium-light);
+  padding: var(--spacing-l);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-s);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-silver-dark);
+    padding-bottom: var(--spacing-xs);
+
+    .user,
+    .link {
+      font-weight: 700;
+    }
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .submission {
+    background-color: var(--color-white);
+    padding: var(--spacing-xs);
+    margin-top: var(--spacing-s);
+    margin-bottom: var(--spacing-s);
+
+    .submission-title {
+      font-size: var(--fontsize-heading-s);
+      margin-bottom: var(--spacing-2-xs);
+      font-weight: 500;
+    }
+  }
+}
 .oma-asiointi {
   margin-top: var(--spacing-l);
   ul {
