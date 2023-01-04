@@ -113,7 +113,7 @@
                 "Add service nodetype to sidebar.": "patches/add-service-type-sidebar.patch"
             },
             "drupal/autologout": {
-                "Secure cookies + proxied domains": "patches/autologout-changes-for-grants.patch"
+                "Secure cookies": "patches/3308456-11.patch"
             }
         },
         "drupal-scaffold": {
