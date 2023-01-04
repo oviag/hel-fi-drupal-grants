@@ -4,8 +4,8 @@ Metadata            Examplemetadata          This is a simple browser test for $
 Library             Browser
 Suite Setup
 Resource            ../resources/tunnistamo.resource
-Variables           ./variables/browser-test-variables.yaml
-Variables           ./variables/dev-env.yaml
+Resource           ../resources/browser-test-variables.resource
+Resource           ../resources/dev-env-variables.resource
 
 *** Test Cases ***
 Fill Application Form
