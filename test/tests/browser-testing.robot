@@ -33,6 +33,11 @@ Do Login Process With Tunnistamo
     Go To Tunnistamo
     Login With Tunnistamo
     Logged In Home Page Should Be Open
+    # We need to logout using Drupal for Suomi.fi to not preselect company for us
+    Logout In Drupal
+    Go To Login Page
+    Go To Tunnistamo
+    Login With Tunnistamo
     Go To Oma Asiointi
     Click Choose Role
     Choose Company Profile With Tunnistamo
@@ -51,6 +56,11 @@ Logged In Home Page Should Be Open
     Wait Until Network Is Idle
     Get Title           ==     Avustukset | Hel.fi Avustusasiointi
     Wait For Elements State          .grants-profile--menuitem--logout .hel-icon--signout    visible
+
+Logout In Drupal
+    Click          .grants-profile--menuitem--logout .hel-icon--signout
+    Wait Until Network Is Idle
+    Get Title           ==    Avustukset | Hel.fi Avustusasiointi
 
 Go To Oma Asiointi
     Click             \#block-mainnavigation a[data-drupal-link-system-path="oma-asiointi"]
