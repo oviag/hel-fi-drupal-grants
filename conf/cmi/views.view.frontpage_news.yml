@@ -419,11 +419,15 @@ display:
         groups:
           1: AND
       style:
-        type: default
+        type: html_list
         options:
-          row_class: ''
+          grouping: {  }
+          row_class: news-listing__item
           default_row_class: true
           uses_fields: true
+          type: ul
+          wrapper_class: item-list
+          class: 'news-listing news-listing--latest-medium-teasers'
       row:
         type: 'entity:node'
         options:
@@ -577,7 +581,10 @@ display:
       use_more_text: 'See all news'
       link_display: custom_url
       link_url: /news
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
     cache_metadata:
       max-age: -1
       contexts:
