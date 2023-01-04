@@ -20,7 +20,7 @@ Fill Application Form
 *** Keywords ***
 Open Browser To Home Page
     New Browser         ${BROWSER}
-    New Page            ${TEST_BASEURL}
+    New Page            %{TEST_BASEURL}
     Get Title           ==    Avustukset | Hel.fi Avustusasiointi
 
 Accept Cookies Banner

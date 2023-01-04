@@ -1,5 +1,4 @@
 *** Variables ***
-${TEST_BASEURL}                       https://nginx-avustusasiointi-test.agw.arodevtest.hel.fi/
 ${TUNNISTAMO_HETU}                    210281-9988
 ${TUNNISTAMO_COMPANY_ID}              7769480-5
 ${APPLICATION_TITLE}                  Kaupunginhallituksen yleisavustushakemus
