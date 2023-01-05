@@ -33,14 +33,13 @@ Do Login Process With Tunnistamo
     Go To Tunnistamo
     Login With Tunnistamo
     Logged In Home Page Should Be Open
-    # We need to logout using Drupal for Suomi.fi to not preselect company for us
-    Logout In Drupal
-    Go To Login Page
-    Go To Tunnistamo
-    Login With Tunnistamo
     Go To Oma Asiointi
-    Click Choose Role
-    Choose Company Profile With Tunnistamo
+    ${title} =    Get Title
+    IF    '${title}' == 'Valitse asiointiroolin tyyppi | Helsingin kaupunki'
+      Do Company Selection
+    ELSE
+      Go To Omat tiedot
+    END
     Logged In Company Page Should Be Open
 
 Go To Login Page
@@ -64,7 +63,13 @@ Logout In Drupal
 
 Go To Oma Asiointi
     Click             \#block-mainnavigation a[data-drupal-link-system-path="oma-asiointi"]
-    Get Title           ==    Valitse asiointiroolin tyyppi | Helsingin kaupunki
+
+Go To Omat tiedot
+    Click             \#block-hdbt-subtheme-local-tasks a[data-drupal-link-system-path="oma-asiointi/hakuprofiili"]
+
+Do Company Selection
+    Click Choose Role
+    Choose Company Profile With Tunnistamo
 
 Click Choose Role
     Click             \#grants-mandate-type .form-submit
@@ -79,7 +84,8 @@ Go To Application Search
     Get Title           ==    Application search | Helsingin kaupunki
 
 Start New Application
-    Click          .views-field-field-webform a
+    Click      .view-application-search .views-row:nth-child(1) .views-field-view-node a
+    Click      \#block-servicepageauthblock .hds-button
     Get Title           ==    ${APPLICATION_TITLE} | Helsingin kaupunki
     Wait For Elements State       li[data-webform-page="1_hakijan_tiedot"].is-active  visible
 
