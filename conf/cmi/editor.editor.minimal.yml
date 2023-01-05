@@ -1,0 +1,50 @@
+uuid: 81649922-ed01-446c-b21e-14b2f2f81e06
+langcode: fi
+status: true
+dependencies:
+  config:
+    - filter.format.minimal
+  module:
+    - ckeditor
+format: minimal
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Muotoilu
+          items:
+            - Bold
+            - Italic
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+        -
+          name: Listat
+          items:
+            - BulletedList
+            - NumberedList
+        -
+          name: Media
+          items:
+            - Blockquote
+            - DrupalImage
+        -
+          name: Tools
+          items:
+            - Source
+  plugins:
+    drupallink:
+      linkit_enabled: false
+      linkit_profile: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null
