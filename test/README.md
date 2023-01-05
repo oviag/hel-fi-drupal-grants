@@ -17,6 +17,4 @@
 
 - `cd test`
 - `source env/bin/activate`
-- `robot -d logs/ --variablefile=variables/local-env.yaml tests/*.robot`
-
-Change `*-env.yaml` based on which environment you want to run the tests.
+- `TEST_BASEURL=https://hel-fi-drupal-grant-applications.docker.so/ robot -d logs/ tests/*.robot`

@@ -106,7 +106,6 @@ class GrantsProfileController extends ControllerBase {
 
     $build['#editProfileLink'] = Link::fromTextAndUrl($editProfileText, $editProfileUrl);
 
-    $build['#attached']['library'][] = 'grants_profile/tabs';
     return $build;
   }
 

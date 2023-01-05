@@ -30,3 +30,8 @@ regions:
 libraries:
   - hdbt_subtheme/global-styling
   - hdbt_subtheme/global-scripting
+
+libraries-override:
+  core/drupal.dialog:
+    js:
+      misc/dialog/dialog.js: dist/js/dialog.min.js

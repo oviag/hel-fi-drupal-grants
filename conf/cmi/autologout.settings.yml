@@ -2,7 +2,7 @@ _core:
   default_config_hash: kwGGKvKSU7cPTEgTMWrbW0o9Jwe6FSDmpgdUWmIXCdg
 langcode: fi
 enabled: true
-timeout: 900
+timeout: 60
 max_timeout: 172800
 padding: 60
 logout_regardless_of_activity: false
