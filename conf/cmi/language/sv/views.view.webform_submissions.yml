@@ -1,6 +1,7 @@
+label: Verkkolomakelähetykset
 display:
   default:
-    display_title: Master
+    display_title: Huvud
     display_options:
       exposed_form:
         options:
@@ -22,10 +23,9 @@ display:
             offset_label: Kompensera
       fields:
         sid:
-          label: '#'
           separator: ', '
         in_draft:
-          label: Draft
+          label: Utkast
           separator: ', '
         created:
           label: Skapad
@@ -43,16 +43,16 @@ display:
         in_draft:
           exception:
             title: Alla
+      title: Verkkolomakelähetykset
   embed_administer:
     display_options:
       fields:
         webform_submission_bulk_form:
           action_title: Åtgärd
         sid:
-          label: '#'
           separator: ', '
         in_draft:
-          label: Draft
+          label: Utkast
           separator: ', '
         sticky:
           label: Klistrad
@@ -64,7 +64,7 @@ display:
           label: Skapad
           separator: ', '
         completed:
-          label: Completed
+          label: Slutförd
           separator: ', '
         remote_addr:
           label: IP-adress
@@ -84,10 +84,9 @@ display:
         webform_submission_bulk_form:
           action_title: Åtgärd
         sid:
-          label: '#'
           separator: ', '
         in_draft:
-          label: Draft
+          label: Utkast
           separator: ', '
         sticky:
           label: Klistrad
@@ -99,7 +98,7 @@ display:
           label: Skapad
           separator: ', '
         completed:
-          label: Completed
+          label: Slutförd
           separator: ', '
         remote_addr:
           label: IP-adress
@@ -121,10 +120,9 @@ display:
     display_options:
       fields:
         sid:
-          label: '#'
           separator: ', '
         in_draft:
-          label: Draft
+          label: Utkast
           separator: ', '
         sticky:
           label: Klistrad
@@ -136,7 +134,7 @@ display:
           label: Skapad
           separator: ', '
         completed:
-          label: Completed
+          label: Slutförd
           separator: ', '
         remote_addr:
           label: IP-adress

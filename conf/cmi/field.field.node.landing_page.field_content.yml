@@ -1,19 +1,25 @@
-uuid: 10603cf8-662e-41fc-9a6e-1eb597ebc9f2
-langcode: fi
+uuid: ab9beb70-3ab0-42b6-bc09-1ad8d92a7dbd
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.node.field_content
     - node.type.landing_page
     - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
+    - paragraphs.paragraphs_type.content_liftup
+    - paragraphs.paragraphs_type.from_library
+    - paragraphs.paragraphs_type.front_page_latest_news
     - paragraphs.paragraphs_type.liftup_with_image
     - paragraphs.paragraphs_type.list_of_links
+    - paragraphs.paragraphs_type.phasing
+    - paragraphs.paragraphs_type.remote_video
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: Ehe5PsrXLNpnzHecyqqxXskELf3RoW8Sw5EKsEAnz74
+  default_config_hash: NMDaoBJkCtTwLvelvbzhNf-bqshGCunTGiZmSV4eT6g
 id: node.landing_page.field_content
 field_name: field_content
 entity_type: node
@@ -28,12 +34,17 @@ settings:
   handler: 'default:paragraph'
   handler_settings:
     target_bundles:
+      content_cards: content_cards
+      content_liftup: content_liftup
       columns: columns
       banner: banner
       list_of_links: list_of_links
       liftup_with_image: liftup_with_image
-      content_cards: content_cards
+      from_library: from_library
       chart: chart
+      remote_video: remote_video
+      front_page_latest_news: front_page_latest_news
+      phasing: phasing
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -42,17 +53,41 @@ settings:
       accordion_item:
         weight: -21
         enabled: false
+      asiointipalvelu:
+        weight: 39
+        enabled: false
       banner:
         weight: -26
         enabled: true
+      bloc:
+        weight: 41
+        enabled: false
       chart:
         weight: 25
         enabled: true
       columns:
         weight: -27
         enabled: true
+      contact_card:
+        weight: 44
+        enabled: false
+      contact_card_listing:
+        weight: 45
+        enabled: false
       content_cards:
-        weight: -23
+        weight: -33
+        enabled: true
+      content_liftup:
+        weight: -32
+        enabled: true
+      event_list:
+        weight: 48
+        enabled: false
+      from_library:
+        weight: 21
+        enabled: true
+      front_page_latest_news:
+        weight: 50
         enabled: true
       gallery:
         weight: -20
@@ -75,7 +110,49 @@ settings:
       list_of_links_item:
         weight: -16
         enabled: false
+      news_list:
+        weight: 58
+        enabled: false
+      paragraph_verkkolomake:
+        weight: 59
+        enabled: false
+      phasing:
+        weight: 50
+        enabled: true
+      phasing_item:
+        weight: 30
+        enabled: false
+      popular_service_item:
+        weight: 62
+        enabled: false
+      popular_services:
+        weight: 63
+        enabled: false
+      remote_video:
+        weight: 27
+        enabled: true
+      service_list:
+        weight: 65
+        enabled: false
+      sidebar_text:
+        weight: 66
+        enabled: false
+      social_media_link:
+        weight: 67
+        enabled: false
+      target_group_link_item:
+        weight: 68
+        enabled: false
+      target_group_links:
+        weight: 69
+        enabled: false
       text:
         weight: -15
+        enabled: false
+      unit_search:
+        weight: 71
+        enabled: false
+      webform:
+        weight: 72
         enabled: false
 field_type: entity_reference_revisions

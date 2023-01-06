@@ -172,7 +172,8 @@ trait ApplicationDefinitionTrait {
         'formElement' => 'community_address',
         'formError' => 'You must select address',
       ])
-      ->addConstraint('NotBlank');
+      ->addConstraint('NotBlank')
+      ->addConstraint('ValidPostalCode');
 
     $info['community_country'] = DataDefinition::create('string')
       ->setRequired(TRUE)
@@ -208,13 +209,32 @@ trait ApplicationDefinitionTrait {
     // ->addConstraint('NotBlank')
     // ->addConstraint('NotEmptyValue')
     $info['form_timestamp'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('formTimeStamp')
       ->setSetting('jsonPath', [
         'compensation',
         'applicationInfoArray',
         'formTimeStamp',
       ]);
+
+    $info['form_timestamp_created'] = DataDefinition::create('string')
+      ->setRequired(TRUE)
+      ->setLabel('createdFormTimeStamp')
+      ->setSetting('jsonPath', [
+        'compensation',
+        'applicationInfoArray',
+        'createdFormTimeStamp',
+      ]);
+
+    $info['form_timestamp_submitted'] = DataDefinition::create('string')
+      ->setRequired(FALSE)
+      ->setLabel('submittedFormTimeStamp')
+      ->setSetting('jsonPath', [
+        'compensation',
+        'applicationInfoArray',
+        'submittedFormTimeStamp',
+      ]);
+
     // ->addConstraint('NotBlank')
     $info['application_number'] = DataDefinition::create('string')
       // ->setRequired(TRUE)

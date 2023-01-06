@@ -1,11 +1,9 @@
-uuid: bbb75c6a-0c28-4930-a692-273a87b39d49
-langcode: fi
+uuid: 9bd68248-37b2-4af9-8a78-a5d6b247270b
+langcode: en
 status: true
 dependencies:
   module:
     - media
-_core:
-  default_config_hash: 4bWYX7aQyveXIE-cBSeWwmAlN0Q_p5b_1Ml88xlMniM
 id: media.token
 label: Token
 targetEntityType: media

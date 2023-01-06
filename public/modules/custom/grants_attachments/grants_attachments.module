@@ -1,6 +1,14 @@
 <?php
 
-use Drupal\Core\Render\Element;
+/**
+ * @file
+ * Handle attachment hooks.
+ */
+
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\grants_handler\ApplicationHandler;
+use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * @file
@@ -10,7 +18,6 @@ use Drupal\Core\Render\Element;
  * This file is no longer required in Drupal 8.
  * @see https://www.drupal.org/node/2217931
  */
-
 
 /**
  * Implements hook_theme().
@@ -39,34 +46,44 @@ function grants_attachments_theme(): array {
 function template_preprocess_grants_attachments(array &$variables) {
 
   if (isset($variables["children"]["#default_value"]["integrationID"]) &&
-    $variables["children"]["#default_value"]["fileType"] != '6') {
+    $variables["children"]["#default_value"]["fileType"] != '45') {
 
     $currentUri = \Drupal::request()->getUri();
     $currentHost = \Drupal::request()->getSchemeAndHttpHost();
     $currentDestination = str_replace($currentHost, '', $currentUri);
 
-    $submission = \Drupal\webform\Entity\WebformSubmission::load($variables["children"]["#webform_submission"]);
+    // For some reason this does not have submission data in it.
+    $submissiontemp = WebformSubmission::load($variables["children"]["#webform_submission"]);
+    // So we need to load appnro first.
+    $appno = ApplicationHandler::createApplicationNumber($submissiontemp);
+    // Then load submission again via custom method.
+    // This does not trigger another request, bc data is already
+    // loaded in storage controller.
+    $submission = ApplicationHandler::submissionObjectFromApplicationNumber($appno);
+
     if ($submission != NULL) {
       $submissionData = $submission->getData();
     }
 
-    // allow only DRAFTs to be deleted.
+    // Allow only DRAFTs to be deleted.
     if (is_array($submissionData) && isset($submissionData['status']) && $submissionData['status'] == 'DRAFT') {
       $integrationId = str_replace('/', '_', $variables["children"]["#default_value"]["integrationID"]);
 
-      $deleteUrl = \Drupal\Core\Url::fromRoute(
-        'grants_attachments.delete_attachment',
-        [
-          'submission_id' => $submissionData['application_number'] ?? 'not-saved',
-          'integration_id' => $integrationId
-        ],
-        [
-          'query' => [
-            'destination' => $currentDestination,
+      if (!empty($integrationId)) {
+        $deleteUrl = Url::fromRoute(
+          'grants_attachments.delete_attachment',
+          [
+            'submission_id' => $submissionData['application_number'] ?? 'not-saved',
+            'integration_id' => $integrationId,
+          ],
+          [
+            'query' => [
+              'destination' => $currentDestination,
+            ],
           ]
-        ]
-      );
-      $variables['attachmentDeleteLink'] = \Drupal\Core\Link::fromTextAndUrl(t('Delete attachment'), $deleteUrl);
+        );
+        $variables['attachmentDeleteLink'] = Link::fromTextAndUrl(t('Delete attachment'), $deleteUrl);
+      }
     }
   }
 }
@@ -75,27 +92,7 @@ function template_preprocess_grants_attachments(array &$variables) {
  * Implements hook_cron().
  */
 function grants_attachments_cron() {
-
-  // get saved files from db
-  $database = \Drupal::database();
-  $query = $database->query("SELECT * FROM {grants_attachments}");
-  $result = $query->fetchAll();
-  // parse results into structure that uploader eats
-  $resultParsed = [];
-  foreach ($result as $item) {
-    $resultParsed[$item->grants_application_number]['fid'][] = $item->fid;
-  }
-
-  /** @var \Drupal\grants_attachments\AttachmentUploader $attachmentUploader */
-  $attachmentUploader = \Drupal::service('grants_attachments.attachment_uploader');
-  foreach ($resultParsed as $applicationNumber => $item) {
-    // try to upload again with added data.
-    $attachmentUploader->uploadAttachments($item['fid'], $applicationNumber);
-  }
-
-  /**
-   * @var \Drupal\grants_attachments\AttachmentRemover
-   */
+  /** @var \Drupal\grants_attachments\AttachmentRemover $attachmentRemover */
   $attachmentRemover = \Drupal::service('grants_attachments.attachment_remover');
   $attachmentRemover->purgeAllAttachments();
 }

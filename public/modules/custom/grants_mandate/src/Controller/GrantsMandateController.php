@@ -116,11 +116,6 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
     $callbackUrl = Url::fromRoute('grants_mandate.callback_ypa', [], ['absolute' => TRUE])
       ->toString();
 
-    // @todo find some way to remove language part from routes / urls.
-    $callbackUrl = str_replace('/fi', '', $callbackUrl);
-    $callbackUrl = str_replace('/sv', '', $callbackUrl);
-    $callbackUrl = str_replace('/ru', '', $callbackUrl);
-
     if (is_string($code) && $code != '') {
       $this->grantsMandateService->changeCodeToToken($code, $callbackUrl);
       $roles = $this->grantsMandateService->getRoles();
@@ -141,7 +136,7 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
           '@error_uri' => $error_uri,
         ]);
 
-      $this->logger->error($msg->render());
+      $this->logger->error('Error: %error', ['%error' => $msg->render()]);
 
       throw new GrantsMandateException("Code Exchange failed, state: " . $state);
     }
@@ -155,14 +150,12 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
    * Callback for user mandates.
    */
   public function mandateCallbackHpa() {
-    $d = 'asdf';
   }
 
   /**
    * Callback for hpa listing.
    */
   public function mandateCallbackHpaList() {
-    $d = 'asdf';
   }
 
 }

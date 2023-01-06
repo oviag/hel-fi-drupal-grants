@@ -130,7 +130,6 @@ class GrantsProfileService {
     $newProfileData = [];
     $selectedCompanyArray = $this->getSelectedCompany();
     $selectedCompany = $selectedCompanyArray['identifier'];
-    $userProfile = $this->helsinkiProfiili->getUserProfileData();
     $userData = $this->helsinkiProfiili->getUserData();
 
     // If data is already in profile format, use that as is.
@@ -219,19 +218,29 @@ class GrantsProfileService {
       $newGrantsProfileDocument = $this->newProfile($documentContent);
       $newGrantsProfileDocument->setStatus(self::DOCUMENT_STATUS_SAVED);
       $newGrantsProfileDocument->setTransactionId($transactionId);
-      $this->logger->info('Grants profile POSTed, transactionID: ' . $transactionId);
+      $this->logger->info('Grants profile POSTed, transactionID: %transId', ['%transId' => $transactionId]);
       return $this->atvService->postDocument($newGrantsProfileDocument);
     }
     else {
 
       foreach ($documentContent['bankAccounts'] as $key => $bank_account) {
         unset($documentContent['bankAccounts'][$key]['confirmationFileName']);
+        // If we have account confirmation file uploaded
+        // which is denoted by having FID- in front of file id.
         if (isset($bank_account['confirmationFile']) && str_contains($bank_account['confirmationFile'], 'FID-')) {
+          // Get file id.
           $fileId = str_replace('FID-', '', $bank_account['confirmationFile']);
+          // Load file.
           $fileEntity = File::load((int) $fileId);
+          // If we have file.
           if ($fileEntity) {
-            $fileName = md5($bank_account['bankAccount']) . '.pdf';
+            // Generate file name for file.
+            // just md5 account number to avoid any confusions with different
+            // naming conventions.
+            $fileName = $fileEntity->getFilename();
+            // Set filename.
             $documentContent['bankAccounts'][$key]['confirmationFile'] = $fileName;
+            // Upload the thing.
             $retval = $this->atvService->uploadAttachment($grantsProfileDocument->getId(), $fileName, $fileEntity);
 
             if ($retval) {
@@ -242,7 +251,7 @@ class GrantsProfileService {
               );
             }
             else {
-              $this->messenger->addStatus(
+              $this->messenger->addError(
                 $this->t('Confirmation file saving failed for %account. This account cannot be used with applications without valid confirmation file.',
                   ['%account' => $bank_account['bankAccount']]
                 )
@@ -252,29 +261,26 @@ class GrantsProfileService {
               // Delete temp file.
               $fileEntity->delete();
 
-              $this->logger->debug($this->t(
-                'File deleted: %id.',
+              $this->logger->debug('File deleted: %id.',
                 [
                   '%id' => $fileEntity->id(),
                 ]
-              ));
+              );
             }
             catch (EntityStorageException $e) {
-              $this->logger->error($this->t(
-                'File deleting failed: %id.',
+              $this->logger->error('File deleting failed: %id.',
                 [
                   '%id' => $fileEntity->id(),
                 ]
-              ));
+                          );
             }
           }
           else {
-            $this->logger->error($this->t(
-              'No file found: %id.',
+            $this->logger->error('No file found: %id.',
               [
                 '%id' => $fileEntity->id(),
               ]
-            ));
+            );
 
             $this->messenger->addError(
               $this->t('Confirmation file saving failed for %account. This account cannot be used with applications without valid confirmation file.',
@@ -291,7 +297,7 @@ class GrantsProfileService {
         'metadata' => $grantsProfileDocument->getMetadata(),
         'transaction_id' => $transactionId,
       ];
-      $this->logger->info('Grants profile POSTed, transactionID: ' . $transactionId);
+      $this->logger->info('Grants profile PATCHed, transactionID: %transactionId', ['%transactionId' => $transactionId]);
       return $this->atvService->patchDocument($grantsProfileDocument->getId(), $payloadData);
     }
   }
@@ -538,6 +544,8 @@ class GrantsProfileService {
    *
    * @return array
    *   Profile content with required fields.
+   *
+   * @throws \Drupal\helfi_yjdh\Exception\YjdhException
    */
   public function initGrantsProfile(string $businessId, array $profileContent): array {
     // Try to get association details.
@@ -647,21 +655,6 @@ class GrantsProfileService {
 
     return $profileData->getContent();
 
-    // try {
-    //   $profile = $this->initGrantsProfile($businessId,
-    //     $profileData->getContent());
-    // }
-    // catch (\Exception $e) {
-    //   $msg = $this->t('No compnay data found for business id @businessid. Cannot continue.', [
-    //     '@businessid' => $businessId,
-    //   ]);
-    //   $this->messenger->addError($msg);
-    //   $this->messenger->addError($e->getMessage());
-    //   $this->logger->error($msg->render());
-    //   $profile = [];
-    // }
-
-    // return $profile;
   }
 
   /**
@@ -700,8 +693,10 @@ class GrantsProfileService {
    * @param bool $refetch
    *   Force refetching of the data.
    *
-   * @return \Drupal\helfi_atv\AtvDocument
+   * @return \Drupal\helfi_atv\AtvDocument|null
    *   Profiledata
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getGrantsProfile(
     string $businessId,
@@ -717,19 +712,16 @@ class GrantsProfileService {
     // Get profile document from ATV.
     try {
       $profileDocument = $this->getGrantsProfileFromAtv($businessId, $refetch);
-      if (!empty($profileDocument)) {
+      if ($profileDocument) {
         $this->setToCache($businessId, $profileDocument);
         return $profileDocument;
       }
     }
     catch (AtvDocumentNotFoundException $e) {
       return NULL;
-
-      // $this->messenger->addStatus($this->t('Grants profile not found for %s, new profile created.', ['%s' => $businessId]));
-      // $this->logger->info($this->t('Grants profile not found for %s, new profile created.', ['%s' => $businessId]));
-      // // Initialize new profile.
-      // $profileDocument = $this->newProfile([]);
     }
+
+    return NULL;
   }
 
   /**
@@ -826,10 +818,17 @@ class GrantsProfileService {
    * @return bool
    *   Is this cached?
    */
-  public function clearCache(string $key): bool {
+  public function clearCache($key = ''): bool {
 
     try {
-      return $this->tempStore->delete($key);
+      if ($key == '') {
+        $this->tempStore->deleteAllUser();
+      }
+      else {
+        $this->tempStore->delete($key);
+      }
+
+      return TRUE;
     }
     catch (\Exception $e) {
       return FALSE;

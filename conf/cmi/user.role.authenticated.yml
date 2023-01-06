@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.full_html
+    - filter.format.minimal
     - node.type.address
   module:
     - eu_cookie_compliance
@@ -16,7 +17,7 @@ _core:
   default_config_hash: 83Nuup-6oYkkdAsvg3nrR2pBOgtTXEV1JrzpCCLkYLM
 id: authenticated
 label: 'Sisäänkirjautunut käyttäjä'
-weight: 1
+weight: -9
 is_admin: false
 permissions:
   - 'access content'

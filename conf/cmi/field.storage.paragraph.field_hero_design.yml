@@ -1,12 +1,12 @@
-uuid: bff8531f-d1cf-449c-bc6d-b1b613e75d2d
-langcode: fi
+uuid: bd79bdab-01d8-4c10-90c5-b0a8ca732cdc
+langcode: en
 status: true
 dependencies:
   module:
     - options
     - paragraphs
 _core:
-  default_config_hash: qGel2F-fciDzT6Jjy6u0MvZv_ZPV24Q6-q0d42YrxHU
+  default_config_hash: zZ661kERU722BOWyFdnw3UIzhMePsDzfGXd2TsHAJYc
 id: paragraph.field_hero_design
 field_name: field_hero_design
 entity_type: paragraph
@@ -17,9 +17,6 @@ settings:
       value: without-image-left
       label: 'Without image, align left'
     -
-      value: without-image-center
-      label: 'Without image, align center'
-    -
       value: with-image-right
       label: 'Image on the right'
     -
@@ -29,14 +26,8 @@ settings:
       value: with-image-bottom
       label: 'Image on the bottom'
     -
-      value: background-image
-      label: 'Background image'
-    -
       value: diagonal
       label: Diagonal
-    -
-      value: no-background
-      label: 'No Background'
   allowed_values_function: ''
 module: options
 locked: false

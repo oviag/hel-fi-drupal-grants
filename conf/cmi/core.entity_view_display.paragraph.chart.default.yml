@@ -1,16 +1,17 @@
-uuid: 1ea96709-4b7b-4c17-b290-38259c9fb37a
-langcode: fi
+uuid: f36fd5b9-ec83-471d-8790-bf08c9276787
+langcode: en
 status: true
 dependencies:
   config:
     - field.field.paragraph.chart.field_chart_chart
     - field.field.paragraph.chart.field_chart_description
     - field.field.paragraph.chart.field_chart_title
+    - field.field.paragraph.chart.field_iframe_title
     - paragraphs.paragraphs_type.chart
   module:
     - text
 _core:
-  default_config_hash: z5HcA-kCryhCEDDUh3GMvbVm_xuff7CohDimxV11670
+  default_config_hash: PW4d3mI32Txzxw6-lJRypROkivZ5BfDWMjLnABgARqA
 id: paragraph.chart.default
 targetEntityType: paragraph
 bundle: chart
@@ -40,4 +41,5 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-hidden: {  }
+hidden:
+  field_iframe_title: true

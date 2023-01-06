@@ -1,0 +1,12 @@
+grants_metadata.application_status_check:
+  path: '/grants-metadata/status-check/{submission_id}'
+  defaults:
+    _title: 'Check application status'
+    _controller: '\Drupal\grants_metadata\Controller\ApplicationStatusCheckController::build'
+  requirements:
+    _permission: 'view own webform submission'
+
+hdbt_admin_tools.webform:
+  path: '/admin/structure/webform'
+  requirements:
+    _permission: 'access administration pages'

@@ -30,7 +30,6 @@
 {% set attributes = attributes.addClass('block--grants-profile--menuitem') %}
 
 <div{{ attributes }}>
-  <div class="grants-profile--menuitem">
     {{ title_prefix }}
     {% if label %}
       <h2{{ title_attributes }}>{{ label }}</h2>
@@ -38,28 +37,23 @@
     {{ title_suffix }}
     {% block content %}
       {% if content.loggedin %}
-        <a href="{{ url('grants_profile.show') }}">
-          {% if content.notifications > 0 %}
-            <div class="grants-profile--menuitem--notifications">{{ content.notifications }}</div>
-          {% endif %}
-          <div class="grants-profile--menuitem--initials grants-profile--menuitem--initials-colorscheme-{{ content.colorscheme }}">
-            {{ content.initials }}
-          </div>
+        <a class="grants-profile--menuitem--logout" href="{{ url('grants_profile.show') }}">
+          <span aria-hidden="true" class="hel-icon hel-icon--user hel-icon--size-m"></span>
+          <span class="grants-profile--menuitem--logout-triggertext">{{ 'Sign in'|t }}</span>
         </a>
       {% endif %}
     {% endblock %}
-  </div>
   {% if content.loggedin %}
-    <a class="grants-profile--menuitem--logout" href="{{ path('grants_mandate.mandateform', {}, {}) }}">
+    <a class="grants-profile--menuitem--mandate" href="{{ path('grants_mandate.mandateform', {}, {}) }}">
       <span class="grants-profile--menuitem--roleswitcher-triggertext">{{ 'Switch role'|t }}</span>
     </a>
-    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {'query': {'destination': path('<current>') }}) }}">
-      <span aria-hidden="true" class="hds-icon hds-icon--signout hds-icon--size-m"></span>
+    <a class="grants-profile--menuitem--logout" href="{{ path('user.logout', {}, {}) }}">
+      <span aria-hidden="true" class="hel-icon hel-icon--signout hel-icon--size-m"></span>
       <span class="grants-profile--menuitem--logout-triggertext">{{ 'Signout'|t }}</span>
     </a>
   {% else %}
     <a class="grants-profile--menuitem--login" href="{{ path('user.login', {}, {'query': {'destination': path('<current>') }}) }}">
-      <span aria-hidden="true" class="hds-icon hds-icon--signin hds-icon--size-m"></span>
+      <span aria-hidden="true" class="hel-icon hel-icon--signin hel-icon--size-m"></span>
       <span class="grants-profile--menuitem--login-triggertext">{{ 'Sign in'|t }}</span>
     </a>
   {% endif %}

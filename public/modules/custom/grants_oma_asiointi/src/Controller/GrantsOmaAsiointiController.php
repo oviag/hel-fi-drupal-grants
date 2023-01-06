@@ -13,8 +13,7 @@ use Drupal\grants_mandate\Controller\GrantsMandateController;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Returns responses for Oma Asiointi routes.
@@ -106,17 +105,14 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
 
   /**
    * Builds the response.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function build() {
     $selectedCompany = $this->grantsProfileService->getSelectedCompany();
 
     if ($selectedCompany == NULL) {
-      // $current_uri = \Drupal::request()->getRequestUri();
-      $url = Url::fromRoute('grants_mandate.mandateform')
-        ->setAbsolute()
-        ->toString();
-      $response = new RedirectResponse($url);
-      return $response;
+      throw new AccessDeniedHttpException('User not authorised');
     }
 
     $appEnv = ApplicationHandler::getAppEnv();
@@ -134,14 +130,14 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
     $other = [];
     $unreadMsg = [];
 
-    foreach ($applications as $status => $values) {
-      $other += $values;
+    foreach ($applications as $values) {
+      $other = array_merge($other, $values);
       foreach ($values as $application) {
         $appMessages = ApplicationHandler::parseMessages($application['#submission']->getData());
         foreach ($appMessages as $msg) {
-          if ($msg["messageStatus"] == 'UNREAD') {
+          if ($msg["messageStatus"] == 'UNREAD' && $msg["sentBy"] == 'Avustusten kasittelyjarjestelma') {
             $unreadMsg[] = [
-              '#theme' => 'message_list_item',
+              '#theme' => 'message_notification_item',
               '#message' => $msg,
             ];
           }
@@ -154,17 +150,15 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
       '#drafts' => [
         '#theme' => 'application_list',
         '#type' => 'drafts',
-        '#header' => t('Applications in progress'),
+        '#header' => $this->t('Applications in progress'),
         '#id' => 'oma-asiointi__drafts',
-        '#description' => 'DESCRIPTION GOES HERE',
         '#items' => $drafts,
       ],
       '#others' => [
         '#theme' => 'application_list',
         '#type' => 'sent',
-        '#header' => t('Sent applications'),
+        '#header' => $this->t('Sent applications'),
         '#id' => 'oma-asiointi__sent',
-        '#description' => 'DESCRIPTION GOES HERE',
         '#items' => $other,
       ],
       '#unread' => $unreadMsg,

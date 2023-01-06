@@ -80,16 +80,31 @@ class ApplicantMandateForm extends FormBase {
     // 'registered_community' => $this
     // ->t('Registered community'),
     // 'unregistered_community' => $this
-    // ->t('UNregistered community'),
+    // ->t('Unregistered community'),
     // 'private_person' => $this
     // ->t('Private person'),
     // ],
     // '#required' => TRUE,
     // ];
+    $form['info'] = [
+      '#markup' => '<p>' . $this->t('Choose the applicant role you want to use for the application') . '</p>',
+    ];
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['actions']['submit'] = [
+    $form['actions']['registered'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['hds-card__body']],
+      '#prefix' => '<div class="hds-card hds-card--applicant-role">',
+      '#suffix' => '</div>',
+    ];
+    $form['actions']['registered']['info'] = [
+      '#theme' => 'select_applicant_role',
+      '#icon' => 'group',
+      '#role' => $this->t('Registered community'),
+      '#role_description' => $this->t('This is a short description of the applicant role.'),
+    ];
+    $form['actions']['registered']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Select role & authorize mandate'),
     ];

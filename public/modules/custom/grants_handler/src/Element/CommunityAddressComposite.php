@@ -37,7 +37,7 @@ class CommunityAddressComposite extends WebformCompositeBase {
 
     $elements['community_address_select'] = [
       '#type' => 'select',
-      // '#required' => TRUE,
+      '#required' => TRUE,
       '#title' => t('Select address'),
       '#after_build' => [[get_called_class(), 'buildAddressOptions']],
       '#options' => [],
@@ -104,7 +104,7 @@ class CommunityAddressComposite extends WebformCompositeBase {
     foreach ($profileData['addresses'] as $delta => $address) {
       $deltaString = (string) $delta;
       $optionSelection = $address['street'] . ', ' . $address['postCode'] .
-        ' ' . $address['city'];
+        ', ' . $address['city'];
       $options[$deltaString] = $optionSelection;
 
       if ($formSelection == $optionSelection) {

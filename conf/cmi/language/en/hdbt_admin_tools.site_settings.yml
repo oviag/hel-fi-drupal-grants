@@ -1,0 +1,6 @@
+site_settings:
+  theme_color: coat-of-arms
+  default_icon: home-smoke
+  koro: basic
+footer_settings:
+  footer_color: dark

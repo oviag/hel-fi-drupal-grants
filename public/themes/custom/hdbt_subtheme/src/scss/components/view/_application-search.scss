@@ -1,0 +1,210 @@
+.view-application-search .main-content {
+  margin-top: var(--spacing-layout-s);
+
+  .container {
+  display: flex;
+  flex-flow: column-reverse;
+
+    .view-footer {
+      margin-bottom: var(--spacing-layout-s);
+    }
+  }
+}
+
+.application_search {
+
+  &--filter-wrapper {
+    background: var(--color-black-5);
+
+    h2 {
+      margin-bottom: var(--spacing-layout-s);
+      margin-top: var(--spacing-layout-s);
+    }
+
+    form {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--spacing-s);
+      .form-item {
+        width: 33%;
+        width: calc(calc(100% - var(--spacing-s) - var(--spacing-s)) / 3);
+        min-width: fit-content;
+        .grant-applications--select-wrapper {
+          min-width: 250px;
+        }
+      }
+      .hds-text-input:first-child {
+        max-width: none;
+        width: 100%;
+        input {
+          width: 100%;
+        }
+      }
+      .form-actions {
+        width: 33%;
+        width: calc(calc(100% - var(--spacing-s) - var(--spacing-s)) / 3);
+        display: flex;
+        align-items: center;
+        input {
+          width: 100%;
+          min-width: 250px;
+        }
+      }
+      .form-item-combine {
+        order: 1;
+      }
+      .form-item-avustuslaji {
+        order: 2;
+      }
+      .form-item-hakija {
+        order: 3;
+      }
+      .form-actions {
+        order: 4;
+      }
+      .form-item-field-application-open-value {
+        order: 5;
+      }
+      [data-drupal-selector='edit-reset'] {
+        background-color: transparent;
+        color: var(--color-black);
+        border: 0;
+      }
+    }
+    .hds-koros svg pattern {
+      color: var(--color-black-5);
+    }
+    .hero .hero__arrow {
+      background-color: var(--color-copper);
+    }
+  }
+  &--filters {
+    padding-top: var(--spacing-layout-xl);
+    padding-bottom: var(--spacing-layout-m);
+  }
+}
+
+.application_search--rows {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+
+  @include breakpoint($breakpoint-s) {
+    flex-direction: row;
+    margin-left: calc(-1 * var(--spacing-m));
+    width: calc(100% + var(--spacing-m));
+  }
+}
+
+
+.application_search--row {
+  margin-bottom: var(--spacing-l);
+  position: relative;
+  width: 100%;
+  border: 1px var(--color-black-20) solid;
+  h3 {
+    font-size: var(--fontsize-heading-m);
+    margin-top: var(--spacing-xs);
+  }
+  @include breakpoint($breakpoint-s) {
+    margin-left: var(--spacing-m);
+    width: calc(50% - var(--spacing-m));
+
+    @include breakpoint($breakpoint-l) {
+      width: calc(calc(100% / 3) - var(--spacing-m));
+    }
+  }
+  .paragraph-summary {
+    margin-bottom: var(--spacing-l);
+  }
+
+  .paragraph-formatter {
+    display: block;
+    .paragraphs-description {
+      .paragraphs-content-wrapper {
+        height: auto;
+        overflow: auto;
+        word-break: normal;
+        .summary-content {
+          color: var(--color-black);
+          &::after {
+            display: inline;
+            content: "...";
+          }
+        }
+      }
+    }
+
+  }
+  .views-field {
+    padding: var(--spacing-xs) var(--spacing-m) 0;
+  }
+
+  .views-field-field-avustuslaji {
+    padding: 0;
+  }
+  .views-field-field-target-group {
+    .field-content {
+      display: inline-block;
+      padding: var(--spacing-3-xs) var(--spacing-xs);
+      border-radius: var(--spacing-m);
+      background: var(--color-black);
+      color: var(--color-white);
+    }
+  }
+  .views-field-field-application-period .field-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-s);
+    span {
+      display: block;
+    }
+  }
+
+  .tag_avustuslaji {
+    background: var(--color-black-20);
+    color: var(--color-black);
+    width: 100%;
+    text-align: center;
+    padding: var(--spacing-m);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: var(--fontsize-body-s);
+    &_1 {
+      background: var(--color-brick-medium-light);
+    }
+    &_2 {
+      background: var(--color-copper);
+    }
+    &_3 {
+      background: var(--color-metro-medium-light);
+    }
+    &_4 {
+      background: var(--color-suomenlinna-medium-light);
+    }
+    &_5 {
+      background: var(--color-engel);
+    }
+    &_6 {
+      background: var(--color-bus-medium-light);
+    }
+    &_7 {
+      background: var(--color-coat-of-arms-medium-light);
+    }
+    &_8 {
+      background: var(--color-gold-medium-light);
+    }
+    &_9 {
+      background: var(--color-tram-medium-light);
+    }
+    &_10 {
+      background: var(--color-summer-light);
+    }
+    &_11 {
+      background: var(--color-fog);
+    }
+  }
+}

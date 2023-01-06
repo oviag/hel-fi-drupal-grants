@@ -4,6 +4,11 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
+use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfileDefinition;
@@ -37,6 +42,17 @@ class GrantsProfileForm extends FormBase {
     );
   }
 
+  /**
+   * Helper method so we can have consistent dialog options.
+   *
+   * @return string[]
+   *   An array of jQuery UI elements to pass on to our dialog form.
+   */
+  public static function getDataDialogOptions(): array {
+    return [
+      'width' => '25%',
+    ];
+  }
   /**
    * {@inheritdoc}
    */
@@ -85,7 +101,14 @@ class GrantsProfileForm extends FormBase {
       }
       catch (YjdhException $e) {
         // If no company data is found, we cannot continue.
-        $this->messenger()->addError($this->t('Company details not found in registries. Please contact customer service'));
+        $this->messenger()
+          ->addError($this->t('Community details not found in registries. Please contact customer service'));
+        $this->logger(
+          'grants_profile')
+          ->error('Error fetching community data. Error: %error', [
+            '%error' => $e->getMessage(),
+          ]
+                );
         $form['#disabled'] = TRUE;
         return $form;
       }
@@ -114,27 +137,27 @@ class GrantsProfileForm extends FormBase {
 
     $form['companyNameShortWrapper'] = [
       '#type' => 'webform_section',
-      '#title' => $this->t('Company short name'),
+      '#title' => $this->t('Community short name'),
     ];
     $form['companyNameShortWrapper']['companyNameShort'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Company short name'),
+      '#title' => $this->t('Community short name'),
       '#default_value' => $grantsProfileContent['companyNameShort'],
     ];
     $form['companyNameShortWrapper']['companyNameShort']['#attributes']['class'][] = 'webform--large';
     $form['companyHomePageWrapper'] = [
       '#type' => 'webform_section',
-      '#title' => $this->t('Company www address'),
+      '#title' => $this->t('Community www address'),
     ];
     $form['companyHomePageWrapper']['companyHomePage'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Company www address'),
+      '#title' => $this->t('Community www address'),
       '#default_value' => $grantsProfileContent['companyHomePage'],
     ];
 
     $form['businessPurposeWrapper'] = [
       '#type' => 'webform_section',
-      '#title' => $this->t('Business Purpose'),
+      '#title' => $this->t('Community Purpose'),
     ];
     $form['businessPurposeWrapper']['businessPurpose'] = [
       '#type' => 'textarea',
@@ -155,10 +178,27 @@ class GrantsProfileForm extends FormBase {
     ];
 
     $addressValues = [];
-    foreach ($grantsProfileContent['addresses'] as $delta => $official) {
-      $addressValues[$delta] = $official;
+    foreach ($grantsProfileContent['addresses'] as $delta => $address) {
+      $addressValues[$delta] = $address;
       $addressValues[$delta]['address_id'] = $delta;
     }
+
+    if (empty($addressValues)) {
+      $addressValues[0]['address_id'] = 0;
+    }
+    $deleteAddressButton = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.company_addresses.remove_confirm_modal', [
+        'address_id' => '{address_delta}', 'nojs' => 'ajax']),
+        '#attributes' => [
+          'class' => ['use-ajax'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => json_encode(static::getDataDialogOptions()),
+        ],
+    ];
 
     $form['addressWrapper']['addresses'] = [
       '#type' => 'multivalue',
@@ -166,7 +206,7 @@ class GrantsProfileForm extends FormBase {
       '#required' => TRUE,
       'street' => [
         '#type' => 'textfield',
-        '#title' => $this->t('Street'),
+        '#title' => $this->t('Street Address'),
       ],
       'city' => [
         '#type' => 'textfield',
@@ -185,10 +225,7 @@ class GrantsProfileForm extends FormBase {
         '#type' => 'hidden',
       ],
       // Address delta is replaced with alter hook in module file.
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => '<a href="/oma-asiointi/hakuprofiili/address/{address_delta}/delete">Poista</a>',
-      ],
+      'deleteButton' => $deleteAddressButton,
       '#default_value' => $addressValues,
     ];
     $form['addressWrapper']['addresses']['#attributes']['class'][] = 'webform--large';
@@ -207,6 +244,20 @@ class GrantsProfileForm extends FormBase {
       $officialValues[$delta] = $official;
       $officialValues[$delta]['official_id'] = $delta;
     }
+
+    $deleteOfficialButton = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.application_official.remove_confirm_modal', [
+        'official_id' => '{official_delta}', 'nojs' => 'ajax']),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(static::getDataDialogOptions()),
+      ],
+    ];
 
     $form['officialWrapper']['officials'] = [
       '#type' => 'multivalue',
@@ -231,17 +282,15 @@ class GrantsProfileForm extends FormBase {
       'official_id' => [
         '#type' => 'hidden',
       ],
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => '<a href="/oma-asiointi/hakuprofiili/application-officials/{official_delta}/delete">Poista</a>',
-      ],
+      'deleteButton' => $deleteOfficialButton,
+
       '#default_value' => $officialValues,
     ];
     $form['officialWrapper']['officials']['#attributes']['class'][] = 'webform--large';
 
     $form['bankAccountWrapper'] = [
       '#type' => 'webform_section',
-      '#title' => $this->t('Officials'),
+      '#title' => $this->t('Bank accounts'),
     ];
 
     $bankAccountValues = [];
@@ -251,9 +300,27 @@ class GrantsProfileForm extends FormBase {
       $bankAccountValues[$k]['bank_account_id'] = $k;
     }
 
+    $deleteBankAccountButton = [
+      '#theme' => 'delete_button_link',
+      '#icon_left' => 'trash',
+      '#text_label' => t('Delete'),
+      '#button_type' => 'secondary',
+      '#url' => Url::fromRoute('grants_profile.bank_account.remove_confirm_modal', [
+        'bank_account_id' => '{bank_account_delta}', 'nojs' => 'ajax']),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(static::getDataDialogOptions()),
+      ],
+    ];
+
+    $sessionHash = sha1(\Drupal::service('session')->getId());
+    $upload_location = 'private://grants_profile/' . $sessionHash;
+
     $form['bankAccountWrapper']['bankAccounts'] = [
       '#type' => 'multivalue',
       '#title' => $this->t('Bank accounts'),
+      '#required' => TRUE,
       'bankAccount' => [
         '#type' => 'textfield',
         '#title' => $this->t('Bank account'),
@@ -261,30 +328,26 @@ class GrantsProfileForm extends FormBase {
       ],
       'confirmationFileName' => [
         '#type' => 'textfield',
-        '#title' => $this->t('Saved confirmation File'),
+        '#title' => $this->t('Saved confirmation of account owner or copy of account statement'),
         '#attributes' => ['readonly' => 'readonly'],
       ],
       'confirmationFile' => [
         '#type' => 'managed_file',
-        '#title' => $this->t('Confirmation File'),
+        '#title' => $this->t('Banks confirmation of account owner or copy of account statement'),
         '#multiple' => FALSE,
-        '#required' => TRUE,
+        // '#required' => TRUE,
         '#uri_scheme' => 'private',
         '#file_extensions' => 'doc,docx,gif,jpg,jpeg,pdf,png,ppt,pptx,rtf,txt,xls,xlsx,zip',
         '#upload_validators' => [
           'file_validate_extensions' => ['doc docx gif jpg jpeg pdf png ppt pptx rtf txt xls xlsx zip'],
         ],
-        '#upload_location' => 'private://grants_profile',
+        '#upload_location' => $upload_location,
         '#sanitize' => TRUE,
-        '#description' => $this->t('Confirm this bank account.'),
       ],
       'bank_account_id' => [
         '#type' => 'hidden',
       ],
-      'deleteButton' => [
-        '#type' => 'markup',
-        '#markup' => '<a href="/oma-asiointi/hakuprofiili/bank-accounts/{bank_account_delta}/delete">Poista</a>',
-      ],
+      'deleteButton' => $deleteBankAccountButton,
       '#default_value' => $bankAccountValues,
     ];
 
@@ -327,6 +390,9 @@ class GrantsProfileForm extends FormBase {
             ) {
               unset($values[$key][$key2]);
             }
+            if (empty($value2["address_id"])) {
+              $values[$key][$key2]['address_id'] = (string) $key2;
+            }
           }
           if ($key == 'officials') {
             if (
@@ -343,16 +409,35 @@ class GrantsProfileForm extends FormBase {
               unset($values[$key][$key2]);
             }
             else {
-              if (isset($value2["confirmationFileName"]) && !empty($value2["confirmationFileName"])) {
-                $values[$key][$key2]['confirmationFile'] = $value2["confirmationFileName"];
+              // Parse existing confirmation file to values array.
+              if (isset($value2['confirmationFileName']) && !empty($value2['confirmationFileName'])) {
+                $values[$key][$key2]['confirmationFile'] = $value2['confirmationFileName'];
               }
+              // If we have just uploaded file.
               if (
-                isset($value2["confirmationFile"]) &&
-                is_array($value2["confirmationFile"]) &&
-                !empty($value2["confirmationFile"])
+                isset($value2['confirmationFile']) &&
+                is_array($value2['confirmationFile']) &&
+                !empty($value2['confirmationFile'])
               ) {
-                $values[$key][$key2]['confirmationFile'] = 'FID-' . $value2["confirmationFile"][0] ?? '';
+                // Prepend file id with FID- to tell profile service that we
+                // need to upload this file as well.
+                $values[$key][$key2]['confirmationFile'] = 'FID-' . $value2['confirmationFile'][0] ?? '';
               }
+
+              try {
+                if (
+                  is_array($value2['confirmationFile']) && empty($value2['confirmationFile'])) {
+                  $value2['confirmationFile'] = '';
+                }
+                elseif (isset($values[$key][$key2]['confirmationFile'])) {
+                  $value2['confirmationFile'] = $values[$key][$key2]['confirmationFile'];
+                }
+              }
+              catch (ReadOnlyException $e) {
+                $this->messenger()->addError('Data read only');
+                $form_state->setError($form, 'Trying to write to readonly value');
+              }
+
             }
           }
         }
@@ -368,13 +453,22 @@ class GrantsProfileForm extends FormBase {
       }
     }
 
+    foreach ($values['bankAccounts'] as $key => $accountData) {
+      if (!empty($accountData['bankAccount'])) {
+        if (
+          empty($accountData["confirmationFileName"]) &&
+          empty($accountData["confirmationFile"])
+        ) {
+          $elementName = 'bankAccounts][' . $key . '][confirmationFile';
+          $form_state->setErrorByName($elementName, 'You must add confirmation file for account ' . $accountData["bankAccount"]);
+        }
+      }
+    }
+
     parent::validateForm($form, $form_state);
 
     $errors = $form_state->getErrors();
-    if ($errors) {
-      $d = 'asfd';
-    }
-    else {
+    if (empty($errors)) {
       // @todo Created profile needs to be set to cache.
       $grantsProfileDefinition = GrantsProfileDefinition::create('grants_profile_profile');
       // Create data object.
@@ -410,7 +504,6 @@ class GrantsProfileForm extends FormBase {
     }
 
     $grantsProfileData = $storage['grantsProfileData'];
-    $values = $form_state->getValues();
 
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
@@ -419,12 +512,20 @@ class GrantsProfileForm extends FormBase {
 
     $profileDataArray = $grantsProfileData->toArray();
 
-    $success = $grantsProfileService->saveGrantsProfile($profileDataArray);
+    try {
+      $success = $grantsProfileService->saveGrantsProfile($profileDataArray);
+    }
+    catch (\Exception $e) {
+      $this->logger('grants_profile')->error('Grants profile saving failed.');
+    }
     $grantsProfileService->clearCache($selectedCompany);
 
     if ($success != FALSE) {
       $this->messenger()
-        ->addStatus($this->t('Grantsprofile for company number %s saved and can be used in grant applications', ['%s' => $selectedCompany]));
+        ->addStatus($this->t('Grantsprofile for %c (%s) saved.', [
+          '%c' => $selectedCompanyArray['name'],
+          '%s' => $selectedCompany,
+        ]));
     }
 
     $form_state->setRedirect('grants_profile.edit');

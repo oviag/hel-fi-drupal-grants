@@ -65,10 +65,13 @@ class AtvSchema {
    */
   public function setSchema(string $schemaPath) {
 
-    $jsonString = file_get_contents($schemaPath);
-    $jsonStructure = Json::decode($jsonString);
+    if ($schemaPath != '') {
+      $jsonString = file_get_contents($schemaPath);
+      $jsonStructure = Json::decode($jsonString);
 
-    $this->structure = $jsonStructure;
+      $this->structure = $jsonStructure;
+    }
+
   }
 
   /**
@@ -213,7 +216,7 @@ class AtvSchema {
           return $topLevelElement['properties'][$elementName];
         }
         else {
-          foreach ($topLevelElement['properties'] as $key0 => $element0) {
+          foreach ($topLevelElement['properties'] as $element0) {
             if ($element0['type'] == 'array') {
               if ($element0['items']['type'] == 'object') {
                 if (in_array($elementName, $element0['items']['properties']['ID']['enum'])) {
@@ -231,7 +234,7 @@ class AtvSchema {
                 return $element0['properties'][$elementName];
               }
               else {
-                foreach ($element0['properties'] as $k1 => $element1) {
+                foreach ($element0['properties'] as $element1) {
                   if ($element1['type'] == 'array') {
                     if ($element1['items']['type'] == 'object') {
                       if (isset($element1['items']['properties']['ID']) && array_key_exists('enum', $element1['items']['properties']['ID'])) {
@@ -367,7 +370,6 @@ class AtvSchema {
         continue;
       }
 
-      $types = $this->getJsonTypeForDataType($definition);
       $schema = $this->getPropertySchema($elementName, $this->structure);
 
       $itemTypes = $this->getJsonTypeForDataType($definition);
@@ -453,13 +455,17 @@ class AtvSchema {
                 $itemValueDefinitions = $itemDataDefinition->getPropertyDefinitions();
                 foreach ($itemValueDefinitions as $itemName => $itemValueDefinition) {
                   $itemValueDefinitionLabel = $itemValueDefinition->getLabel();
-
                   $itemTypes = $this->getJsonTypeForDataType($itemValueDefinition);
-
                   if (isset($propertyItem[$itemName])) {
-                    $itemValue = $propertyItem[$itemName];
+                    // What to do with empty values.
+                    $itemSkipEmpty = $itemValueDefinition->getSetting('skipEmptyValue');
 
+                    $itemValue = $propertyItem[$itemName];
                     $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
+                    // If no value and skip is setting, then skip.
+                    if (empty($itemValue) && $itemSkipEmpty === TRUE) {
+                      continue;
+                    }
 
                     $idValue = $itemName;
                     $valueArray = [
@@ -558,16 +564,6 @@ class AtvSchema {
     // Get new key to me evalued.
     $newKey = array_shift($pathArray);
 
-    if ($newKey == 'generalInfoArray') {
-      $d = 'asfd';
-    }
-    if ($elementName == 'attachmentsInfo') {
-      $d = 'asfd';
-    }
-    if ($elementName == 'attachmentsArray') {
-      $d = 'asfd';
-    }
-
     // If key exist in content array.
     if (array_key_exists($newKey, $content)) {
       // Get content for key.
@@ -619,10 +615,6 @@ class AtvSchema {
         // If value is an array, then we need to return desired element value.
         if ($value['ID'] == $elementName) {
           $retval = htmlspecialchars_decode($value['value']);
-
-          if ($elementName == 'businessPurpose') {
-            $d = 'asdf';
-          }
 
           return $retval;
         }

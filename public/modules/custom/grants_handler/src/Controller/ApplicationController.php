@@ -14,11 +14,13 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\grants_handler\ApplicationHandler;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
+use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformRequestInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -203,6 +205,38 @@ class ApplicationController extends ControllerBase {
   }
 
   /**
+   * Print Drupal messages according to application status.
+   *
+   * @var string $status
+   *  Status string from method.
+   */
+  public function showMessageForDataStatus(string $status) {
+    $message = NULL;
+
+    switch ($status) {
+      case 'DATA_NOT_SAVED_AVUS2':
+      case 'DATA_NOT_SAVED_ATV':
+      case 'NO_SUBMISSION_DATA':
+        $message = $this->t('Application saving process not done, data on this page is not yet updated.');
+        break;
+
+      case 'FILE_UPLOAD_PENDING':
+        $message = $this->t('File uploads are pending. Data on this page is not fully updated.');
+        break;
+
+      case 'OK':
+      default:
+
+        break;
+
+    }
+    if ($message != NULL) {
+      $this->messenger()->addWarning($message);
+    }
+
+  }
+
+  /**
    * View single application.
    *
    * @param string $submission_id
@@ -218,7 +252,6 @@ class ApplicationController extends ControllerBase {
   public function view(string $submission_id, string $view_mode = 'full', string $langcode = 'fi'): array {
 
     $view_mode = 'default';
-    $langcode = 'fi';
 
     try {
       $webform_submission = ApplicationHandler::submissionObjectFromApplicationNumber($submission_id);
@@ -226,11 +259,14 @@ class ApplicationController extends ControllerBase {
       if ($webform_submission != NULL) {
         $webform = $webform_submission->getWebform();
         $submissionData = $webform_submission->getData();
+
         $saveIdValidates = $this->applicationHandler->validateDataIntegrity(
           $webform_submission,
           NULL,
           $submissionData['application_number'],
           $submissionData['metadata']['saveid'] ?? '');
+
+        $this->showMessageForDataStatus($saveIdValidates);
 
         // Set webform submission template.
         $build = [
@@ -271,9 +307,7 @@ class ApplicationController extends ControllerBase {
         return $build;
       }
       else {
-        throw new NotFoundHttpException($this->t('Application @number not found.', [
-          '@number' => $submission_id,
-        ]));
+        throw new NotFoundHttpException('Application ' . $submission_id . ' not found.');
       }
 
     }
@@ -287,85 +321,70 @@ class ApplicationController extends ControllerBase {
   }
 
   /**
-   * View single application.
+   * Create new application and redirect to edit page.
    *
-   * @param string $submission_id
-   *   Application number for submission.
-   * @param string $view_mode
-   *   A view mode.
-   * @param string $langcode
-   *   Language code.
+   * @param string $webform_id
+   *   Webform to be added.
    *
-   * @return array
-   *   Build for the page.
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   *   Redirect to edit form.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
+   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
+   * @throws \Drupal\helfi_helsinki_profiili\ProfileDataException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  // Public function edit(string $submission_id, string $view_mode = 'full', string $langcode = 'fi'): array {
-  //    try {
-  //      $webform_submission = ApplicationHandler::submissionObjectFromApplicationNumber($submission_id);
-  //      if ($webform_submission == NULL) {
-  //        throw new NotFoundHttpException($this->t('Application @number not found.', [
-  //          '@number' => $submission_id,
-  //        ]));
-  //      }
-  //
-  //      $my_form = \Drupal::entityTypeManager()
-  //        ->getStorage('webform')
-  //        ->load($webform_submission->getWebform()->id());
-  //
-  //      $my_form->setOriginalId($webform_submission->id());
-  //
-  //      $form = $my_form->getSubmissionForm(['data' => $webform_submission->getData()]);
-  //
-  //      // $webform = $webform_submission->getWebform();
-  //      // $webform->entity = $webform_submission;
-  //      //
-  //      // $form = \Drupal::entityTypeManager()
-  //      // ->getViewBuilder('webform')
-  //      // ->view($rr);
-  //      return [
-  //        '#theme' => 'grants_handler_edit_application',
-  //        '#view_mode' => $view_mode,
-  //        '#submissionObject' => $webform_submission,
-  //        '#submissionId' => $submission_id,
-  //        '#editForm' => $form,
-  //        // '#editForm' => [
-  //        // '#type' => 'webform',
-  //        // '#webform' => $webform_submission->getWebform()->id(),
-  //        // '#default_data' =>
-  //        // ],
-  //      ];
-  //
-  //    }
-  //    catch (InvalidPluginDefinitionException $e) {
-  //      throw new NotFoundHttpException('Application not found');
-  //    }
-  //    catch (PluginNotFoundException $e) {
-  //      throw new NotFoundHttpException('Application not found');
-  //    }
-  //    catch (AtvDocumentNotFoundException $e) {
-  //      throw new NotFoundHttpException('Application not found');
-  //    }
-  //    catch (GuzzleException $e) {
-  //      throw new NotFoundHttpException('Application not found');
-  //    }
-  //    catch (\Exception $e) {
-  //      throw new NotFoundHttpException('Application not found');
-  //    }
-  //  }.
+  public function newApplication(string $webform_id): RedirectResponse {
+
+    $webform = Webform::load($webform_id);
+
+    if (!ApplicationHandler::isApplicationOpen($webform)) {
+      // Add message if application is not open.
+      $this->messenger()->addError('Application is not open', TRUE);
+
+      // Get service page node.
+      $query = \Drupal::entityQuery('node')
+        ->condition('type', 'service')
+        ->condition('field_webform', $webform_id);
+      $res = $query->execute();
+      $node = Node::load(reset($res));
+
+      // Redirect user to service page with message.
+      return $this->redirect(
+        'entity.node.canonical',
+        [
+          'node' => $node->id(),
+        ]
+      );
+    }
+
+    $newSubmission = $this->applicationHandler->initApplication($webform->id());
+
+    return $this->redirect(
+      'grants_handler.edit_application',
+      [
+        'webform' => $webform->id(),
+        'webform_submission' => $newSubmission->id(),
+      ]
+    );
+  }
 
   /**
    * Returns a page title.
    */
   public function getEditTitle($webform_submission): string {
-    $applicationNumber = ApplicationHandler::createApplicationNumber($webform_submission);
-    return $applicationNumber;
+    $webform = $webform_submission->getWebform();
+    return $webform->label();
   }
 
   /**
    * Returns a page title.
    */
   public function getTitle($submission_id): string {
-    return $submission_id;
+    $submissionObject = ApplicationHandler::submissionObjectFromApplicationNumber($submission_id);
+    $webform = $submissionObject->getWebform();
+    return $webform->label();
   }
 
 }

@@ -1,0 +1,13 @@
+{% if button_type is not null and icon_left is not empty %}
+  <a type="button" class="hds-button hds-button--{{ button_type }} {{ attributes.class }}" href="{{ url }}" {{ attributes }}>
+{% else %}
+  <a type="button" class="hds-button hds-button--primary {{ attributes.class }}" href="{{ url }}" {{ attributes }}>
+{% endif %}
+  {% if icon_left is not null and icon_left is not empty %}
+    <span aria-hidden="true" class="hel-icon hel-icon--{{ icon_left }}"></span>
+  {% endif %}
+  <span class="hds-button__label">{{ text_label }}</span>
+  {% if icon_right is not null and icon_right is not empty %}
+    <span aria-hidden="true" class="hel-icon hel-icon--{{ icon_right }}"></span>
+  {% endif %}
+</a>

@@ -5,15 +5,15 @@ dependencies:
   config:
     - system.menu.main
   module:
-    - ctools
     - menu_block_current_language
+    - node
   theme:
     - hdbt
 _core:
   default_config_hash: zS9zgTlcanrv75vk0WibXcekGUttnN4EwP1pwFdTAcM
 id: main_navigation_level_2
 theme: hdbt
-region: before_footer
+region: sidebar_first
 weight: 0
 provider: null
 plugin: 'menu_block_current_language:main'

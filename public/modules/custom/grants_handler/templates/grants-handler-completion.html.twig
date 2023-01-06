@@ -21,12 +21,12 @@
 <div{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="grants-handler__completion">
-      <div><i class="hds-icon hds-icon--check-circle hds-icon--size-xl" aria-hidden="true"></i></div>
+      <div><i class="hel-icon hel-icon--check-circle hel-icon--size-xl" aria-hidden="true"></i></div>
       <h2>{{ "Grant application sent successfully"|t }}</h2>
       <div class="grants-handler__completion__info-row">
         <div class="grants-handler__completion__item--submitted">
           <h3>{{ "Submission date"|t }}</h3>
-          {{ applicationTimestamp }}
+          {{ applicationTimestamp|format_date('long') }}
         </div>
         <div class="grants-handler__completion__item--number">
           <h3>{{ "Application number"|t }}</h3>
@@ -38,10 +38,10 @@
       </div>
       <div class="grants-handler__completion__longtext">
         <p>
-          Muistathan varmistaa, että hakemuksen tila vaihtuu “Lähetetty - odotetaan vahvistusta” -tilasta “Vastaanotettu tilaan. Hakemus on vastaanotettu vasta, kun tila on muodossa: “Vastaanotettu”.
+          {{ "Make sure that the status of the application changes from “Submitted” to “Received”. The application is only fully received when the status reads “Received”."|t }}
         </p>
         <p>
-          Tilan vaihtuminen voi kestää sekunneista muutamaan minuuttiin. Ongelmatilanteissa ota yhteyttä …@hel.fi ja varmista, että hakemuksesi on tullut perille.
+          {{ "The status change can take from seconds to few minutes."|t }}
         </p>
       </div>
       <div class="grants-handler__completion__button-row">

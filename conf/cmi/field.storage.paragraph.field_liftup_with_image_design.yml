@@ -1,12 +1,12 @@
-uuid: 401c968c-88fe-43aa-9b58-f785c0099d8b
-langcode: fi
+uuid: 8f9082df-c08a-4b46-a107-d05938581e93
+langcode: en
 status: true
 dependencies:
   module:
     - options
     - paragraphs
 _core:
-  default_config_hash: 8lZSaHWE7T-gq61sZA4PYTFXxMu3T5F1qPw8sCwrqXc
+  default_config_hash: 7Amnz8unxEqEP9kyTXtYaKyvVmL2zPRmBy6LVr-NdVk
 id: paragraph.field_liftup_with_image_design
 field_name: field_liftup_with_image_design
 entity_type: paragraph
@@ -19,6 +19,12 @@ settings:
     -
       value: image-on-left
       label: 'Image on left'
+    -
+      value: image-on-right-secondary
+      label: 'Image on right, secondary color'
+    -
+      value: image-on-left-secondary
+      label: 'Image on left, secondary color'
     -
       value: background-text-on-right
       label: 'Background image, text on right'

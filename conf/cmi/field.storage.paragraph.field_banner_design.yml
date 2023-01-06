@@ -1,12 +1,12 @@
-uuid: 413f225e-1aac-4ff5-804a-728389df4deb
-langcode: fi
+uuid: c2d2d4c9-8095-4588-b1a8-853e01ef4471
+langcode: en
 status: true
 dependencies:
   module:
     - options
     - paragraphs
 _core:
-  default_config_hash: ktXofBgkADlgnkihjCiK2kkTZKpSUcu2K1h2HufmEds
+  default_config_hash: JZ_ZK-PcMjvh5evgsYwXIvTglxpUs-F54769Uo84Un4
 id: paragraph.field_banner_design
 field_name: field_banner_design
 entity_type: paragraph
@@ -19,6 +19,12 @@ settings:
     -
       value: align-left
       label: 'Aligned to the left'
+    -
+      value: align-center-secondary
+      label: 'Aligned to the center, secondary color'
+    -
+      value: align-left-secondary
+      label: 'Aligned to the left, secondary color'
   allowed_values_function: ''
 module: options
 locked: false

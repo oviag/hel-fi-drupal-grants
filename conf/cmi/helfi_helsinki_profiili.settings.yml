@@ -1,0 +1,60 @@
+langcode: fi
+roles:
+  hp_user_roles:
+    - helsinkiprofiili
+  hp_user_role_strong: helsinkiprofiili
+  hp_user_role_weak: ''
+  admin_user_roles:
+    - ad_user
+clients:
+  hp_user_client: tunnistamo
+  hp_admin_client: tunnistamoadmin
+ad_role_mappings:
+  sl_avustustest_paakayttajat:
+    - ad_user
+    - grants_admin
+  sl_avustustest_pk_kanslia_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kasko_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_pk_pel_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kymp_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_kuva_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustustest_ta_sote_kayttajat:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_kanslia_paakayttajat:
+    - ad_user
+    - grants_admin
+  sl_avustus_pk_kanslia:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kasko:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kymp:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_pk_pel:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_kuva:
+    - ad_user
+    - content_producer_industry
+  sl_avustus_ta_sote:
+    - ad_user
+    - content_producer_industry
+  sl_kanslia_owakayttajat:
+    - ad_user
+    - content_producer_industry
+  sg_kanslia_kayttajat:
+    - ad_user
+    - content_producer_industry

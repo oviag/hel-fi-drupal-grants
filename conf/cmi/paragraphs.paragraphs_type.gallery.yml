@@ -1,12 +1,12 @@
-uuid: 1ba3f435-d0c9-41bd-b262-def857a56956
-langcode: fi
+uuid: dea54d45-426a-443f-b991-0740a6a79586
+langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: yo4uFFMZafb500s47mFUjuTc_RIaT_s4bOsE1sfNmm0
+  default_config_hash: ePh7-VRbj3KOxJt0QSASzTS0y8LUOaUMbxNoeuT3UrU
 id: gallery
 label: Gallery
 icon_uuid: null
 icon_default: null
-description: 'Using this paragraph you can create galleries from multiple images.'
+description: 'Not in use.'
 behavior_plugins: {  }

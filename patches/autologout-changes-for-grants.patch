@@ -1,0 +1,262 @@
+diff --git a/js/autologout.js b/js/autologout.js
+index 04b2d49..c6e99ea 100644
+--- a/js/autologout.js
++++ b/js/autologout.js
+@@ -11,21 +11,21 @@
+    * Used to lower the cpu burden for activity tracking on browser events.
+    */
+   function debounce(f) {
+-      var timeout;
+-      return function () {
+-          var savedContext = this;
+-          var savedArguments = arguments;
+-          var finalRun = function () {
+-              timeout = null;
+-              f.apply(savedContext, savedArguments);
+-          };
+-
+-          if (!timeout) {
+-            f.apply(savedContext, savedArguments);
+-          }
+-          clearTimeout(timeout);
+-          timeout = setTimeout(finalRun, 500);
++    var timeout;
++    return function () {
++      var savedContext = this;
++      var savedArguments = arguments;
++      var finalRun = function () {
++        timeout = null;
++        f.apply(savedContext, savedArguments);
+       };
++
++      if (!timeout) {
++        f.apply(savedContext, savedArguments);
++      }
++      clearTimeout(timeout);
++      timeout = setTimeout(finalRun, 500);
++    };
+   }
+
+   /**
+@@ -104,15 +104,15 @@
+             // Clear timer if one exists.
+             clearTimeout(activityResetTimer);
+
+-            // Set a timer that goes off and resets this activity indicator after
+-            // a minute, otherwise sessions never timeout.
++            // Set a timer that goes off and resets this activity indicator
++            // after a minute, otherwise sessions never timeout.
+             activityResetTimer = setTimeout(function () {
+               activity = false;
+             }, 60000);
+           });
+
+-          // On pages where the user should be logged out, set the timer to popup
+-          // and log them out.
++          // On pages where the user should be logged out, set the timer to
++          // popup and log them out.
+           t = setTimeout(init, localSettings.timeout);
+         }
+       }
+@@ -137,7 +137,8 @@
+               t = setTimeout(init, time);
+             }
+             else {
+-              // Logout user right away without displaying a confirmation dialog.
++              // Logout user right away without displaying a confirmation
++              // dialog.
+               if (noDialog) {
+                 logout();
+                 return;
+@@ -196,6 +197,10 @@
+         });
+       }
+
++      function getPrefixedPath() {
++        return drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix
++      }
++
+       function triggerLogoutEvent(logoutMethod, logoutUrl) {
+         const logoutEvent = new CustomEvent('autologout', {
+           detail: {
+@@ -208,14 +213,14 @@
+
+       function logout() {
+         if (localSettings.use_alt_logout_method) {
+-          var logoutUrl = drupalSettings.path.baseUrl + "autologout_alt_logout";
++          var logoutUrl = getPrefixedPath() + "autologout_alt_logout";
+           triggerLogoutEvent('alternative', logoutUrl);
+
+           window.location = logoutUrl;
+         }
+         else {
+           $.ajax({
+-            url: drupalSettings.path.baseUrl + "autologout_ajax_logout",
++            url: getPrefixedPath() + "autologout_ajax_logout",
+             type: "POST",
+             beforeSend: function (xhr) {
+               xhr.setRequestHeader('X-Requested-With', {
+@@ -256,7 +261,7 @@
+           return false;
+         }
+         ajax.options.submit = {
+-          uactive : activity
++          uactive: activity
+         };
+         ajax.options.success = function (response, status) {
+           if (typeof response == 'string') {
+@@ -286,9 +291,9 @@
+       Drupal.Ajax['autologout.getTimeLeft'] = Drupal.ajax({
+         base: null,
+         element: document.body,
+-        url: drupalSettings.path.baseUrl + 'autologout_ajax_get_time_left',
++        url: getPrefixedPath() + 'autologout_ajax_get_time_left',
+         submit: {
+-          uactive : activity
++          uactive: activity
+         },
+         event: 'autologout.getTimeLeft',
+         error: function (XMLHttpRequest, textStatus) {
+@@ -317,14 +322,16 @@
+             response = $.parseJSON(response);
+           }
+           if (typeof response[0].command === 'string' && response[0].command === 'alert') {
+-            // In the event of an error, we can assume the user has been logged out.
++            // In the event of an error, we can assume the user has been logged
++            // out.
+             window.location = localSettings.redirect_url;
+           }
+
+           t = setTimeout(timerfunction, localSettings.timeout);
+           activity = false;
+
+-          // Wrap response data in timer markup to prevent detach of all behaviors.
++          // Wrap response data in timer markup to prevent detach of all
++          // behaviors.
+           response[0].data = '<div id="timer" style="display: none;">' + response[0].data + '</div>';
+
+           // Let Drupal.ajax handle the JSON response.
+@@ -342,7 +349,7 @@
+       Drupal.Ajax['autologout.refresh'] = Drupal.ajax({
+         base: null,
+         element: document.body,
+-        url: drupalSettings.path.baseUrl + 'autologout_ajax_set_last',
++        url: getPrefixedPath() + 'autologout_ajax_set_last',
+         event: 'autologout.refresh',
+         error: function (XMLHttpRequest, textStatus) {
+           // Disable error reporting to the screen.
+diff --git a/src/AutologoutManager.php b/src/AutologoutManager.php
+index d62171d..d8efe5d 100644
+--- a/src/AutologoutManager.php
++++ b/src/AutologoutManager.php
+@@ -250,7 +250,7 @@ class AutologoutManager implements AutologoutManagerInterface {
+    * {@inheritdoc}
+    */
+   public function getRemainingTime() {
+-    if ($this->configFactory->get('logout_regardless_of_activity')) {
++    if ($this->autoLogoutSettings->get('logout_regardless_of_activity')) {
+       $time_passed = $this->time->getRequestTime() - $_COOKIE['Drupal_visitor_autologout_login'];
+     }
+     else {
+index c454583..2504886 100644
+--- a/autologout.module
++++ b/autologout.module
+@@ -341,5 +341,17 @@ function autologout_user_login($account) {
+   }
+
+   // Add login time cookie.
+-  user_cookie_save(['autologout_login' => \Drupal::time()->getCurrentTime()]);
++  $config = \Drupal::config('autologout.settings');
++  setrawcookie(
++    'Drupal.visitor.autologout_login',
++    rawurlencode(\Drupal::time()->getCurrentTime()),
++    [
++      'expires' => REQUEST_TIME + 31536000,
++      'path' => '/',
++      'samesite' => $config->get('cookie_samesite') ?: 'Lax',
++      'secure' => $config->get('cookie_secure') ?: FALSE,
++      'httponly' => $config->get('cookie_httponly') ?: FALSE,
++    ]
++  );
++
+ }
+diff --git a/config/install/autologout.settings.yml b/config/install/autologout.settings.yml
+index 4d036b3..8690870 100644
+--- a/config/install/autologout.settings.yml
++++ b/config/install/autologout.settings.yml
+@@ -17,4 +17,7 @@ jstimer_format: '%hours%:%mins%:%secs%'
+ jstimer_js_load_option: false
+ use_alt_logout_method: false
+ use_watchdog: true
+-whitelisted_ip_addresses: ''
+\ No newline at end of file
++whitelisted_ip_addresses: ''
++cookie_secure: false
++cookie_samesite: 'Lax'
++cookie_httponly: false
+diff --git a/config/schema/autologout.schema.yml b/config/schema/autologout.schema.yml
+index 1995ab6..202c136 100644
+--- a/config/schema/autologout.schema.yml
++++ b/config/schema/autologout.schema.yml
+@@ -73,6 +73,15 @@ autologout.settings:
+     whitelisted_ip_addresses:
+       type: string
+       label: 'Whitelisted IP addresses'
++    cookie_secure:
++      type: boolean
++      label: 'Cookie Secure'
++    cookie_samesite:
++      type: string
++      label: 'Cookie SameSite'
++    cookie_httponly:
++      type: boolean
++      label: 'Cookie httpOnly'
+
+ autologout.role.*:
+   type: config_object
+diff --git a/src/Form/AutologoutSettingsForm.php b/src/Form/AutologoutSettingsForm.php
+index d5695d9..b3f2493 100644
+--- a/src/Form/AutologoutSettingsForm.php
++++ b/src/Form/AutologoutSettingsForm.php
+@@ -284,6 +284,31 @@ class AutologoutSettingsForm extends ConfigFormBase {
+         '#description' => $this->t('Change the display of the dynamic timer. Available replacement values are: %day%, %month%, %year%, %dow%, %moy%, %years%, %ydays%, %days%, %hours%, %mins%, and %secs%.'),
+       ];
+     }
++    $form['cookie_secure'] = [
++      '#type' => 'checkbox',
++      '#title' => $this->t('Cookie Secure'),
++      '#default_value' => $config->get('cookie_secure'),
++      '#description' => $this->t("Whether to set the Secure attribute on the autologout cookie."),
++    ];
++
++    $form['cookie_samesite'] = [
++      '#type' => 'select',
++      '#options' => [
++        'Strict' => $this->t('Strict'),
++        'Lax' => $this->t('Lax'),
++        'None' => $this->t('None'),
++      ],
++      '#title' => $this->t('Cookie SameSite'),
++      '#default_value' => $config->get('cookie_samesite'),
++      '#description' => $this->t("The SameSite attribute to set on the autologout cookie."),
++    ];
++
++    $form['cookie_httponly'] = [
++      '#type' => 'checkbox',
++      '#title' => $this->t('Cookie HttpOnly'),
++      '#default_value' => $config->get('cookie_httponly'),
++      '#description' => $this->t("Whether to set the HttpOnly attribute on the autologout cookie."),
++    ];
+
+     $form['role_container'] = [
+       '#type' => 'container',
+@@ -471,6 +496,9 @@ class AutologoutSettingsForm extends ConfigFormBase {
+       ->set('whitelisted_ip_addresses', $values['whitelisted_ip_addresses'])
+       ->set('use_alt_logout_method', $values['use_alt_logout_method'])
+       ->set('use_watchdog', $values['use_watchdog'])
++      ->set('cookie_secure', $values['cookie_secure'])
++      ->set('cookie_samesite', $values['cookie_samesite'])
++      ->set('cookie_httponly', $values['cookie_httponly'])
+       ->save();
+
+     if (!empty($values['table'])) {

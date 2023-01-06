@@ -1,5 +1,5 @@
-uuid: 11660aad-a6c5-477a-b523-11a5a0ba1e1c
-langcode: fi
+uuid: 99d685a7-9dc1-4f05-9ba7-2f4604cd403d
+langcode: en
 status: true
 dependencies:
   config:
@@ -16,7 +16,7 @@ dependencies:
     - media_library
     - text
 _core:
-  default_config_hash: a7HT1FL6Lj9NGy6KYZjyVqpngR4ANDSgnjRSQ15UHmQ
+  default_config_hash: GRujaYo6zwdQ1uTSTDW_tCviosJuWK9RLD9QRmd9iPs
 id: paragraph.hero.default
 targetEntityType: paragraph
 bundle: hero
@@ -50,15 +50,16 @@ content:
       media_types: {  }
     third_party_settings: {  }
   field_hero_link:
-    type: link_target_field_widget
+    type: link_target_icon_field_widget
     weight: 6
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
-      linkit_profile: helfi
+      linkit_profile: tpr_content
       linkit_auto_link_text: 0
       link_target: ''
+      icon: ''
     third_party_settings: {  }
   field_hero_link_design:
     type: design_field_widget

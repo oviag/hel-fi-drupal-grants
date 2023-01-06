@@ -147,7 +147,8 @@ class MessageService {
       $messageData['caseId'] = $submissionData["application_number"];
 
       if ($userData === NULL) {
-        $messageData['sentBy'] = 'KORJAA PROFIILIYHTEYS';
+        $currentUser = \Drupal::currentUser();
+        $messageData['sentBy'] = $currentUser->getDisplayName();
       }
       else {
         $messageData['sentBy'] = $userData['name'];
@@ -165,13 +166,16 @@ class MessageService {
       ]);
 
       if ($this->debug == TRUE) {
-        $this->logger->debug('MSG id: ' . $nextMessageId . ', JSON: ' . $messageDataJson);
+        $this->logger->debug('MSG id: %msgId, JSON: %json', [
+          '%msgId' => $nextMessageId,
+          '%json' => $messageDataJson,
+        ]);
       }
 
-      if ($res->getStatusCode() == 201) {
+      if ($res->getStatusCode() == 200) {
         try {
           $this->atvService->clearCache($messageData['caseId']);
-          $eventId = $this->eventsService->logEvent(
+          $event = $this->eventsService->logEvent(
             $submissionData["application_number"],
             'MESSAGE_APP',
             t('New message for @applicationNumber.',
@@ -180,12 +184,17 @@ class MessageService {
             $nextMessageId
           );
 
-          $this->logger->info('MSG id: ' . $nextMessageId . ', message sent. Event logged: ' . $eventId);
+          $this->logger->info(
+            'MSG id: %nextId, message sent. Event logged: %eventId',
+            [
+              '%nextId' => $nextMessageId,
+              '%eventId' => $event['eventID'],
+            ]);
 
         }
         catch (EventException $e) {
           // Log event error.
-          $this->logger->error($e->getMessage());
+          $this->logger->error('%error', ['%error' => $e->getMessage()]);
         }
 
         return TRUE;

@@ -75,7 +75,7 @@ elements: |-
         '#type': webform_markup
         '#markup': |-
           <div class="grants-profile-prh-info">
-                      <span aria-hidden="true" class="hds-icon hds-icon--check-circle-fill hds-icon--size-s"></span> Merkityt tiedot on haettu Patentti- ja rekisterihallinnon rekisteristä (PRH), eikä niitä voi tämän takia muokata.
+                      <span aria-hidden="true" class="hel-icon hel-icon--check-circle-fill hel-icon--size-s"></span> Merkityt tiedot on haettu Patentti- ja rekisterihallinnon rekisteristä (PRH), eikä niitä voi tämän takia muokata.
                     </div>
     perustamisvuosi:
       '#type': webform_section
@@ -137,7 +137,7 @@ elements: |-
         '#type': webform_markup
         '#markup': |-
           <a class="hds-link hds-link--medium" href="/grants-profile/">
-            <span aria-hidden="true" class="hds-icon hds-icon--pen-line hds-icon--size-s"></span><span class="link-label">Muokkaa osoitteita</span>
+            <span aria-hidden="true" class="hel-icon hel-icon--pen-line hel-icon--size-s"></span><span class="link-label">Muokkaa osoitteita</span>
           </a>
     tilinumero:
       '#type': webform_section
@@ -152,7 +152,7 @@ elements: |-
         '#type': webform_markup
         '#markup': |-
           <a class="hds-link hds-link--medium" href="/grants-profile/">
-            <span aria-hidden="true" class="hds-icon hds-icon--pen-line hds-icon--size-s"></span><span class="link-label">Muokkaa tilinumeroita</span>
+            <span aria-hidden="true" class="hel-icon hel-icon--pen-line hel-icon--size-s"></span><span class="link-label">Muokkaa tilinumeroita</span>
           </a>
     toiminnasta_vastaavat_henkilot:
       '#type': webform_section
@@ -176,7 +176,7 @@ elements: |-
         '#type': webform_markup
         '#markup': |-
           <a class="hds-link hds-link--medium" href="/grants-profile/">
-            <span aria-hidden="true" class="hds-icon hds-icon--pen-line hds-icon--size-s"></span><span class="link-label">Muokkaa henkilöitä</span>
+            <span aria-hidden="true" class="hel-icon hel-icon--pen-line hel-icon--size-s"></span><span class="link-label">Muokkaa henkilöitä</span>
           </a>
   2_avustustiedot:
     '#type': webform_wizard_page

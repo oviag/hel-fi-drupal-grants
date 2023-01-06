@@ -5,10 +5,7 @@ namespace Drupal\grants_handler\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\grants_handler\ApplicationHandler;
-use Drupal\webform\Entity\WebformSubmission;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Provides a Grants Handler form.
@@ -125,41 +122,25 @@ class CopyApplicationForm extends FormBase {
     $webform_submission = $storage['submission'];
     $webform = $webform_submission->getWebForm();
 
-    $clearedData = ApplicationHandler::clearDataForCopying($webform_submission->getData());
-    $clearedData['status'] = 'DRAFT';
+    // Init new application with copied data.
+    $newSubmission = $this->applicationHandler->initApplication($webform->id(), $webform_submission->getData());
 
-    $newSubmission = WebformSubmission::create(['webform_id' => $webform->id()]);
-    $newSubmission->save();
-    $newAppNumber = ApplicationHandler::createApplicationNumber($newSubmission);
+    $newData = $newSubmission->getData();
 
-    $clearedData['application_number'] = $newAppNumber;
-
-    $applicationData = $this->applicationHandler->webformToTypedData(
-      $clearedData);
-
-    $uploadResults = $this->applicationHandler->handleApplicationUpload($applicationData, $newAppNumber);
-
-    if ($uploadResults == TRUE) {
-      // $this->messenger()->addStatus('Application copied/saved as DRAFT.');
-      $viewApplicationUrl = Url::fromRoute('grants_handler.view_application', [
-        'submission_id' => $clearedData['application_number'],
-      ]);
-
+    if ($newSubmission) {
       $this->messenger()
         ->addStatus(
           $this->t(
-            'Grant application copied(<span id="saved-application-number">@number</span>). You can view your new application from @here.',
+            'Grant application copied(<span id="saved-application-number">@number</span>)',
             [
-              '@number' => $clearedData['application_number'],
-              '@here' => Link::fromTextAndUrl('here', $viewApplicationUrl)
-                ->toString(),
+              '@number' => $newData['application_number'],
             ]
           )
         );
 
       $form_state->setRedirect(
         'grants_handler.completion',
-        ['submission_id' => $newAppNumber],
+        ['submission_id' => $newData['application_number']],
         [
           'attributes' => [
             'data-drupal-selector' => 'application-saved-successfully-link',
@@ -168,7 +149,7 @@ class CopyApplicationForm extends FormBase {
       );
     }
     else {
-      $this->messenger()->addStatus('Copy failed.');
+      $this->messenger()->addError('Grant application copy failed.');
     }
   }
 

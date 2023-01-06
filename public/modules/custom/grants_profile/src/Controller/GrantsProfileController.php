@@ -90,15 +90,22 @@ class GrantsProfileController extends ControllerBase {
 
     $editProfileUrl = Url::fromRoute(
       'grants_profile.edit',
+      [],
       [
         'attributes' => [
           'data-drupal-selector' => 'application-edit-link',
+          'class' => ['hds-button', 'hds-button--primary'],
         ],
       ]
     );
-    $build['#editProfileLink'] = Link::fromTextAndUrl($this->t('Edit profile <i class="hds-icon icon hds-icon--arrow-right hds-icon--size-s vertical-align-small-or-medium-icon" aria-hidden="true"></i>'), $editProfileUrl);
+    $editProfileText = [
+      '#theme' => 'edit-label-with-icon',
+      '#icon' => 'pen-line',
+      '#text_label' => $this->t('Edit profile'),
+    ];
 
-    $build['#attached']['library'][] = 'grants_profile/tabs';
+    $build['#editProfileLink'] = Link::fromTextAndUrl($editProfileText, $editProfileUrl);
+
     return $build;
   }
 
@@ -187,17 +194,18 @@ class GrantsProfileController extends ControllerBase {
     $grantsProfileService = \Drupal::service('grants_profile.service');
     $selectedCompany = $grantsProfileService->getSelectedCompany();
 
-    $grantsProfile = $grantsProfileService->getGrantsProfile($selectedCompany);
+    $grantsProfile = $grantsProfileService->getGrantsProfile($selectedCompany['identifier']);
     $bankAccount = $grantsProfileService->getBankAccount($bank_account_id);
 
     $attachment = $grantsProfile->getAttachmentForFilename($bankAccount['confirmationFile']);
     try {
-      $grantsProfileService->deleteAttachment($selectedCompany, $attachment['id']);
+      $grantsProfileService->deleteAttachment($selectedCompany['identifier'], $attachment['id']);
 
       unset($bankAccount['confirmationFile']);
 
       $grantsProfileService->saveBankAccount($bank_account_id, $bankAccount);
-      $grantsProfileService->saveGrantsProfileAtv();
+      $profileContent = $grantsProfileService->getGrantsProfileContent($selectedCompany['identifier']);
+      $grantsProfileService->saveGrantsProfile($profileContent);
 
       $this->messenger()
         ->addStatus($this->t('Bank account confirmation successfully deleted'));
@@ -208,11 +216,12 @@ class GrantsProfileController extends ControllerBase {
 
       $grantsProfileService->saveBankAccount($bank_account_id, $bankAccount);
       try {
-        $grantsProfileService->saveGrantsProfileAtv();
+        $profileContent = $grantsProfileService->getGrantsProfileContent($selectedCompany['identifier']);
+        $grantsProfileService->saveGrantsProfile($profileContent);
       }
       catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
         $this->getLogger('grants_profile')
-          ->error('Profile saving failed. ' . $e->getMessage());
+          ->error('Profile saving failed. Message: %msg', ['%msg' => $e->getMessage()]);
         $this->messenger()
           ->addStatus($this->t('Bank account confirmation deleting failed. Issue has been logged.'));
       }
@@ -248,7 +257,7 @@ class GrantsProfileController extends ControllerBase {
       }
       catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
         $this->getLogger('grants_profile')
-          ->error('Profile saving failed. ' . $e->getMessage());
+          ->error('Profile saving failed. Message: %msg', ['%msg' => $e->getMessage()]);
         $this->messenger()
           ->addStatus($this->t('Address deleting failed.'));
       }
@@ -286,7 +295,7 @@ class GrantsProfileController extends ControllerBase {
       }
       catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
         $this->getLogger('grants_profile')
-          ->error('Profile saving failed. ' . $e->getMessage());
+          ->error('Profile saving failed. Message: %msg', ['%msg' => $e->getMessage()]);
         $this->messenger()
           ->addStatus($this->t('Official deleted & profile saved.'));
       }
@@ -342,7 +351,7 @@ class GrantsProfileController extends ControllerBase {
       }
       catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
         $this->getLogger('grants_profile')
-          ->error('Profile saving failed. ' . $e->getMessage());
+          ->error('Profile saving failed. Message: %msg', ['%msg' => $e->getMessage()]);
         $this->messenger()
           ->addStatus($this->t('Bank account deletion failed, and error has been logged.'));
       }

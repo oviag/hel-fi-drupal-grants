@@ -4,7 +4,7 @@ type: theme
 base theme: hdbt
 tags: sub-theme
 core_version_requirement: ^8 || ^9
-screenshot: helfi_grant_applications.png
+screenshot: hdbt_subtheme.png
 
 # Regions
 regions:

@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a webform submission form.
+ *
+ * Available variables:
+ * - form: The webform submission form.
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div>
+    <ul>
+        {% for page in errors %}
+            {% for element in page %}
+                <li>{{ element }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+
+{{ form }}

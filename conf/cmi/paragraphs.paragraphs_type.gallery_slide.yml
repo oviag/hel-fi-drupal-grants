@@ -1,12 +1,12 @@
-uuid: 577a0356-0197-4d52-9e50-4be125fa1c13
-langcode: fi
+uuid: 1d5e1751-0abf-44af-8170-4860eaea00b1
+langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: L8uP-RIaTgYX_jt7seKb2nUAQgfc7rED0pP30-QZhAo
+  default_config_hash: FhEZmWRPu10V180qBVZmSd9KFSSmse4KJwYowXZsr9g
 id: gallery_slide
 label: 'Gallery slide'
 icon_uuid: null
 icon_default: null
-description: 'One slide in the gallery that can include image and caption.'
+description: 'Not in use.'
 behavior_plugins: {  }

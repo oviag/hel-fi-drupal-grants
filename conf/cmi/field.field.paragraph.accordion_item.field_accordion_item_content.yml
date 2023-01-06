@@ -1,16 +1,18 @@
-uuid: 5f3f938f-ff70-4e70-92ac-67bb6f1dd0bc
-langcode: fi
+uuid: afa48757-73ee-4847-bcad-d226e0d6a3ab
+langcode: en
 status: true
 dependencies:
   config:
     - field.storage.paragraph.field_accordion_item_content
     - paragraphs.paragraphs_type.accordion_item
     - paragraphs.paragraphs_type.columns
+    - paragraphs.paragraphs_type.image
+    - paragraphs.paragraphs_type.phasing
     - paragraphs.paragraphs_type.text
   module:
     - entity_reference_revisions
 _core:
-  default_config_hash: bwS_FVJJmaXanJseLF9iTjvfYYHXzCvGHAaw4IQNEtc
+  default_config_hash: '-v47AUzKLZz0IEKFdVjJ-DxyA4WjNiYZFTBaSj0IYHk'
 id: paragraph.accordion_item.field_accordion_item_content
 field_name: field_accordion_item_content
 entity_type: paragraph
@@ -26,8 +28,9 @@ settings:
   handler_settings:
     target_bundles:
       columns: columns
-      text: text
       image: image
+      text: text
+      phasing: phasing
     negate: 0
     target_bundles_drag_drop:
       accordion:
@@ -66,7 +69,6 @@ settings:
       liftup_with_image:
         weight: 32
         enabled: false
-      link: {  }
       list_of_links:
         weight: 20
         enabled: false
@@ -75,6 +77,12 @@ settings:
         enabled: false
       map:
         weight: 35
+        enabled: false
+      phasing:
+        weight: 49
+        enabled: true
+      phasing_item:
+        weight: 50
         enabled: false
       remote_video:
         weight: 36

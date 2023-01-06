@@ -71,7 +71,7 @@ class GrantsAttachments extends WebformCompositeBase {
     42 => 'Seuran toimintatiedot',
     43 => 'Tilinpäätös',
     44 => 'Hakemusliite',
-    101 => 'Pankkitilivahvistus',
+    45 => 'Pankkitilivahvistus',
   ];
 
   /**
@@ -184,43 +184,68 @@ class GrantsAttachments extends WebformCompositeBase {
     $lines = [];
 
     $submissionData = $webform_submission->getData();
-    $attachmentEvents = EventsService::filterEvents($submissionData['events'] ?? [], 'INTEGRATION_INFO_ATT_OK');
+    $attachmentEvents = EventsService::filterEvents($submissionData['events'] ?? [], 'HANDLER_ATT_OK');
 
     if (!is_array($value)) {
       return [];
     }
 
+    // This notes that we have uploaded file in process.
     if (isset($value['attachment']) && $value['attachment'] !== NULL) {
       // Load file.
       /** @var \Drupal\file\FileInterface|null $file */
       $file = \Drupal::entityTypeManager()
         ->getStorage('file')
         ->load($value['attachment']);
-
-      $lines[] = ($file !== NULL) ? $file->get('filename')->value : '';
+      // File is found, then show filename.
+      if ($file) {
+        $lines[] = ($file !== NULL) ? $file->get('filename')->value : '';
+      }
     }
 
-    if (isset($value["fileName"])) {
-      $lines[] = $value["fileName"];
+    if (isset($value["integrationID"]) && !empty($value["integrationID"])) {
+      // Add filename if it has been uploaded earlier.
+      if (isset($value["fileName"]) && !empty($value["fileName"]) && !in_array($value["fileName"], $lines)) {
+        $lines[] = $value["fileName"];
+      }
+      elseif (isset($value["attachmentName"]) && !empty($value["attachmentName"]) && !in_array($value["attachmentName"], $lines)) {
+        $lines[] = $value["attachmentName"];
+      }
     }
 
-    if (isset($value["isDeliveredLater"]) && ($value["isDeliveredLater"] === 'true' || $value["isDeliveredLater"] === '1')) {
+    // And if not, then show other fields, which cannot be selected
+    // while attachment file exists.
+    if (isset($value["isDeliveredLater"]) && ($value["isDeliveredLater"] === 'true' ||
+       $value["isDeliveredLater"] === '1')) {
       $lines[] = $element["#webform_composite_elements"]["isDeliveredLater"]["#title"]->render();
     }
-    if (isset($value["isIncludedInOtherFile"]) && ($value["isIncludedInOtherFile"] === 'true' || $value["isIncludedInOtherFile"] === '1')) {
+    if (isset($value["isIncludedInOtherFile"]) && ($value["isIncludedInOtherFile"] === 'true' ||
+      $value["isIncludedInOtherFile"] === '1')) {
       $lines[] = $element["#webform_composite_elements"]["isIncludedInOtherFile"]["#title"]->render();
     }
-    if (isset($value["description"]) && (isset($element["#description"]) && $element["#description"] == 'muu_liite')) {
+
+    if (isset($value["description"]) && (isset($element["#description"]) &&
+      $element["#description"] == 'muu_liite')) {
       $lines[] = $value["description"];
     }
 
-    // @todo Integraatio lisää tiedostonimeen oman prefixin, tän pitäs tukea sitä.
-    if (isset($value["fileName"])) {
-      if (in_array($value["fileName"], $attachmentEvents["event_targets"])) {
-        $lines[] = '<span class="ikoniluokka">Upload OK</span>';
+    // If filename or attachmentname is set, print out upload
+    // status from events.
+    if ((isset($value["fileName"]) && !empty($value["fileName"])) || (isset($value["attachmentName"]) &&
+    !empty($value["attachmentName"]))) {
+      if (isset($value["attachmentName"]) && in_array($value["attachmentName"], $attachmentEvents["event_targets"])) {
+        $lines[] = '<span class="upload-ok-icon">' . t('Upload OK') . '</span>';
+      }
+      elseif (isset($value["fileName"]) && in_array($value["fileName"], $attachmentEvents["event_targets"])) {
+        $lines[] = '<span class="upload-ok-icon">' . t('Upload OK') . '</span>';
+      }
+      // If we have integrationID & status is justuploaded then we know
+      // upload was fine.
+      elseif (isset($value["integrationID"]) && $value['fileStatus'] == 'justUploaded') {
+        $lines[] = '<span class="upload-ok-icon">' . t('Upload OK') . '</span>';
       }
       else {
-        $lines[] = 'File missing.';
+        $lines[] = '<span class="upload-fail-icon">' . t('Upload pending / File missing') . '</span>';
       }
     }
 

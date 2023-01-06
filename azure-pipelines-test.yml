@@ -6,7 +6,7 @@ trigger:
   batch: true
   branches:
     include:
-      - refs/tags/deploy-to-test
+      - develop
   paths:
     exclude:
     - README.md
