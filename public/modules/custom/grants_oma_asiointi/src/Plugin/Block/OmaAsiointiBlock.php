@@ -6,6 +6,7 @@ use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Link;
 use Drupal\grants_handler\ApplicationHandler;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvService;
@@ -194,6 +195,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
 
     $lang = \Drupal::languageManager()->getCurrentLanguage();
     ksort($submissions);
+    $link = Link::createFromRoute($this->t('Go to My Services'), 'grants_oma_asiointi.front');
     $build = [
       '#theme' => 'grants_oma_asiointi_block',
       '#messages' => $messages,
@@ -201,6 +203,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       '#userProfileData' => $helsinkiProfileData['myProfile'],
       '#applicationTypes' => ApplicationHandler::$applicationTypes,
       '#lang' => $lang->getId(),
+      '#link' => $link,
     ];
     return $build;
   }
