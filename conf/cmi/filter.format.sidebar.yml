@@ -1,11 +1,11 @@
-uuid: d51cf216-1718-44fa-a642-2054790962ff
+uuid: 08dc13c1-c3be-4f15-abde-e23e88f4e4c5
 langcode: fi
 status: true
 dependencies:
   module:
     - token_filter
-name: Minimal
-format: minimal
+name: Sidebar
+format: sidebar
 weight: 0
 filters:
   filter_html:
@@ -14,7 +14,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<em> <strong> <ul type> <ol start type> <li> <p class=""> <a href hreflang !href accesskey id rel target title data-design data-link-text data-selected-icon data-is-external data-protocol class=""> <span role aria-* lang dir class="">'''
+      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <img src alt data-entity-type data-entity-uuid>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_autop:

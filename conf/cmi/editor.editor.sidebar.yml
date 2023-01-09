@@ -1,12 +1,12 @@
-uuid: e145c1da-3820-4486-afdd-43accec1d676
+uuid: bbf02855-1642-4e60-8466-6c3d9d98b5d4
 langcode: fi
 status: true
 dependencies:
   config:
-    - filter.format.minimal
+    - filter.format.sidebar
   module:
     - ckeditor
-format: minimal
+format: sidebar
 editor: ckeditor
 settings:
   toolbar:
