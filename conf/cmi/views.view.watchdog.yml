@@ -29,7 +29,7 @@ display:
           field: nothing
           relationship: none
           group_type: group
-          admin_label: Ikoni
+          admin_label: Icon
           plugin_id: custom
           label: ''
           exclude: false

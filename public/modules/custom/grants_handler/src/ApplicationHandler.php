@@ -1073,6 +1073,7 @@ class ApplicationHandler {
     foreach ($data['messages'] as $message) {
       $msgUnread = NULL;
       $ts = strtotime($message["sendDateTime"]);
+
       if (in_array($message['messageId'], $eventIds)) {
         $message['messageStatus'] = 'READ';
         $msgUnread = FALSE;
