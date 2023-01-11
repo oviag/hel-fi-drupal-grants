@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: 31vwh07b3R-C4R_1h0Et07iqgNhXLGPlx8UZRTEu8Uo
 id: hero
-label: Hero-lohko
+label: Hero
 icon_uuid: null
 icon_default: null
 description: 'Monipuolinen paragraph, joka peittää suuren alueen sisältöalueesta ja perinteisesti sijoitetaan sivun yläosaan.'

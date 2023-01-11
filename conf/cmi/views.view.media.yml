@@ -269,7 +269,7 @@ display:
           entity_type: media
           entity_field: uid
           plugin_id: field
-          label: Kirjoittaja
+          label: Author
           exclude: false
           alter:
             alter_text: false
