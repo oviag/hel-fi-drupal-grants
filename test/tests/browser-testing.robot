@@ -5,8 +5,8 @@ Library             Browser
 Library             String
 Suite Setup
 Resource            ../resources/tunnistamo.resource
-Resource           ../resources/browser-test-variables.resource
-Resource           ../resources/dev-env-variables.resource
+Resource            ../resources/browser-test-variables.resource
+Resource            ../resources/dev-env-variables.resource
 
 *** Test Cases ***
 Fill Application Form
@@ -120,7 +120,7 @@ Add New Bank Account
     Sleep   1   # Have to manually wait for ajax load
     Get Attribute    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]      value   ==    ${Empty}
     Type Text        \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]     ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
-    Upload File By Selector    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-type-managed-file input[type="file"]    ../resources/files/empty.pdf
+    Upload File By Selector    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-type-managed-file input[type="file"]    ${CURDIR}/../resources/files/empty.pdf
     Sleep   1   # Have to manually wait for ajax upload
     Click           \#edit-submit
     Get Title           ==    Muokkaa omaa profiilia | Helsingin kaupunki
