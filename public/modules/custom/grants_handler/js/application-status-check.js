@@ -1,8 +1,8 @@
 (function (Drupal, drupalSettings) {
   Drupal.behaviors.GrantsHandlerApplicationStatusCheck = {
     attach: function (context, settings) {
-      var pollFrequency = 2000
-      var maxFrequency = 180000
+      var pollFrequency = 5000
+      var maxFrequency = 300000
       var timerInterval = null
       var applicationNumber = null
       var requestUrl = null
@@ -11,7 +11,7 @@
 
       function changeValue() {
         stop()
-        pollFrequency = Math.min(maxFrequency, pollFrequency * 1.5)
+        pollFrequency = Math.min(maxFrequency, pollFrequency * 2)
         const xhttp = new XMLHttpRequest()
         if (statusTagElement !== null) {
           statusTagElement.classList.remove("hide-spinner")
@@ -24,7 +24,7 @@
           } catch (e) {
             statusTagElement.classList.add("show-error")
           }
-          if (dataJson !== currentStatus) {
+          if (dataJson !== currentStatus && JSON.parse(data).data.length > 0) {
             location.reload()
           }
           if (statusTagElement !== null) {
@@ -44,7 +44,7 @@
       var stop = function() {
         clearInterval(timerInterval)
       }
-      var onlyOneCheckable = document.getElementsByClassName('applicationStatusCheckable')
+      var onlyOneCheckable = document.getElementsByClassName('grants-handler__completion')
 
       if (onlyOneCheckable.length == 1) {
         applicationNumber = onlyOneCheckable[0].getAttribute('data-application-number')
