@@ -28,7 +28,7 @@ Update User Bank Account
 
 *** Keywords ***
 Open Browser To Home Page
-    New Browser         ${BROWSER}      headless=false
+    New Browser         ${BROWSER}
     New Page            %{TEST_BASEURL}
     Get Title           ==    Avustukset | Hel.fi Avustusasiointi
 
