@@ -1,0 +1,142 @@
+uuid: e18e49f5-3e72-4a52-85d0-89a78390f2ee
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_bottom_content
+    - node.type.service
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.contact_card
+    - paragraphs.paragraphs_type.list_of_links
+  module:
+    - entity_reference_revisions
+id: node.service.field_bottom_content
+field_name: field_bottom_content
+entity_type: node
+bundle: service
+label: 'Bottom content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      accordion: accordion
+      banner: banner
+      contact_card: contact_card
+      list_of_links: list_of_links
+    negate: 0
+    target_bundles_drag_drop:
+      accordion:
+        weight: 37
+        enabled: true
+      accordion_item:
+        weight: 38
+        enabled: false
+      asiointipalvelu:
+        weight: 39
+        enabled: false
+      banner:
+        weight: 40
+        enabled: true
+      bloc:
+        weight: 41
+        enabled: false
+      chart:
+        weight: 42
+        enabled: false
+      columns:
+        weight: 43
+        enabled: false
+      contact_card:
+        weight: 44
+        enabled: true
+      contact_card_listing:
+        weight: 45
+        enabled: false
+      content_cards:
+        weight: 46
+        enabled: false
+      content_liftup:
+        weight: 47
+        enabled: false
+      event_list:
+        weight: 48
+        enabled: false
+      from_library:
+        weight: 49
+        enabled: false
+      front_page_latest_news:
+        weight: 50
+        enabled: false
+      gallery:
+        weight: 51
+        enabled: false
+      gallery_slide:
+        weight: 52
+        enabled: false
+      hero:
+        weight: 53
+        enabled: false
+      image:
+        weight: 54
+        enabled: false
+      liftup_with_image:
+        weight: 55
+        enabled: false
+      list_of_links:
+        weight: 56
+        enabled: true
+      list_of_links_item:
+        weight: 57
+        enabled: false
+      news_list:
+        weight: 58
+        enabled: false
+      paragraph_verkkolomake:
+        weight: 59
+        enabled: false
+      phasing:
+        weight: 60
+        enabled: false
+      phasing_item:
+        weight: 61
+        enabled: false
+      popular_service_item:
+        weight: 62
+        enabled: false
+      popular_services:
+        weight: 63
+        enabled: false
+      remote_video:
+        weight: 64
+        enabled: false
+      service_list:
+        weight: 65
+        enabled: false
+      sidebar_text:
+        weight: 66
+        enabled: false
+      social_media_link:
+        weight: 67
+        enabled: false
+      target_group_link_item:
+        weight: 68
+        enabled: false
+      target_group_links:
+        weight: 69
+        enabled: false
+      text:
+        weight: 70
+        enabled: false
+      unit_search:
+        weight: 71
+        enabled: false
+      webform:
+        weight: 72
+        enabled: false
+field_type: entity_reference_revisions
