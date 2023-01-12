@@ -11,7 +11,7 @@ id: node.news_item.field_news_item_links_title
 field_name: field_news_item_links_title
 entity_type: node
 bundle: news_item
-label: Otsikko
+label: Title
 description: 'Link list title'
 required: false
 translatable: true

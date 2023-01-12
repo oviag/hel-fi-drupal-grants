@@ -88,7 +88,7 @@ display:
           entity_type: null
           entity_field: name
           plugin_id: field
-          label: Otsikko
+          label: Title
           exclude: false
           alter:
             alter_text: false
@@ -484,7 +484,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Otsikko
+            label: Title
             description: ''
             use_operator: false
             operator: name_op

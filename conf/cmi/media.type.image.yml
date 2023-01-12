@@ -10,7 +10,7 @@ third_party_settings:
 _core:
   default_config_hash: Hn0ivZE8RL9Lnq_9mVi3F3QWBLhYN8SsJQrRznRIC54
 id: image
-label: Kuva
+label: Image
 description: 'Mediatyyppi kuville.'
 source: image
 queue_thumbnail_downloads: false
