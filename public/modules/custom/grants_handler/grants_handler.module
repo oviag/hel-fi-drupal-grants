@@ -436,7 +436,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
  * @return array
  *   Returns render array.
  */
-function _grants_handler_add_checkmark_to_text(string|array $textValue) : array {
+function _grants_handler_add_checkmark_to_text(string|array $textValue): array {
   $description = is_array($textValue)
     ? implode(', ', $textValue)
     : $textValue;
@@ -505,7 +505,8 @@ function _grants_handler_missing_data(
     '#theme' => 'hds_notification',
     '#type' => 'alert',
     '#label' => $str1,
-    '#body' => Link::createFromRoute($str2, 'grants_profile.show')->toString() . ' ' . $str3,
+    '#body' => Link::createFromRoute($str2, 'grants_profile.show')
+      ->toString() . ' ' . $str3,
   ];
 }
 
@@ -1308,11 +1309,18 @@ function grants_handler_preprocess_webform_submission_information(array &$variab
   $variables['isEditPage'] = 'grants_handler.edit_application' === \Drupal::routeMatch()
     ->getRouteName();
 
-  try {
-    $dt = new \DateTime($submissionData['form_timestamp_submitted'], new \DateTimeZone('Europe/Helsinki'));
-    $variables['applicationSent'] = $dt->format('d.m.Y H:i');
+  if ($submissionData["form_timestamp_submitted"]) {
+    try {
+      $dt = new \DateTime($submissionData['form_timestamp_submitted'], new \DateTimeZone('Europe/Helsinki'));
+      $variables['applicationSent'] = $dt->format('d.m.Y H:i');
+    }
+    catch (Exception $e) {
+    }
   }
-  catch (Exception $e) {
+  else {
+    // In older applications we don't have this set yet so show something.
+    // We should not arrive here that often.
+    $variables['applicationSent'] = 'xx.xx.xxxx';
   }
 
   $variables['history'] = [
