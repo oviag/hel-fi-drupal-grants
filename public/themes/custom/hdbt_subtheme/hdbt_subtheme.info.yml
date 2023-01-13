@@ -35,3 +35,7 @@ libraries-override:
   core/drupal.dialog:
     js:
       misc/dialog/dialog.js: dist/js/dialog.min.js
+  webform/webform.form.unsaved:
+    js:
+      js/webform.form.unsaved.js: dist/js/webform.form.unsaved.min.js
+

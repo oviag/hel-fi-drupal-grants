@@ -4,10 +4,7 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\Core\Ajax\CloseModalDialogCommand;
-use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -50,9 +47,10 @@ class GrantsProfileForm extends FormBase {
    */
   public static function getDataDialogOptions(): array {
     return [
-      'width' => '25%',
+      'width' => '50%',
     ];
   }
+
   /**
    * {@inheritdoc}
    */
@@ -192,12 +190,14 @@ class GrantsProfileForm extends FormBase {
       '#text_label' => t('Delete'),
       '#button_type' => 'secondary',
       '#url' => Url::fromRoute('grants_profile.company_addresses.remove_confirm_modal', [
-        'address_id' => '{address_delta}', 'nojs' => 'ajax']),
-        '#attributes' => [
-          'class' => ['use-ajax'],
-          'data-dialog-type' => 'modal',
-          'data-dialog-options' => json_encode(static::getDataDialogOptions()),
-        ],
+        'address_id' => '{address_delta}',
+        'nojs' => 'ajax',
+      ]),
+      '#attributes' => [
+        'class' => ['use-ajax'],
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => json_encode(static::getDataDialogOptions()),
+      ],
     ];
 
     $form['addressWrapper']['addresses'] = [
@@ -251,7 +251,9 @@ class GrantsProfileForm extends FormBase {
       '#text_label' => t('Delete'),
       '#button_type' => 'secondary',
       '#url' => Url::fromRoute('grants_profile.application_official.remove_confirm_modal', [
-        'official_id' => '{official_delta}', 'nojs' => 'ajax']),
+        'official_id' => '{official_delta}',
+        'nojs' => 'ajax',
+      ]),
       '#attributes' => [
         'class' => ['use-ajax'],
         'data-dialog-type' => 'modal',
@@ -306,7 +308,9 @@ class GrantsProfileForm extends FormBase {
       '#text_label' => t('Delete'),
       '#button_type' => 'secondary',
       '#url' => Url::fromRoute('grants_profile.bank_account.remove_confirm_modal', [
-        'bank_account_id' => '{bank_account_delta}', 'nojs' => 'ajax']),
+        'bank_account_id' => '{bank_account_delta}',
+        'nojs' => 'ajax',
+      ]),
       '#attributes' => [
         'class' => ['use-ajax'],
         'data-dialog-type' => 'modal',

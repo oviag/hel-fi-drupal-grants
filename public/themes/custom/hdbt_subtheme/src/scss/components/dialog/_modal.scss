@@ -21,13 +21,19 @@
     }
     .ui-dialog-title {
       display: block;
-      padding: var(--spacing-layout-2-xs);
+      padding: var(--spacing-layout-2-xs) var(--spacing-layout-2-xs) var(--spacing-layout-2-xs) var(--spacing-2-xl);
       font-size: var(--fontsize-heading-s);
+      white-space: normal;
+      overflow: auto;
+      position: relative;
     }
   }
   &-title {
     .hel-icon {
-      margin-right: var(--spacing-3-xs);
+      margin-right: var(--spacing-2-xs);
+      position: absolute;
+      left: var(--spacing-m);
+      top: var(--spacing-s);
     }
   }
 }

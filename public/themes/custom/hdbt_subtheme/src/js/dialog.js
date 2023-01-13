@@ -143,6 +143,7 @@
     },
 
     _create: function() {
+
       this.originalCss = {
         display: this.element[ 0 ].style.display,
         width: this.element[ 0 ].style.width,
@@ -222,7 +223,6 @@
       if ( this.originalTitle ) {
         this.element.attr( "title", this.originalTitle );
       }
-
       next = originalPosition.parent.children().eq( originalPosition.index );
 
       // Don't try to place the dialog next to itself (#8613)

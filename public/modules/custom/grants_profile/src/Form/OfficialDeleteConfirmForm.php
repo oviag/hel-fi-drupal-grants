@@ -9,7 +9,6 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Renderer;
-use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -54,8 +53,7 @@ class OfficialDeleteConfirmForm extends FormBase {
   public static function create(ContainerInterface $container): OfficialDeleteConfirmForm|static {
 
     // Create a new form object and inject its services.
-    $form = new static(
-    );
+    $form = new static();
     $form->setRequestStack($container->get('request_stack'));
     $form->setStringTranslation($container->get('string_translation'));
     $form->setMessenger($container->get('messenger'));
@@ -79,7 +77,7 @@ class OfficialDeleteConfirmForm extends FormBase {
    */
   public static function getDataDialogOptions(): array {
     return [
-      'width' => '25%',
+      'width' => '50%',
     ];
   }
 
@@ -101,7 +99,10 @@ class OfficialDeleteConfirmForm extends FormBase {
       $form['use_ajax_container']['use_ajax'] = [
         '#type' => 'link',
         '#title' => $this->t('See this form as a modal.'),
-        '#url' => Url::fromRoute('grants_profile.application_official.remove_confirm_modal', ['official_id' => $official_id, 'nojs' => 'ajax']),
+        '#url' => Url::fromRoute('grants_profile.application_official.remove_confirm_modal', [
+          'official_id' => $official_id,
+          'nojs' => 'ajax',
+        ]),
         '#attributes' => [
           'class' => ['use-ajax'],
           'data-dialog-type' => 'modal',
@@ -190,7 +191,6 @@ class OfficialDeleteConfirmForm extends FormBase {
     else {
       // No errors, we load things from form state.
       $official_id = $form_state->getValue('officialId');
-
 
       // Create url redirect for this new submission.
       $url = Url::fromRoute('grants_profile.application_official.remove',

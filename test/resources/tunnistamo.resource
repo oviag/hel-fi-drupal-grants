@@ -28,7 +28,7 @@ Continue Identification
     Click                    \#continue-button
 
 Click Company Row
-    Wait For Elements State       .Kapa-Table     visible    30s
+    Wait For Elements State       table     visible    30s
     Click                   .fi-radio-button_input[value="${TUNNISTAMO_COMPANY_ID}"] ~ .fi-radio-button_label
     Wait For Elements State       .fi-chip--content   visible
 
