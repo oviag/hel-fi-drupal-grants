@@ -180,7 +180,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
             $submissionMessages = ApplicationHandler::parseMessages($submissionData, TRUE);
             $messages += $submissionMessages;
 
-            $ts = strtotime($submissionData['form_timestamp_created']);
+            $ts = strtotime($submissionData['form_timestamp']);
             $submissions[$ts] = $submissionData;
 
           }
@@ -199,7 +199,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
     $build = [
       '#theme' => 'grants_oma_asiointi_block',
       '#messages' => $messages,
-      '#submissions' => $submissions,
+      '#submissions' => array_slice($submissions,0,10),
       '#userProfileData' => $helsinkiProfileData['myProfile'],
       '#applicationTypes' => ApplicationHandler::$applicationTypes,
       '#lang' => $lang->getId(),
