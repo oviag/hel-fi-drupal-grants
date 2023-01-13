@@ -27,4 +27,5 @@ visibility:
     bundles:
       article: article
       landing_page: landing_page
+      page: page
       service: service
