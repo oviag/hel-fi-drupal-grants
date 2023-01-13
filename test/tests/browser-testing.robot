@@ -120,7 +120,7 @@ Add New Bank Account
     Sleep   1   # Have to manually wait for ajax load
     Get Attribute    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]      value   ==    ${Empty}
     Type Text        \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]     ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
-    Upload File By Selector    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-type-managed-file input[type="file"]    ${CURDIR}/files/empty.pdf
+    Upload File By Selector    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-type-managed-file input[type="file"]    ${CURDIR}/empty.pdf
     Sleep   1   # Have to manually wait for ajax upload
     Click           \#edit-submit
     Get Title           ==    Muokkaa omaa profiilia | Helsingin kaupunki
