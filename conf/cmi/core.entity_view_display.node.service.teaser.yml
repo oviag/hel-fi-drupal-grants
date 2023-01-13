@@ -8,12 +8,14 @@ dependencies:
     - field.field.node.service.field_application_open
     - field.field.node.service.field_application_period
     - field.field.node.service.field_avustuslaji
+    - field.field.node.service.field_bottom_content
     - field.field.node.service.field_content
     - field.field.node.service.field_errand_service
     - field.field.node.service.field_hakijatyyppi
     - field.field.node.service.field_has_hero
     - field.field.node.service.field_hero
     - field.field.node.service.field_industry
+    - field.field.node.service.field_lead_in
     - field.field.node.service.field_liftup_image
     - field.field.node.service.field_lower_content
     - field.field.node.service.field_metatags
@@ -48,12 +50,14 @@ hidden:
   field_application_open: true
   field_application_period: true
   field_avustuslaji: true
+  field_bottom_content: true
   field_content: true
   field_errand_service: true
   field_hakijatyyppi: true
   field_has_hero: true
   field_hero: true
   field_industry: true
+  field_lead_in: true
   field_lower_content: true
   field_metatags: true
   field_service_channel: true
