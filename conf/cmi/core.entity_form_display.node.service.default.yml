@@ -31,6 +31,7 @@ dependencies:
     - media_library
     - metatag
     - paragraphs
+    - paragraphs_asymmetric_translation_widgets
     - path
     - publication_date
     - scheduler
@@ -246,7 +247,7 @@ content:
     third_party_settings: {  }
   field_lower_content:
     type: paragraphs
-    weight: 24
+    weight: 25
     region: content
     settings:
       title: Paragraph
@@ -290,6 +291,18 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  field_sidebar_content:
+    type: paragraphs_classic_asymmetric
+    weight: 24
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
     third_party_settings: {  }
   field_target_group:
     type: entity_reference_autocomplete
@@ -400,5 +413,4 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  field_sidebar_content: true
   hide_sidebar_navigation: true
