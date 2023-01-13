@@ -127,7 +127,7 @@ content:
     settings:
       view_mode: default
       link: ''
-    third_party_settings: { }
+    third_party_settings: {  }
     weight: 9
     region: sidebar_second
   links:

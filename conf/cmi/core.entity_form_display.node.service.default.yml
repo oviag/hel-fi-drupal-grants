@@ -309,7 +309,7 @@ content:
       features:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: { }
+    third_party_settings: {  }
   field_target_group:
     type: entity_reference_autocomplete
     weight: 10
