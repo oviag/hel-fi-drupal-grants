@@ -9,7 +9,6 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Renderer;
-use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -54,8 +53,7 @@ class AddressDeleteConfirmForm extends FormBase {
   public static function create(ContainerInterface $container): AddressDeleteConfirmForm|static {
 
     // Create a new form object and inject its services.
-    $form = new static(
-    );
+    $form = new static();
     $form->setRequestStack($container->get('request_stack'));
     $form->setStringTranslation($container->get('string_translation'));
     $form->setMessenger($container->get('messenger'));
@@ -91,7 +89,6 @@ class AddressDeleteConfirmForm extends FormBase {
     // Add the core AJAX library.
     $form['#attached']['library'][] = 'core/drupal.ajax';
 
-
     // Add a link to show this form in a modal dialog if we're not already in
     // one.
     if ($nojs == 'nojs') {
@@ -102,7 +99,10 @@ class AddressDeleteConfirmForm extends FormBase {
       $form['use_ajax_container']['use_ajax'] = [
         '#type' => 'link',
         '#title' => $this->t('See this form as a modal.'),
-        '#url' => Url::fromRoute('grants_profile.company_addresses.remove_confirm_modal', ['address_id' => $address_id, 'nojs' => 'ajax']),
+        '#url' => Url::fromRoute('grants_profile.company_addresses.remove_confirm_modal', [
+          'address_id' => $address_id,
+          'nojs' => 'ajax',
+        ]),
         '#attributes' => [
           'class' => ['use-ajax'],
           'data-dialog-type' => 'modal',
@@ -191,7 +191,6 @@ class AddressDeleteConfirmForm extends FormBase {
     else {
       // No errors, we load things from form state.
       $address_id = $form_state->getValue('addressId');
-
 
       // Create url redirect for this new submission.
       $url = Url::fromRoute('grants_profile.company_addresses.remove',

@@ -199,7 +199,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
     $build = [
       '#theme' => 'grants_oma_asiointi_block',
       '#messages' => $messages,
-      '#submissions' => array_slice($submissions,0,10),
+      '#submissions' => array_slice($submissions, 0, 10),
       '#userProfileData' => $helsinkiProfileData['myProfile'],
       '#applicationTypes' => ApplicationHandler::$applicationTypes,
       '#lang' => $lang->getId(),

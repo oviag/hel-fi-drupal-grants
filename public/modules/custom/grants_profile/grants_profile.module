@@ -220,7 +220,6 @@ function grants_profile_preprocess_own_profile_form(&$variables) {
     }
   }
 
-
   foreach ($variables["form"]["addressWrapper"]["addresses"] as $key => $value) {
     if (!str_starts_with($key, '#')) {
       if (isset($variables["form"]["addressWrapper"]["addresses"][$key]["deleteButton"])) {
