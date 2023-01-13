@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - filter.format.full_html
+    - filter.format.sidebar
     - node.type.address
   module:
     - eu_cookie_compliance
@@ -30,7 +31,7 @@ permissions:
   - 'entity print access type webform_submission'
   - 'use text format full_html'
   - 'use text format full_html'
-  - 'use text format minimal'
+  - 'use text format sidebar'
   - 'view media'
   - 'view media'
   - 'view remote entities'
