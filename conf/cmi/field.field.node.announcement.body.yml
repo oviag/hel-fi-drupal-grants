@@ -10,7 +10,7 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    minimal: minimal
+    sidebar: sidebar
     full_html: '0'
     plain_text: '0'
 _core:
