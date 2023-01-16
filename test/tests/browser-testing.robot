@@ -9,6 +9,16 @@ Resource            ../resources/browser-test-variables.resource
 Resource            ../resources/dev-env-variables.resource
 
 *** Test Cases ***
+
+Browse Public Drupal Website
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Go To Application Search
+    Search Grants
+    Go to FAQ
+    Open Accordion on FAQ
+    [Teardown]    Close Browser
+
 Fill Application Form
     Open Browser To Home Page
     Accept Cookies Banner
@@ -135,3 +145,19 @@ Remove New Bank Account
     Wait Until Network Is Idle
     Get Title           ==    Muokkaa omaa profiilia | Helsingin kaupunki
     Get Element Count    \#edit-bankaccountwrapper input[type="text"][readonly="readonly"][value="${INPUT_TEMP_BANK_ACCOUNT_NUMBER}"]    ==      0
+
+Search Grants
+    Type Text   \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]    avustus
+    Click       \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-submit-application-search"]
+    Get Attribute   \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]    value     ==      avustus
+    Get Text    .main-content .view-footer strong      !=      0
+
+Go To FAQ
+    Click           \#block-mainnavigation a[data-drupal-link-system-path="node/47"] ~ button
+    Click           \#block-mainnavigation a[data-drupal-link-system-path="tietoa-avustuksista/ukk"]
+    Get Title       ==      UKK | Helsingin kaupunki
+
+Open Accordion on FAQ
+    Get Element States    \#handorgel1-fold1-content      contains      hidden
+    Click          \#handorgel1-fold1-header
+    Get Element States    \#handorgel1-fold1-content      contains      visible
