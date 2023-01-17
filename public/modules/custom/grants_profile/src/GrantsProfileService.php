@@ -434,8 +434,10 @@ class GrantsProfileService {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
 
-    if (isset($profileContent["bankAccounts"][$bank_account_id])) {
-      return $profileContent["bankAccounts"][$bank_account_id];
+    $bankAccount = array_filter($profileContent["bankAccounts"], fn($account) => $account['bank_account_id'] == $bank_account_id);
+
+    if (!empty($bankAccount)) {
+      return reset($bankAccount);
     }
     else {
       return [
@@ -518,17 +520,21 @@ class GrantsProfileService {
   }
 
   /**
-   * Save bank account to ATV.
+   * Remove bank account from profile data.
    *
    * @param string $bank_account_id
    *   Id to save, "new" if adding a new.
    */
-  public function removeBankAccount(string $bank_account_id) {
+  public function removeBankAccount(string $bank_account_id): void {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $bankAccounts = (isset($profileContent['bankAccounts']) && $profileContent['bankAccounts'] !== NULL) ? $profileContent['bankAccounts'] : [];
 
-    unset($bankAccounts[$bank_account_id]);
+    foreach ($bankAccounts as $key => $account) {
+      if ($account['bank_account_id'] == $bank_account_id) {
+        unset($bankAccounts[$key]);
+      }
+    }
 
     $profileContent['bankAccounts'] = $bankAccounts;
     $this->setToCache($selectedCompany['identifier'], $profileContent);

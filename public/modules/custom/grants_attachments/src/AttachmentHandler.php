@@ -380,7 +380,6 @@ class AttachmentHandler {
    * @param array $submittedFormData
    *   Full array of attachment information.
    *
-   * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function handleBankAccountConfirmation(
@@ -388,7 +387,7 @@ class AttachmentHandler {
     string $applicationNumber,
     array $filenames,
     array &$submittedFormData
-  ) {
+  ): void {
 
     // If no accountNumber is selected, do nothing.
     if (empty($accountNumber)) {
@@ -416,6 +415,7 @@ class AttachmentHandler {
       $applicationDocument = reset($applicationDocumentResults);
     }
     catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
+      $d = 'asdf';
     }
 
     $accountConfirmationExists = FALSE;
@@ -427,6 +427,9 @@ class AttachmentHandler {
       $applicationAttachments = $applicationDocument->getAttachments();
 
       foreach ($applicationAttachments as $attachment) {
+        foreach ($profileContent['bankAccounts'] as $bankAccount) {
+          $d = 'asdf';
+        }
         if (str_contains($attachment['filename'], $filename)) {
           $accountConfirmationExists = TRUE;
           $accountConfirmationFile = $attachment;

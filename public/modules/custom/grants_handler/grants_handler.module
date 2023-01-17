@@ -372,7 +372,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
 
         // Loop addresses to figure out which address is actually selected.
         foreach ($profileData['addresses'] as $delta => $address) {
-          $deltaString = (string) $delta;
+          $deltaString = $address["address_id"];
           $optionSelection = $address['street'] . ', ' . $address['postCode'] .
             ', ' . $address['city'] . ', ' . $address['country'];
 
