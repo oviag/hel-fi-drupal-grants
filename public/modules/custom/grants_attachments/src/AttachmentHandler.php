@@ -415,7 +415,6 @@ class AttachmentHandler {
       $applicationDocument = reset($applicationDocumentResults);
     }
     catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
-      $d = 'asdf';
     }
 
     $accountConfirmationExists = FALSE;
@@ -427,9 +426,6 @@ class AttachmentHandler {
       $applicationAttachments = $applicationDocument->getAttachments();
 
       foreach ($applicationAttachments as $attachment) {
-        foreach ($profileContent['bankAccounts'] as $bankAccount) {
-          $d = 'asdf';
-        }
         if (str_contains($attachment['filename'], $filename)) {
           $accountConfirmationExists = TRUE;
           $accountConfirmationFile = $attachment;
