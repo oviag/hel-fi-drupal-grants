@@ -341,9 +341,9 @@ class GrantsProfileService {
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $addresses = (isset($profileContent['addresses']) && $profileContent['addresses'] !== NULL) ? $profileContent['addresses'] : [];
 
-    unset($addresses[$address_id]);
-
-    $profileContent['addresses'] = $addresses;
+    $profileContent['addresses'] = array_filter($addresses, function($address) use($address_id) {
+      return $address['address_id'] !== $address_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -487,7 +487,9 @@ class GrantsProfileService {
 
     unset($officials[(int) $official_id]);
 
-    $profileContent['officials'] = $officials;
+    $profileContent['officials'] = array_filter($officials, function($official) use($official_id) {
+      return $official['official_id'] !== $official_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -530,13 +532,9 @@ class GrantsProfileService {
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $bankAccounts = (isset($profileContent['bankAccounts']) && $profileContent['bankAccounts'] !== NULL) ? $profileContent['bankAccounts'] : [];
 
-    foreach ($bankAccounts as $key => $account) {
-      if ($account['bank_account_id'] == $bank_account_id) {
-        unset($bankAccounts[$key]);
-      }
-    }
-
-    $profileContent['bankAccounts'] = $bankAccounts;
+    $profileContent['bankAccounts'] = array_filter($bankAccounts, function($account) use($bank_account_id) {
+      return $account['bank_account_id'] !== $bank_account_id;
+    });
     $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
