@@ -1,24 +1,22 @@
-uuid: 5c160396-3f7f-4d3b-98d3-d8bcebd32172
-langcode: en
+uuid: eba74589-90df-441b-98d6-9d7250273d2d
+langcode: fi
 status: true
 dependencies:
   config:
-    - system.menu.footer-bottom-navigation
+    - system.menu.footer-top-navigation-2
   module:
     - menu_block_current_language
   theme:
     - hdbt_subtheme
-_core:
-  default_config_hash: Lq0uz6Wcg4xRo7w6BmzuzPTwOXtY8Q4qmYGUcGCvBLA
-id: hdbt_subtheme_footerbottomnavigation
+id: footertopnavigationsecond_2
 theme: hdbt_subtheme
-region: footer_bottom
+region: footer_top
 weight: 0
 provider: null
-plugin: 'menu_block_current_language:footer-bottom-navigation'
+plugin: 'menu_block_current_language:footer-top-navigation-2'
 settings:
-  id: 'menu_block_current_language:footer-bottom-navigation'
-  label: 'Helsingin kaupunki'
+  id: 'menu_block_current_language:footer-top-navigation-2'
+  label: 'Ota yhteyttä'
   label_display: visible
   provider: menu_block_current_language
   level: 1

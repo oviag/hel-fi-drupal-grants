@@ -341,9 +341,9 @@ class GrantsProfileService {
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $addresses = (isset($profileContent['addresses']) && $profileContent['addresses'] !== NULL) ? $profileContent['addresses'] : [];
 
-    unset($addresses[$address_id]);
-
-    $profileContent['addresses'] = $addresses;
+    $profileContent['addresses'] = array_filter($addresses, function($address) use($address_id) {
+      return $address['address_id'] !== $address_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -434,8 +434,10 @@ class GrantsProfileService {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
 
-    if (isset($profileContent["bankAccounts"][$bank_account_id])) {
-      return $profileContent["bankAccounts"][$bank_account_id];
+    $bankAccount = array_filter($profileContent["bankAccounts"], fn($account) => $account['bank_account_id'] == $bank_account_id);
+
+    if (!empty($bankAccount)) {
+      return reset($bankAccount);
     }
     else {
       return [
@@ -485,7 +487,9 @@ class GrantsProfileService {
 
     unset($officials[(int) $official_id]);
 
-    $profileContent['officials'] = $officials;
+    $profileContent['officials'] = array_filter($officials, function($official) use($official_id) {
+      return $official['official_id'] !== $official_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -518,19 +522,19 @@ class GrantsProfileService {
   }
 
   /**
-   * Save bank account to ATV.
+   * Remove bank account from profile data.
    *
    * @param string $bank_account_id
    *   Id to save, "new" if adding a new.
    */
-  public function removeBankAccount(string $bank_account_id) {
+  public function removeBankAccount(string $bank_account_id): void {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $bankAccounts = (isset($profileContent['bankAccounts']) && $profileContent['bankAccounts'] !== NULL) ? $profileContent['bankAccounts'] : [];
 
-    unset($bankAccounts[$bank_account_id]);
-
-    $profileContent['bankAccounts'] = $bankAccounts;
+    $profileContent['bankAccounts'] = array_filter($bankAccounts, function($account) use($bank_account_id) {
+      return $account['bank_account_id'] !== $bank_account_id;
+    });
     $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
