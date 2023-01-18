@@ -41,6 +41,8 @@ Update User Bank Account
 Open Browser To Home Page
     Set Browser Timeout   30s
     New Browser           ${BROWSER}
+    # Needed for local environment testing
+    New Context           ignoreHTTPSErrors=True
     New Page              %{TEST_BASEURL}
     Get Title             ==    Avustukset | Hel.fi Avustusasiointi
 
