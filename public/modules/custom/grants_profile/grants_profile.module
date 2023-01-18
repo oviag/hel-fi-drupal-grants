@@ -11,7 +11,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\grants_profile\Form\ModalApplicationOfficialForm;
+use Drupal\grants_profile\Form\GrantsProfileForm;
 
 /**
  * Implements hook_theme().
@@ -168,7 +168,8 @@ function grants_profile_user_logout(AccountInterface $account) {
  */
 function grants_profile_preprocess_own_profile(&$variables) {
   foreach ($variables['profile']['officials'] as $key => $official) {
-    $officialRole = ModalApplicationOfficialForm::getOfficialRoles();
+
+    $officialRole = GrantsProfileForm::getOfficialRoles();
     $temprole = '' . $officialRole[(int) $official['role']];
     $variables['profile']['officials'][$key]['officialRole'] = $temprole;
   }
