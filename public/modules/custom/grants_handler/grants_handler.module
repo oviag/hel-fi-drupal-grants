@@ -1149,7 +1149,13 @@ function grants_handler_preprocess_grants_handler_completion(&$variables) {
   try {
     $submissionObject = $variables['submissionObject'];
     $submissionData = $submissionObject->getData();
-    $variables['applicationTimestamp'] = strtotime($submissionData['form_timestamp_submitted']);
+    if (isset($submissionData['form_timestamp_submitted']) &&
+      !empty($submissionData['form_timestamp_submitted'])) {
+      $variables['applicationTimestamp'] = strtotime($submissionData['form_timestamp_submitted']);
+    }
+    else {
+      $variables['applicationTimestamp'] = '';
+    }
   }
   catch (\Exception $e) {
     $variables['applicationTimestamp'] = '';
