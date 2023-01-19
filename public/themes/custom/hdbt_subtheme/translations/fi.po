@@ -28,9 +28,6 @@ msgstr "Tämänhetkinen"
 msgid "Completed"
 msgstr "Valmis"
 
-msgid "Application number"
-msgstr "Hakemusnumero"
-
 msgid "Print filled form"
 msgstr "Tulosta täytetty hakemus"
 
@@ -39,9 +36,6 @@ msgstr "Hakemuksen tiedot"
 
 msgid "Summary about your application and processing details."
 msgstr "Yhteenveto hakemuksesi perustiedoista ja käsittelytilasta"
-
-msgid "Application number"
-msgstr "Hakemusnumero"
 
 msgid "Sent date"
 msgstr "Lähetyspäivänmäärä"
@@ -78,3 +72,55 @@ msgstr "Peruuta"
 
 msgid 'Continue'
 msgstr "Jatka"
+
+msgid "Applications in progress"
+msgstr "Keskeneräiset hakemukset"
+
+msgid "Sent applications"
+msgstr "Lähetetyt hakemukset"
+
+msgid "My applications"
+msgstr "Omat hakemukset"
+
+msgid "Latest applications"
+msgstr "Viimeisimmät hakemukset"
+
+msgid "No applications"
+msgstr "Ei yhtään hakemusta"
+
+msgid "Application number"
+msgstr "Hakemuksen numero"
+
+msgid "Open application"
+msgstr "Avaa hakemus"
+
+msgid "Open message"
+msgstr "Avaa viesti"
+
+msgid "Last saved"
+msgstr "Viimeksi tallennettu"
+
+msgid "New message"
+msgstr "Uusi viesti"
+
+msgid "New messages"
+msgstr "Uudet viestit"
+
+msgid "No new messages"
+msgstr "Ei uusia viestejä"
+
+msgid "My Services"
+msgstr "Oma asiointi"
+
+msgid "Go to My Services"
+msgstr "Siirry omaan asiointikansioon"
+
+msgid "Grants profile"
+msgstr "Omat tiedot"
+
+msgid "Company applications"
+msgstr "Yhteisön hakemukset"
+
+msgid "Community applications"
+msgstr "Yhteisön hakemukset"
+
