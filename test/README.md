@@ -23,6 +23,7 @@ To run only specific tests, run `ROBOT_OPTIONS="-t Test_name_here" make test-rob
 - `python3 -m venv env`
 - `source env/bin/activate`
 - `pip install -r requirements.txt`
+- `rfbrowser init`
 
 ### Running
 
