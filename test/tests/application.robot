@@ -3,6 +3,7 @@ Documentation       Robot test for testing application form and handling
 Metadata            Examplemetadata          This is a simple browser test for ${baseurl}. Metadata is shown in the reports.
 Library             Browser
 Library             String
+Library             DateTime
 Suite Setup
 Resource            ../resources/common.resource
 Resource            ../resources/tunnistamo.resource
@@ -18,6 +19,7 @@ Fill Application Form
     Go To Application Search
     Start New Application
     Fill Step 1 Data
+    Fill Step 2 Data
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -45,3 +47,24 @@ Fill Step 1 Data
     Select Options By       \#edit-bank-account-account-number-select    value    ${INPUT_BANK_ACCOUNT_NUMBER}
     Click       \#edit-actions-wizard-next
     Wait For Elements State      li[data-webform-page="2_avustustiedot"].is-active   visible
+
+Fill Step 2 Data
+    Scroll To Element     \#edit-acting-year
+    ${today} = 	          Get Current Date     result_format=datetime
+    ${current_year} =       Convert To String    ${today.year}
+    Select Options By     \#edit-acting-year   value            ${current_year}
+    Type Text             \#edit-subventions-items-0-amount     ${INPUT_SUBVENTION_AMOUNT}
+    Sleep   1    # Have to manually wait for js formatter
+    Get Text              \#edit-subventions-items-0-amount    ==     ${INPUT_SUBVENTION_AMOUNT_FORMATTED}
+    Type Text             \#edit-compensation-purpose           ${INPUT_COMPENSATION_PURPOSE}
+    Get Text              \#edit-compensation-purpose ~ .text-count-wrapper .text-count     !=    5000
+    Scroll To Element     \#edit-olemme-saaneet-muita-avustuksia-ei
+    Get Attribute         \#edit-olemme-saaneet-muita-avustuksia-ei    checked     ==    checked
+    Scroll To Element     \#edit-compensation-boolean-false ~ label
+    Get Attribute         \#edit-compensation-boolean-false     checked     !=    checked
+    Get Attribute         \#edit-compensation-boolean-true    checked     !=    checked
+    Click                 \#edit-compensation-boolean-true ~ label
+    Wait For Elements State    \#edit-compensation-explanation    visible
+    Type Text             \#edit-compensation-explanation         ${INPUT_COMPENSATION_EXPLANATION}
+    Click       \#edit-actions-wizard-next
+    Wait For Elements State      li[data-webform-page="3_yhteison_tiedot"].is-active   visible
