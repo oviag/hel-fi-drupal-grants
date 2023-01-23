@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Front Banner module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_theme().
+ */
+function grants_front_banner_theme() {
+  return [
+    'grants_front_banner' => [
+      'variables' => [
+        'loggedin' => NULL,
+      ],
+    ],
+  ];
+}
