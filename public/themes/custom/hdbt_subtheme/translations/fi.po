@@ -124,3 +124,6 @@ msgstr "Yhteisön hakemukset"
 msgid "Community applications"
 msgstr "Yhteisön hakemukset"
 
+msgctxt "Front page latest news paragraph title"
+msgid "Latest news"
+msgstr "Ajankohtaista avustuksista"
