@@ -3,14 +3,12 @@
 namespace Drupal\grants_profile;
 
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Http\RequestStack;
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\LoggerChannelFactory;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\TempStore\PrivateTempStore;
-use Drupal\Core\TempStore\PrivateTempStoreFactory;
-use Drupal\Core\TempStore\TempStoreException;
 use Drupal\file\Entity\File;
 use Drupal\grants_metadata\AtvSchema;
 use Drupal\helfi_atv\AtvDocument;
@@ -39,11 +37,11 @@ class GrantsProfileService {
   protected AtvService $atvService;
 
   /**
-   * Session storage for profile data.
+   * Request stack for session access.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStore
+   * @var \Drupal\Core\Http\RequestStack
    */
-  protected PrivateTempStore $tempStore;
+  protected RequestStack $requestStack;
 
   /**
    * The Messenger service.
@@ -85,7 +83,7 @@ class GrantsProfileService {
    *
    * @param \Drupal\helfi_atv\AtvService $helfi_atv
    *   The helfi_atv service.
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $tempstore
+   * @param \Drupal\Core\Http\RequestStack $requestStack
    *   Storage factory for temp store.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   Show messages to user.
@@ -100,7 +98,7 @@ class GrantsProfileService {
    */
   public function __construct(
     AtvService $helfi_atv,
-    PrivateTempStoreFactory $tempstore,
+    RequestStack $requestStack,
     MessengerInterface $messenger,
     HelsinkiProfiiliUserData $helsinkiProfiiliUserData,
     AtvSchema $atv_schema,
@@ -108,7 +106,7 @@ class GrantsProfileService {
     LoggerChannelFactory $loggerFactory
   ) {
     $this->atvService = $helfi_atv;
-    $this->tempStore = $tempstore->get('grants_profile');
+    $this->requestStack = $requestStack;
     $this->messenger = $messenger;
     $this->helsinkiProfiili = $helsinkiProfiiliUserData;
     $this->atvSchema = $atv_schema;
@@ -341,9 +339,9 @@ class GrantsProfileService {
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $addresses = (isset($profileContent['addresses']) && $profileContent['addresses'] !== NULL) ? $profileContent['addresses'] : [];
 
-    unset($addresses[$address_id]);
-
-    $profileContent['addresses'] = $addresses;
+    $profileContent['addresses'] = array_filter($addresses, function ($address) use ($address_id) {
+      return $address['address_id'] !== $address_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -434,8 +432,10 @@ class GrantsProfileService {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
 
-    if (isset($profileContent["bankAccounts"][$bank_account_id])) {
-      return $profileContent["bankAccounts"][$bank_account_id];
+    $bankAccount = array_filter($profileContent["bankAccounts"], fn($account) => $account['bank_account_id'] == $bank_account_id);
+
+    if (!empty($bankAccount)) {
+      return reset($bankAccount);
     }
     else {
       return [
@@ -485,7 +485,9 @@ class GrantsProfileService {
 
     unset($officials[(int) $official_id]);
 
-    $profileContent['officials'] = $officials;
+    $profileContent['officials'] = array_filter($officials, function ($official) use ($official_id) {
+      return $official['official_id'] !== $official_id;
+    });
     return $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -518,19 +520,19 @@ class GrantsProfileService {
   }
 
   /**
-   * Save bank account to ATV.
+   * Remove bank account from profile data.
    *
    * @param string $bank_account_id
    *   Id to save, "new" if adding a new.
    */
-  public function removeBankAccount(string $bank_account_id) {
+  public function removeBankAccount(string $bank_account_id): void {
     $selectedCompany = $this->getSelectedCompany();
     $profileContent = $this->getGrantsProfileContent($selectedCompany['identifier']);
     $bankAccounts = (isset($profileContent['bankAccounts']) && $profileContent['bankAccounts'] !== NULL) ? $profileContent['bankAccounts'] : [];
 
-    unset($bankAccounts[$bank_account_id]);
-
-    $profileContent['bankAccounts'] = $bankAccounts;
+    $profileContent['bankAccounts'] = array_filter($bankAccounts, function ($account) use ($bank_account_id) {
+      return $account['bank_account_id'] !== $bank_account_id;
+    });
     $this->setToCache($selectedCompany['identifier'], $profileContent);
   }
 
@@ -819,15 +821,9 @@ class GrantsProfileService {
    *   Is this cached?
    */
   public function clearCache($key = ''): bool {
-
+    $session = $this->requestStack->getCurrentRequest()->getSession();
     try {
-      if ($key == '') {
-        $this->tempStore->deleteAllUser();
-      }
-      else {
-        $this->tempStore->delete($key);
-      }
-
+      // $session->clear();
       return TRUE;
     }
     catch (\Exception $e) {
@@ -845,7 +841,9 @@ class GrantsProfileService {
    *   Is this cached?
    */
   private function isCached(?string $key): bool {
-    $cacheData = $this->tempStore->get($key);
+    $session = $this->requestStack->getCurrentRequest()->getSession();
+
+    $cacheData = $session->get($key);
     return !is_null($cacheData);
   }
 
@@ -859,7 +857,8 @@ class GrantsProfileService {
    *   Data in cache or null
    */
   private function getFromCache(string $key): array|AtvDocument|null {
-    $retval = !empty($this->tempStore->get($key)) ? $this->tempStore->get($key) : NULL;
+    $session = $this->requestStack->getCurrentRequest()->getSession();
+    $retval = !empty($session->get($key)) ? $session->get($key) : NULL;
     return $retval;
   }
 
@@ -873,37 +872,33 @@ class GrantsProfileService {
    *
    * @return bool
    *   Did save succeed?
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   private function setToCache(string $key, array|AtvDocument $data): bool {
 
-    try {
+    $session = $this->requestStack->getCurrentRequest()->getSession();
 
-      if (gettype($data) == 'object') {
-        $this->tempStore->set($key, $data);
-        return TRUE;
-      }
-      if (isset($data['content'])) {
-        $this->tempStore->set($key, $data);
-        return TRUE;
-      }
-      elseif ($key == 'selected_company') {
-        $this->tempStore->set($key, $data);
-        return TRUE;
-      }
-      elseif ($key == 'applicant_type') {
-        $this->tempStore->set($key, $data);
-        return TRUE;
-      }
-      else {
-        $grantsProfile = $this->getGrantsProfile($key);
-        $grantsProfile->setContent($data);
-        $this->tempStore->set($key, $grantsProfile);
-        return TRUE;
-      }
+    if (gettype($data) == 'object') {
+      $session->set($key, $data);
+      return TRUE;
     }
-    catch (TempStoreException $e) {
-      return FALSE;
+
+    if (
+      isset($data['content']) ||
+      $key == 'selected_company' ||
+      $key == 'applicant_type'
+    ) {
+      $session->set($key, $data);
+      return TRUE;
     }
+    else {
+      $grantsProfile = $this->getGrantsProfile($key);
+      $grantsProfile->setContent($data);
+      $session->set($key, $grantsProfile);
+      return TRUE;
+    }
+
   }
 
 }

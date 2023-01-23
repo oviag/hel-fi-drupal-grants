@@ -124,7 +124,7 @@ function hdbt_subtheme_preprocess_views_view_fields(&$variables) {
 
     // To get this working on development mode.
     $continous = preg_replace('/<!--(.|\s)*?-->/', '', $continous);
-    $continous = str_replace(array("\n", "\r"), '', $continous);
+    $continous = str_replace(["\n", "\r"], '', $continous);
 
     if ($continous == "1") {
       $variables['fields']['field_application_period']->content = Markup::create($dateIcon . '<span>' . t('Continuous application') . '</span>');
@@ -433,7 +433,6 @@ function _hdbt_subtheme_preprocess_help(array &$variables, $title_parents = ['la
   // Replace $variables with new render array containing help.
   $target_element = $build;
 }
-
 
 /**
  * @file

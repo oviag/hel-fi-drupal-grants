@@ -380,7 +380,6 @@ class AttachmentHandler {
    * @param array $submittedFormData
    *   Full array of attachment information.
    *
-   * @throws \Drupal\Core\TempStore\TempStoreException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function handleBankAccountConfirmation(
@@ -388,7 +387,7 @@ class AttachmentHandler {
     string $applicationNumber,
     array $filenames,
     array &$submittedFormData
-  ) {
+  ): void {
 
     // If no accountNumber is selected, do nothing.
     if (empty($accountNumber)) {

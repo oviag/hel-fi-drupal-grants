@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfileDefinition;
 use Drupal\helfi_yjdh\Exception\YjdhException;
@@ -64,15 +65,15 @@ class GrantsProfileForm extends FormBase {
    * @return array
    *   Available roles.
    */
-  public function getOfficialRoles(): array {
+  public static function getOfficialRoles(): array {
     return [
-      1 => $this->t('Chairperson'),
-      2 => $this->t('Contact person'),
-      3 => $this->t('Other'),
-      4 => $this->t('Financial officer'),
-      5 => $this->t('Auditor'),
-      7 => $this->t('Secretary'),
-      8 => $this->t('Vice Chairperson'),
+      1 => t('Chairperson'),
+      2 => t('Contact person'),
+      3 => t('Other'),
+      4 => t('Financial officer'),
+      5 => t('Auditor'),
+      7 => t('Secretary'),
+      8 => t('Vice Chairperson'),
     ];
   }
 
@@ -178,7 +179,14 @@ class GrantsProfileForm extends FormBase {
     $addressValues = [];
     foreach ($grantsProfileContent['addresses'] as $delta => $address) {
       $addressValues[$delta] = $address;
-      $addressValues[$delta]['address_id'] = $delta;
+
+      // Make sure we have proper UUID as address id.
+      if (!$this->isValidUuid($address['address_id'])) {
+        $addressValues[$delta]['address_id'] = Uuid::uuid4()->toString();
+      }
+      else {
+        $addressValues[$delta]['address_id'] = $address['address_id'];
+      }
     }
 
     if (empty($addressValues)) {
@@ -237,12 +245,19 @@ class GrantsProfileForm extends FormBase {
 
     $roles = [
       0 => $this->t('Select'),
-    ] + $this->getOfficialRoles();
+    ] + self::getOfficialRoles();
 
     $officialValues = [];
     foreach ($grantsProfileContent['officials'] as $delta => $official) {
       $officialValues[$delta] = $official;
-      $officialValues[$delta]['official_id'] = $delta;
+
+      // Make sure we have proper UUID as official id.
+      if (!$this->isValidUuid($official['official_id'])) {
+        $officialValues[$delta]['official_id'] = Uuid::uuid4()->toString();
+      }
+      else {
+        $officialValues[$delta]['official_id'] = $official['official_id'];
+      }
     }
 
     $deleteOfficialButton = [
@@ -296,10 +311,17 @@ class GrantsProfileForm extends FormBase {
     ];
 
     $bankAccountValues = [];
-    foreach ($grantsProfileContent['bankAccounts'] as $k => $v) {
-      $bankAccountValues[$k]['bankAccount'] = $v['bankAccount'];
-      $bankAccountValues[$k]['confirmationFileName'] = $v['confirmationFile'];
-      $bankAccountValues[$k]['bank_account_id'] = $k;
+    foreach ($grantsProfileContent['bankAccounts'] as $delta => $account) {
+      $bankAccountValues[$delta]['bankAccount'] = $account['bankAccount'];
+      $bankAccountValues[$delta]['confirmationFileName'] = $account['confirmationFile'];
+
+      // Make sure we have proper UUID as bank account id.
+      if (!$this->isValidUuid($account['bank_account_id'])) {
+        $bankAccountValues[$delta]['bank_account_id'] = Uuid::uuid4()->toString();
+      }
+      else {
+        $bankAccountValues[$delta]['bank_account_id'] = $account['bank_account_id'];
+      }
     }
 
     $deleteBankAccountButton = [
@@ -369,6 +391,24 @@ class GrantsProfileForm extends FormBase {
   }
 
   /**
+   * Check if a given string is a valid UUID.
+   *
+   * @param string $uuid
+   *   The string to check.
+   *
+   * @return bool
+   *   Is valid or not?
+   */
+  public function isValidUuid($uuid): bool {
+
+    if (!is_string($uuid) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $uuid) !== 1)) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
@@ -395,7 +435,9 @@ class GrantsProfileForm extends FormBase {
               unset($values[$key][$key2]);
             }
             if (empty($value2["address_id"])) {
-              $values[$key][$key2]['address_id'] = (string) $key2;
+              $values[$key][$key2]['address_id'] = Uuid::uuid4()
+                ->toString();
+              ;
             }
           }
           if ($key == 'officials') {
@@ -407,12 +449,23 @@ class GrantsProfileForm extends FormBase {
             ) {
               unset($values[$key][$key2]);
             }
+            if (empty($value2["official_id"])) {
+              $values[$key][$key2]['official_id'] = Uuid::uuid4()
+                ->toString();
+              ;
+            }
           }
           if ($key == 'bankAccounts') {
             if (!isset($value2['bankAccount']) || empty($value2['bankAccount'])) {
               unset($values[$key][$key2]);
             }
             else {
+              // If we have added a new account,
+              // then we need to create id for it.
+              if (!$this->isValidUuid($value2['bank_account_id'])) {
+                $values[$key][$key2]['bank_account_id'] = Uuid::uuid4()
+                  ->toString();
+              }
               // Parse existing confirmation file to values array.
               if (isset($value2['confirmationFileName']) && !empty($value2['confirmationFileName'])) {
                 $values[$key][$key2]['confirmationFile'] = $value2['confirmationFileName'];
