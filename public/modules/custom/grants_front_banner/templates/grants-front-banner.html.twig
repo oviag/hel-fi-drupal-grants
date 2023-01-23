@@ -34,34 +34,3 @@
       </div>
     {% endblock component_content %}
   {% endembed %}
-
-  {% embed "@hdbt/misc/component.twig" with
-    {
-      component_classes: [
-      'component--banner',
-      'component--banner-align-left',
-      'component--banner-has-icon',
-      'component--banner-secondary'
-    ],
-      component_content_class: 'banner',
-    }
-  %}
-    {% block component_content %}
-      <div class="banner__icon">
-          {% include '@hdbt/misc/icon.twig' with {icon: 'alert-circle', class: 'hds-icon--size-l'} %}
-      </div>
-      <div class="banner__content-wrapper">
-          <div class="banner__content">
-            <h2 class="banner__title">Ovathan omat tietosi ajan tasalla?</h2>
-            <div class="banner__desc">Avustusasiointiin tallennetut käyttäjätiedot tuodaan suoraan lomakkeille, kun haet uusia avustuksia. Muista tarkistaa aika ajoin omat käyttäjätietosi, jotta hakemuslomakkeilla on ajantasaiset tiedot.</div>
-          </div>
-          {% include '@hdbt/navigation/link-button.html.twig' with {
-            type: 'primary',
-            label: 'Siirry päivittämään omat tietosi'|t({}, {'context': 'Login to grants'}),
-            url: 'https://google.fi',
-            class: 'banner__button',
-            icon: false,
-          } %}
-      </div>
-    {% endblock component_content %}
-  {% endembed %}
