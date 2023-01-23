@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_content
     - node.type.landing_page
     - paragraphs.paragraphs_type.banner
+    - paragraphs.paragraphs_type.bloc
     - paragraphs.paragraphs_type.chart
     - paragraphs.paragraphs_type.columns
     - paragraphs.paragraphs_type.content_cards
@@ -44,6 +45,7 @@ settings:
       from_library: from_library
       chart: chart
       remote_video: remote_video
+      bloc: bloc
       front_page_latest_news: front_page_latest_news
       phasing: phasing
       oma_asiointi: oma_asiointi
@@ -63,7 +65,7 @@ settings:
         enabled: true
       bloc:
         weight: 41
-        enabled: false
+        enabled: true
       chart:
         weight: 25
         enabled: true
