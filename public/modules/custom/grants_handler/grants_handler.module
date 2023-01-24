@@ -887,11 +887,26 @@ function grants_handler_webform_presave(WebformInterface $webform) {
  * Implements hook_preprocess_HOOK().
  */
 function grants_handler_preprocess_webform_submission_form(&$variables) {
+  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
+  $webform_submission = $variables["form"]["#webform_submission"];
+  $submissionData = $webform_submission->getData();
+  $request = \Drupal::request();
+
+  $variables['statusTag'] = [
+    '#theme' => 'application_status_tag',
+    '#applicationID' => $submissionData["application_number"] ,
+  ];
+  $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
+  $variables['date'] = $dt->format('d.m.Y H:i');
+
+  if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+    $title = \Drupal::service('title_resolver')->getTitle($request, $route);
+  }
+  $variables['title'] = $title ?? '';
+
 
   /** @var \Drupal\grants_handler\GrantsHandlerNavigationHelper $navigationHelper */
   $navigationHelper = \Drupal::service('grants_handler.navigation_helper');
-  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
-  $webform_submission = $variables["form"]["#webform_submission"];
   // Get errors for printing.
   $variables['errors'] = $navigationHelper->getAllErrors($webform_submission);
 }
