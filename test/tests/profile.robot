@@ -26,7 +26,6 @@ Open Edit Form For Company
     Get Title           ==    Muokkaa omaa profiilia | ${SITE_NAME}
 
 Add New Bank Account
-    Scroll To Element   input[data-drupal-selector="edit-bankaccounts-add-more"]
     Click           input[data-drupal-selector="edit-bankaccounts-add-more"]
     Sleep   2   # Have to manually wait for ajax load
     Scroll To Element   \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]
@@ -41,7 +40,6 @@ Add New Bank Account
 Remove New Bank Account
     ${bank_account_input} =     Get Attribute     \#edit-bankaccountwrapper input[type="text"][readonly="readonly"][value="${INPUT_TEMP_BANK_ACCOUNT_NUMBER}"]     id
     ${bank_account_input} =     Get Substring     ${bank_account_input}     0     -12
-    Scroll To Element   a[data-drupal-selector="${bank_account_input}-deletebutton"]
     Click             a[data-drupal-selector="${bank_account_input}-deletebutton"]
     Wait For Elements State    \#drupal-modal .grants-profile-bank-account-delete-confirm-form     visible
     Click    \#drupal-modal .grants-profile-bank-account-delete-confirm-form input[type="submit"]
