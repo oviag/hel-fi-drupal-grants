@@ -64,7 +64,7 @@ Do Company Selection
 
 Click Choose Role
     Click             \#grants-mandate-type .form-submit
-    Get Title           ==    Suomi.fi-valtuudet
+    Wait For Condition    Title           ==    Suomi.fi-valtuudet
 
 Logged In Company Page Should Be Open
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
