@@ -19,6 +19,9 @@ function grants_front_banner_theme() {
     'grants_front_banner' => [
       'variables' => [
         'loggedin' => NULL,
+        'fillinfo' => NULL,
+        'loginform' => NULL,
+        'getgrantsprofile' => NULL,
       ],
     ],
   ];

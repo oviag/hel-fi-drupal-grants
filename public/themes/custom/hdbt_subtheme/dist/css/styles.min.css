@@ -1083,6 +1083,12 @@ div.grants-handler--prefilled-field .hds-text-input__label, .grants-profile-prh-
   margin-bottom: 0;
 }
 
+.openid-connect-login-form {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 #oma-asiointi__sent {
   background: var(--color-silver-light);
 }
