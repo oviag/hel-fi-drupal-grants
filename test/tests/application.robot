@@ -20,6 +20,7 @@ Fill Application Form
     Start New Application
     Fill Step 1 Data
     Fill Step 2 Data
+    Save Application As Draft
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -29,9 +30,7 @@ Go To Application Search
     Get Title           ==    Application search | ${SITE_NAME}
 
 Start New Application
-    Scroll To Element    .view-application-search .views-row:nth-child(1) .views-field-view-node a
     Click      .view-application-search .views-row:nth-child(1) .views-field-view-node a
-    Scroll To Element    \#block-servicepageauthblock .hds-button
     Click      \#block-servicepageauthblock .hds-button
     Get Title           ==    ${APPLICATION_TITLE} | ${SITE_NAME}
     Wait For Elements State       li[data-webform-page="1_hakijan_tiedot"].is-active  visible
@@ -67,4 +66,17 @@ Fill Step 2 Data
     Wait For Elements State    \#edit-compensation-explanation    visible
     Type Text             \#edit-compensation-explanation         ${INPUT_COMPENSATION_EXPLANATION}
     Click       \#edit-actions-wizard-next
+    Wait For Elements State      li[data-webform-page="3_yhteison_tiedot"].is-active   visible
+
+Save Application as Draft
+    Wait Until Network Is Idle
+    Set Browser Timeout    60s
+    Click                \#edit-actions-draft     # Can sometimes take up to 60s
+    Set Browser Timeout    30s
+    Wait For Elements State    .webform-submission__application_id .webform-submission__application_id--body    visible
+    Scroll To Element    .webform-submission__application_id .webform-submission__application_id--body
+    ${application_id} =   Get Text    .webform-submission__application_id .webform-submission__application_id--body
+    Get Url   *=    ${application_id}     # Application id should be in the url
+    # Go back to editing application
+    Click                a[data-drupal-selector="application-edit-link"]
     Wait For Elements State      li[data-webform-page="3_yhteison_tiedot"].is-active   visible
