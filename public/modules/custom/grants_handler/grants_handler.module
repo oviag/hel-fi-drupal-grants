@@ -1240,6 +1240,21 @@ function grants_handler_preprocess_message_list(&$variables) {
  * @param array $variables
  *   Variables for template.
  */
+function grants_handler_preprocess_html(array &$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if ($route_name === 'grants_handler.edit_application') {
+    $variables['attributes']['class'][] = 'hakemus-form-page';
+
+  }
+}
+
+/**
+ * Process information box.
+ *
+ * @param array $variables
+ *   Variables for template.
+ */
 function grants_handler_preprocess_webform_submission_information(array &$variables) {
 
   /** @var \Drupal\webform\Entity\WebformSubmission $submission */
