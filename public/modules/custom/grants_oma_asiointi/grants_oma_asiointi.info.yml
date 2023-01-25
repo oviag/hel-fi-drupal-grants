@@ -6,3 +6,6 @@ core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
   - grants_handler
+
+'interface translation project': grants_oma_asiointi
+'interface translation server pattern': modules/custom/grants_oma_asiointi/translations/%language.po

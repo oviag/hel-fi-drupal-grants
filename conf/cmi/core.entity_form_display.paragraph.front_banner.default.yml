@@ -1,0 +1,26 @@
+uuid: ac695bf0-6af5-459f-9c7b-8663a0370404
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.front_banner.field_front_banner
+    - paragraphs.paragraphs_type.front_banner
+  module:
+    - block_field
+id: paragraph.front_banner.default
+targetEntityType: paragraph
+bundle: front_banner
+mode: default
+content:
+  field_front_banner:
+    type: block_field_default
+    weight: 0
+    region: content
+    settings:
+      plugin_id: ''
+      settings: {  }
+      configuration_form: full
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
