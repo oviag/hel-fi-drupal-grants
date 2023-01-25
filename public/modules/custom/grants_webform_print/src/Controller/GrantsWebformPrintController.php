@@ -116,7 +116,11 @@ class GrantsWebformPrintController extends ControllerBase {
     $element['#id'] = $key;
     // Force description display after element.
     $element['#description_display'] = 'after';
-
+    if (isset($element['#attributes'])) {
+      if (isset($element['#attributes']['class']) && $element['#attributes']['class'][0] == 'grants-profile--imported-section') {
+        unset($element['#attributes']['class'][0]);
+      }
+    }
     // Field type specific alters.
     if (isset($element['#type'])) {
       // Make wizard pages show as containers.
@@ -158,6 +162,9 @@ class GrantsWebformPrintController extends ControllerBase {
 
       if ($element['#type'] === 'textarea' || $element['#type'] === 'textfield') {
         $element['#value'] = '';
+      }
+      if ($element['#type'] === 'webform_section') {
+        $element['#title_tag'] = 'h3';
       }
       if ($element['#type'] === 'checkboxes' || $element['#type'] === 'radios') {
         $element['#value'] = '';
