@@ -1,0 +1,22 @@
+uuid: b36bdc87-fe76-4620-8f8a-626fedc86954
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.oma_asiointi.field_oma_asiointi
+    - paragraphs.paragraphs_type.oma_asiointi
+  module:
+    - block_field
+id: paragraph.oma_asiointi.default
+targetEntityType: paragraph
+bundle: oma_asiointi
+mode: default
+content:
+  field_oma_asiointi:
+    type: block_field
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

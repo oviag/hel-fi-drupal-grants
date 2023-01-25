@@ -1,0 +1,10 @@
+uuid: 0901b67b-3524-4f4e-9417-d21b0de0d891
+langcode: fi
+status: true
+dependencies: {  }
+id: front_banner
+label: 'Front Banner'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

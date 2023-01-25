@@ -1,0 +1,31 @@
+uuid: 3c1ffd62-4c0f-4694-95d0-c685f61f403c
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_front_banner
+    - paragraphs.paragraphs_type.front_banner
+  module:
+    - block_field
+id: paragraph.front_banner.field_front_banner
+field_name: field_front_banner
+entity_type: paragraph
+bundle: front_banner
+label: 'Front Banner'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    plugin_id: grants_front_banner
+    settings:
+      provider: grants_front_banner
+      label: 'Grants Front Banner'
+      label_display: ''
+default_value_callback: ''
+settings:
+  selection: blocks
+  selection_settings:
+    plugin_ids:
+      grants_front_banner: grants_front_banner
+field_type: block_field
