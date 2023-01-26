@@ -2,6 +2,7 @@
 
 namespace Drupal\grants_front_banner\Plugin\Block;
 
+use Drupal\user\Form\UserLoginForm;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\grants_profile\GrantsProfileService;
@@ -26,7 +27,7 @@ class GrantsFrontBannerBlock extends BlockBase implements ContainerFactoryPlugin
    */
   protected GrantsProfileService $grantsProfileService;
 
-    /**
+  /**
    * Construct block object.
    *
    * @param array $configuration
@@ -48,7 +49,7 @@ class GrantsFrontBannerBlock extends BlockBase implements ContainerFactoryPlugin
     $this->grantsProfileService = $grants_profile_service;
   }
 
-    /**
+  /**
    * Factory function.
    *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
@@ -82,7 +83,6 @@ class GrantsFrontBannerBlock extends BlockBase implements ContainerFactoryPlugin
   public function build() {
 
     // @todo Refactor to support other profile types https://helsinkisolutionoffice.atlassian.net/browse/AU-662
-
     $selectedCompany = $this->grantsProfileService->getSelectedCompany();
 
     $getGrantsProfile = NULL;
@@ -92,7 +92,7 @@ class GrantsFrontBannerBlock extends BlockBase implements ContainerFactoryPlugin
 
     $logged_in = \Drupal::currentUser()->isAuthenticated();
     $fillinfo = Url::fromRoute('grants_profile.edit');
-    $loginForm = \Drupal::formBuilder()->getForm(\Drupal\user\Form\UserLoginForm::class);
+    $loginForm = \Drupal::formBuilder()->getForm(UserLoginForm::class);
 
     $build = [
       '#theme' => 'grants_front_banner',

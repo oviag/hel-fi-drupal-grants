@@ -144,7 +144,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       $selectedCompany == NULL) {
       $build = [
         '#theme' => 'grants_oma_asiointi_block',
-        '#hascompany' => false,
+        '#hascompany' => FALSE,
       ];
       return $build;
       // Throw new CompanySelectException('User not authorised');.
