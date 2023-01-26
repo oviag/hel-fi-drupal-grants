@@ -5,6 +5,7 @@
  * Provides an example of a webform handler.
  */
 
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -894,16 +895,15 @@ function grants_handler_preprocess_webform_submission_form(&$variables) {
 
   $variables['statusTag'] = [
     '#theme' => 'application_status_tag',
-    '#applicationID' => $submissionData["application_number"] ,
+    '#applicationID' => $submissionData["application_number"],
   ];
   $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
   $variables['date'] = $dt->format('d.m.Y H:i');
 
-  if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+  if ($route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT)) {
     $title = \Drupal::service('title_resolver')->getTitle($request, $route);
   }
   $variables['title'] = $title ?? '';
-
 
   /** @var \Drupal\grants_handler\GrantsHandlerNavigationHelper $navigationHelper */
   $navigationHelper = \Drupal::service('grants_handler.navigation_helper');
