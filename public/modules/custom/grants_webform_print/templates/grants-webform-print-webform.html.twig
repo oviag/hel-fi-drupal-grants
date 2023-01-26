@@ -1,6 +1,7 @@
+<div class="webform-print-page-body">
 {% for key,formpage in webform %}
   {% if formpage['#type'] == 'container' %}
-    <div class="{{ formpage['#type'] }}">
+    <div class="webform-print-page-wizard-page container">
       <h2>{{ formpage['#title'] }}</h2>
       {% if '#' not in key %}
         {% for elementKey,element in formpage %}
@@ -17,3 +18,4 @@
     </div>
   {% endif %}
 {% endfor %}
+</div>

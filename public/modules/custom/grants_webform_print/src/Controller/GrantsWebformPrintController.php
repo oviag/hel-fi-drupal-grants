@@ -124,21 +124,28 @@ class GrantsWebformPrintController extends ControllerBase {
     // Field type specific alters.
     if (isset($element['#type'])) {
       // Make wizard pages show as containers.
+
+     if (isset($element['#help'])) {
+       if (isset($element['##description'])) {
+         $element['#description'] = $element['#description'].'<br>'.$element['#help'];
+       } else {
+         $element['#description'] = $element['#help'];
+       }
+        unset($element['#help']);
+      }
+
       if ($element['#type'] === 'webform_wizard_page') {
         $element['#type'] = 'container';
       }
       // Custom components as select.
       if ($element['#type'] === 'community_address_composite') {
-        $element['#type'] = 'select';
-        $element['#options'] = [0 => t('Select address')];
+        $element['#type'] = 'textarea';
       }
       if ($element['#type'] === 'community_officials_composite') {
-        $element['#type'] = 'select';
-        $element['#options'] = [0 => t('Select official')];
+        $element['#type'] = 'textarea';
       }
       if ($element['#type'] === 'bank_account_composite') {
-        $element['#type'] = 'select';
-        $element['#options'] = [0 => t('Select bank account')];
+        $element['#type'] = 'textfield';
       }
       // Subventions as hidden textfield.
       if ($element['#type'] === 'grants_compensations') {
@@ -155,23 +162,20 @@ class GrantsWebformPrintController extends ControllerBase {
         }
       }
       // Show no radios, hidden textfields.
-      if ($element['#type'] === 'radios') {
-        $element['#type'] = 'textfield';
-        $element["#attributes"]["class"][] = 'hide-input';
-      }
-
       if ($element['#type'] === 'textarea' || $element['#type'] === 'textfield') {
         $element['#value'] = '';
       }
       if ($element['#type'] === 'webform_section') {
         $element['#title_tag'] = 'h3';
       }
-      if ($element['#type'] === 'checkboxes' || $element['#type'] === 'radios') {
-        $element['#value'] = '';
+      if ($element['#type'] === 'select' || $element['#type'] === 'checkboxes' || $element['#type'] === 'radios') {
+        $element['#type'] = 'markup';
+        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        foreach ($element['#options'] as $key => $value) {
+          $element['#markup'] .= '▢ '.$value.'<br>';
+        }
+        $element['#markup'] .= '<br></p>';
       }
-    }
-    if ($element['#type'] === 'checkboxes') {
-      $element['#title_display'] = [];
     }
 
     // Loop translated fields.
