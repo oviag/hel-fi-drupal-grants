@@ -63,3 +63,8 @@ services:
     arguments: ['@helfi_helsinki_profiili.userdata','@grants_profile.service']
     tags:
       - { name: breadcrumb_builder, priority: 10001 }
+
+  grants_handler.twig_extension:
+    class: Drupal\grants_handler\GrantsHandlerTwigExtension
+    tags:
+      - { name: twig.extension }
