@@ -421,7 +421,7 @@ class AttachmentHandler {
     $accountConfirmationFile = [];
     // If we have document, look for already added confirmations.
     if ($applicationDocument) {
-      $filename = md5($accountNumber);
+      $filename = $accountNumber;
 
       $applicationAttachments = $applicationDocument->getAttachments();
 
