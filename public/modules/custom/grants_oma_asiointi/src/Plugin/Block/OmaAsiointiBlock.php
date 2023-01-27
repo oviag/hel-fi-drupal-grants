@@ -143,7 +143,8 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       in_array('helsinkiprofiili', $roles) &&
       $selectedCompany == NULL) {
       $build = [
-        '#markup' => 'No company',
+        '#theme' => 'grants_oma_asiointi_block',
+        '#hascompany' => FALSE,
       ];
       return $build;
       // Throw new CompanySelectException('User not authorised');.
@@ -205,6 +206,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       '#lang' => $lang->getId(),
       '#link' => $link,
     ];
+
     return $build;
   }
 

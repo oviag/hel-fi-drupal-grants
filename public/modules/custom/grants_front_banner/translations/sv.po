@@ -1,0 +1,24 @@
+# Swedish translation of City of Helsinki Grants Front Banner module
+#
+msgid ""
+msgstr ""
+
+msgid "Fill in a grant application by logging into your e-services account and creating an applicant profile"
+msgstr "Logga in i egna ärenden och skapa en sökandeprofil för att börja fylla i ansökan"
+
+msgid "Use e-services to apply for a City of Helsinki grant and update your application information. You can also manage your personal data and send messages to the people processing your application via the service."
+msgstr "I tjänsten kan du ansöka om Helsingfors stads understöd och uppdatera uppgifter som är relevanta för din ansökan. Du kan administrera dina uppgifter och skicka meddelanden till den beredare som behandlar din ansökan."
+
+msgctxt "Login to grants"
+msgid "Log into the service"
+msgstr "Logga in i tjänsten"
+
+msgid "Remember to fill in your personal information!"
+msgstr "Kom ihåg att fylla i dina uppgifter!"
+
+msgid "Please note that in order to submit a grant application, you must provide us with your personal information. Once this information has been saved, it will be supplied to the applicable fields of the application form."
+msgstr "Vänligen notera att du inte kan ansöka om understöd innan du fyllt i dina uppgifter. När du sparat dina uppgifter finns de färdigt i rätt fält i ansökningsblanketten."
+
+msgctxt "Login to grants"
+msgid "Go to fill in your personal information"
+msgstr "Börja fylla i dina uppgifter."

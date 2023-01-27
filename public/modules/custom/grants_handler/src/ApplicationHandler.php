@@ -1471,6 +1471,8 @@ class ApplicationHandler {
     unset($data["sender_email"]);
     unset($data["metadata"]);
     unset($data["attachments"]);
+    unset($data["form_timestamp_submitted"]);
+    unset($data["form_timestamp_created"]);
 
     $data['events'] = [];
     $data['messages'] = [];

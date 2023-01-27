@@ -34,7 +34,6 @@ Search Grants
     Get Text    .main-content .view-footer strong      !=      0
 
 Go To FAQ
-    Scroll To Element    \#block-mainnavigation a[data-drupal-link-system-path="node/47"] ~ button
     Click           \#block-mainnavigation a[data-drupal-link-system-path="node/47"] ~ button
     Click           \#block-mainnavigation a[data-drupal-link-system-path="tietoa-avustuksista/ukk"]
     Get Title       ==      UKK | ${SITE_NAME}
@@ -46,7 +45,6 @@ Open Accordion on FAQ
     Get Element States    \#handorgel1-fold1-content      contains      visible
 
 Go To First Application
-    Scroll To Element    .view-application-search .views-row:nth-child(1) .views-field-view-node a
     Click      .view-application-search .views-row:nth-child(1) .views-field-view-node a
     Get Title           ==    ${APPLICATION_TITLE_ALT} | ${SITE_NAME_ALT}
     Get Text    h1      ==    ${APPLICATION_TITLE_ALT}

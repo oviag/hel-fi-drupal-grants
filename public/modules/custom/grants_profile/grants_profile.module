@@ -186,7 +186,10 @@ function grants_profile_preprocess_own_profile_form(&$variables) {
 
   $grantsProfile = $grantsProfileService->getGrantsProfileContent($selectedCompany['identifier']);
 
-  $variables['profile'] = $grantsProfile;
+  // Get profile data from parent form.
+  $variables['profile'] = $variables["form"]["#profilecontent"];
+  // Unset just in case.
+  unset($variables["form"]["#profilecontent"]);
 
   // We need to replace ids for address / bank account / officials to
   // make delete links work.

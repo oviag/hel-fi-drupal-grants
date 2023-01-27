@@ -1,0 +1,55 @@
+{% if loggedin and not getgrantsprofile %}
+  {% set title = "Remember to fill in your personal information!"|t %}
+  {% set description = "Please note that in order to submit a grant application, you must provide us with your personal information. Once this information has been saved, it will be supplied to the applicable fields of the application form."|t %}
+  {% set link = 'Go to fill in your personal information'|t({}, {'context': 'Login to grants'}) %}
+  {% set banner_style = 'component--banner-secondary'%}
+  {% set banner_icon = 'alert-circle' %}
+{% elseif loggedin %}
+  {% set title = "Ovathan omat tietosi ajan tasalla?"|t %}
+  {% set description = "Avustusasiointiin tallennetut käyttäjätiedot tuodaan suoraan lomakkeille, kun haet uusia avustuksia. Muista tarkistaa aika ajoin omat käyttäjätietosi, jotta hakemuslomakkeilla on ajantasaiset tiedot."|t %}
+  {% set link = 'Siirry päivittämään omat tietosi'|t({}, {'context': 'Login to grants'}) %}
+  {% set banner_style = 'component--banner-secondary'%}
+  {% set banner_icon = 'alert-circle' %}
+{% else %}
+  {% set title = "Fill in a grant application by logging into your e-services account and creating an applicant profile"|t %}
+  {% set description = "Use e-services to apply for a City of Helsinki grant and update your application information. You can also manage your personal data and send messages to the people processing your application via the service."|t %}
+  {% set link = 'Log into the service'|t({}, {'context': 'Login to grants'}) %}
+  {% set banner_style = '' %}
+  {% set banner_icon = 'info-circle' %}
+{% endif %}
+
+{% embed "@hdbt/misc/component.twig" with
+  {
+    component_classes: [
+      'component--banner',
+      'component--banner-align-left',
+      'component--banner-has-icon',
+      banner_style
+    ],
+    component_content_class: 'banner',
+    }
+  %}
+  {% block component_content %}
+    <div class="banner__icon">
+      {% include '@hdbt/misc/icon.twig' with {icon: banner_icon, class: 'hds-icon--size-l'} %}
+    </div>
+    <div class="banner__content-wrapper">
+      <div class="banner__content">
+        <h2 class="banner__title">{{ title }}</h2>
+        <div class="banner__desc">{{ description }}</div>
+      </div>
+
+      {% if loggedin %}
+        {% include '@hdbt/navigation/link-button.html.twig' with {
+          type: 'primary',
+          label: link,
+          url: fillinfo,
+          class: 'banner__button',
+          icon: false,
+        } %}
+      {% else %}
+        {{ loginform }}
+      {% endif %}
+    </div>
+  {% endblock component_content %}
+{% endembed %}
