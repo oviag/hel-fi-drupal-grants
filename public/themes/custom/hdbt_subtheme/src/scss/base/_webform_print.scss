@@ -1,5 +1,16 @@
 .webform-submission--view-mode-html, .webform-submission-data-preview-page, .webform-print-page-html {
-
+  div.hds-text-input__input {
+    width: 100%;
+    background: white;
+    height: var(--spacing-2-xl);
+    border: 2px var(--color-black) solid;
+  }
+  div.hds-text-input__textarea {
+    width: 100%;
+    background: white;
+    height: var(--spacing-layout-2-xl);
+    border: 2px var(--color-black) solid;
+  }
   .webform-print-wrapper-table {
     border: 0px transparent solid;
     width: 100%;
@@ -96,7 +107,7 @@
       .hds-text-input__input {
         height: 1cm;
       }
-      textarea.hds-text-input__input {
+      textarea.hds-text-input__input, div.hds-text-input__textarea {
         height: 6cm;
         width: 100%;
         max-width: 100%;

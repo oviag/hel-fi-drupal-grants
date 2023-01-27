@@ -124,7 +124,6 @@ class GrantsWebformPrintController extends ControllerBase {
     // Field type specific alters.
     if (isset($element['#type'])) {
       // Make wizard pages show as containers.
-
      if (isset($element['#help'])) {
        if (isset($element['##description'])) {
          $element['#description'] = $element['#description'].'<br>'.$element['#help'];
@@ -136,6 +135,8 @@ class GrantsWebformPrintController extends ControllerBase {
 
       if ($element['#type'] === 'webform_wizard_page') {
         $element['#type'] = 'container';
+      } else {
+        $element['#attributes']['readonly'] = 'readonly';
       }
       // Custom components as select.
       if ($element['#type'] === 'community_address_composite') {
@@ -145,6 +146,9 @@ class GrantsWebformPrintController extends ControllerBase {
         $element['#type'] = 'textarea';
       }
       if ($element['#type'] === 'bank_account_composite') {
+        $element['#type'] = 'textfield';
+      }
+      if ($element['#type'] === 'email') {
         $element['#type'] = 'textfield';
       }
       // Subventions as hidden textfield.
@@ -164,6 +168,31 @@ class GrantsWebformPrintController extends ControllerBase {
       // Show no radios, hidden textfields.
       if ($element['#type'] === 'textarea' || $element['#type'] === 'textfield') {
         $element['#value'] = '';
+      }
+      if ($element['#type'] === 'hidden') {
+        $element['#type'] = 'markup';
+      }
+      if ($element['#type'] === 'textarea') {
+        $element['#type'] = 'markup';
+        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input hds-text-input__textarea webform_large" type="text">&nbsp;</div></div>';
+        if (isset($element['#description'])) {
+          $element['#markup'] .= '<div>
+ <div id="talousarvio--description" class="webform-element-description"><span>'.$element['#description'].'</span></div>
+    </div>';
+          unset($element['#description']);
+        }
+      }
+      if ($element['#type'] === 'textfield') {
+        $element['#type'] = 'markup';
+        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input webform_large" type="text">&nbsp;</div></div>';
+        if (isset($element['#description'])) {
+          $element['#markup'] .= '<div>
+ <div id="talousarvio--description" class="webform-element-description"><span>'.$element['#description'].'</span></div>
+    </div>';
+          unset($element['#description']);
+        }
       }
       if ($element['#type'] === 'webform_section') {
         $element['#title_tag'] = 'h3';
