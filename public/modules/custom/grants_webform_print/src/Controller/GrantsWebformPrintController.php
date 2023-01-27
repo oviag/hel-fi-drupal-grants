@@ -124,18 +124,20 @@ class GrantsWebformPrintController extends ControllerBase {
     // Field type specific alters.
     if (isset($element['#type'])) {
       // Make wizard pages show as containers.
-     if (isset($element['#help'])) {
-       if (isset($element['##description'])) {
-         $element['#description'] = $element['#description'].'<br>'.$element['#help'];
-       } else {
-         $element['#description'] = $element['#help'];
-       }
+      if (isset($element['#help'])) {
+        if (isset($element['##description'])) {
+          $element['#description'] = $element['#description'] . '<br>' . $element['#help'];
+        }
+        else {
+          $element['#description'] = $element['#help'];
+        }
         unset($element['#help']);
       }
 
       if ($element['#type'] === 'webform_wizard_page') {
         $element['#type'] = 'container';
-      } else {
+      }
+      else {
         $element['#attributes']['readonly'] = 'readonly';
       }
       // Custom components as select.
@@ -174,22 +176,22 @@ class GrantsWebformPrintController extends ControllerBase {
       }
       if ($element['#type'] === 'textarea') {
         $element['#type'] = 'markup';
-        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        $element['#markup'] = '<p><strong>' . $element['#title'] . '</strong><br>';
         $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input hds-text-input__textarea webform_large" type="text">&nbsp;</div></div>';
         if (isset($element['#description'])) {
           $element['#markup'] .= '<div>
- <div id="talousarvio--description" class="webform-element-description"><span>'.$element['#description'].'</span></div>
+ <div id="talousarvio--description" class="webform-element-description"><span>' . $element['#description'] . '</span></div>
     </div>';
           unset($element['#description']);
         }
       }
       if ($element['#type'] === 'textfield') {
         $element['#type'] = 'markup';
-        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        $element['#markup'] = '<p><strong>' . $element['#title'] . '</strong><br>';
         $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input webform_large" type="text">&nbsp;</div></div>';
         if (isset($element['#description'])) {
           $element['#markup'] .= '<div>
- <div id="talousarvio--description" class="webform-element-description"><span>'.$element['#description'].'</span></div>
+ <div id="talousarvio--description" class="webform-element-description"><span>' . $element['#description'] . '</span></div>
     </div>';
           unset($element['#description']);
         }
@@ -199,9 +201,9 @@ class GrantsWebformPrintController extends ControllerBase {
       }
       if ($element['#type'] === 'select' || $element['#type'] === 'checkboxes' || $element['#type'] === 'radios') {
         $element['#type'] = 'markup';
-        $element['#markup'] = '<p><strong>'.$element['#title'].'</strong><br>';
+        $element['#markup'] = '<p><strong>' . $element['#title'] . '</strong><br>';
         foreach ($element['#options'] as $key => $value) {
-          $element['#markup'] .= '▢ '.$value.'<br>';
+          $element['#markup'] .= '▢ ' . $value . '<br>';
         }
         $element['#markup'] .= '<br></p>';
       }

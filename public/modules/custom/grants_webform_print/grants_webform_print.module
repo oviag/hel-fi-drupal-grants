@@ -17,7 +17,6 @@ function grants_webform_print_preprocess_html(&$variables) {
 
 }
 
-
 /**
  * Implements hook_theme().
  */
