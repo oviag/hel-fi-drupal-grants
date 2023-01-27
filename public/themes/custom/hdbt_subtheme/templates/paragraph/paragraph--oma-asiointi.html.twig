@@ -1,0 +1,7 @@
+{% if 'helsinkiprofiili' in user.getroles(TRUE)  %}
+  <div class="component component--oma-asiointi-block oma-asiointi-block">
+    <div class="component__container">
+      {{ content }}
+    </div>
+  </div>
+{% endif %}

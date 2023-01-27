@@ -9,15 +9,37 @@
  * @ingroup themeable
  */
 #}
-
-<div>
-    <ul>
-        {% for page in errors %}
-            {% for element in page %}
-                <li>{{ element }}</li>
-            {% endfor %}
-        {% endfor %}
-    </ul>
+<div class="application-list__status__wrapper">
+  <div class="container application-list__status__container">
+    <div class="application-list__status__item">
+      <div class="application-list__status__label">
+        Hakemus
+      </div>
+      <div class="application-list__status__value">
+      {{ statusTag }}
+      </div>
+    </div>
+    <div class="application-list__status__item">
+      <div class="application-list__status__label">
+        Tallennettu
+      </div>
+      <div class="application-list__status__value">
+        <div>{{ date }}</div>
+      </div>
+    </div>
+  </div>
 </div>
+<div class="container">
+  <h1>{{ title }}</h1>
+  <div>
+      <ul>
+          {% for page in errors %}
+              {% for element in page %}
+                  <li>{{ element }}</li>
+              {% endfor %}
+          {% endfor %}
+      </ul>
+  </div>
 
-{{ form }}
+  {{ form }}
+</div>

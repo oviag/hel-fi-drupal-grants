@@ -1,0 +1,19 @@
+uuid: 38a48589-3522-4e2d-b03d-716ce6d2ae12
+langcode: fi
+status: true
+dependencies:
+  module:
+    - block_field
+    - paragraphs
+id: paragraph.field_oma_asiointi
+field_name: field_oma_asiointi
+entity_type: paragraph
+type: block_field
+settings: {  }
+module: block_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

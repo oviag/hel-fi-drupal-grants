@@ -1,0 +1,10 @@
+uuid: 9affeb5a-31a0-4ab8-855b-a032a5fb979f
+langcode: fi
+status: true
+dependencies: {  }
+id: oma_asiointi
+label: 'Oma asiointi'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

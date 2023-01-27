@@ -96,7 +96,6 @@ class GrantsProfileForm extends FormBase {
         // Initialize a new one.
         // This fetches company details from yrtti / ytj.
         $grantsProfileContent = $grantsProfileService->initGrantsProfile($selectedCompany, []);
-
       }
       catch (YjdhException $e) {
         // If no company data is found, we cannot continue.
@@ -386,6 +385,8 @@ class GrantsProfileForm extends FormBase {
       '#type' => 'submit',
       '#value' => $this->t('Save profile'),
     ];
+
+    $form['#profilecontent'] = $grantsProfileContent;
 
     return $form;
   }
