@@ -21,6 +21,7 @@ Fill Application Form
     Fill Step 1 Data
     Fill Step 2 Data
     Save Application As Draft
+    Fill Step 3 Data
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -80,3 +81,18 @@ Save Application as Draft
     # Go back to editing application
     Click                a[data-drupal-selector="application-edit-link"]
     Wait For Elements State      li[data-webform-page="3_yhteison_tiedot"].is-active   visible
+
+Fill Step 3 Data
+    Scroll To Element     \#edit-business-info
+    Get Text              \#edit-community-purpose--description     !=    ${EMPTY}
+    Get Text              \#edit-community-practices-business-0[checked="checked"] ~ label    ==    Ei
+    Scroll To Element     \#edit-fee-person
+    Type Text             \#edit-fee-person     ${INPUT_FEE_PERSON}
+    Sleep   1    # Have to manually wait for js formatter
+    Get Text              \#edit-fee-person    ==     ${INPUT_FEE_PERSON_FORMATTED}
+    Scroll To Element     \#edit-jasenmaara
+    Hover                 \#edit-jasenmaara .webform-element-help-container--title:first-of-type .webform-element-help
+    Wait For Elements State    \#tippy-2    visible
+    Wait For Elements State    \#edit-jasenmaara .webform-element-help-container--title:first-of-type .webform-element-help[aria-expanded="true"]   visible
+    Click       \#edit-actions-wizard-next
+    Wait For Elements State      li[data-webform-page="lisatiedot_ja_liitteet"].is-active   visible
