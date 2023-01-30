@@ -68,3 +68,11 @@ services:
     class: Drupal\grants_handler\GrantsHandlerTwigExtension
     tags:
       - { name: twig.extension }
+
+  grants_handler.tunnistamo_lang_redirect_subscriber:
+    class: Drupal\grants_handler\EventSubscriber\TunnistamoLangRedirectUrlSubscriber
+    tags:
+      - { name: event_subscriber }
+    arguments:
+      [ '@language_manager' ]
+

@@ -9,7 +9,13 @@ use Drupal\Core\Url;
 use Drupal\helfi_tunnistamo\Event\RedirectUrlEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
+/**
+ * Subscribe to Tunnistamo redirect events to add language parameter to uri.
+ *
+ * We want to eventually support all languages in authentication with Tunnistamo
+ * so we need to support all language parameters. Helfi_proxy module does this
+ * for proxied urls, we cannot use that so here is implementation without proxy.
+ */
 class TunnistamoLangRedirectUrlSubscriber implements EventSubscriberInterface {
 
   /**
@@ -33,7 +39,7 @@ class TunnistamoLangRedirectUrlSubscriber implements EventSubscriberInterface {
 
     $uriOptions['language'] = $this->languageManager->getCurrentLanguage();
 
-    // Tunnistamo return URL is always configured to use /fi prefix.
+    // Support all languages with tunnistamo urls.
     $returnUrl = sprintf(
       '/%s/openid-connect/%s', $uriOptions['language']->getId(), $event->getClient()->getParentEntityId()
     );
