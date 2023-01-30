@@ -1239,7 +1239,6 @@ function grants_handler_preprocess_html(array &$variables) {
 
   if ($route_name === 'grants_handler.edit_application') {
     $variables['attributes']['class'][] = 'hakemus-form-page';
-
   }
 }
 
