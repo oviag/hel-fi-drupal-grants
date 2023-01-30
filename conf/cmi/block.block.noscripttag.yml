@@ -1,0 +1,25 @@
+uuid: ad9c892e-b60d-455e-80d0-077ac0f5cb01
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:terms_block:a0678069-9cd9-44e2-b508-a1b44288f25f'
+  module:
+    - block_content
+  theme:
+    - hdbt_subtheme
+id: noscripttag
+theme: hdbt_subtheme
+region: after_content
+weight: 0
+provider: null
+plugin: 'block_content:a0678069-9cd9-44e2-b508-a1b44288f25f'
+settings:
+  id: 'block_content:a0678069-9cd9-44e2-b508-a1b44288f25f'
+  label: 'Noscript tag'
+  label_display: visible
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility: {  }
