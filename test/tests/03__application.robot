@@ -22,6 +22,9 @@ Fill Application Form
     Fill Step 2 Data
     Save Application As Draft
     Fill Step 3 Data
+    Fill Step 4 Data
+    Review Application Data
+    Completion Page
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -96,3 +99,29 @@ Fill Step 3 Data
     Wait For Elements State    \#edit-jasenmaara .webform-element-help-container--title:first-of-type .webform-element-help[aria-expanded="true"]   visible
     Click       \#edit-actions-wizard-next
     Wait For Elements State      li[data-webform-page="lisatiedot_ja_liitteet"].is-active   visible
+
+Fill Step 4 Data
+    Scroll To Element     \#edit-vahvistettu-tilinpaatos-attachment
+    Upload File By Selector    \#edit-vahvistettu-tilinpaatos-attachment-upload    ${CURDIR}/empty.pdf
+    Sleep   3   # Have to manually wait for ajax upload
+    Scroll To Element     \#edit-vahvistettu-toimintakertomus-attachment
+    Upload File By Selector    \#edit-vahvistettu-toimintakertomus-attachment-upload    ${CURDIR}/empty.pdf
+    Sleep   3   # Have to manually wait for ajax upload
+    Click       \#edit-actions-wizard-next
+    Wait For Elements State      li[data-webform-page="webform_preview"].is-active   visible
+
+Review Application Data
+    Get Text    \#yleisavustushakemus--contact_person   *=    ${INPUT_CONTACT_PERSON}
+    Get Text    \#yleisavustushakemus--contact_person_phone_number   *=    ${INPUT_CONTACT_PERSON_PHONE_NUMBER}
+    Get Text    \#yleisavustushakemus--bank_account   *=    ${INPUT_BANK_ACCOUNT_NUMBER}
+    Get Text    \#yleisavustushakemus--subventions   *=    ${INPUT_SUBVENTION_AMOUNT_FORMATTED}
+    Get Text    \#yleisavustushakemus--compensation_purpose   *=    ${INPUT_COMPENSATION_PURPOSE}
+    Get Text    \#yleisavustushakemus--compensation_explanation   *=    ${INPUT_COMPENSATION_EXPLANATION}
+    Get Text    \#yleisavustushakemus--fee_person   *=    ${INPUT_FEE_PERSON_FORMATTED}
+    Click       \#accept_terms_1 ~ label
+    Click       \#edit-actions-submit
+
+Completion Page
+    Get Text    \#avustushakemus-lahetetty-onnistuneesti    ==    Avustushakemus lähetetty onnistuneesti
+    ${application_id} =   Get Text    .breadcrumb a:last-of-type
+    Get Url   *=    ${application_id}     # Application id should be in the url
