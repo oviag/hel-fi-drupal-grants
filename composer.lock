@@ -8775,6 +8775,10 @@
                 {
                     "name": "jsobiecki",
                     "homepage": "https://www.drupal.org/user/112744"
+                },
+                {
+                    "name": "wiktorb",
+                    "homepage": "https://www.drupal.org/user/762836"
                 }
             ],
             "description": "This module enables support for translation of link field in menu_link_content entity.",
