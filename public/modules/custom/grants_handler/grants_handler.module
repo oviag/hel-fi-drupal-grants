@@ -5,6 +5,7 @@
  * Provides an example of a webform handler.
  */
 
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -186,17 +187,11 @@ function grants_handler_page_attachments(array &$attachments) {
   // Get baseurl.
   $base_url = \Drupal::request()->getSchemeAndHttpHost();
 
-  /** @var \Drupal\helfi_proxy\ActiveSitePrefix $service */
-  $service = \Drupal::service('helfi_proxy.active_prefix');
-
   // Get current language.
   $currentLanguage = Drupal::languageManager()->getCurrentLanguage();
 
-  // Get url prefix for proxy.
-  $prefix = $service->getPrefix($currentLanguage->getId());
-
   // Set url to variable.
-  $attachments['#attached']['drupalSettings']['grants_handler']['site_url'] = $base_url . '/' . $currentLanguage->getId() . '/' . $prefix;
+  $attachments['#attached']['drupalSettings']['grants_handler']['site_url'] = $base_url . '/' . $currentLanguage->getId() . '/';
 
 }
 
@@ -372,7 +367,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
 
         // Loop addresses to figure out which address is actually selected.
         foreach ($profileData['addresses'] as $delta => $address) {
-          $deltaString = (string) $delta;
+          $deltaString = $address["address_id"];
           $optionSelection = $address['street'] . ', ' . $address['postCode'] .
             ', ' . $address['city'] . ', ' . $address['country'];
 
@@ -887,11 +882,25 @@ function grants_handler_webform_presave(WebformInterface $webform) {
  * Implements hook_preprocess_HOOK().
  */
 function grants_handler_preprocess_webform_submission_form(&$variables) {
+  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
+  $webform_submission = $variables["form"]["#webform_submission"];
+  $submissionData = $webform_submission->getData();
+  $request = \Drupal::request();
+
+  $variables['statusTag'] = [
+    '#theme' => 'application_status_tag',
+    '#applicationID' => $submissionData["application_number"],
+  ];
+  $dt = new DateTime($submissionData["form_timestamp_submitted"], new DateTimeZone('Europe/Helsinki'));
+  $variables['date'] = $dt->format('d.m.Y H:i');
+
+  if ($route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT)) {
+    $title = \Drupal::service('title_resolver')->getTitle($request, $route);
+  }
+  $variables['title'] = $title ?? '';
 
   /** @var \Drupal\grants_handler\GrantsHandlerNavigationHelper $navigationHelper */
   $navigationHelper = \Drupal::service('grants_handler.navigation_helper');
-  /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
-  $webform_submission = $variables["form"]["#webform_submission"];
   // Get errors for printing.
   $variables['errors'] = $navigationHelper->getAllErrors($webform_submission);
 }
@@ -1149,7 +1158,13 @@ function grants_handler_preprocess_grants_handler_completion(&$variables) {
   try {
     $submissionObject = $variables['submissionObject'];
     $submissionData = $submissionObject->getData();
-    $variables['applicationTimestamp'] = strtotime($submissionData['form_timestamp_submitted']);
+    if (isset($submissionData['form_timestamp_submitted']) &&
+      !empty($submissionData['form_timestamp_submitted'])) {
+      $variables['applicationTimestamp'] = strtotime($submissionData['form_timestamp_submitted']);
+    }
+    else {
+      $variables['applicationTimestamp'] = '';
+    }
   }
   catch (\Exception $e) {
     $variables['applicationTimestamp'] = '';
@@ -1211,6 +1226,20 @@ function grants_handler_preprocess_message_notification_item(&$variables) {
  */
 function grants_handler_preprocess_message_list(&$variables) {
 
+}
+
+/**
+ * Process information box.
+ *
+ * @param array $variables
+ *   Variables for template.
+ */
+function grants_handler_preprocess_html(array &$variables) {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if ($route_name === 'grants_handler.edit_application') {
+    $variables['attributes']['class'][] = 'hakemus-form-page';
+  }
 }
 
 /**

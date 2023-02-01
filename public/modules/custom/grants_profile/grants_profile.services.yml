@@ -7,7 +7,7 @@ services:
     class: Drupal\grants_profile\GrantsProfileService
     arguments: [
         '@helfi_atv.atv_service',
-        '@tempstore.private',
+        '@request_stack',
         '@messenger',
         '@helfi_helsinki_profiili.userdata',
         '@grants_metadata.atv_schema',

@@ -51,6 +51,7 @@ module:
   gin_toolbar: 0
   grant_applications_content: 0
   grants_attachments: 0
+  grants_front_banner: 0
   grants_handler: 0
   grants_industries: 0
   grants_mandate: 0
@@ -62,6 +63,7 @@ module:
   hdbt_admin_tools: 0
   hdbt_component_library: 0
   hdbt_content: 0
+  health_check: 0
   helfi_announcements: 0
   helfi_announcements_tpr: 0
   helfi_api_base: 0
@@ -77,7 +79,6 @@ module:
   helfi_media: 0
   helfi_news_item: 0
   helfi_platform_config: 0
-  helfi_proxy: 0
   helfi_toc: 0
   helfi_tpr: 0
   helfi_tpr_config: 0

@@ -18,8 +18,8 @@ provider: null
 plugin: 'menu_block_current_language:footer-bottom-navigation'
 settings:
   id: 'menu_block_current_language:footer-bottom-navigation'
-  label: 'Footer - Bottom navigation'
-  label_display: '0'
+  label: 'Helsingin kaupunki'
+  label_display: visible
   provider: menu_block_current_language
   level: 1
   expand_all_items: false

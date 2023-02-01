@@ -2,14 +2,16 @@ uuid: 743c3c17-fc74-45cb-af45-4ebb8c72da30
 langcode: en
 status: true
 dependencies:
+  module:
+    - system
   theme:
     - hdbt_subtheme
 _core:
   default_config_hash: _UoTG8MagibHn89173NtrwtSq5ylXJRanQkHTZmRGe4
 id: hdbt_subtheme_local_tasks
 theme: hdbt_subtheme
-region: content
-weight: -14
+region: tools
+weight: -13
 provider: null
 plugin: local_tasks_block
 settings:
@@ -19,4 +21,8 @@ settings:
   provider: core
   primary: true
   secondary: true
-visibility: {  }
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: /user/login
