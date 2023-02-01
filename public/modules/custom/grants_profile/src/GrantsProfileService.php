@@ -583,7 +583,6 @@ class GrantsProfileService {
         throw new YjdhException('Company BusinessId not set, cannot proceed');
       }
 
-
       $profileContent["companyName"] = $companyDetails["TradeName"]["Name"];
       $profileContent["businessId"] = $companyDetails["BusinessId"];
       $profileContent["companyStatus"] = $companyDetails["CompanyStatus"]["Status"]["PrimaryCode"] ?? '-';
