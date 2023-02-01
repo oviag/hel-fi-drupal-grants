@@ -391,7 +391,8 @@ class GrantsHandler extends WebformHandlerBase {
         $redirect = new RedirectResponse($url->toString());
         $redirect->send();
       }
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->messenger()
         ->addWarning('You must have grants profile created.');
 
@@ -608,7 +609,8 @@ class GrantsHandler extends WebformHandlerBase {
       try {
         $document = $this->applicationHandler->getAtvDocument($applicationNumber);
         $oldStatus = $document->getStatus();
-      } catch (TempStoreException|AtvDocumentNotFoundException|AtvFailedToConnectException|GuzzleException $e) {
+      }
+      catch (TempStoreException | AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
       }
 
     }
@@ -662,7 +664,8 @@ class GrantsHandler extends WebformHandlerBase {
       parent::validateForm($form, $form_state, $webform_submission);
       // Log current errors.
       $current_errors = $this->grantsFormNavigationHelper->logPageErrors($webform_submission, $form_state);
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $current_errors = [];
       // @todo add logger
     }
@@ -673,8 +676,8 @@ class GrantsHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function validateForm(
-    array                      &$form,
-    FormStateInterface         $form_state,
+    array &$form,
+    FormStateInterface $form_state,
     WebformSubmissionInterface $webform_submission
   ) {
 
@@ -883,8 +886,8 @@ class GrantsHandler extends WebformHandlerBase {
     // let's invalidate cache for this submission.
     $this->entityTypeManager->getViewBuilder($webform_submission->getWebform()
       ->getEntityTypeId())->resetCache([
-      $webform_submission,
-    ]);
+        $webform_submission,
+      ]);
 
     if (empty($this->submittedFormData)) {
       return;
@@ -923,7 +926,8 @@ class GrantsHandler extends WebformHandlerBase {
       try {
         $applicationData = $this->applicationHandler->webformToTypedData(
           $this->submittedFormData);
-      } catch (ReadOnlyException $e) {
+      }
+      catch (ReadOnlyException $e) {
         // @todo log errors here.
       }
       $applicationUploadStatus = FALSE;
@@ -968,10 +972,12 @@ class GrantsHandler extends WebformHandlerBase {
               TRUE
             );
         }
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $this->getLogger('grants_handler')
           ->error('Error uploadind application: @error', ['@error' => $e->getMessage()]);
-      } catch (GuzzleException $e) {
+      }
+      catch (GuzzleException $e) {
         $this->getLogger('grants_handler')
           ->error('Error uploadind application: @error', ['@error' => $e->getMessage()]);
       }
@@ -991,7 +997,8 @@ class GrantsHandler extends WebformHandlerBase {
           $this->submittedFormData,
           $this->applicationNumber
         );
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $this->getLogger('grants_handler')->error($e->getMessage());
       }
 
@@ -1006,8 +1013,8 @@ class GrantsHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function confirmForm(
-    array                      &$form,
-    FormStateInterface         $form_state,
+    array &$form,
+    FormStateInterface $form_state,
     WebformSubmissionInterface $webform_submission
   ) {
 
@@ -1073,7 +1080,8 @@ class GrantsHandler extends WebformHandlerBase {
           ],
         ]
       );
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->getLogger('grants_handler')
         ->error('Error: %error', ['%error' => $e->getMessage()]);
 
