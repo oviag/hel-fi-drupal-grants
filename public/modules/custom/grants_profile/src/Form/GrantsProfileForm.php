@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\TypedData\TypedDataManager;
+use GuzzleHttp\Exception\GuzzleException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfileDefinition;
@@ -574,7 +575,7 @@ class GrantsProfileForm extends FormBase {
       $success = $grantsProfileService->saveGrantsProfile($profileDataArray);
     }
     catch (\Exception $e) {
-      $this->logger('grants_profile')->error('Grants profile saving failed.');
+      $this->logger('grants_profile')->error('Grants profile saving failed. Error: @error', ['@error' => $e->getMessage()]);
     }
     $grantsProfileService->clearCache($selectedCompany);
 

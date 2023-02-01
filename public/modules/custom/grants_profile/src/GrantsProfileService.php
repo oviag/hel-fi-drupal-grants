@@ -143,6 +143,7 @@ class GrantsProfileService {
     $newProfileData['business_id'] = $selectedCompany;
     $newProfileData['user_id'] = $userData["sub"];
     $newProfileData['status'] = self::DOCUMENT_STATUS_NEW;
+    $newProfileData['deletable'] = TRUE;
 
     $newProfileData['tos_record_id'] = $this->newProfileTosRecordId();
     $newProfileData['tos_function_id'] = $this->newProfileTosFunctionId();
