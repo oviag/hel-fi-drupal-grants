@@ -1,6 +1,7 @@
 display:
   default:
-    display_options: {  }
+    display_options:
+      title: 'Ajankohtaista avustuksista'
   feed_1:
     display_options:
       filters:
@@ -14,3 +15,4 @@ display:
     display_options:
       menu:
         title: 'Ajankohtaista avustuksista'
+label: 'Ajankohtaista avustuksista'
