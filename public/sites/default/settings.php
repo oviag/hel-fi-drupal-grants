@@ -50,6 +50,8 @@ $config['siteimprove.settings']['api_key'] = getenv('SITEIMPROVE_API_KEY');
 $settings['matomo_site_id'] = getenv('MATOMO_SITE_ID');
 $settings['siteimprove_id'] = getenv('SITEIMPROVE_ID');
 
+$settings['error_page']['template_dir'] = '../error_templates';
+
 $routes = [];
 // Drupal route(s).
 if ($drupal_routes = getenv('DRUPAL_ROUTES')) {
