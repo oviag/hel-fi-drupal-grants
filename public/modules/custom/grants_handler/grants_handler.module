@@ -464,7 +464,10 @@ function _grants_handler_imported_handler(
 
   $array["#value"] = $value;
   $array['#attributes'] = ['readonly' => 'readonly', 'style' => 'display:none'];
-  $array['#description'] = $show_checkmark ? _grants_handler_add_checkmark_to_text($value) : $value;
+  if ($value) {
+    $array['#description'] = $show_checkmark ? _grants_handler_add_checkmark_to_text($value) : $value;
+  }
+
   $array['#wrapper_attributes']['class'][] = 'grants-handler--prefilled-field';
 }
 
