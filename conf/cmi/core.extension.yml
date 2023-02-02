@@ -50,6 +50,7 @@ module:
   focal_point: 0
   gin_toolbar: 0
   grant_applications_content: 0
+  grant_applications_noscript: 0
   grants_attachments: 0
   grants_front_banner: 0
   grants_handler: 0
