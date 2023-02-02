@@ -385,11 +385,7 @@ class GrantsHandler extends WebformHandlerBase {
         $grantsProfile = $grantsProfileDocument->getContent();
       }
       else {
-        $this->messenger()->addWarning('You must have grants profile created.');
-
-        $url = Url::fromRoute('grants_profile.edit');
-        $redirect = new RedirectResponse($url->toString());
-        $redirect->send();
+        throw new \Exception();
       }
     }
     catch (\Exception $e) {
