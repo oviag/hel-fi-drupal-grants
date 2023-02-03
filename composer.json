@@ -36,6 +36,7 @@
         "drupal/hdbt_admin": "^1.0",
         "drupal/helfi_ahjo": "^1.0",
         "drupal/helfi_atv": "dev-develop",
+        "drupal/helfi_audit_log": "dev-develop",
         "drupal/helfi_azure_fs": "^1.1",
         "drupal/helfi_drupal_tools": "dev-main",
         "drupal/helfi_formtool_embed": "dev-develop",
@@ -186,7 +187,7 @@
         "phpcbf-atv": "vendor/bin/phpcbf public/modules/contrib/helfi_atv --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install",
         "phpcs-hp": "vendor/bin/phpcs public/modules/contrib/helfi_helsinki_profiili --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install",
         "phpcbf-hp": "vendor/bin/phpcbf public/modules/contrib/helfi_helsinki_profiili --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install",
-        "phpcs-fe": "vendor/bin/phpcs public/modules/contrib/helfi_formtool_embed --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install",
-        "phpcbf-fe": "vendor/bin/phpcbf public/modules/contrib/helfi_formtool_embed --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install"
+        "phpcs-al": "vendor/bin/phpcs public/modules/contrib/helfi_audit_log --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install",
+        "phpcbf-al": "vendor/bin/phpcbf public/modules/contrib/helfi_audit_log --standard=Drupal --ignore=*.js,*.css --extensions=php,module,install"
     }
 }
