@@ -106,7 +106,7 @@
             },
           },
           {
-            text: Drupal.t('Continue'),
+            text: Drupal.t('Leave the Form'),
             click() {
               unsaved = false;
               $(this).dialog('close');
