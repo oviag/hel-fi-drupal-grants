@@ -7,19 +7,21 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\helfi_audit_log\Event\AuditLogEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-
 /**
- * Subscribe to KernelEvents::REQUEST events and redirect if site is currently
- * in maintenance mode.
+ * Subscribes to AuditLogEvent::LOG events.
  */
 class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
 
   const AUDIT_LOG_PROVIDER_ORIGIN = 'HELFI-GRANTS';
 
+  /**
+   * Constrictor for thee class.
+   */
   public function __construct(AccountProxyInterface $accountProxy, RequestStack $requestStack) {
     $this->currentUser = $accountProxy;
     $this->request = $requestStack->getCurrentRequest();
   }
+
   /**
    * {@inheritdoc}
    */
@@ -31,10 +33,10 @@ class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * This method is called whenever the AuditEvent::LOG event is
-   * dispatched.
+   * Validate message in AuditEvent::LOG event.
    *
    * @param \Drupal\helfi_audit_log\AuditLogEvent $event
+   *   Event to validate.
    */
   public function validate(AuditLogEvent $event) {
     if (!$event->isValid()) {
@@ -68,7 +70,7 @@ class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
       $isAuthenticatedExternally = \Drupal::service('helfi_helsinki_profiili.userdata')->isAuthenticatedExternally();
       if ($isAuthenticatedExternally) {
         $data = \Drupal::service('helfi_helsinki_profiili.userdata')->getUserData();
-        if ($data !== null && $data['sid']) {
+        if ($data !== NULL && $data['sid']) {
           $userId = $data['sid'];
         }
       }
@@ -83,7 +85,12 @@ class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
+   * Validate event message.
    *
+   * @param array $message
+   *   The message array.
+   * @param array $structure
+   *   Expected kays in message.
    */
   protected function validateKeysRecursive(array $message, array $structure) : bool {
     $isValid = TRUE;
@@ -108,6 +115,9 @@ class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
 
   /**
    * Message validation.
+   *
+   * @param array $message
+   *   The message array.
    */
   public function validateMessage(array $message) : bool {
     $structure = $this->getLogStructure();
@@ -117,7 +127,7 @@ class GrantsAuditLogEventSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   *
+   * Return expected keys for event message.
    */
   public function getLogStructure(): array {
     return [

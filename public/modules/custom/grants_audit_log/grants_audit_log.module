@@ -53,7 +53,7 @@ function grants_audit_log_user_logout(AccountInterface $account) {
 /**
  * Implements hook_entity_view().
  */
-function form_tool_audit_log_entity_view(array &$build, EntityInterface $entity) {
+function grants_audit_log_entity_view(array &$build, EntityInterface $entity) {
 
   // Only trigger event for webform nodes and submissions.
   if ($entity->bundle() == "webform") {
@@ -170,7 +170,7 @@ function grants_audit_log_entity_delete(EntityInterface $entity) {
 /**
  * Implements hook_entity_update().
  */
-function form_tool_audit_log_entity_update(EntityInterface $entity) {
+function grants_audit_log__entity_update(EntityInterface $entity) {
 
   // Trigger event only for users, webform nodes and webform submissions.
   if ($entity->getEntityTypeId() == "user" || ($entity->getEntityTypeId() == "node" && $entity->bundle() == "webform")) {
