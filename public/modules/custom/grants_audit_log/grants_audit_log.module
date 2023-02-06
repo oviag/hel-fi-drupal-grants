@@ -12,6 +12,25 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\helfi_audit_log\Event\AuditLogEvent;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_openid_connect_post_authorize().
+ */
+function grants_audit_log_openid_connect_post_authorize(UserInterface $account, array $context) {
+  $message = [
+    "operation" => "TUNNISTAMO_LOGIN",
+    "status" => "SUCCESS",
+    "target" => [
+      "id" => $context["userinfo"]["sub"],
+      "type" => "USER",
+      "name" => $context["userinfo"]["name"],
+    ],
+  ];
+
+  AuditLogEvent::create($message);
+}
+
 
 /**
  * Implements hook_user_login().
