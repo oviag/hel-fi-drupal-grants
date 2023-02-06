@@ -9,78 +9,79 @@
           <p>{{ "Marked fields have been retreived from PRH and cannot be edited."|t }}</p>
         </div>
         <hr />
-        <div class="grants-profile--wrapper">
+        <dl class="grants-profile--wrapper">
           <div class="grants-profile--wrapper-item">
-            <strong>{{ "Community name"|t }}</strong>
-            <div class="grants-profile--item grants-profile-company-name">{{ profile.companyName }}</div>
+            <dt><strong>{{ "Community name"|t }}</strong></dt>
+            <dd class="grants-profile--item grants-profile-company-name">{{ profile.companyName }}</dd>
           </div>
           <div class="grants-profile--wrapper-item">
-            <strong>{{ "Business ID"|t }}</strong>
-            <div class="grants-profile-item">{{ profile.businessId }}</div>
-          </div>
-        </div>
-        <div class="grants-profile--wrapper">
-          <div class="grants-profile--wrapper-item">
-            <strong>{{ "Community location"|t }}</strong>
-            <div class="grants-profile-item">{{ profile.companyHome }}</div>
+            <dt><strong>{{ "Business ID"|t }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.businessId }}</dd>
           </div>
           <div class="grants-profile--wrapper-item">
-            <strong>{{ "Registration date"|t }}</strong>
-            <div class="grants-profile-item">{{ profile.registrationDate|date('d.m.Y') }}</div>
+            <dt><strong>{{ "Community location"|t }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.companyHome }}</dd>
           </div>
-        </div>
+          <div class="grants-profile--wrapper-item">
+            <dt><strong>{{ "Registration date"|t }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.registrationDate|date('d.m.Y') }}</dd>
+          </div>
+        </dl>
       </div>
     </div>
+    <h3 class="info-grants">{{ "Information in Grants"|t }}</h3>
     <div class="grants-profile--extrainfo">
-        <dl class="webform-section-grid-wrapper">
-          <dt class="webform-section-title" id="perustamisvuosi">{{ "Founding year"|t }}</dt>
-          <dd class="webform-section-wrapper">
-            {{ profile.foundingYear }}
-          </dd>
-          <dt class="webform-section-title" id="perustamisvuosi">{{ "Short name"|t }}</dt>
-          <dd class="webform-section-wrapper">
-            {{ profile.companyNameShort }}
-          </dd>
-          <dt class="webform-section-title" id="verkkosivujen-osoite">{{ "Home page address"|t }}</dt>
-          <dd class="webform-section-wrapper">
-            {{ profile.companyHomePage }}
-          </dd>
-          <dt class="webform-section-title" id="toiminna-tarkoitus">{{ "Community purpose"|t }}</dt>
-          <dd class="webform-section-wrapper">
-            {{ profile.businessPurpose }}
-          </dd>
-          <dt class="webform-section-title" id="addresses">{{ 'Addresses'|t }}</dt>
-          <ul class="grants-profile--officials">
-            {% for address in profile.addresses %}
-              <li class="grants-profile--officials-item">
-                <dd>{{ address.street }}, {{ address.postCode }} {{ address.city }}</dd>
-              </li>
-            {% endfor %}
-          </ul>
-          <dt class="webform-section-title" id="officials">{{ 'Officials'|t }}</dt>
-          <ul class="grants-profile--officials">
-            {% for official in profile.officials %}
-              <li class="grants-profile--officials-item">
-                <dd class="grants-profile--officials-item-wrapper">
-                  <h4 class="grants-profile--officials-item--position">{{ official.officialRole }}</h4>
-                  <div class="grants-profile--officials-item--name">{{ official.name }}</div>
-                  <div class="grants-profile--officials-item--phone">{{ official.phone }}</div>
-                  <div class="grants-profile--officials-item--email">{{ official.email }}</div>
-                </dd>
-              </li>
-            {% endfor %}
-          </ul>
-          <dt class="webform-section-title" id="officials-3">{{ 'Bank accounts'|t }}</dt>
-          <ul class="grants-profile--officials">
-            {% for bankaccount in profile.bankAccounts %}
-              <li class="grants-profile--officials-item">
-                <dd class="grants-profile--officials-item--name">{{ bankaccount.bankAccount }}</dd>
-              </li>
-            {% endfor %}
-          </ul>
-        </dl>
+      <dl class="webform-section-grid-wrapper">
+        <dt class="webform-section-title" id="perustamisvuosi">{{ "Founding year"|t }}</dt>
+        <dd class="webform-section-wrapper">
+          {{ profile.foundingYear }}
+        </dd>
+        <dt class="webform-section-title" id="perustamisvuosi">{{ "Short name"|t }}</dt>
+        <dd class="webform-section-wrapper">
+          {{ profile.companyNameShort }}
+        </dd>
+        <dt class="webform-section-title" id="verkkosivujen-osoite">{{ "Home page address"|t }}</dt>
+        <dd class="webform-section-wrapper">
+          {{ profile.companyHomePage }}
+        </dd>
+        <dt class="webform-section-title" id="toiminna-tarkoitus">{{ "Community purpose"|t }}</dt>
+        <dd class="webform-section-wrapper">
+          {{ profile.businessPurpose }}
+        </dd>
+        <dt class="webform-section-title" id="addresses">{{ 'Addresses'|t }}</dt>
+        <div class="webform-section-wrapper grants-profile--officials">
+          {% for address in profile.addresses %}
+            <dd class="grants-profile--officials-item">
+              <span>
+                {{ address.street }},<br>
+                {{ address.postCode }} {{ address.city }}
+              </span>
+            </dd>
+          {% endfor %}
+        </div>
+        <dt class="webform-section-title" id="officials">{{ 'Officials'|t }}</dt>
+        <div class="webform-section-wrapper grants-profile--officials">
+          {% for official in profile.officials %}
+            <dd class="grants-profile--officials-item">
+              <span>
+                <strong>{{ official.officialRole }}</strong><br>
+                {{ official.name }}<br>
+                {{ official.phone }}<br>
+                {{ official.email }}
+              </span>
+            </dd>
+          {% endfor %}
+        </div>
+        <dt class="webform-section-title" id="officials-3">{{ 'Bank accounts'|t }}</dt>
+        <div class="webform-section-wrapper grants-profile--officials">
+          {% for bankaccount in profile.bankAccounts %}
+            <dd class="grants-profile--officials-item">
+              <span>{{ bankaccount.bankAccount }}</span>
+            </dd>
+          {% endfor %}
+        </div>
+      </dl>
     </div>
     {{ editProfileLink }}
-
   </div>
 </div>

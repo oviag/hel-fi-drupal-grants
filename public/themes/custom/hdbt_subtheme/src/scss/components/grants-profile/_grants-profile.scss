@@ -8,6 +8,10 @@ $breakpoint-xl: 1248px;
   hr {
     margin: var(--spacing-layout-s) 0;
   }
+  h3.info-grants {
+    border-bottom: 2px solid var(--color-silver);
+    padding-bottom: var(--spacing-l);
+  }
   &--title {
     display: flex;
     flex-flow: row nowrap;
@@ -63,7 +67,7 @@ $breakpoint-xl: 1248px;
     }
   }
   &--extrainfo {
-    padding-top: var(--spacing-4-xl);
+    padding-top: var(--spacing-l);
 
   }
     &--infotext {
@@ -71,21 +75,12 @@ $breakpoint-xl: 1248px;
     margin-bottom: var(--spacing-xs);
   }
   &--wrapper {
-    display: flex;
-    width: 100%;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    h5 {
-      margin: 0;
-      font-size: var(--fontsize-body-m);
-      font-weight: bold;
-    }
+    display: grid;
+    grid-gap: var(--spacing-layout-xs);
 
-    &-item {
-      min-width: 160px;
-      margin: 0 var(--spacing-layout-m) var(--spacing-layout-xs) 0
+    @include breakpoint($breakpoint-s) {
+      grid-template-columns: 250px 250px;
     }
-
   }
 
   dd {
