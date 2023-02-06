@@ -6,7 +6,8 @@ $breakpoint-xl: 1248px;
 
 .grants-profile {
   hr {
-    margin: var(--spacing-layout-s) 0;
+    margin: var(--spacing-layout-xs) 0;
+    border: 1px solid var(--color-silver);
   }
   h3.info-grants {
     border-bottom: 2px solid var(--color-silver);
@@ -72,7 +73,7 @@ $breakpoint-xl: 1248px;
   }
     &--infotext {
     font-size: var(--fontsize-body-l);
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-s);
   }
   &--wrapper {
     display: grid;

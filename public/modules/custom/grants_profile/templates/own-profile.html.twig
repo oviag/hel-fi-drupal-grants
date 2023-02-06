@@ -52,10 +52,8 @@
         <div class="webform-section-wrapper grants-profile--officials">
           {% for address in profile.addresses %}
             <dd class="grants-profile--officials-item">
-              <span>
-                {{ address.street }},<br>
-                {{ address.postCode }} {{ address.city }}
-              </span>
+              {{ address.street }},<br>
+              {{ address.postCode }} {{ address.city }}
             </dd>
           {% endfor %}
         </div>
@@ -76,7 +74,7 @@
         <div class="webform-section-wrapper grants-profile--officials">
           {% for bankaccount in profile.bankAccounts %}
             <dd class="grants-profile--officials-item">
-              <span>{{ bankaccount.bankAccount }}</span>
+              {{ bankaccount.bankAccount }}
             </dd>
           {% endfor %}
         </div>
