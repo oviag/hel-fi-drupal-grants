@@ -11,7 +11,6 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\helfi_audit_log\Event\AuditLogEvent;
 use Drupal\user\UserInterface;
 
 /**
@@ -28,7 +27,7 @@ function grants_audit_log_openid_connect_post_authorize(UserInterface $account, 
     ],
   ];
 
-  AuditLogEvent::create($message);
+  \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
 }
 
 
@@ -45,10 +44,7 @@ function grants_audit_log_user_login(AccountInterface $account) {
       "name" => "User Login",
     ],
   ];
-  $event = new AuditLogEvent($message);
-  $event_dispatcher = \Drupal::service('event_dispatcher');
-  $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
-
+  \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
 }
 
 /**
@@ -64,9 +60,7 @@ function grants_audit_log_user_logout(AccountInterface $account) {
       "name" => "User Logout",
     ],
   ];
-  $event = new AuditLogEvent($message);
-  $event_dispatcher = \Drupal::service('event_dispatcher');
-  $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+  \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
 }
 
 /**
@@ -86,9 +80,7 @@ function grants_audit_log_entity_view(array &$build, EntityInterface $entity) {
         "name" => "Form Viewed",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
   elseif ($entity->getEntityTypeId() == "webform_submission") {
 
@@ -101,9 +93,7 @@ function grants_audit_log_entity_view(array &$build, EntityInterface $entity) {
         "name" => "Form Submission Viewed",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
 
 }
@@ -125,9 +115,7 @@ function grants_audit_log_entity_insert(EntityInterface $entity) {
         "name" => "Entity Created",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
   elseif ($entity->getEntityTypeId() == "webform_submission") {
 
@@ -140,9 +128,7 @@ function grants_audit_log_entity_insert(EntityInterface $entity) {
         "name" => "Entity Created",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
 
 }
@@ -164,9 +150,7 @@ function grants_audit_log_entity_delete(EntityInterface $entity) {
         "name" => "Entity Deleted",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
   elseif ($entity->getEntityTypeId() == "webform_submission") {
 
@@ -179,9 +163,7 @@ function grants_audit_log_entity_delete(EntityInterface $entity) {
         "name" => "Entity Deleted",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
 
 }
@@ -203,9 +185,7 @@ function grants_audit_log__entity_update(EntityInterface $entity) {
         "name" => "Entity Updated",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
   elseif ($entity->getEntityTypeId() == "webform_submission") {
 
@@ -218,9 +198,7 @@ function grants_audit_log__entity_update(EntityInterface $entity) {
         "name" => "Entity Updated",
       ],
     ];
-    $event = new AuditLogEvent($message);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
-    $event_dispatcher->dispatch($event, AuditLogEvent::LOG);
+    \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
   }
 
 }
