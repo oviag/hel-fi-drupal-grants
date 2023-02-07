@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1bdd3d296419da8fb24ebecba0157944",
+    "content-hash": "bae2f70acee0c3be7153d89970c12cbe",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5622,16 +5622,16 @@
         },
         {
             "name": "drupal/helfi_audit_log",
-            "version": "dev-feature/AU-517-audit-log-toteutus",
+            "version": "dev-feature/AU-517-add-dispatch-function",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log.git",
-                "reference": "efb1baae2310e157d36d1d97c862533560f50929"
+                "reference": "1bda143a1255a3431c5ea9402d4895f12c2eabdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-audit-log/zipball/efb1baae2310e157d36d1d97c862533560f50929",
-                "reference": "efb1baae2310e157d36d1d97c862533560f50929",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-audit-log/zipball/1bda143a1255a3431c5ea9402d4895f12c2eabdf",
+                "reference": "1bda143a1255a3431c5ea9402d4895f12c2eabdf",
                 "shasum": ""
             },
             "require-dev": {
@@ -5644,10 +5644,10 @@
             ],
             "description": "Helfi - Audit log",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/tree/feature/AU-517-audit-log-toteutus",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/tree/feature/AU-517-add-dispatch-function",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/issues"
             },
-            "time": "2023-02-06T07:04:50+00:00"
+            "time": "2023-02-06T11:14:55+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
