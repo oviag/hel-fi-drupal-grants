@@ -59,7 +59,7 @@ $breakpoint-xl: 1248px;
     background-color: var(--color-silver-light);
     padding-top: var(--spacing-l);
     padding-bottom: var(--spacing-2-xs);
-    border-left: 8px solid var(--color-copper);
+    border-bottom: 8px solid var(--color-engel-dark);
 
     h3 {
       font-size: var(--fontsize-heading-l);
@@ -76,11 +76,23 @@ $breakpoint-xl: 1248px;
     margin-bottom: var(--spacing-s);
   }
   &--wrapper {
-    display: grid;
-    grid-gap: var(--spacing-layout-xs);
+    display: flex;
+    flex-wrap: wrap;
 
-    @include breakpoint($breakpoint-s) {
-      grid-template-columns: 250px 250px;
+    &-item {
+      width: 100%;
+      margin-bottom: var(--spacing-layout-2-xs);
+
+      @include breakpoint($breakpoint-s) {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
+
+    &-item:first-child {
+      width: 100%;
+      flex: auto;
+      margin-bottom: var(--spacing-layout-2-xs);
     }
   }
 
