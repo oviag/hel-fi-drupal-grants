@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "742383ff1da8024dd280ce1d5a5ea378",
+    "content-hash": "09266e07a052fc665f6221cf34f1e890",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5622,16 +5622,16 @@
         },
         {
             "name": "drupal/helfi_audit_log",
-            "version": "dev-develop",
+            "version": "0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log.git",
-                "reference": "0dbf3999df176be5e2948169daac111ef2a4b089"
+                "reference": "f76d8cad31b59254cbcff890699ba98aca425996"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-audit-log/zipball/0dbf3999df176be5e2948169daac111ef2a4b089",
-                "reference": "0dbf3999df176be5e2948169daac111ef2a4b089",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-audit-log/zipball/f76d8cad31b59254cbcff890699ba98aca425996",
+                "reference": "f76d8cad31b59254cbcff890699ba98aca425996",
                 "shasum": ""
             },
             "require-dev": {
@@ -5645,10 +5645,10 @@
             ],
             "description": "Helfi - Audit log",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/tree/develop",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/tree/0.9",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-audit-log/issues"
             },
-            "time": "2023-01-31T07:55:36+00:00"
+            "time": "2023-02-09T08:48:43+00:00"
         },
         {
             "name": "drupal/helfi_azure_fs",
@@ -20454,7 +20454,6 @@
         "drupal/block_field": 5,
         "drupal/content_access": 15,
         "drupal/helfi_atv": 20,
-        "drupal/helfi_audit_log": 20,
         "drupal/helfi_drupal_tools": 20,
         "drupal/helfi_formtool_embed": 20,
         "drupal/helfi_helsinki_profiili": 20,
