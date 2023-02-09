@@ -30,7 +30,6 @@ function grants_audit_log_openid_connect_post_authorize(UserInterface $account, 
   \Drupal::service('helfi_audit_log.audit_log')->dispatchEvent($message);
 }
 
-
 /**
  * Implements hook_user_login().
  */
