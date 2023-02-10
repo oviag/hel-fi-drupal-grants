@@ -1,13 +1,22 @@
 # Your Drupal 9 project
 
-Grants application.
+This project offers citizens a way to apply for different city grants for their associations or themselves.
 
 ## Environments
 
-Env | Branch | Drush alias | URL
---- | ------ | ----------- | ---
-development | * | - | http://yoursite.docker.sh/
-production | main | @main | TBD
+Env | Branch | URL
+--- |--------   | --
+development | *   |
+production | main   | TBD
+
+Column | Column    | Column
+------ |-----------| -----
+local   | *         | [https://hel-fi-drupal-grant-applications.docker.so/](https://hel-fi-drupal-grant-applications.docker.so/)
+development   | *         | [https://avustukset.dev.hel.ninja](https://avustukset.dev.hel.ninja)
+testing   | develop   | [https://avustukset.test.hel.ninja](https://avustukset.test.hel.ninja)
+staging   | release/* | [https://avustukset.stage.hel.ninja](https://avustukset.stage.hel.ninja)
+production   | main      | [https://avustukset.hel.fi](https://avustukset.dev.hel.ninja)
+
 
 ## Requirements
 
@@ -40,3 +49,25 @@ This will log you inside the app container:
 ```
 $ make shell
 ```
+
+## Enable debugging
+To enable xdebug, run `export XDEBUG_ENABLE=true` before (re)starting your project. More info in [docker-composer.yml](./docker-compose.yml)
+
+
+## Links & information
+Works is done & issues tracked [on our Jira board](https://helsinkisolutionoffice.atlassian.net/browse/AU).
+
+
+## Contributing
+Contributions are accepted as pull requests.  Please observe our coding
+practices at <https://github.com/City-of-Helsinki/bestpractice/> .
+Please make your pull requests short, elegant and only handling one
+issue at a time!
+
+If you make a pull request, you may also want to contact
+janne.suominen@siili.com to tell about your contribution.
+
+Our contribution handling guidelines are at
+<https://github.com/City-of-Helsinki/bestpractice/blob/master/accepting-contributions.md>
+
+##
