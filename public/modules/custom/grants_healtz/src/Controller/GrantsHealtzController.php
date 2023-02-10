@@ -24,5 +24,4 @@ class GrantsHealtzController extends ControllerBase {
     return new JsonResponse(['data' => [], 'method' => 'GET', 'status' => 200]);
   }
 
-
 }
