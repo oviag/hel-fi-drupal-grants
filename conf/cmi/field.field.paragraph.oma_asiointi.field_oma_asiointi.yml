@@ -1,0 +1,31 @@
+uuid: 79c4cd85-e136-41de-ba63-0d6c7a21b920
+langcode: fi
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_oma_asiointi
+    - paragraphs.paragraphs_type.oma_asiointi
+  module:
+    - block_field
+id: paragraph.oma_asiointi.field_oma_asiointi
+field_name: field_oma_asiointi
+entity_type: paragraph
+bundle: oma_asiointi
+label: 'Oma asiointi'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    plugin_id: grants_oma_asiointi_block
+    settings:
+      provider: grants_oma_asiointi
+      label: 'Grants Oma Asiointi'
+      label_display: ''
+default_value_callback: ''
+settings:
+  selection: blocks
+  selection_settings:
+    plugin_ids:
+      grants_oma_asiointi_block: grants_oma_asiointi_block
+field_type: block_field

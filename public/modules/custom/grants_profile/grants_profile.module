@@ -11,7 +11,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\grants_profile\Form\ModalApplicationOfficialForm;
+use Drupal\grants_profile\Form\GrantsProfileForm;
 
 /**
  * Implements hook_theme().
@@ -168,7 +168,8 @@ function grants_profile_user_logout(AccountInterface $account) {
  */
 function grants_profile_preprocess_own_profile(&$variables) {
   foreach ($variables['profile']['officials'] as $key => $official) {
-    $officialRole = ModalApplicationOfficialForm::getOfficialRoles();
+
+    $officialRole = GrantsProfileForm::getOfficialRoles();
     $temprole = '' . $officialRole[(int) $official['role']];
     $variables['profile']['officials'][$key]['officialRole'] = $temprole;
   }
@@ -185,7 +186,10 @@ function grants_profile_preprocess_own_profile_form(&$variables) {
 
   $grantsProfile = $grantsProfileService->getGrantsProfileContent($selectedCompany['identifier']);
 
-  $variables['profile'] = $grantsProfile;
+  // Get profile data from parent form.
+  $variables['profile'] = $variables["form"]["#profilecontent"];
+  // Unset just in case.
+  unset($variables["form"]["#profilecontent"]);
 
   // We need to replace ids for address / bank account / officials to
   // make delete links work.
@@ -219,7 +223,6 @@ function grants_profile_preprocess_own_profile_form(&$variables) {
       }
     }
   }
-
 
   foreach ($variables["form"]["addressWrapper"]["addresses"] as $key => $value) {
     if (!str_starts_with($key, '#')) {

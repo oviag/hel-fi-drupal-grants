@@ -25,6 +25,9 @@ $databases['default']['default'] = [
   'driver' => 'mysql',
   'charset' => 'utf8mb4',
   'collation' => 'utf8mb4_swedish_ci',
+  'init_commands' => [
+    'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+  ],
 ];
 
 $settings['hash_salt'] = getenv('DRUPAL_HASH_SALT') ?: '000';
@@ -50,12 +53,15 @@ $config['siteimprove.settings']['api_key'] = getenv('SITEIMPROVE_API_KEY');
 $settings['matomo_site_id'] = getenv('MATOMO_SITE_ID');
 $settings['siteimprove_id'] = getenv('SITEIMPROVE_ID');
 
+$routes = [];
 // Drupal route(s).
-$routes = (getenv('DRUPAL_ROUTES')) ? explode(',', getenv('DRUPAL_ROUTES')) : [];
+if ($drupal_routes = getenv('DRUPAL_ROUTES')) {
+  $routes = array_map(fn (string $route) => trim($route), explode(',', $drupal_routes));
+}
 $routes[] = 'http://127.0.0.1';
 
 foreach ($routes as $route) {
-  $host = parse_url($route)['host'];
+  $host = parse_url($route, PHP_URL_HOST);
   $trusted_host = str_replace('.', '\.', $host);
   $settings['trusted_host_patterns'][] = '^' . $trusted_host . '$';
 }

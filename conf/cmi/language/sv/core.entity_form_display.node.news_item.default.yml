@@ -7,5 +7,5 @@ third_party_settings:
 content:
   field_content:
     settings:
-      title: Paragraf
-      title_plural: Paragrafer
+      title: Paragraph
+      title_plural: Paragraphs

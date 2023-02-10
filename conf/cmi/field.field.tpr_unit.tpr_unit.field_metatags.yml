@@ -13,7 +13,7 @@ id: tpr_unit.tpr_unit.field_metatags
 field_name: field_metatags
 entity_type: tpr_unit
 bundle: tpr_unit
-label: Metatunnisteet
+label: Metatags
 description: ''
 required: false
 translatable: true

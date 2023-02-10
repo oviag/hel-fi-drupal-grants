@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: 1Bify-3s5efjndtvBiqv5RO9j0QC-IvMlqOB_fg4pXo
 id: helfi_chart
-label: Kaavio
+label: Chart
 description: 'Kaaviolla voidaan esittää interaktiivisia kaavioita. Tukee Microsoft Power BI:tä.'
 source: helfi_chart
 queue_thumbnail_downloads: false

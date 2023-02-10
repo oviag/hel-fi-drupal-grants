@@ -9,7 +9,6 @@ use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Renderer;
-use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -54,8 +53,7 @@ class BankAccountDeleteConfirmForm extends FormBase {
   public static function create(ContainerInterface $container): BankAccountDeleteConfirmForm|static {
 
     // Create a new form object and inject its services.
-    $form = new static(
-    );
+    $form = new static();
     $form->setRequestStack($container->get('request_stack'));
     $form->setStringTranslation($container->get('string_translation'));
     $form->setMessenger($container->get('messenger'));
@@ -101,7 +99,10 @@ class BankAccountDeleteConfirmForm extends FormBase {
       $form['use_ajax_container']['use_ajax'] = [
         '#type' => 'link',
         '#title' => $this->t('See this form as a modal.'),
-        '#url' => Url::fromRoute('grants_profile.bank_account.remove_confirm_modal', ['bank_account_id' => $bank_account_id, 'nojs' => 'ajax']),
+        '#url' => Url::fromRoute('grants_profile.bank_account.remove_confirm_modal', [
+          'bank_account_id' => $bank_account_id,
+          'nojs' => 'ajax',
+        ]),
         '#attributes' => [
           'class' => ['use-ajax'],
           'data-dialog-type' => 'modal',
@@ -190,7 +191,6 @@ class BankAccountDeleteConfirmForm extends FormBase {
     else {
       // No errors, we load things from form state.
       $bank_account_id = $form_state->getValue('bankAccountId');
-
 
       // Create url redirect for this new submission.
       $url = Url::fromRoute('grants_profile.bank_account.remove',

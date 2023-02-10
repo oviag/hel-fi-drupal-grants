@@ -5,6 +5,7 @@ dependencies:
   module:
     - eu_cookie_compliance
     - helfi_api_base
+    - helfi_tpr
     - media
     - system
 _core:
@@ -24,3 +25,4 @@ permissions:
   - 'view media'
   - 'view remote entities'
   - 'view remote entities'
+  - 'view tpr_unit'

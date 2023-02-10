@@ -3,7 +3,7 @@
 namespace Drupal\grants_handler\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\grants_profile\Form\ModalApplicationOfficialForm;
+use Drupal\grants_profile\Form\GrantsProfileForm;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
@@ -34,6 +34,7 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
    * {@inheritdoc}
    */
   public static function getCompositeElements(array $element): array {
+
     $elements = [];
 
     $elements['community_officials_select'] = [
@@ -88,7 +89,7 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
 
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
-    $officialRole = ModalApplicationOfficialForm::getOfficialRoles();
+    $officialRole = GrantsProfileForm::getOfficialRoles();
     $selectedCompany = $grantsProfileService->getSelectedCompany();
     $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 

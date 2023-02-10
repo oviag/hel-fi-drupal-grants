@@ -3,6 +3,7 @@ _core:
 langcode: fi
 settings:
   default_status: open
+  default_page: true
   default_page_base_path: /form
   default_ajax: false
   default_ajax_progress_type: throbber
@@ -33,9 +34,9 @@ settings:
   default_wizard_confirmation_label: Valmis
   default_wizard_toggle_show_label: 'Näytä kaikki'
   default_wizard_toggle_hide_label: 'Piilota kaikki'
-  default_preview_next_button_label: Esikatselu
+  default_preview_next_button_label: Preview
   default_preview_prev_button_label: '< Previous'
-  default_preview_label: Esikatselu
+  default_preview_label: Preview
   default_preview_title: '[webform:title]: Preview'
   default_preview_message: 'Please review your submission. Your submission is not complete until you press the "Submit" button!'
   default_draft_button_label: 'Tallenna keskeneräinen'

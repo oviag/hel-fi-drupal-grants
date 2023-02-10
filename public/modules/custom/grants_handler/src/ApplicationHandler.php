@@ -1073,6 +1073,7 @@ class ApplicationHandler {
     foreach ($data['messages'] as $message) {
       $msgUnread = NULL;
       $ts = strtotime($message["sendDateTime"]);
+
       if (in_array($message['messageId'], $eventIds)) {
         $message['messageStatus'] = 'READ';
         $msgUnread = FALSE;
@@ -1470,6 +1471,8 @@ class ApplicationHandler {
     unset($data["sender_email"]);
     unset($data["metadata"]);
     unset($data["attachments"]);
+    unset($data["form_timestamp_submitted"]);
+    unset($data["form_timestamp_created"]);
 
     $data['events'] = [];
     $data['messages'] = [];

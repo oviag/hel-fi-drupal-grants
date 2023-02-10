@@ -1,5 +1,5 @@
 uuid: 596b256f-aa3c-40eb-8141-ec912bfbc4e0
-langcode: en
+langcode: fi
 status: true
 dependencies:
   config:
@@ -10,7 +10,7 @@ dependencies:
     - text
 third_party_settings:
   allowed_formats:
-    minimal: minimal
+    sidebar: sidebar
     full_html: '0'
     plain_text: '0'
 _core:

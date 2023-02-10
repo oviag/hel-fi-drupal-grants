@@ -118,6 +118,31 @@
       max-width: 100%;
     }
   }
+  &__status {
+    &__wrapper {
+      background: var(--color-black-5);
+    }
+    &__container {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      gap: var(--spacing-layout-m);
+      padding-top: var(--spacing-m);
+      padding-bottom: var(--spacing-m);
+    }
+    &__label {
+      font-weight: bold;
+    }
+    &__value {
+      min-height: var(--spacing-xl);
+      display: flex;
+      justify-items: center;
+      flex-flow: row;
+      > div {
+        margin: auto;
+      }
+    }
+  }
   &__search-row {
     display: flex;
     flex-flow: row nowrap;

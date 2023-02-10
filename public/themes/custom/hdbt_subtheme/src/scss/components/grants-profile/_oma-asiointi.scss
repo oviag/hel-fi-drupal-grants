@@ -4,6 +4,80 @@
     background: var(--color-white);
   }
 }
+.oma-asiointi-block {
+  background-color: var(--color-silver-light);
+  padding-top: var(--spacing-l);
+  padding-bottom: var(--spacing-l);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-s);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-silver-dark);
+    padding-bottom: var(--spacing-xs);
+
+    .user,
+    .link {
+      font-weight: 700;
+    }
+
+    .link .hel-icon {
+      vertical-align: text-top;
+    }
+  }
+
+  .new-message {
+    background-color: var(--color-alert);
+    font-weight: 500;
+    display: inline-block;
+    padding: var(--spacing-2-xs);
+    text-transform: uppercase;
+  }
+
+  .new-messages-length {
+    background-color: var(--color-black-20);
+    display: inline-block;
+    font-size: var(--fontsize-heading-s);
+    position: relative;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    margin-left: var(--spacing-m);
+
+    &.has-new-messages {
+      background-color: var(--color-alert);
+    }
+  }
+
+  .content {
+    @media (min-width: $breakpoint-m) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: var(--spacing-s);
+    }
+  }
+
+  .submission,
+  .message {
+    background-color: var(--color-white);
+    padding: var(--spacing-xs);
+    margin-top: var(--spacing-s);
+    margin-bottom: var(--spacing-s);
+
+    .submission-title,
+    .message-title {
+      font-size: var(--fontsize-heading-s);
+      margin-bottom: var(--spacing-2-xs);
+      font-weight: 500;
+    }
+  }
+}
 .oma-asiointi {
   margin-top: var(--spacing-l);
   ul {

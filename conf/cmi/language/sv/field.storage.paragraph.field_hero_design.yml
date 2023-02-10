@@ -1,0 +1,12 @@
+settings:
+  allowed_values:
+    -
+      label: 'Without image, align left'
+    -
+      label: 'Image on the right'
+    -
+      label: 'Image on the left'
+    -
+      label: 'Image on the bottom'
+    -
+      label: Diagonal

@@ -1260,12 +1260,12 @@ display:
       path: news
       menu:
         type: normal
-        title: Uutiset
+        title: Currents
         description: ''
         weight: -49
         expanded: false
         menu_name: main
-        parent: 'menu_link_content:3d721bbd-3076-46ab-a6bc-ec4c7895ec29'
+        parent: 'menu_link_content:f8c96534-5821-4714-80ed-b80b54eac8c8'
         context: '0'
     cache_metadata:
       max-age: -1
