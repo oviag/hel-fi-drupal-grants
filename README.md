@@ -4,12 +4,7 @@ This project offers citizens a way to apply for different city grants for their 
 
 ## Environments
 
-Env | Branch | URL
---- |--------   | --
-development | *   |
-production | main   | TBD
-
-Column | Column    | Column
+Env | Branch    | Url
 ------ |-----------| -----
 local   | *         | [https://hel-fi-drupal-grant-applications.docker.so/](https://hel-fi-drupal-grant-applications.docker.so/)
 development   | *         | [https://avustukset.dev.hel.ninja](https://avustukset.dev.hel.ninja)
