@@ -22,7 +22,7 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['webformnavigation'];
+  public static $modules = ['grants_handler'];
 
   /**
    * A user with permission to administer site configuration.
