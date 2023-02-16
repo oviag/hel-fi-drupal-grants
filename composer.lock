@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd994d939224eaa1c0b26ee3a000f012",
+    "content-hash": "4afe96372d47c8816962180ab2fb24f6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5774,16 +5774,16 @@
         },
         {
             "name": "drupal/helfi_helsinki_profiili",
-            "version": "0.9.4",
+            "version": "0.9.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili.git",
-                "reference": "aa6e2f79652350e8fe9e0491056e95a88d8de333"
+                "reference": "650ebff8e6bd633a1e63cac1fc3e939f6258bd6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/zipball/aa6e2f79652350e8fe9e0491056e95a88d8de333",
-                "reference": "aa6e2f79652350e8fe9e0491056e95a88d8de333",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/zipball/650ebff8e6bd633a1e63cac1fc3e939f6258bd6b",
+                "reference": "650ebff8e6bd633a1e63cac1fc3e939f6258bd6b",
                 "shasum": ""
             },
             "require": {
@@ -5808,10 +5808,10 @@
                 "GPL-2.0-or-later"
             ],
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/tree/0.9.4",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/tree/0.9.5",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-helsinki-profiili/issues"
             },
-            "time": "2023-02-16T05:34:39+00:00"
+            "time": "2023-02-16T06:06:58+00:00"
         },
         {
             "name": "drupal/helfi_media_formtool",
