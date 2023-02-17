@@ -560,7 +560,6 @@ class GrantsHandler extends WebformHandlerBase {
         $form["actions"]["submit"]['#disabled'] = TRUE;
       }
 
-
     }
   }
 
