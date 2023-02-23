@@ -16,14 +16,13 @@ Browse Public Drupal Website
     Search Grants
     Go To First Application
     Go To FAQ
-    Open Accordion on FAQ
     [Teardown]    Close Browser
 
 *** Keywords ***
 
 Go To Application Search
     Click          \#block-mainnavigation a[data-drupal-link-system-path="etsi-avustusta"]
-    Get Title           ==    Application search | ${SITE_NAME}
+    Get Title           ==    Etsi avustusta | ${SITE_NAME}
 
 Search Grants
     Scroll To Element    \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]
@@ -38,14 +37,8 @@ Go To FAQ
     Click           \#block-mainnavigation a[data-drupal-link-system-path="tietoa-avustuksista/ukk"]
     Get Title       ==      UKK | ${SITE_NAME}
 
-Open Accordion on FAQ
-    Scroll To Element     \#handorgel1-fold1-header
-    Get Element States    \#handorgel1-fold1-content      contains      hidden
-    Click          \#handorgel1-fold1-header
-    Get Element States    \#handorgel1-fold1-content      contains      visible
-
 Go To First Application
-    Click      .view-application-search .views-row:nth-child(1) .views-field-view-node a
+    Click      .view-application-search .views-row:nth-child(1) a.application_search--link
     Get Title           ==    ${APPLICATION_TITLE_ALT} | ${SITE_NAME_ALT}
     Get Text    h1      ==    ${APPLICATION_TITLE_ALT}
     # Application start button should not exist since we are not logged in

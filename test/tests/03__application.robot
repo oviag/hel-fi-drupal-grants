@@ -31,10 +31,10 @@ Fill Application Form
 
 Go To Application Search
     Click          \#block-mainnavigation a[data-drupal-link-system-path="etsi-avustusta"]
-    Get Title           ==    Application search | ${SITE_NAME}
+    Get Title           ==    Etsi avustusta | ${SITE_NAME}
 
 Start New Application
-    Click      .view-application-search .views-row:nth-child(1) .views-field-view-node a
+    Click      .view-application-search .views-row:nth-child(1) a.application_search--link
     Click      \#block-servicepageauthblock .hds-button
     Get Title           ==    ${APPLICATION_TITLE} | ${SITE_NAME}
     Wait For Elements State       li[data-webform-page="1_hakijan_tiedot"].is-active  visible
