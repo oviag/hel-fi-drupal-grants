@@ -210,4 +210,11 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
     return $build;
   }
 
+  /**
+   * Disable cache.
+   */
+  public function getCacheMaxAge() {
+    return 0;
+  }
+
 }
