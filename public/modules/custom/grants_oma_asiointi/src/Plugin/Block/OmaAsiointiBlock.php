@@ -172,7 +172,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       foreach ($applicationDocuments as $document) {
         if (
           str_contains($document->getTransactionId(), $appEnv) &&
-          array_key_exists($document->getType(), ApplicationHandler::$applicationTypes)
+          array_key_exists($document->getType(), ApplicationHandler::getApplicationTypes())
         ) {
 
           try {
@@ -205,7 +205,7 @@ class OmaAsiointiBlock extends BlockBase implements ContainerFactoryPluginInterf
       '#messages' => array_slice($messages, 0, 2),
       '#submissions' => array_slice($submissions, 0, 2),
       '#userProfileData' => $helsinkiProfileData['myProfile'],
-      '#applicationTypes' => ApplicationHandler::$applicationTypes,
+      '#applicationTypes' => ApplicationHandler::getApplicationTypes(),
       '#lang' => $lang->getId(),
       '#link' => $link,
       '#allMessagesLink' => $allMessagesLink,
