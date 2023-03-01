@@ -102,7 +102,8 @@ class AdminApplicationsForm extends FormBase {
           'business_id' => $businessId,
         ]);
         $form_state->setStorage($businessIdData);
-      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|GuzzleException $e) {
+      }
+      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
       }
 
       $grantsProfile = array_filter($businessIdData, function (AtvDocument $item) {
@@ -249,7 +250,8 @@ class AdminApplicationsForm extends FormBase {
               '@tr' => $transactionId,
             ]));
         }
-      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|TokenExpiredException|GuzzleException $e) {
+      }
+      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | TokenExpiredException | GuzzleException $e) {
         $response = $e->getResponse();
         $body = $response->getBody();
         $errorMessage = Json::decode($body->getContents());
@@ -285,7 +287,8 @@ class AdminApplicationsForm extends FormBase {
               '@tr' => $transactionId,
             ]));
         }
-      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|TokenExpiredException|GuzzleException $e) {
+      }
+      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | TokenExpiredException | GuzzleException $e) {
         $response = $e->getResponse();
         $body = $response->getBody();
         $errorMessage = Json::decode($body->getContents());
