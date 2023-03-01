@@ -9,6 +9,7 @@
  * @see https://www.drupal.org/node/2217931
  */
 
+use Drupal\user\UserInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -89,5 +90,22 @@ function grants_oma_asiointi_views_pre_build(ViewExecutable $view) {
         $view->setExposedInput(['ukk' => $filterValueToSet]);
       }
     }
+  }
+}
+
+/**
+ * Implements hook_user_predelete().
+ */
+function grants_oma_asiointi_user_predelete(UserInterface $account) {
+  try {
+    $authdata = \Drupal::service('externalauth.authmap')->getAuthData($account->id(), 'openid_connect.tunnistamo');
+    if (isset($authdata['authname'])) {
+      $account->setUsername($authdata['authname']);
+      $account->setEmail(NULL);
+      $account->save();
+    }
+  }
+  catch (\Exception $e) {
+
   }
 }
