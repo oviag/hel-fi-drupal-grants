@@ -102,8 +102,7 @@ class AdminApplicationsForm extends FormBase {
           'business_id' => $businessId,
         ]);
         $form_state->setStorage($businessIdData);
-      }
-      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
+      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|GuzzleException $e) {
       }
 
       $grantsProfile = array_filter($businessIdData, function (AtvDocument $item) {
@@ -114,7 +113,7 @@ class AdminApplicationsForm extends FormBase {
       });
       $grantsProfile = reset($grantsProfile);
 
-      $applicationTypes = array_keys(ApplicationHandler::$applicationTypes);
+      $applicationTypes = array_keys(ApplicationHandler::getApplicationTypes());
 
       $sortedByType = [];
       foreach ($applicationTypes as $applicationType) {
@@ -157,15 +156,17 @@ class AdminApplicationsForm extends FormBase {
             '#collapsed' => FALSE,
           ];
           $typeOptions = [];
-          /** @var \Drupal\helfi_atv\AtvDocument $application */
-          foreach ($applications as $application) {
-            $typeOptions[$application->getId()] = $application->getTransactionId();
+          if (!empty($applications)) {
+            /** @var \Drupal\helfi_atv\AtvDocument $application */
+            foreach ($applications as $application) {
+              $typeOptions[$application->getId()] = $application->getTransactionId();
+            }
+            $form['profileData']['applications'][$type]['selectedDelete'] = [
+              '#type' => 'checkboxes',
+              '#title' => $this->t('Select to delete'),
+              '#options' => $typeOptions,
+            ];
           }
-          $form['profileData']['applications'][$type]['selectedDelete'] = [
-            '#type' => 'checkboxes',
-            '#title' => $this->t('Select to delete'),
-            '#options' => $typeOptions,
-          ];
         }
       }
     }
@@ -248,8 +249,7 @@ class AdminApplicationsForm extends FormBase {
               '@tr' => $transactionId,
             ]));
         }
-      }
-      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | TokenExpiredException | GuzzleException $e) {
+      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|TokenExpiredException|GuzzleException $e) {
         $response = $e->getResponse();
         $body = $response->getBody();
         $errorMessage = Json::decode($body->getContents());
@@ -285,8 +285,7 @@ class AdminApplicationsForm extends FormBase {
               '@tr' => $transactionId,
             ]));
         }
-      }
-      catch (AtvDocumentNotFoundException | AtvFailedToConnectException | TokenExpiredException | GuzzleException $e) {
+      } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|TokenExpiredException|GuzzleException $e) {
         $response = $e->getResponse();
         $body = $response->getBody();
         $errorMessage = Json::decode($body->getContents());
@@ -307,9 +306,29 @@ class AdminApplicationsForm extends FormBase {
     }
 
     if (!empty($processed['failed'])) {
-      $kk = array_keys($processed['failed']);
+      $failedUuids = array_keys($processed['failed']);
+      $failedApplicationNumbers = array_values($processed['failed']);
       $this->messenger()
-        ->addStatus($this->t('Following documents were not deleted, copy paste the list in slack to Aki-Matti for manual deletion: @failed', ['@failed' => implode(', ', $kk)]));
+        ->addStatus(
+          $this->t('Following documents were not deleted, copy paste the
+          list for manual deletion: @failed. And to mark these deleted in Avus2: @numbers',
+            [
+              '@failed' => implode(', ', $failedUuids),
+              '@numbers' => implode(', ', $failedApplicationNumbers),
+            ])
+        );
+    }
+
+    if (!empty($processed['deleted'])) {
+      $failedApplicationNumbers = array_values($processed['failed']);
+      $this->messenger()
+        ->addStatus(
+          $this->t('Following documents were deleted, copy paste the
+          list for marking these deleted in Avus2: @numbers',
+            [
+              '@numbers' => implode(', ', $failedApplicationNumbers),
+            ])
+        );
     }
 
     $d = 'asdf';
