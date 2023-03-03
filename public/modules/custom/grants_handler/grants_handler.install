@@ -269,3 +269,23 @@ function grants_handler_update_9004(&$sandbox) {
   $schema = Database::getConnection()->schema();
   $schema->addField('grants_handler_log', 'page', $spec);
 }
+
+
+/**
+ * Update KASKO application form & service page.
+ */
+function grants_handler_update_9005(&$sandbox) {
+  // Load webform
+  $kaskoform = \Drupal\webform\Entity\Webform::load('kasvatus_ja_koulutus_yleisavustu');
+  if($kaskoform){
+    // Load node
+    $kaskoservice = \Drupal\node\Entity\Node::load(50);
+    // set reference
+    $kaskoservice->set('field_webform', $kaskoform);
+    // save service page.
+    $kaskoservice->save();
+    // presave will handle everything else.
+  }
+
+
+}
