@@ -273,9 +273,20 @@ function grants_handler_update_9004(&$sandbox) {
 }
 
 /**
- * Update KASKO application form & service page.
+ * Remove icareus config.
  */
 function grants_handler_update_9005(&$sandbox) {
+
+  $database = \Drupal::database();
+  $database->query("delete from config where name = 'oembed_providers.provider.icareus_suite'");
+
+}
+
+/**
+ * Update KASKO application form & service page.
+ */
+function grants_handler_update_9006(&$sandbox) {
+
   // Load webform.
   $kaskoform = Webform::load('kasvatus_ja_koulutus_yleisavustu');
   if ($kaskoform) {
