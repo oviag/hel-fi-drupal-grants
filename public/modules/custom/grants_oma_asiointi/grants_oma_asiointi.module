@@ -97,6 +97,8 @@ function grants_oma_asiointi_views_pre_build(ViewExecutable $view) {
  * Implements hook_user_predelete().
  */
 function grants_oma_asiointi_user_predelete(UserInterface $account) {
+  $auditLogger = Drupal::service('helfi_audit_log.audit_log');
+
   try {
     $authdata = \Drupal::service('externalauth.authmap')->getAuthData($account->id(), 'openid_connect.tunnistamo');
     if (isset($authdata['authname'])) {
@@ -104,8 +106,30 @@ function grants_oma_asiointi_user_predelete(UserInterface $account) {
       $account->setEmail(NULL);
       $account->save();
     }
+
+    $message = [
+      "operation" => "GRANTS_USER_DELETE",
+      "status" => "SUCCESS",
+      "target" => [
+        "id" => $account->id(),
+        "type" => "DRUPAL_USER",
+        "name" => $account->getAccountName(),
+      ],
+    ];
   }
   catch (\Exception $e) {
+    $message = [
+      "operation" => "GRANTS_USER_DELETE",
+      "status" => "FAILURE",
+      "target" => [
+        "id" => $account->id(),
+        "type" => "DRUPAL_USER",
+        "name" => $account->getAccountName(),
+      ],
+    ];
 
+    Drupal::logger('grants_oma_asiointi')->error('Error purging users: @error', ['@error' => $e->getMessage()]);
   }
+
+  $auditLogger->dispatchEvent($message);
 }
