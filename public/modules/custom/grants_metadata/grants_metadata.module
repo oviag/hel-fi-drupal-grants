@@ -107,25 +107,25 @@ function grants_metadata_node_presave(EntityInterface $entity) {
 
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $referenceItem */
     $referenceItem = $entity->get('field_webform')->first();
+    if ($referenceItem) {
+      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entityReference */
+      $entityReference = $referenceItem->get('entity');
 
-    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityReference $entityReference */
-    $entityReference = $referenceItem->get('entity');
+      /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entityAdapter */
+      $entityAdapter = $entityReference->getTarget();
 
-    /** @var \Drupal\Core\Entity\Plugin\DataType\EntityAdapter $entityAdapter */
-    $entityAdapter = $entityReference->getTarget();
+      /** @var \Drupal\Core\Entity\EntityInterface $referencedEntity */
+      $referencedEntity = $entityAdapter->getValue();
 
-    /** @var \Drupal\Core\Entity\EntityInterface $referencedEntity */
-    $referencedEntity = $entityAdapter->getValue();
+      // Get third party settings.
+      $thirdPartySettings = $referencedEntity->getThirdPartySettings('grants_metadata');
 
-    // Get third party settings.
-    $thirdPartySettings = $referencedEntity->getThirdPartySettings('grants_metadata');
+      // Get entity status.
+      $status = $referencedEntity->isOpen();
 
-    // Get entity status.
-    $status = $referencedEntity->isOpen();
-
-    // Update node values from 3rd party settings.
-    grants_metadata_set_node_values($entity, $status, $thirdPartySettings);
-
+      // Update node values from 3rd party settings.
+      grants_metadata_set_node_values($entity, $status, $thirdPartySettings);
+    }
   }
 
 }
