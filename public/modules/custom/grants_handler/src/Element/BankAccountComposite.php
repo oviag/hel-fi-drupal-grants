@@ -38,9 +38,12 @@ class BankAccountComposite extends WebformCompositeBase {
     $elements['account_number_select'] = [
       '#type' => 'select',
       '#required' => TRUE,
-      '#title' => t('Bank account'),
+      '#title' => t('Select bank account'),
       '#options' => [],
       '#after_build' => [[get_called_class(), 'buildAccountOptions']],
+      '#attributes' => [
+        'class' => [],
+      ],
     ];
 
     $elements['account_number'] = [
@@ -81,6 +84,12 @@ class BankAccountComposite extends WebformCompositeBase {
     }
 
     $element['#options'] = $accOoptions;
+
+    $errorStorage = $form_state->getStorage();
+
+    if (isset($errorStorage['errors']['bank_account'])) {
+      $element['#attributes']['class'][] = 'has-error';
+    }
 
     return $element;
   }

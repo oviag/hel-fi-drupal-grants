@@ -1,3 +1,40 @@
+.page--oma-asiointi .main-content {
+  margin-top: 0;
+
+  h2 {
+    margin-top: var(--spacing-m);
+  }
+}
+
+.hero--oma-asiointi {
+  margin-bottom: var(--spacing-l);
+
+  .container {
+    padding-top: var(--spacing-layout-m);
+  }
+
+  .hero__text-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .hero__title {
+    margin-left: 0;
+
+    @media (min-width: $breakpoint-s) {
+      margin-left: 40px;
+    }
+  }
+
+  .hds-icon {
+    display: none;
+
+    @media (min-width: $breakpoint-s) {
+      display: block;
+    }
+  }
+}
+
 #oma-asiointi__sent {
   background: var(--color-silver-light);
   .application-list__item {
@@ -27,6 +64,44 @@
 
     .link .hel-icon {
       vertical-align: text-top;
+    }
+  }
+
+  &--link {
+    text-decoration: none;
+    display: block;
+    position: relative;
+
+    &::after {
+      --icon-size: 1.5rem;
+
+      @include pseudo-icon('arrow-right');
+      @include hover-link-arrow-transition;
+      content: '';
+      display: block;
+      flex-shrink: 0;
+      margin-left: -$spacing-quarter;
+      margin-top: var(--spacing-2-xs);
+      position: absolute;
+      bottom: var(--spacing-m);
+      right: var(--spacing-m);
+
+      @include breakpoint($breakpoint-s) {
+        --icon-size: 3rem;
+        margin-left: -$spacing-half;
+        margin-top: var(--spacing-s);
+      }
+    }
+
+    &:focus,
+    &:hover {
+      &::after {
+        transform: translateX(var(--spacing-2-xs));
+
+        @media (prefers-reduced-motion) {
+          transform: none;
+        }
+      }
     }
   }
 
@@ -66,7 +141,7 @@
   .submission,
   .message {
     background-color: var(--color-white);
-    padding: var(--spacing-xs);
+    padding: var(--spacing-m);
     margin-top: var(--spacing-s);
     margin-bottom: var(--spacing-s);
 
@@ -74,7 +149,16 @@
     .message-title {
       font-size: var(--fontsize-heading-s);
       margin-bottom: var(--spacing-2-xs);
+      margin-top: 0;
       font-weight: 500;
+      text-decoration: underline;
+    }
+
+    &:hover {
+      .submission-title,
+      .message-title {
+        text-decoration: none;
+      }
     }
   }
 }
