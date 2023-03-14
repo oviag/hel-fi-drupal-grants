@@ -115,11 +115,11 @@ class AttachmentHandler {
    *   Profile service.
    */
   public function __construct(
-    AttachmentUploader   $grants_attachments_attachment_uploader,
-    AttachmentRemover    $grants_attachments_attachment_remover,
-    Messenger            $messenger,
+    AttachmentUploader $grants_attachments_attachment_uploader,
+    AttachmentRemover $grants_attachments_attachment_remover,
+    Messenger $messenger,
     LoggerChannelFactory $loggerChannelFactory,
-    AtvService           $atvService,
+    AtvService $atvService,
     GrantsProfileService $grantsProfileService,
   ) {
 
@@ -187,10 +187,10 @@ class AttachmentHandler {
    *   Triggering element.
    */
   public static function validateAttachmentField(
-    string             $fieldName,
+    string $fieldName,
     FormStateInterface $formState,
-    string             $fieldTitle,
-    string             $triggeringElement
+    string $fieldTitle,
+    string $triggeringElement
   ) {
     // Get value.
     $values = $formState->getValue($fieldName);
@@ -265,8 +265,8 @@ class AttachmentHandler {
    * @throws \Drupal\grants_handler\EventException
    */
   public function parseAttachments(
-    array  $form,
-    array  &$submittedFormData,
+    array $form,
+    array &$submittedFormData,
     string $applicationNumber): void {
 
     $attachmentHeaders = GrantsAttachments::$fileTypes;
@@ -365,7 +365,8 @@ class AttachmentHandler {
           $filenames,
           $submittedFormData
         );
-      } catch (TempStoreException|GuzzleException $e) {
+      }
+      catch (TempStoreException | GuzzleException $e) {
         $this->logger->error('Error: %msg', [
           '%msg' => $e->getMessage(),
         ]);
@@ -393,8 +394,8 @@ class AttachmentHandler {
   public function handleBankAccountConfirmation(
     string $accountNumber,
     string $applicationNumber,
-    array  $filenames,
-    array  &$submittedFormData
+    array $filenames,
+    array &$submittedFormData
   ): void {
 
     // If no accountNumber is selected, do nothing.
@@ -421,7 +422,8 @@ class AttachmentHandler {
       ]);
       /** @var \Drupal\helfi_atv\AtvDocument $applicationDocument */
       $applicationDocument = reset($applicationDocumentResults);
-    } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|GuzzleException $e) {
+    }
+    catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
     }
 
     $accountConfirmationExists = FALSE;
@@ -510,7 +512,8 @@ class AttachmentHandler {
           // And delete file in any case
           // we don't want to keep any files.
           $file->delete();
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
           $this->logger->error('Error: %msg', [
             '%msg' => $e->getMessage(),
           ]);
@@ -617,7 +620,7 @@ class AttachmentHandler {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function getAttachmentByFieldValue(
-    array  $field,
+    array $field,
     string $fieldDescription,
     string $fileType,
     string $applicationNumber
@@ -734,7 +737,7 @@ class AttachmentHandler {
    *   Submission object.
    */
   public function handleApplicationAttachments(
-    string            $applicationNumber,
+    string $applicationNumber,
     WebformSubmission $webformSubmission
   ) {
 
