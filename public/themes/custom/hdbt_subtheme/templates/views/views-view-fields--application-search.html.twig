@@ -32,7 +32,7 @@
  */
 #}
 
-  <a class="application_search--link" href="{{ fields['view_node'].content|render|striptags|trim }}">
+  <a class="application_search--link" href="{{ fields['view_node'].content|render|striptags|trim }}" data-drupal-selector="{{ rowid }}">
 {% for key, field in fields -%}
     {% if key != 'view_node' -%}
   {{ field.separator }}
