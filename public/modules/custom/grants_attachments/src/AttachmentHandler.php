@@ -115,11 +115,11 @@ class AttachmentHandler {
    *   Profile service.
    */
   public function __construct(
-    AttachmentUploader $grants_attachments_attachment_uploader,
-    AttachmentRemover $grants_attachments_attachment_remover,
-    Messenger $messenger,
+    AttachmentUploader   $grants_attachments_attachment_uploader,
+    AttachmentRemover    $grants_attachments_attachment_remover,
+    Messenger            $messenger,
     LoggerChannelFactory $loggerChannelFactory,
-    AtvService $atvService,
+    AtvService           $atvService,
     GrantsProfileService $grantsProfileService,
   ) {
 
@@ -179,7 +179,7 @@ class AttachmentHandler {
    *
    * @param string $fieldName
    *   Name of the field in validation.
-   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $formState
    *   Form state object.
    * @param string $fieldTitle
    *   Field title for errors.
@@ -187,13 +187,13 @@ class AttachmentHandler {
    *   Triggering element.
    */
   public static function validateAttachmentField(
-    string $fieldName,
-    FormStateInterface $form_state,
-    string $fieldTitle,
-    string $triggeringElement
+    string             $fieldName,
+    FormStateInterface $formState,
+    string             $fieldTitle,
+    string             $triggeringElement
   ) {
     // Get value.
-    $values = $form_state->getValue($fieldName);
+    $values = $formState->getValue($fieldName);
 
     $args = [];
     if (isset($values[0]) && is_array($values[0])) {
@@ -206,7 +206,7 @@ class AttachmentHandler {
     foreach ($args as $value) {
       // Muu liite is optional.
       if ($fieldName !== 'muu_liite' && ($value === NULL || empty($value))) {
-        $form_state->setErrorByName($fieldName, t('@fieldname field is required', [
+        $formState->setErrorByName($fieldName, t('@fieldname field is required', [
           '@fieldname' => $fieldTitle,
         ]));
       }
@@ -215,23 +215,33 @@ class AttachmentHandler {
         // If attachment is uploaded, make sure no other field is selected.
         if (isset($value['attachment']) && is_int($value['attachment'])) {
           if ($value['isDeliveredLater'] === "1") {
-            $form_state->setErrorByName("[" . $fieldName . "][isDeliveredLater]", t('@fieldname has file added, it cannot be added later.', [
-              '@fieldname' => $fieldTitle,
-            ]));
+            $formState->setErrorByName(
+              "[" . $fieldName . "][isDeliveredLater]",
+              t('@fieldname has file added, it cannot be added later.',
+                [
+                  '@fieldname' => $fieldTitle,
+                ]));
           }
           if ($value['isIncludedInOtherFile'] === "1") {
-            $form_state->setErrorByName("[" . $fieldName . "][isIncludedInOtherFile]", t('@fieldname has file added, it cannot belong to other file.', [
-              '@fieldname' => $fieldTitle,
-            ]));
+            $formState->setErrorByName(
+              "[" . $fieldName . "][isIncludedInOtherFile]",
+              t('@fieldname has file added, it cannot belong to other file.',
+                [
+                  '@fieldname' => $fieldTitle,
+                ]));
           }
         }
         else {
           if ($fieldName !== 'muu_liite') {
-            if ((!empty($value) && !isset($value['attachment']) && ($value['attachment'] === NULL && $value['attachmentName'] === ''))) {
+            if (!empty($value) && !isset($value['attachment']) && ($value['attachment'] === NULL && $value['attachmentName'] === '')) {
               if (empty($value['isDeliveredLater']) && empty($value['isIncludedInOtherFile'])) {
-                $form_state->setErrorByName("[" . $fieldName . "][isDeliveredLater]", t('@fieldname has no file uploaded, it must be either delivered later or be included in other file.', [
-                  '@fieldname' => $fieldTitle,
-                ]));
+                $formState->setErrorByName(
+                  "[" . $fieldName . "][isDeliveredLater]",
+                  t('@fieldname has no file uploaded, it must be either
+                  delivered later or be included in other file.',
+                    [
+                      '@fieldname' => $fieldTitle,
+                    ]));
               }
             }
           }
@@ -255,11 +265,10 @@ class AttachmentHandler {
    * @throws \Drupal\grants_handler\EventException
    */
   public function parseAttachments(
-    array $form,
-    array &$submittedFormData,
+    array  $form,
+    array  &$submittedFormData,
     string $applicationNumber): void {
 
-    $attachmentsArray = [];
     $attachmentHeaders = GrantsAttachments::$fileTypes;
     $filenames = [];
     $attachmentFields = self::getAttachmentFieldNames(TRUE);
@@ -356,8 +365,7 @@ class AttachmentHandler {
           $filenames,
           $submittedFormData
         );
-      }
-      catch (TempStoreException | GuzzleException $e) {
+      } catch (TempStoreException|GuzzleException $e) {
         $this->logger->error('Error: %msg', [
           '%msg' => $e->getMessage(),
         ]);
@@ -385,8 +393,8 @@ class AttachmentHandler {
   public function handleBankAccountConfirmation(
     string $accountNumber,
     string $applicationNumber,
-    array $filenames,
-    array &$submittedFormData
+    array  $filenames,
+    array  &$submittedFormData
   ): void {
 
     // If no accountNumber is selected, do nothing.
@@ -413,8 +421,7 @@ class AttachmentHandler {
       ]);
       /** @var \Drupal\helfi_atv\AtvDocument $applicationDocument */
       $applicationDocument = reset($applicationDocumentResults);
-    }
-    catch (AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
+    } catch (AtvDocumentNotFoundException|AtvFailedToConnectException|GuzzleException $e) {
     }
 
     $accountConfirmationExists = FALSE;
@@ -477,7 +484,11 @@ class AttachmentHandler {
           // Get file.
           $file = $this->atvService->getAttachment($selectedAccountConfirmation['href']);
           // Upload file.
-          $uploadResult = $this->atvService->uploadAttachment($applicationDocument->getId(), $selectedAccountConfirmation["filename"], $file);
+          $uploadResult = $this->atvService->uploadAttachment(
+            $applicationDocument->getId(),
+            $selectedAccountConfirmation["filename"],
+            $file
+          );
           // If succeeded.
           if ($uploadResult !== FALSE) {
 
@@ -499,8 +510,7 @@ class AttachmentHandler {
           // And delete file in any case
           // we don't want to keep any files.
           $file->delete();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
           $this->logger->error('Error: %msg', [
             '%msg' => $e->getMessage(),
           ]);
@@ -525,16 +535,19 @@ class AttachmentHandler {
       // make sure it's not added again
       // and also make sure if the attachment is uploaded to add integrationID
       // sometimes this does not work in integration.
-      $existingConfirmationForSelectedAccountExists = array_filter($submittedFormData, function ($fn) use ($selectedAccount, $accountConfirmationFile) {
-        if (
-          isset($fn['fileName']) &&
-          (($fn['fileName'] == $selectedAccount['confirmationFile']) ||
-            ($fn['fileName'] == $accountConfirmationFile['filename']))
-        ) {
-          return TRUE;
-        }
-        return FALSE;
-      });
+      $existingConfirmationForSelectedAccountExists =
+        array_filter(
+          $submittedFormData,
+          function ($fn) use ($selectedAccount, $accountConfirmationFile) {
+            if (
+              isset($fn['fileName']) &&
+              (($fn['fileName'] == $selectedAccount['confirmationFile']) ||
+                ($fn['fileName'] == $accountConfirmationFile['filename']))
+            ) {
+              return TRUE;
+            }
+            return FALSE;
+          });
 
       if (empty($existingConfirmationForSelectedAccountExists)) {
 
@@ -565,7 +578,6 @@ class AttachmentHandler {
         $appParam = ApplicationHandler::getAppEnv();
         if ($appParam !== 'PROD') {
           $integrationID = '/' . $appParam . $integrationID;
-          // '[LOCAL* / DEV / TEST / STAGE]/v1/documents/dab1e85f-fffa-4a9f-965c-c2720f961119/attachments/4761/';
         }
 
         // Add that.
@@ -605,7 +617,7 @@ class AttachmentHandler {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function getAttachmentByFieldValue(
-    array $field,
+    array  $field,
     string $fieldDescription,
     string $fileType,
     string $applicationNumber
@@ -722,7 +734,7 @@ class AttachmentHandler {
    *   Submission object.
    */
   public function handleApplicationAttachments(
-    string $applicationNumber,
+    string            $applicationNumber,
     WebformSubmission $webformSubmission
   ) {
 
@@ -792,12 +804,7 @@ class AttachmentHandler {
     foreach ($uploadedByContent as $ca) {
 
       $filesInContent = array_filter($ca, function ($caItem) {
-        if ($caItem['ID'] === 'fileName') {
-          return TRUE;
-        }
-        else {
-          return FALSE;
-        }
+        return ($caItem['ID'] === 'fileName');
       });
       $fn1 = reset($filesInContent);
       $fn = $fn1['value'];
