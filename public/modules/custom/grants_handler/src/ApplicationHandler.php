@@ -452,6 +452,28 @@ class ApplicationHandler {
   }
 
   /**
+   * All app envs in array.
+   *
+   * @return array
+   *   Unique environments.
+   */
+  public static function getAppEnvs() {
+
+    $envs = [
+      'DEV',
+      'PROD',
+      'TEST',
+      'STAGE',
+      'LOCAL',
+      'LOCALJ',
+      'LOCALP',
+      self::getAppEnv(),
+    ];
+
+    return array_unique($envs);
+  }
+
+  /**
    * Return Application environment shortcode.
    *
    * If environment is one of the set ones, use those. But if not, use one in
@@ -558,7 +580,10 @@ class ApplicationHandler {
       $thirdPartySettings = $wf->getThirdPartySettings('grants_metadata');
 
       $thisApplicationTypeConfig = array_filter($applicationTypes, function ($appType) use ($thirdPartySettings) {
-        if (isset($thirdPartySettings["applicationTypeID"]) && $thirdPartySettings["applicationTypeID"] === (string) $appType["applicationTypeId"]) {
+        if (
+          isset($thirdPartySettings["applicationTypeID"]) &&
+          $thirdPartySettings["applicationTypeID"] ===
+          (string) $appType["applicationTypeId"]) {
           return TRUE;
         }
         return FALSE;
