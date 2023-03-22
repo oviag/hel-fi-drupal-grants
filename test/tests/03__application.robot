@@ -74,9 +74,7 @@ Fill Step 2 Data
 
 Save Application as Draft
     Wait Until Network Is Idle
-    Set Browser Timeout    60s
     Click                \#edit-actions-draft     # Can sometimes take up to 60s
-    Set Browser Timeout    30s
     Wait For Elements State    .webform-submission__application_id .webform-submission__application_id--body    visible
     Scroll To Element    .webform-submission__application_id .webform-submission__application_id--body
     ${application_id} =   Get Text    .webform-submission__application_id .webform-submission__application_id--body

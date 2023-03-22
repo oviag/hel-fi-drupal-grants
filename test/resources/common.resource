@@ -7,7 +7,7 @@ Resource            ./tunnistamo.resource
 
 *** Keywords ***
 Open Browser To Home Page
-    Set Browser Timeout   30s
+    Set Browser Timeout   60s
     New Browser           ${BROWSER}
     # Needed for local environment testing
     New Context           ignoreHTTPSErrors=True
