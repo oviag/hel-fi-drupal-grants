@@ -502,6 +502,42 @@ class GrantsHandler extends WebformHandlerBase {
         ->addError('Application period is closed, no further editing is allowed.');
       $form['#disabled'] = TRUE;
     }
+
+    $all_current_errors = $this->grantsFormNavigationHelper->getAllErrors($webform_submission);
+    $storage = $form_state->getStorage();
+    $storage['errors'] = [];
+    $errors = $storage['errors'];
+
+    // Loop through errors.
+    foreach ($all_current_errors as $pageName => $page) {
+      // Loop through errors in one page.
+      foreach ($page as $errorKey => $error) {
+        // Some errors are built like errorName][errorSelectValue.
+        // These variables separate the array keys in them.
+        $errorName = strtok($errorKey, ']');
+        $errorSelectValue = substr($errorKey, strpos($errorKey, '[') + 1);
+        if (isset($form['elements'][$pageName][$errorName])) {
+          $form['elements'][$pageName][$errorName]['#attributes']['class'][] = 'has-error';
+        }
+        else {
+          foreach ($form['elements'][$pageName] as $fieldName => $element) {
+            if (!str_starts_with($fieldName, '#')) {
+              if (isset($form['elements'][$pageName][$fieldName][$errorName]['#webform_composite_elements'][$errorSelectValue])) {
+                $errors[$errorName]['class'] = 'has-errors';
+                $errors[$errorName]['label'] = $error;
+              }
+              elseif (isset($form['elements'][$pageName][$fieldName][$errorName])) {
+                $form['elements'][$pageName][$fieldName][$errorName]['#attributes']['class'][] = 'has-error';
+                $form['elements'][$pageName][$fieldName][$errorName]['#attributes']['error_label'] = $error;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    $storage['errors'] = $errors;
+    $form_state->setStorage($storage);
   }
 
   /**
@@ -608,14 +644,18 @@ class GrantsHandler extends WebformHandlerBase {
         $oldStatus = $document->getStatus();
       }
       catch (TempStoreException | AtvDocumentNotFoundException | AtvFailedToConnectException | GuzzleException $e) {
+        // If block has comment, sonarcloud likes it?
       }
 
     }
+
+    $applicationStatuses = ApplicationHandler::getApplicationStatuses();
+
     // If new status is submitted, ie save to Avus2..
-    if ($newStatus == ApplicationHandler::$applicationStatuses['SUBMITTED']) {
+    if ($newStatus == $applicationStatuses['SUBMITTED']) {
       // ..and if application is not yet in Avus2, form update needs to be FALSE
       // or we get error updating nonexistent application
-      if ($oldStatus == ApplicationHandler::$applicationStatuses['DRAFT']) {
+      if ($oldStatus == $applicationStatuses['DRAFT']) {
         return FALSE;
       }
       // also, if this is new application but put directly to submitted mode,
@@ -633,7 +673,7 @@ class GrantsHandler extends WebformHandlerBase {
     // If new status is DRAFT, we don't really care about this value since
     // these are not uploaded to Avus2 just put it to false in case of some
     // other things need this.
-    if ($newStatus == ApplicationHandler::$applicationStatuses['DRAFT']) {
+    if ($newStatus == $applicationStatuses['DRAFT']) {
       return FALSE;
     }
 
@@ -705,10 +745,12 @@ class GrantsHandler extends WebformHandlerBase {
         $value['issuer_name'];
       unset($this->submittedFormData["myonnetty_avustus"][$key]['issuer_name']);
     }
-    foreach ($this->submittedFormData["haettu_avustus_tieto"] as $key => $value) {
-      $this->submittedFormData["haettu_avustus_tieto"][$key]['issuerName'] =
-        $value['issuer_name'];
-      unset($this->submittedFormData["haettu_avustus_tieto"][$key]['issuer_name']);
+    if ($this->submittedFormData["haettu_avustus_tieto"]) {
+      foreach ($this->submittedFormData["haettu_avustus_tieto"] as $key => $value) {
+        $this->submittedFormData["haettu_avustus_tieto"][$key]['issuerName'] =
+          $value['issuer_name'];
+        unset($this->submittedFormData["haettu_avustus_tieto"][$key]['issuer_name']);
+      }
     }
 
     // Set form timestamp to current time.
@@ -747,7 +789,7 @@ class GrantsHandler extends WebformHandlerBase {
     $this->submittedFormData['status'] = $this->newStatus;
 
     // Application submitted.
-    if ($this->applicationHandler->getNewStatusHeader() == ApplicationHandler::$applicationStatuses['SUBMITTED']) {
+    if ($this->applicationHandler->getNewStatusHeader() == ApplicationHandler::getApplicationStatuses()['SUBMITTED']) {
       $this->submittedFormData['form_timestamp_submitted'] = $dt->format('Y-m-d\TH:i:s');
     }
 
@@ -1001,7 +1043,7 @@ class GrantsHandler extends WebformHandlerBase {
 
       // Try to update status only if it's allowed.
       if (ApplicationHandler::canSubmissionBeSubmitted($webform_submission, NULL)) {
-        $this->submittedFormData['status'] = ApplicationHandler::$applicationStatuses['SUBMITTED'];
+        $this->submittedFormData['status'] = ApplicationHandler::getApplicationStatuses()['SUBMITTED'];
       }
     }
   }

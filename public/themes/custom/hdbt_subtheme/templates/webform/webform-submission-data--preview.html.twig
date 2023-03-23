@@ -19,7 +19,7 @@
   view_mode ? 'webform-submission-data--view-mode-' ~ view_mode|clean_class,
 ]
 %}
-<button class="hds-button hds-button--primary" onClick="event.preventDefault();print();">
+<button class="hds-button hds-button--primary" onClick="event.preventDefault();document.body.querySelectorAll('details').forEach((x) => x.setAttribute('open',true));window.print();">
   <span aria-hidden="true" class="hel-icon hel-icon--printer"></span>
   <span class="hds-button__label">{{ 'Print filled form'|t }}</span>
 </button>
@@ -29,9 +29,9 @@
   body.classList.add("webform-submission-data-preview-page");
 </script>
 <table class="webform-print-wrapper-table">
-  <thead><tr><td>
+  <thead><tr><th>
       <div class="webform-print-header-space">&nbsp;</div>
-    </td></tr></thead>
+    </th></tr></thead>
   <tbody><tr><td>
       <div class="webform-print-content">
         <div{{ attributes.addClass(classes) }}>

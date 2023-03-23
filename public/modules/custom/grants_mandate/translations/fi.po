@@ -39,4 +39,11 @@ msgstr "Lyhyt kuvaus hakijaroolista."
 msgid "Select Applicant Type"
 msgstr "Valitse asiointiroolin tyyppi"
 
+msgid "You must have company & authorisation set before applying."
+msgstr "Sinulla pitää olla yhteisö ja valtuutus valittuna ennen hakemuksen jättämistä."
 
+msgid "Mandate process was interrupted or there was an error. Please try again."
+msgstr "Valtuutusprosessi keskeytyi, yritä uudelleen."
+
+msgid "Your mandate does not allow you to use this service."
+msgstr "Valtuutuksesi ei sallin sinun käyttää tätä palvelua."

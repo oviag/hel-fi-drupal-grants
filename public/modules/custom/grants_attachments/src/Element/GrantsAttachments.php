@@ -6,6 +6,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\grants_handler\ApplicationHandler;
 use Drupal\webform\Element\WebformCompositeBase;
 use Drupal\webform\Utility\WebformElementHelper;
 use GuzzleHttp\Exception\GuzzleException;
@@ -264,7 +265,8 @@ class GrantsAttachments extends WebformCompositeBase {
         // because then the $element is file upload.
         $formValue = $form_state->getValue($webformKey);
         // So we set the description here after cleaning.
-        $webformDataElement['description'] = Xss::filter($formValue[$index]['description']);
+        // Also check if this is multivalue form array or not.
+        $webformDataElement['description'] = Xss::filter($formValue['description'] ?? $formValue[$index]['description']);
         // And set webform element back to form state.
         $form_state->setValue([...$valueParents], $webformDataElement);
       }
@@ -315,6 +317,12 @@ class GrantsAttachments extends WebformCompositeBase {
             // outside the azure environment.
             $integrationId = str_replace($baseUrl, '', $attachmentResponse['href']);
             $integrationId = str_replace($baseUrlApps, '', $integrationId);
+
+            $appParam = ApplicationHandler::getAppEnv();
+            if ($appParam !== 'PROD') {
+              $integrationId = '/' . $appParam . $integrationId;
+              // '[LOCAL* / DEV / TEST / STAGE]/v1/documents/dab1e85f-fffa-4a9f-965c-c2720f961119/attachments/4761/';
+            }
 
             // Set values to form.
             $form_state->setValue([

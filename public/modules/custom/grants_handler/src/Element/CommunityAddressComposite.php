@@ -41,6 +41,9 @@ class CommunityAddressComposite extends WebformCompositeBase {
       '#title' => t('Select address'),
       '#after_build' => [[get_called_class(), 'buildAddressOptions']],
       '#options' => [],
+      '#attributes' => [
+        'class' => [],
+      ],
     ];
 
     $elements['community_street'] = [
@@ -114,6 +117,13 @@ class CommunityAddressComposite extends WebformCompositeBase {
 
     $element['#options'] = $options;
     $element['#default_value'] = $defaultDelta;
+
+    $errorStorage = $form_state->getStorage();
+
+    if (isset($errorStorage['errors']['community_address'])) {
+      $element['#attributes']['class'][] = 'has-error';
+      $element['#attributes']['error_label'] = $errorStorage['errors']['community_address']['label'];
+    }
 
     return $element;
 
