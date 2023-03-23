@@ -1,13 +1,25 @@
 # CHANGELOG
 
 ## 2023.7
+- feat: AU-574: Update tests & translations (#179)
+- config: Update configuration (#257)
+- fix: AU-XX fix translation syntax in grants_handler (#256)
+- fix: AU-792: Add subscriber to handle guzzle errors (#252)
+- config: Update configuration (#254)
+- Revert "config: Update configuration (#251)" (#253)
+- config: Update configuration (#251)
+- fix: AU-744: Changes in showing messages in Oma asiointi -page & -block (#242)
+- feat: AU-695: Configure allowed roles (#247)
+- config: Update configuration (#250)
+- docs: Update Changelog
+- config: Update configuration (#248)
 - config: Update configuration (#248)
 - fix: AU-666: Delete bank confirmation files automatically (#192)
 - fix: AU-802: Remove avustus field from form (#246)
 - fix: AU-601 autologout modal (#244)
 - fix: AU-796: Fix subvention validations. (#238)
 - feat: AU-574: Robot test pipeline
-- confifg: Update configuration (#241)
+- config: Update configuration (#241)
 - fix: AU-800: Add cache contexts for ServicePageAuthBlock (#240)
 - refactor: Update changelog & add version
 - fix: Fix cache setting. SonarCloud.
