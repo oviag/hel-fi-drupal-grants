@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e10ffe8321afcadfd1ca7dc063349af",
+    "content-hash": "7f34067502f39bcc78ff9eddd4ccff8c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5588,16 +5588,16 @@
         },
         {
             "name": "drupal/helfi_atv",
-            "version": "0.9.5",
+            "version": "0.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv.git",
-                "reference": "6246f0e3bca12c6c185020cded19cbc54be5419b"
+                "reference": "7ecffc0df16581fea2594b25e02766ace0389285"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-atv/zipball/6246f0e3bca12c6c185020cded19cbc54be5419b",
-                "reference": "6246f0e3bca12c6c185020cded19cbc54be5419b",
+                "url": "https://api.github.com/repos/City-of-Helsinki/drupal-module-helfi-atv/zipball/7ecffc0df16581fea2594b25e02766ace0389285",
+                "reference": "7ecffc0df16581fea2594b25e02766ace0389285",
                 "shasum": ""
             },
             "require": {
@@ -5614,10 +5614,10 @@
             ],
             "description": "ATV integration module",
             "support": {
-                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv/tree/0.9.5",
+                "source": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv/tree/0.9.6",
                 "issues": "https://github.com/City-of-Helsinki/drupal-module-helfi-atv/issues"
             },
-            "time": "2023-03-24T10:45:12+00:00"
+            "time": "2023-03-24T13:04:25+00:00"
         },
         {
             "name": "drupal/helfi_audit_log",
