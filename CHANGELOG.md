@@ -1,13 +1,16 @@
 # CHANGELOG
 
 ## 2023.7
+- fiX: AU-691: Omat tiedot edit translations and texts (#267)
+- fix: Atv module version
+- AU-820: fix: Update ATV & GDPR versions. (#265)
+- docs: Update changellog
 - refactor: AU-791: Update profile form to custom one. (#243)
 - fix: AU-804: Fix message attachment integration (#255)
 - fix: AU-617: Add header notification to webform print (#258)
 - refactor: AU-817: Fix sonarcloud validation (#260)
 - config: Update configuration (#259)
 - docs: Update changelog
-- Merge branch 'develop' into release/2023.7
 - feat: AU-574: Update tests & translations (#179)
 - config: Update configuration (#257)
 - fix: AU-XX fix translation syntax in grants_handler (#256)
