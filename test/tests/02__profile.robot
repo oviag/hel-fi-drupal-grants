@@ -9,6 +9,13 @@ Resource            ../resources/tunnistamo.resource
 
 *** Test Cases ***
 
+Login And Check Own Profile Info
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Login Process With Tunnistamo
+    Check Own Profile Info
+    [Teardown]    Close Browser
+
 Update User Bank Account
     Open Browser To Home Page
     Accept Cookies Banner
@@ -17,6 +24,16 @@ Update User Bank Account
     Add New Bank Account
     Open Edit Form For Company
     Remove New Bank Account
+    [Teardown]    Close Browser
+
+Update User Founding Year
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Login Process With Tunnistamo
+    Open Edit Form For Company
+    Change To Temporary Founding Year
+    Open Edit Form For Company
+    Change to Original Founding Year
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -49,3 +66,21 @@ Remove New Bank Account
     Wait For Elements State    \#edit-bankaccountwrapper     visible
     Get Title           ==    Muokkaa omaa profiilia | ${SITE_NAME}
     Get Element Count    \#edit-bankaccountwrapper input[type="text"][readonly="readonly"][value="${INPUT_TEMP_BANK_ACCOUNT_NUMBER}"]    ==      0
+
+Check Own Profile Info
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .hero--oma-asiointi .hero__title    *=    ${TUNNISTAMO_COMPANY_NAME}
+    Get Text    .grants-profile-company-name    *=    ${TUNNISTAMO_COMPANY_NAME}
+    Get Text    .grants-profile-business-id    *=    ${TUNNISTAMO_COMPANY_ID}
+
+Change to Temporary Founding Year
+    Type Text        \#edit-foundingyear    1999
+    Click           \#edit-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    \#perustamisvuosi ~ dd:first-of-type    *=    1999
+
+Change To Original Founding Year
+    Type Text        \#edit-foundingyear    2023
+    Click           \#edit-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    \#perustamisvuosi ~ dd:first-of-type    *=    2023

@@ -58,6 +58,8 @@ Visit FAQ
     Open Browser To Home Page
     Accept Cookies Banner
     Go To FAQ
+    Filter FAQ Categories
+    Test FAQ Accordion
     [Teardown]    Close Browser
 
 *** Keywords ***
@@ -144,3 +146,18 @@ Test Instructions Page Accordion
     Click    \#avustusten-hakuajat.accordion-item__header
     Get Attribute    \#avustusten-hakuajat.accordion-item__header button    aria-expanded     ==    true
     Get Element States    \#avustusten-hakuajat.accordion-item__header ~ .accordion-item__content    contains    visible
+
+Filter FAQ Categories
+    Get Element Count    .ukk--filters .category:not(.category-unselected)    ==    1
+    Click    .ukk--filters .category[href="?ukk=13"]
+    Get Element Count    .ukk--filters .category:not(.category-unselected)    ==    1
+    Get Element Count    .ukk--filters .category:not(.category-unselected)[href="?ukk=13"]    ==    1
+    Go Back
+    Get Element Count    .ukk--filters .category:not(.category-unselected)    ==    1
+
+Test FAQ Accordion
+    Get Attribute    \#mista-loydan-hakemusluonnoksen-.accordion-item__header button    aria-expanded     ==    false
+    Get Element States    \#mista-loydan-hakemusluonnoksen-.accordion-item__header ~ .accordion-item__content    contains    hidden
+    Click    \#mista-loydan-hakemusluonnoksen-.accordion-item__header
+    Get Attribute    \#mista-loydan-hakemusluonnoksen-.accordion-item__header button    aria-expanded     ==    true
+    Get Element States    \#mista-loydan-hakemusluonnoksen-.accordion-item__header ~ .accordion-item__content    contains    visible
