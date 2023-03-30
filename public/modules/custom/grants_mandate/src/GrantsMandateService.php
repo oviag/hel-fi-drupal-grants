@@ -316,7 +316,7 @@ class GrantsMandateService {
         '@timestamp' => $timestamp,
         '@path' => $path,
         '@clientid' => $this->clientId,
-        '@secret' => $this->clientId,
+        '@secret' => $this->clientSecret,
         '@hash' => $hash,
         '@value' => $this->clientId . ' ' . $timestamp . ' ' . base64_encode($hash),
       ]);
