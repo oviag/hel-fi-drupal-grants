@@ -255,7 +255,6 @@ class GrantsMandateService {
 
     // Registering WEB API session.
     $registerPath = '/service/' . $mode . '/user/register/' . $this->clientId . '/' . $personId . '?requestId=' . $requestId;
-    // . '&endUserId=nodeEndUser';
     // Adding X-AsiointivaltuudetAuthorization header.
     $checksumHeaderValue = $this->createxAuthorizationHeader($registerPath);
 
@@ -311,6 +310,14 @@ class GrantsMandateService {
 
     // Generate hash from path & timestamp.
     $hash = hash_hmac('sha256', $path . ' ' . $timestamp, $this->clientSecret, TRUE);
+
+    $this->logger->debug('HASH variables: $timestamp=@timestamp, $path=@path, $this->clientId=@clientid, $this->clientSecret=@secret, $hash=@hash',
+      [
+        '@timestamp' => $timestamp,
+        '@path' => $path,
+        '@clientid' => $this->clientId,
+        '@clientSecret' => $this->clientSecret,
+      ]);
 
     // Return formatted string.
     return $this->clientId . ' ' . $timestamp . ' ' . base64_encode($hash);
