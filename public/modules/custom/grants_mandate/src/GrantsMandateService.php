@@ -315,8 +315,8 @@ class GrantsMandateService {
       [
         '@timestamp' => $timestamp,
         '@path' => $path,
-        '@clientid' => $this->clientId,
-        '@clientSecret' => $this->clientSecret,
+        '@secret' => $this->clientId,
+        '@hash' => $this->clientSecret,
       ]);
 
     // Return formatted string.
