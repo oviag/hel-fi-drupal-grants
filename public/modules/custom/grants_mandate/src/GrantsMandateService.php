@@ -182,7 +182,7 @@ class GrantsMandateService {
       $this->setSessionData($sessionData);
     }
     catch (\Exception $e) {
-      throw new GrantsMandateException('Token exchange failed');
+      throw new GrantsMandateException('Token exchange failed, error: ' . $e->getMessage());
     }
   }
 
@@ -255,7 +255,6 @@ class GrantsMandateService {
 
     // Registering WEB API session.
     $registerPath = '/service/' . $mode . '/user/register/' . $this->clientId . '/' . $personId . '?requestId=' . $requestId;
-    // . '&endUserId=nodeEndUser';
     // Adding X-AsiointivaltuudetAuthorization header.
     $checksumHeaderValue = $this->createxAuthorizationHeader($registerPath);
 
@@ -287,7 +286,7 @@ class GrantsMandateService {
       $this->logger->error('Error in user mandates. Error: @error. RequestId: @requestId',
         ['@error' => $e->getMessage(), '@requestId' => $requestId]);
       $this->logger->error('Error in user mandates. Url: @url. RequestId: @requestId',
-        ['@url' => $regUrl, '@requestId' => $requestId]);
+            ['@url' => $regUrl, '@requestId' => $requestId]);
       throw new GrantsMandateException($e->getMessage());
     }
 
