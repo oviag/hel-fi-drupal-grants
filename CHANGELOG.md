@@ -2,7 +2,9 @@
 
 
 ## 2023.10
-
+- 96b77d03 fix: AU-747: Remove redirect to compilation page in case of an error. User is left on the form page with error message. (#280)
+- 26bed988 config: Update ATV to 0.9.7
+- b8847ab5 docs: Update changelog
 - 2e7da443 fix: AU-XX: Hide UKK from menu (#284)
 - c59c132f config: Update configuration (#285)
 - 71e9aa40 fix: Remove DVV debug prints.
