@@ -311,16 +311,6 @@ class GrantsMandateService {
     // Generate hash from path & timestamp.
     $hash = hash_hmac('sha256', $path . ' ' . $timestamp, $this->clientSecret, TRUE);
 
-    $this->logger->debug('HASH variables: $timestamp=@timestamp, $path=@path, $this->clientId=@clientid, $this->clientSecret=@secret, $hash=@hash, $value=@value',
-      [
-        '@timestamp' => $timestamp,
-        '@path' => $path,
-        '@clientid' => $this->clientId,
-        '@secret' => $this->clientSecret,
-        '@hash' => $hash,
-        '@value' => $this->clientId . ' ' . $timestamp . ' ' . base64_encode($hash),
-      ]);
-
     // Return formatted string.
     return $this->clientId . ' ' . $timestamp . ' ' . base64_encode($hash);
   }
