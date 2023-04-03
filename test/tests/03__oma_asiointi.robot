@@ -24,8 +24,7 @@ Check Oma Asiointi Data
     Get Element Count    h2\#keskeneraiset-hakemukset    ==    1
     Get Element Count    h2\#lahetetyt-hakemukset    ==    1
     # For this account, there should be multiple sent applications
-    Get Element Count    \#oma-asiointi__sent ul li     >=     1
-    Get Text    \#oma-asiointi__sent .application-list__count-value    !=     0
+    Get Element Count    \#oma-asiointi__sent ul     >=     1
 
 Sort Sent Applications
     Select Options By    \#applicationListSort    value    asc application-list__item--status

@@ -44,28 +44,26 @@ Open Edit Form For Company
     Get Title           ==    Muokkaa omaa profiilia | ${SITE_NAME}
 
 Add New Bank Account
-    Click           input[data-drupal-selector="edit-bankaccounts-add-more"]
+    Click           button[data-drupal-selector="edit-bankaccountwrapper-actions-add-bankaccount"]
     Sleep   2   # Have to manually wait for ajax load
-    Scroll To Element   \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]
-    Get Attribute    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]      value   ==    ${Empty}
-    Type Text        \#edit-bankaccountwrapper .draggable:last-of-type .js-form-item:first-of-type input[type="text"]     ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
-    Upload File By Selector    \#edit-bankaccountwrapper .draggable:last-of-type .js-form-type-managed-file input[type="file"]    ${CURDIR}/empty.pdf
+    Scroll To Element   [data-drupal-selector="edit-bankaccountwrapper"] .js-form-wrapper:last-of-type .js-form-item:first-of-type input[type="text"]
+    Get Attribute    [data-drupal-selector="edit-bankaccountwrapper"] .js-form-wrapper:last-of-type .js-form-item:first-of-type input[type="text"]      value   ==    ${Empty}
+    Type Text        [data-drupal-selector="edit-bankaccountwrapper"] .js-form-wrapper:last-of-type .js-form-item:first-of-type input[type="text"]     ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
+    Upload File By Selector    [data-drupal-selector="edit-bankaccountwrapper"] .js-form-wrapper:last-of-type .js-form-type-managed-file input[type="file"]    ${CURDIR}/empty.pdf
     Sleep   3   # Have to manually wait for ajax upload
-    Click           \#edit-submit
+    Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
 
 Remove New Bank Account
     ${bank_account_input} =     Get Attribute     \#edit-bankaccountwrapper input[type="text"][readonly="readonly"][value="${INPUT_TEMP_BANK_ACCOUNT_NUMBER}"]     id
     ${bank_account_input} =     Get Substring     ${bank_account_input}     0     -12
-    Click             a[data-drupal-selector="${bank_account_input}-deletebutton"]
-    Wait For Elements State    \#drupal-modal .grants-profile-bank-account-delete-confirm-form     visible
-    Click    \#drupal-modal .grants-profile-bank-account-delete-confirm-form input[type="submit"]
+    Click             button[data-drupal-selector="${bank_account_input}-deletebutton"]
     Sleep   2   # Have to manually wait for ajax load
     Wait Until Network Is Idle
-    Wait For Elements State    \#edit-bankaccountwrapper     visible
-    Get Title           ==    Muokkaa omaa profiilia | ${SITE_NAME}
-    Get Element Count    \#edit-bankaccountwrapper input[type="text"][readonly="readonly"][value="${INPUT_TEMP_BANK_ACCOUNT_NUMBER}"]    ==      0
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
 
 Check Own Profile Info
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
@@ -74,13 +72,13 @@ Check Own Profile Info
     Get Text    .grants-profile-business-id    *=    ${TUNNISTAMO_COMPANY_ID}
 
 Change to Temporary Founding Year
-    Type Text        \#edit-foundingyear    1999
-    Click           \#edit-submit
+    Type Text        [data-drupal-selector="edit-foundingyearwrapper-foundingyear"]    1999
+    Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    \#perustamisvuosi ~ dd:first-of-type    *=    1999
 
 Change To Original Founding Year
-    Type Text        \#edit-foundingyear    2023
-    Click           \#edit-submit
+    Type Text        [data-drupal-selector="edit-foundingyearwrapper-foundingyear"]    2023
+    Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    \#perustamisvuosi ~ dd:first-of-type    *=    2023

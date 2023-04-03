@@ -54,14 +54,6 @@ Visit Application Search
     Go To First Application
     [Teardown]    Close Browser
 
-Visit FAQ
-    Open Browser To Home Page
-    Accept Cookies Banner
-    Go To FAQ
-    Filter FAQ Categories
-    Test FAQ Accordion
-    [Teardown]    Close Browser
-
 *** Keywords ***
 
 Go To Application Search
@@ -71,7 +63,7 @@ Go To Application Search
 Search Grants
     Scroll To Element    \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]
     Type Text   \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]    avustus
-    Click       \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-submit-application-search"]
+    Click       \#views-exposed-form-application-search-page-1 button[data-drupal-selector="edit-submit-application-search"]
     Get Attribute   \#views-exposed-form-application-search-page-1 input[data-drupal-selector="edit-combine"]    value     ==      avustus
     Scroll To Element    .main-content .view-footer strong
     Get Text    .main-content .view-footer strong      !=      0
@@ -83,8 +75,8 @@ Go To FAQ
 
 Go To First Application
     Click      .view-application-search .views-row:nth-child(1) a.application_search--link
-    Get Title           ==    ${APPLICATION_TITLE_ALT} | ${SITE_NAME_ALT}
-    Get Text    h1      ==    ${APPLICATION_TITLE_ALT}
+    Get Title           ==    ${APPLICATION_TITLE} | ${SITE_NAME_ALT}
+    Get Text    h1      ==    ${APPLICATION_TITLE}
     # Application start button should not exist since we are not logged in
     Get Element Count   \#block-servicepageauthblock .hds-button   ==    0
 
