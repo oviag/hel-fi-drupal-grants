@@ -1,12 +1,12 @@
 {
     "name": "city-of-helsinki/drupal-helfi-platform",
-    "description": "Drupal 9 started project",
+    "description": "Helsinki City grants.",
     "type": "project",
     "license": "MIT",
     "homepage": "https://github.com/City-of-Helsinki/drupal-helfi-platform",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "version": "0.3.1",
+    "version": "2023.9",
     "require": {
         "ext-json": "*",
         "composer/installers": "^1.9",
@@ -36,7 +36,7 @@
         "drupal/hdbt": "^4.0",
         "drupal/hdbt_admin": "^1.0",
         "drupal/helfi_ahjo": "^1.0",
-        "drupal/helfi_atv": "^0.9.4",
+        "drupal/helfi_atv": "^0.9.7",
         "drupal/helfi_audit_log": "^0.9",
         "drupal/helfi_azure_fs": "^1.1",
         "drupal/helfi_drupal_tools": "dev-main",
