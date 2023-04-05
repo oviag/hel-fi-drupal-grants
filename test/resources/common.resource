@@ -1,18 +1,24 @@
 *** Settings ***
 Library             Browser
 Library             String
-Resource            ./browser-test-variables.resource
 Resource            ./dev-env-variables.resource
 Resource            ./tunnistamo.resource
 
 *** Keywords ***
 Open Browser To Home Page
     Set Browser Timeout   60s
-    New Browser           ${BROWSER}
+    Run Keyword If    "${browser}" == "chrome"           New Browser    chromium
+    ...    ELSE IF    "${browser}" == "firefox"          New Browser    firefox
+    ...    ELSE IF    "${browser}" == "safari"           New Browser    webkit
+    ...    ELSE                                          New Browser    chromium
     # Needed for local environment testing
     New Context           ignoreHTTPSErrors=True
-    New Page              %{TEST_BASEURL}
-    Get Title             ==    Avustukset | ${SITE_NAME_ALT}
+    Run Keyword If    "${environment}" == "dev"          New Page    https://avustusasiointi.dev.hel.ninja/
+    ...    ELSE IF    "${environment}" == "test"         New Page    https://avustusasiointi.test.hel.ninja/
+    ...    ELSE IF    "${environment}" == "stage"        New Page    https://avustusasiointi.stage.hel.ninja/
+    ...    ELSE IF    "${environment}" == "local"        New Page    https://hel-fi-drupal-grant-applications.docker.so/
+    ...    ELSE                                          New Page    https://hel-fi-drupal-grant-applications.docker.so/
+    Get Title    ==    Avustukset | ${SITE_NAME_ALT}
 
 Accept Cookies Banner
     Sleep               1

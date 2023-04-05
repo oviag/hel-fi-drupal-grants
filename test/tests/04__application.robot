@@ -7,7 +7,6 @@ Library             DateTime
 Suite Setup
 Resource            ../resources/common.resource
 Resource            ../resources/tunnistamo.resource
-Resource            ../resources/browser-test-variables.resource
 Resource            ../resources/dev-env-variables.resource
 
 *** Test Cases ***
