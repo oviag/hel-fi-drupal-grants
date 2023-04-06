@@ -122,6 +122,7 @@ module:
   node: 0
   oembed_providers: 0
   openid_connect: 0
+  openid_connect_logout_redirect: 0
   options: 0
   paragraphs_asymmetric_translation_widgets: 0
   path: 0
@@ -150,6 +151,7 @@ module:
   token: 0
   toolbar: 0
   translatable_menu_link_uri: 0
+  translated_config: 0
   twig_tweak: 0
   update_helper: 0
   user: 0
