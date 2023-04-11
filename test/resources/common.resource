@@ -13,9 +13,9 @@ Open Browser To Home Page
     ...    ELSE                                          New Browser    chromium
     # Needed for local environment testing
     New Context           ignoreHTTPSErrors=True
-    Run Keyword If    "${environment}" == "dev"          New Page    https://avustusasiointi.dev.hel.ninja/
-    ...    ELSE IF    "${environment}" == "test"         New Page    https://avustusasiointi.test.hel.ninja/
-    ...    ELSE IF    "${environment}" == "stage"        New Page    https://avustusasiointi.stage.hel.ninja/
+    Run Keyword If    "${environment}" == "dev"          New Page    https://avustukset.dev.hel.ninja/
+    ...    ELSE IF    "${environment}" == "test"         New Page    https://avustukset.test.hel.ninja/
+    ...    ELSE IF    "${environment}" == "stage"        New Page    https://avustukset.stage.hel.ninja/
     ...    ELSE IF    "${environment}" == "local"        New Page    https://hel-fi-drupal-grant-applications.docker.so/
     ...    ELSE                                          New Page    https://hel-fi-drupal-grant-applications.docker.so/
     Get Title    ==    Avustukset | ${SITE_NAME_ALT}
