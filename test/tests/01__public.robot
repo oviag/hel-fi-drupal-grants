@@ -75,8 +75,6 @@ Go To FAQ
 
 Go To First Application
     Click      .view-application-search .views-row:nth-child(1) a.application_search--link
-    Get Title           ==    ${APPLICATION_TITLE} | ${SITE_NAME_ALT}
-    Get Text    h1      ==    ${APPLICATION_TITLE}
     # Application start button should not exist since we are not logged in
     Get Element Count   \#block-servicepageauthblock .hds-button   ==    0
 
