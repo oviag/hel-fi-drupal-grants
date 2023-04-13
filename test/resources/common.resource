@@ -6,7 +6,6 @@ Resource            ./tunnistamo.resource
 
 *** Keywords ***
 Open Browser To Home Page
-    Set Browser Timeout   60s
     Run Keyword If    "${browser}" == "chrome"           New Browser    chromium
     ...    ELSE IF    "${browser}" == "firefox"          New Browser    firefox
     ...    ELSE IF    "${browser}" == "safari"           New Browser    webkit

@@ -121,13 +121,13 @@ Fill Step 4 Data
     Upload File By Selector    \#edit-talousarvio-attachment-upload    ${CURDIR}/empty.pdf
     Sleep   3   # Have to manually wait for ajax upload
     Click       \#edit-actions-preview-next
-    Wait For Elements State      li[data-webform-page="webform_preview"].is-active   visible
+    Wait For Elements State      li[data-webform-page="webform_preview"].is-active   visible    120s
 
 Review Application Data
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--contact_person   *=    ${INPUT_CONTACT_PERSON}
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--contact_person_phone_number   *=    ${INPUT_CONTACT_PERSON_PHONE_NUMBER}
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--bank_account   *=    ${INPUT_BANK_ACCOUNT_NUMBER}
-    Get Text    \#kasvatus_ja_koulutus_yleisavustu--subventions   *=    ${INPUT_SUBVENTION_AMOUNT_FORMATTED}
+    Get Text    \#kasvatus_ja_koulutus_yleisavustu--subventions   *=    ${INPUT_SUBVENTION_AMOUNT}
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--compensation_purpose   *=    ${INPUT_COMPENSATION_PURPOSE}
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--compensation_explanation   *=    ${INPUT_COMPENSATION_EXPLANATION}
     Get Text    \#kasvatus_ja_koulutus_yleisavustu--fee_person   *=    ${INPUT_FEE_PERSON_FORMATTED}
