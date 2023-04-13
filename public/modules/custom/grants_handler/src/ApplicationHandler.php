@@ -642,9 +642,9 @@ class ApplicationHandler {
     /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
     $atvSchema = \Drupal::service('grants_metadata.atv_schema');
 
-    /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
-    $selectedCompany = $grantsProfileService->getSelectedCompany();
+    $selectedCompany = $grantsProfileService->getSelectedRoleData();
 
     // If no company selected, no mandates no access.
     if ($selectedCompany == NULL) {
@@ -900,7 +900,7 @@ class ApplicationHandler {
       throw new ProfileDataException('No Helsinki profile data found');
     }
 
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
 
     // If we've given data to work with, clear it for copying.
     if (empty($submissionData)) {

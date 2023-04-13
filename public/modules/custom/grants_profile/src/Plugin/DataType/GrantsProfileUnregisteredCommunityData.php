@@ -9,22 +9,19 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * Address DataType.
  *
  * @DataType(
- * id = "grants_profile_profile",
- * label = @Translation("Grants Profile"),
+ * id = "grants_profile_unregistered_community",
+ * label = @Translation("Grants Profile UC"),
  * definition_class =
- *   "\Drupal\grants_profile\TypedData\Definition\GrantsProfileDefinition"
+ *   "\Drupal\grants_profile\TypedData\Definition\GrantsProfileUnregisteredCommunityDefinition"
  * )
  */
-class GrantsProfileData extends Map {
+class GrantsProfileUnregisteredCommunityData extends Map {
 
   /**
    * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
 
-    if ($values['companyStatusSpecial'] == NULL) {
-      $values['companyStatusSpecial'] = '';
-    }
     parent::setValue($values, $notify);
   }
 

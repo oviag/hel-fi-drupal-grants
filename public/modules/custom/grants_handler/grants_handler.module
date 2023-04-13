@@ -5,6 +5,7 @@
  * Provides an example of a webform handler.
  */
 
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Access\AccessResult;
@@ -361,8 +362,12 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
       /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
       $grantsProfileService = \Drupal::service('grants_profile.service');
 
-      $selectedCompany = $grantsProfileService->getSelectedCompany();
-      $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
+      $selectedCompany = $grantsProfileService->getSelectedRoleData();
+      try {
+        $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
+      }
+      catch (GuzzleException $e) {
+      }
 
       if (isset($element['#default_value'])) {
         $formValues = $element['#default_value'];
@@ -403,7 +408,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
       /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
       $grantsProfileService = \Drupal::service('grants_profile.service');
 
-      $selectedCompany = $grantsProfileService->getSelectedCompany();
+      $selectedCompany = $grantsProfileService->getSelectedRoleData();
       $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 
       $defaultDelta = '0';
@@ -553,7 +558,7 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
 
   /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
   $grantsProfileService = \Drupal::service('grants_profile.service');
-  $selectedCompany = $grantsProfileService->getSelectedCompany();
+  $selectedCompany = $grantsProfileService->getSelectedRoleData();
 
   /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
   $webform_submission = $form_state->getFormObject()->getEntity();
