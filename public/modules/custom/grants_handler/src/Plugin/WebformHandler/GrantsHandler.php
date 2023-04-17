@@ -397,27 +397,26 @@ class GrantsHandler extends WebformHandlerBase {
     }
     catch (\Exception $e) {
       $this->messenger()
-        ->addWarning('You must have grants profile created.');
+        ->addWarning(t('You must have grants profile created.'));
 
       $url = Url::fromRoute('grants_profile.edit');
       $redirect = new RedirectResponse($url->toString());
       $redirect->send();
     }
 
-    if (empty($grantsProfile["addresses"])) {
-      $this->messenger()
-        ->addWarning('You must have address saved to your profile.');
+    if (empty($grantsProfile["addresses"]) || empty($grantsProfile["bankAccounts"])) {
+      if (empty($grantsProfile["addresses"])) {
+        $this->messenger()
+          ->addWarning(t('You must have address saved to your profile.'));
+      }
+      if (empty($grantsProfile["bankAccounts"])) {
+        $this->messenger()
+          ->addWarning(t('You must have bank account saved to your profile.'));
+      }
       $url = Url::fromRoute('grants_profile.edit');
       $redirect = new RedirectResponse($url->toString());
       $redirect->send();
-    }
-
-    if (empty($grantsProfile["bankAccounts"])) {
-      $this->messenger()
-        ->addWarning('You must have bank account saved to your profile.');
-      $url = Url::fromRoute('grants_profile.edit');
-      $redirect = new RedirectResponse($url->toString());
-      $redirect->send();
+      exit;
     }
 
     parent::prepareForm($webform_submission, $operation, $form_state);
@@ -973,6 +972,14 @@ class GrantsHandler extends WebformHandlerBase {
         // @todo log errors here.
       }
       $applicationUploadStatus = FALSE;
+      $redirectUrl = Url::fromRoute(
+        '<front>',
+        [
+          'attributes' => [
+            'data-drupal-selector' => 'application-saving-failed-link',
+          ],
+        ]
+      );
       try {
         $applicationUploadStatus = $this->applicationHandler->handleApplicationUploadToAtv(
           $applicationData,
@@ -1028,7 +1035,6 @@ class GrantsHandler extends WebformHandlerBase {
       $this->applicationHandler->clearCache($this->applicationNumber);
       $redirectResponse->send();
 
-      // Return $redirectResponse;.
     }
     if ($this->triggeringElement == '::submit') {
       // Submit is trigger when exiting from confirmation page.
