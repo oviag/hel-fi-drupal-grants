@@ -182,6 +182,51 @@ elements: |-
         '#subvention_type_id__access': false
         '#subvention_type__title': Avustuslaji
         '#subvention_amount__title': 'Avustuksen summa'
+      ensisijainen_taiteen_ala:
+        '#type': select
+        '#title': 'Ensisijainen taiteen ala'
+        '#help': 'Valitse pudotusvalikosta toimintaa parhaiten kuvaava vaihtoehto.'
+        '#options':
+          'Design ja käsityö': 'Design ja käsityö'
+          'Elokuva, valokuva ja media': 'Elokuva, valokuva ja media'
+          Kaupunkikulttuuri: Kaupunkikulttuuri
+          Kirjallisuus: Kirjallisuus
+          'Kuvataide ': 'Kuvataide ja sarjakuva'
+          Monitaide: Monitaide
+          Museo: Museo
+          Musiikki: Musiikki
+          Muu: Muu
+          Sirkus: Sirkus
+          Tanssi: Tanssi
+          Teatteri: Teatteri
+        '#required': true
+      hankkeen_nimi:
+        '#type': textfield
+        '#title': 'Hankkeen nimi'
+        '#help': 'Valitse hankkeelle nimi, joka voidaan julkaista p&auml;&auml;t&ouml;ksen yhteydess&auml;.'
+        '#maxlength': 100
+        '#required': true
+      kyseessa_on_festivaali_tai_tapahtuma:
+        '#type': radios
+        '#title': 'Kyseessä on festivaali tai tapahtuma'
+        '#help': 'T&auml;ss&auml; tarkoitetaan festivaalia tai tapahtumaa, joka tapahtuu tiiviin ajanjakson sis&auml;ll&auml; ja on ohjelmaltaan ja kestoltaan laajempi kuin yksitt&auml;inen konsertti, esitys tms. Festivaali tai tapahtuma sis&auml;lt&auml;&auml; useampia eri ohjelmasis&auml;lt&ouml;j&auml;, esim. esityksi&auml;, joiden v&auml;liss&auml; yleis&ouml; voi my&ouml;s vaihtua. Esimerkiksi kaupunginosatapahtumat. Ei esimerkiksi esityssarjat. Festivaali tai tapahtuma voi olla toistuva tai kertaluonteinen.'
+        '#options':
+          Kyllä: Kyllä
+          Ei: Ei
+        '#required': true
+      hankkeen_tai_toiminnan_lyhyt_esittelyteksti:
+        '#type': textarea
+        '#title': 'Hankkeen tai toiminnan lyhyt esittelyteksti'
+        '#help': 'Teksti voidaan julkaista tai sit&auml; voidaan k&auml;ytt&auml;&auml; esittelytekstin&auml; p&auml;&auml;t&ouml;ksen yhteydess&auml; sellaisenaan tai muokattuna.'
+        '#maxlength': 500
+        '#required': true
+        '#counter_type': character
+        '#counter_maximum': 500
+        '#counter_maximum_message': '%d/500 merkkiä jäljellä'
+        '#states':
+          visible:
+            ':input[name="kyseessa_on_festivaali_tai_tapahtuma"]':
+              value: Kyllä
     muut_samaan_tarkoitukseen_myonnetyt_avustukset:
       '#type': webform_section
       '#title': 'Muut samaan tarkoitukseen myönnetyt avustukset'
@@ -301,21 +346,126 @@ elements: |-
         '#pattern': '^[0-9]*$'
         '#pattern_error': 'Vain numeroita'
         '#size': 16
+    henkilosto_hankkeessa_jolle_avustusta_haetaan:
+      '#type': webform_section
+      '#title': 'Henkilöstö hankkeessa, jolle avustusta haetaan'
+      '#help': 'Henkil&ouml;st&ouml;&ouml;n voi sis&auml;llytt&auml;&auml; muitakin kuin palkattuja ty&ouml;ntekij&ouml;it&auml;, mm. palkkioilla tai muilla korvauksilla ty&ouml;skentelevi&auml; tai ostopalveluna ostettavaa ty&ouml;t&auml;. Kokoaikaiset ty&ouml;ntekij&auml;t voivat sis&auml;lt&auml;&auml; my&ouml;s m&auml;&auml;r&auml;aikaisia ty&ouml;ntekij&ouml;it&auml;, jos n&auml;m&auml; ty&ouml;skentelev&auml;t t&auml;ysp&auml;iv&auml;isesti. Henkil&ouml;ty&ouml;vuosi kuvaa kokoaikaiseksi muutetun henkil&ouml;n ty&ouml;panosta. Esimerkiksi 6kk kokop&auml;iv&auml;isesti ty&ouml;skentelev&auml;st&auml; henkil&ouml;st&auml; voi laskea muodostuvan 0,5 henkil&ouml;ty&ouml;vuotta. Vastaavasti koko vuoden osa-aikaisesti 30% ty&ouml;m&auml;&auml;r&auml;&auml; tekev&auml;st&auml; henkil&ouml;st&auml; voi laskea muodostuvan 0,3 henkil&ouml;ty&ouml;vuotta. Kyseess&auml; on arvio, joka kuvaa suuntaa-antavasti projektiin osallistuvan henkil&ouml;st&ouml;n ty&ouml;panosta.'
+      kokoaikainen_henkilosto:
+        '#type': textfield
+        '#title': 'Kokoaikainen henkilöstö'
+      osa_aikainen_henkilosto:
+        '#type': textfield
+        '#title': 'Osa-aikainen henkilöstö'
+      vapaaehtoinen_henkilosto:
+        '#type': textfield
+        '#title': 'Vapaaehtoinen henkilöstö'
   4_toiminta:
     '#type': webform_wizard_page
     '#title': '4. Toiminta'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
+    arvio_maarista:
+      '#type': webform_section
+      '#title': 'Arvio määristä'
+      '#description': 'Sy&ouml;t&auml; tiedot koskien koko hanketta, johon avustusta haetaan. Sy&ouml;t&auml; tiedot vain fyysisten esitysten, n&auml;yttelyiden ja ty&ouml;pajojen osalta, &auml;l&auml; laske mukaan pelk&auml;st&auml;&auml;n digitaalisina toteutettuja ohjelmasis&auml;lt&ouml;j&auml;.'
+      markup:
+        '#type': webform_markup
+        '#markup': 'T&auml;h&auml;n tulee Toiminta-osiolle custom composite.'
   5_toiminnan_lahtokohdat:
     '#type': webform_wizard_page
     '#title': '5. Toiminnan lähtökohdat'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
+    toiminnan_sisallot:
+      '#type': webform_section
+      '#title': 'Toiminnan sisällöt'
+      toiminta_taiteelliset_lahtokohdat:
+        '#type': textarea
+        '#title': 'Kuvaa toiminnan taiteellisia lähtökohtia ja tavoitteita, taiteellista ammattimaisuutta sekä asemaa taiteen kentällä.'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+      toiminta_tasa_arvo:
+        '#type': textarea
+        '#title': 'Miten monimuotoisuus ja tasa-arvo toteutuu ja näkyy toiminnan järjestäjissä ja organisaatioissa sekä toiminnan sisällöissä? Minkälaisia toimenpiteitä, resursseja ja osaamista on asian edistämiseksi?'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+    toiminnan_tavoittavuus:
+      '#type': webform_section
+      '#title': 'Toiminnan tavoittavuus'
+      toiminta_saavutettavuus:
+        '#type': textarea
+        '#title': 'Miten toiminta tehdään kaupunkilaiselle sosiaalisesti, kulttuurisesti, kielellisesti, taloudellisesti, fyysisesti, alueellisesti tai muutoin mahdollisimman saavutettavaksi? Minkälaisia toimenpiteitä, resursseja ja osaamista on asian edistämiseksi?'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+      toiminta_yhteisollisyys:
+        '#type': textarea
+        '#title': 'Miten toiminta vahvistaa yhteisöllisyyttä, verkostomaista yhteistyöskentelyä ja miten kaupunkilaisten on mahdollista osallistua toiminnan eri vaiheisiin? Minkälaisia toimenpiteitä, resursseja ja osaamista on asian edistämiseksi?'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+      toiminta_kohderyhmat:
+        '#type': textarea
+        '#title': 'Keitä toiminnalla tavoitellaan? Miten kyseiset kohderyhmät aiotaan tavoittaa ja mitä osaamista näiden kanssa työskentelyyn on?'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+    toiminnan_jarjestaminen:
+      '#type': webform_section
+      '#title': 'Toiminnan järjestäminen'
+      toiminta_ammattimaisuus:
+        '#type': textarea
+        '#title': 'Kuvaa toiminnan järjestämisen ammattimaisuutta ja organisoimista'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+      toiminta_ekologisuus:
+        '#type': textarea
+        '#title': 'Miten ekologisuus huomioidaan toiminnan järjestämisessä? Minkälaisia toimenpiteitä, resursseja ja osaamista on asian edistämiseksi?'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
+      toiminta_yhteistyokumppanit:
+        '#type': textarea
+        '#title': 'Nimeä keskeisimmät yhteistyökumppanit ja kuvaa yhteistyön muotoja ja ehtoja.'
+        '#help': 'Nime&auml; maksimissaan noin viisi yhteisty&ouml;kumppania.'
+        '#maxlength': 1000
+        '#counter_type': character
+        '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
   6_talous:
     '#type': webform_wizard_page
     '#title': '6. Talous'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
+    talousarvio:
+      '#type': webform_section
+      '#title': Talousarvio
+      '#states':
+        visible:
+          - ':input[name="applicant_type"]':
+              value: private_person
+          - or
+          - ':input[name="applicant_type"]':
+              value: unregistered_community
+          - or
+          - ':input[name="applicant_type"]':
+              value: registered_community
+      organisaatio_kuuluu_valtionosuusjarjestelmaan:
+        '#type': checkbox
+        '#title': 'Organisaatio kuuluu valtionosuusjärjestelmään (VOS)'
+    tahan_tulee_talousarvio_komponentti:
+      '#type': webform_section
+      '#title': 'tähän tulee talousarvio-komponentti'
   lisatiedot_ja_liitteet:
     '#type': webform_wizard_page
     '#title': '7. Lisätiedot ja liitteet'
@@ -362,6 +512,19 @@ elements: |-
           </div>
           </div>
         '#format': full_html
+      tyoryhman_jasenten_ansioluettelot:
+        '#type': grants_attachments
+        '#title': 'Työryhmän jäsenten ansioluettelot, kun kyseessä on taiteen ammattilaisten hanke.'
+        '#multiple': 10
+        '#filetype': '0'
+        '#title_display': before
+        '#multiple__item_label': liite
+        '#multiple__sorting': false
+        '#multiple__add': false
+        '#multiple__add_more_input': false
+        '#multiple__add_more_button_label': 'Lisää liite'
+        '#isDeliveredLater__access': false
+        '#isIncludedInOtherFile__access': false
       extra_info:
         '#type': textarea
         '#title': 'Lisäselvitys liitteistä'
