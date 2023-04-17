@@ -34,7 +34,6 @@ class KaskoYleisavustusDefinition extends ComplexDataDefinitionBase {
           'compensationInfo',
           'compensationArray',
         ]);
-
     }
     return $this->propertyDefinitions;
   }

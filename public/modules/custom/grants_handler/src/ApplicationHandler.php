@@ -993,7 +993,6 @@ class ApplicationHandler {
     string $applicationNumber
   ) {
 
-    /** @var \Drupal\Core\TypedData\TypedDataInterface $applicationData */
     $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData);
 
     $atvDocument = $this->getAtvDocument($applicationNumber);
@@ -1175,9 +1174,10 @@ class ApplicationHandler {
    * @return array
    *   Sender details.
    *
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
    * @throws \Drupal\grants_handler\ApplicationException
    */
-  public function parseSenderDetails() {
+  public function parseSenderDetails(): array {
     // Set sender information after save so no accidental saving of data.
     $userProfileData = $this->helfiHelsinkiProfiiliUserdata->getUserProfileData();
     $userData = $this->helfiHelsinkiProfiiliUserdata->getUserData();
