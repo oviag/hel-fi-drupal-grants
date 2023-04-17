@@ -2,6 +2,7 @@
 
 
 ## 2023.11
+- 5d0ffccc fix: Limit attachment validations to allow file deletion.
 - f962b90b fix: AU-855: Re-style status tags (#306)
 - f2cfb4cf feat: AU-539 Redirect after logout (#308)
 - 4fd72dda feat: AU-776: Install and configure disable_messages module (#307)
