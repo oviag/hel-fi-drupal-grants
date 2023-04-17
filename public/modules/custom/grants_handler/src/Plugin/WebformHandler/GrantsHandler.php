@@ -461,10 +461,8 @@ class GrantsHandler extends WebformHandlerBase {
       }
     }
 
-    $form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]["applicant_type"] = [
-      '#type' => 'hidden',
-      '#value' => $applicantType,
-    ];
+    $form["elements"]["1_hakijan_tiedot"]["applicant_type"]['#value'] = $applicantType;
+
 
     $thisYear = (integer) date('Y');
     $thisYearPlus1 = $thisYear + 1;

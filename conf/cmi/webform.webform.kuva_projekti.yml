@@ -45,7 +45,7 @@ elements: |-
       '#title': 'Hakemuksen tila'
       '#readonly': true
     applicant_type:
-      '#type': hidden
+      '#type': textfield
       '#title': 'Hakijan tyyppi'
     hakemusprofiili:
       '#type': webform_section
@@ -114,11 +114,11 @@ elements: |-
       '#title': Tilinumero
       bank_account:
         '#type': bank_account_composite
-        '#title': 'Yhteisön tilinumero'
+        '#title': Tilinumero
+        '#required': true
         '#attributes':
           class:
             - webform--medium
-        '#required': true
     toiminnasta_vastaavat_henkilot:
       '#type': webform_section
       '#title': 'Toiminnasta vastaavat henkilöt'
