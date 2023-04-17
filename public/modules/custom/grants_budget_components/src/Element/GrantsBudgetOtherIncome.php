@@ -29,8 +29,10 @@ class GrantsBudgetOtherIncome extends WebformCompositeBase {
     return parent::getInfo() + ['#theme' => 'webform_grants_budget_other_income'];
   }
 
+  // @codingStandardsIgnoreStart
+
   /**
-   * Build webform element based on data in ATV document.
+   * Process default values and values from submitted data.
    *
    * @param array $element
    *   Element that is being processed.
@@ -59,6 +61,8 @@ class GrantsBudgetOtherIncome extends WebformCompositeBase {
     return $element;
   }
 
+  // @codingStandardsIgnoreEnd
+
   /**
    * {@inheritdoc}
    */
@@ -73,8 +77,8 @@ class GrantsBudgetOtherIncome extends WebformCompositeBase {
       '#type' => 'textfield',
       '#title' => t('Value'),
       '#attributes' => [
-        ' type' =>  'number'
-      ]
+        ' type' => 'number',
+      ],
     ];
 
     $elements['incomeGroupName'] = [

@@ -2,8 +2,6 @@
 
 namespace Drupal\grants_budget_components\Plugin\WebformElement;
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * Provides a 'grants_budget_other_income' element.
  *

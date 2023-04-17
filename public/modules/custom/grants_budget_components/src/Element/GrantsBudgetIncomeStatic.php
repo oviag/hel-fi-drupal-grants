@@ -2,10 +2,8 @@
 
 namespace Drupal\grants_budget_components\Element;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Element\WebformCompositeBase;
-use Drupal\webform\WebformSubmissionInterface;
 
 /**
  * Provides a 'grants_budget_income_static'.
@@ -31,8 +29,10 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
     return parent::getInfo() + ['#theme' => 'grants_budget_income_static'];
   }
 
+  // @codingStandardsIgnoreStart
+
   /**
-   * Build webform element based on data in ATV document.
+   * Process default values and values from submitted data.
    *
    * @param array $element
    *   Element that is being processed.
@@ -61,6 +61,8 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
     return $element;
   }
 
+  // @codingStandardsIgnoreEnd
+
   /**
    * {@inheritdoc}
    */
@@ -69,13 +71,13 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
 
     $fieldNames = self::getFieldNames();
 
-    foreach ($fieldNames as $fieldName) {
-      $elements[$fieldName] = [
+    foreach ($fieldNames as $key => $fieldName) {
+      $elements[$key] = [
         '#type' => 'textfield',
-        '#title' => t($fieldName),
+        '#title' => $fieldName,
         '#attributes' => [
-          ' type' =>  'number'
-        ]
+          ' type' => 'number',
+        ],
       ];
     }
 
@@ -91,30 +93,37 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
     return $elements;
   }
 
+  /**
+   * Get field names for this element.
+   *
+   * @return array
+   *   Array of the field keys.
+   */
   public static function getFieldNames(): array {
+    $tOpts = ['context' => 'grants_budget_components'];
     return [
-      "compensation",
-      "customerFees",
-      "donations",
-      "entryFees",
-      "otherCompensations",
-      "sponsorships",
-      "sales",
-      "compensationFromCulturalAffairs",
-      "otherCompensationFromCity",
-      "otherCompensationType",
-      "totalIncome",
-      "incomeWithoutCompensations",
-      "plannedStateOperativeSubvention",
-      "plannedOtherCompensations",
-      "ownFunding",
-      "financialFundingAndInterests",
-      "plannedTotalIncome",
-      "plannedTotalIncomeWithoutSubventions",
-      "plannedShareOfIncomeWithoutSubventions",
-      "stateOperativeSubvention",
-      "totalIncomeWithoutSubventions",
-      "shareOfIncomeWithoutSubventions"
+      "compensation" => t("compensation", [], $tOpts),
+      "customerFees" => t("customerFees", [], $tOpts),
+      "donations" => t("donations", [], $tOpts),
+      "entryFees" => t("entryFees", [], $tOpts),
+      "otherCompensations" => t("otherCompensations", [], $tOpts),
+      "sponsorships" => t("sponsorships", [], $tOpts),
+      "sales" => t("sales", [], $tOpts),
+      "compensationFromCulturalAffairs" => t("compensationFromCulturalAffairs", [], $tOpts),
+      "otherCompensationFromCity" => t("otherCompensationFromCity", [], $tOpts),
+      "otherCompensationType" => t("otherCompensationType", [], $tOpts),
+      "totalIncome" => t("totalIncome", [], $tOpts),
+      "incomeWithoutCompensations" => t("incomeWithoutCompensations", [], $tOpts),
+      "plannedStateOperativeSubvention" => t("plannedStateOperativeSubvention", [], $tOpts),
+      "plannedOtherCompensations" => t("plannedOtherCompensations", [], $tOpts),
+      "ownFunding" => t("ownFunding", [], $tOpts),
+      "financialFundingAndInterests" => t("financialFundingAndInterests", [], $tOpts),
+      "plannedTotalIncome" => t("plannedTotalIncome", [], $tOpts),
+      "plannedTotalIncomeWithoutSubventions" => t("plannedTotalIncomeWithoutSubventions", [], $tOpts),
+      "plannedShareOfIncomeWithoutSubventions" => t("plannedShareOfIncomeWithoutSubventions", [], $tOpts),
+      "stateOperativeSubvention" => t("stateOperativeSubvention", [], $tOpts),
+      "totalIncomeWithoutSubventions" => t("totalIncomeWithoutSubventions", [], $tOpts),
+      "shareOfIncomeWithoutSubventions" => t("shareOfIncomeWithoutSubventions", [], $tOpts),
     ];
   }
 

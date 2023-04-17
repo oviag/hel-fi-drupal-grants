@@ -5,6 +5,9 @@ namespace Drupal\grants_budget_components\Plugin\WebformElement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 
+/**
+ * Base component for budget webform elements.
+ */
 class GrantsBudgetBase extends WebformCompositeBase {
 
   /**
@@ -40,7 +43,7 @@ class GrantsBudgetBase extends WebformCompositeBase {
     $form['element']['incomeGroup'] = [
       '#type' => 'select',
       '#title' => $this->t('Income group'),
-      '#options' => $this->getIncomeGroupOptions()
+      '#options' => $this->getIncomeGroupOptions(),
     ];
 
     return $form;

@@ -29,8 +29,10 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
     return parent::getInfo() + ['#theme' => 'webform_grants_budget_cost_static'];
   }
 
+  // @codingStandardsIgnoreStart
+
   /**
-   * Build webform element based on data in ATV document.
+   * Process default values and values from submitted data.
    *
    * @param array $element
    *   Element that is being processed.
@@ -59,6 +61,8 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
     return $element;
   }
 
+  // @codingStandardsIgnoreEnd
+
   /**
    * {@inheritdoc}
    */
@@ -67,13 +71,13 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
 
     $fieldNames = self::getFieldNames();
 
-    foreach ($fieldNames as $fieldName) {
-      $elements[$fieldName] = [
+    foreach ($fieldNames as $key => $fieldName) {
+      $elements[$key] = [
         '#type' => 'textfield',
-        '#title' => t($fieldName),
+        '#title' => $fieldName,
         '#attributes' => [
-          ' type' =>  'number'
-        ]
+          ' type' => 'number',
+        ],
       ];
     }
 
@@ -89,51 +93,58 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
     return $elements;
   }
 
+  /**
+   * Get field names for this element.
+   *
+   * @return array
+   *   Array of the field keys.
+   */
   public static function getFieldNames(): array {
+    $tOpts = ['context' => 'grants_budget_components'];
     return [
-      "salaries",
-      "personnelSocialSecurityCosts",
-      "rentSum",
-      "materials",
-      "transport",
-      "food",
-      "pr",
-      "insurance",
-      "snacks",
-      "cleaning",
-      "premisesService",
-      "travel",
-      "heating",
-      "servicesTotal",
-      "water",
-      "electricity",
-      "suppliesTotal",
-      "admin",
-      "accounting",
-      "health",
-      "otherCostsTotal",
-      "services",
-      "supplies",
-      "useOfCustomerFeesTotal",
-      "totalCosts",
-      "netCosts",
-      "performerFees",
-      "otherFees",
-      "personnelSideCosts",
-      "generalCosts",
-      "permits",
-      "setsAndCostumes",
-      "equipment",
-      "premises",
-      "security",
-      "marketing",
-      "costsWithoutDeferredItems",
-      "generalCostsTotal",
-      "allCostsTotal",
-      "showCosts",
-      "travelCosts",
-      "transportCosts",
-      "plannedTotalCosts"
+      "salaries" => t("salaries", [], $tOpts),
+      "personnelSocialSecurityCosts" => t("personnelSocialSecurityCosts", [], $tOpts),
+      "rentSum" => t("rentSum", [], $tOpts),
+      "materials" => t("materials", [], $tOpts),
+      "transport" => t("transport", [], $tOpts),
+      "food" => t("food", [], $tOpts),
+      "pr" => t("pr", [], $tOpts),
+      "insurance" => t("insurance", [], $tOpts),
+      "snacks" => t("snacks", [], $tOpts),
+      "cleaning" => t("cleaning", [], $tOpts),
+      "premisesService" => t("premisesService", [], $tOpts),
+      "travel" => t("travel", [], $tOpts),
+      "heating" => t("heating", [], $tOpts),
+      "servicesTotal" => t("servicesTotal", [], $tOpts),
+      "water" => t("water", [], $tOpts),
+      "electricity" => t("electricity", [], $tOpts),
+      "suppliesTotal" => t("suppliesTotal", [], $tOpts),
+      "admin" => t("admin", [], $tOpts),
+      "accounting" => t("accounting", [], $tOpts),
+      "health" => t("health", [], $tOpts),
+      "otherCostsTotal" => t("otherCostsTotal", [], $tOpts),
+      "services" => t("services", [], $tOpts),
+      "supplies" => t("supplies", [], $tOpts),
+      "useOfCustomerFeesTotal" => t("useOfCustomerFeesTotal", [], $tOpts),
+      "totalCosts" => t("totalCosts", [], $tOpts),
+      "netCosts" => t("netCosts", [], $tOpts),
+      "performerFees" => t("performerFees", [], $tOpts),
+      "otherFees" => t("otherFees", [], $tOpts),
+      "personnelSideCosts" => t("personnelSideCosts", [], $tOpts),
+      "generalCosts" => t("generalCosts", [], $tOpts),
+      "permits" => t("permits", [], $tOpts),
+      "setsAndCostumes" => t("setsAndCostumes", [], $tOpts),
+      "equipment" => t("equipment", [], $tOpts),
+      "premises" => t("premises", [], $tOpts),
+      "security" => t("security", [], $tOpts),
+      "marketing" => t("marketing", [], $tOpts),
+      "costsWithoutDeferredItems" => t("costsWithoutDeferredItems", [], $tOpts),
+      "generalCostsTotal" => t("generalCostsTotal", [], $tOpts),
+      "allCostsTotal" => t("allCostsTotal", [], $tOpts),
+      "showCosts" => t("showCosts", [], $tOpts),
+      "travelCosts" => t("travelCosts", [], $tOpts),
+      "transportCosts" => t("transportCosts", [], $tOpts),
+      "plannedTotalCosts" => t("plannedTotalCosts", [], $tOpts),
     ];
   }
 
