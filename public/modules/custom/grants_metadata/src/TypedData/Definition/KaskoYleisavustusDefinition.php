@@ -42,11 +42,6 @@ class KaskoYleisavustusDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedPremisesArray',
         ])
-        ->setSetting('usedFields', [
-          'premiseName',
-          'postCode',
-          'isOwnedByCity',
-        ])
         ->setSetting('fullItemValueCallback', [
           'service' => 'grants_premises.service',
           'method' => 'processPremises',

@@ -350,6 +350,7 @@ class AtvSchema {
       $requiredInJson = $definition->getSetting('requiredInJson');
       $defaultValue = $definition->getSetting('defaultValue');
       $valueCallback = $definition->getSetting('valueCallback');
+
       $fullItemValueCallback = $definition->getSetting('fullItemValueCallback');
 
       $propertyName = $property->getName();
