@@ -342,7 +342,7 @@ class GrantsHandler extends WebformHandlerBase {
 
       // These both are required to be selected.
       // probably will change when we have proper company selection process.
-      $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+      $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
 
       if ($selectedCompany == NULL) {
         throw new CompanySelectException('User not authorised');
@@ -356,6 +356,8 @@ class GrantsHandler extends WebformHandlerBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function prepareForm(WebformSubmissionInterface $webform_submission, $operation, FormStateInterface $form_state) {
 
@@ -381,14 +383,14 @@ class GrantsHandler extends WebformHandlerBase {
 
     // These both are required to be selected.
     // probably will change when we have proper company selection process.
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
 
     if ($selectedCompany == NULL) {
       throw new CompanySelectException('User not authorised');
     }
 
     try {
-      $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany['identifier']);
+      $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany);
       if (gettype($grantsProfileDocument) == 'object' && get_class($grantsProfileDocument) == 'Drupal\helfi_atv\AtvDocument') {
         $grantsProfile = $grantsProfileDocument->getContent();
       }
@@ -774,7 +776,7 @@ class GrantsHandler extends WebformHandlerBase {
 
     // Get regdate from profile data and format it for Avustus2
     // This data is immutable for end user so safe to this way.
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
     $grantsProfile = $this->grantsProfileService->getGrantsProfileContent($selectedCompany);
     $regDate = new DrupalDateTime($grantsProfile["registrationDate"], 'Europe/Helsinki');
     $this->submittedFormData["registration_date"] = $regDate->format('Y-m-d\TH:i:s');
