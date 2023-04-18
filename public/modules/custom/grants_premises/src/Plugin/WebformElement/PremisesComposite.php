@@ -92,16 +92,6 @@ class PremisesComposite extends WebformCompositeBase {
   }
 
   /**
-   * {@inheritDoc}
-   */
-  public function getValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-
-    return $value;
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   protected function formatHtmlItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []): array|string {
@@ -113,7 +103,12 @@ class PremisesComposite extends WebformCompositeBase {
    */
   protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []): array {
     $value = $this->getValue($element, $webform_submission, $options);
-    $lines = ['Lines, yes please: premisesComposite'];
+    $lines = [];
+    foreach ($value as $fieldName => $fieldValue) {
+      $webformElement = $element["#webform_composite_elements"][$fieldName];
+      $lines[] = $webformElement['#title']->render();
+      $lines[] = $fieldValue;
+    }
 
     return $lines;
   }

@@ -739,8 +739,13 @@ class AtvSchema {
    *   Definition.
    *
    * @return array
+   *   Full item callback array.
    */
-  public function getFieldValuesFromFullItemCallback(array $fullItemValueCallback, ItemList $property, DataDefinitionInterface $definition): mixed {
+  public function getFieldValuesFromFullItemCallback(
+    array $fullItemValueCallback,
+    ItemList $property,
+    DataDefinitionInterface $definition
+  ): mixed {
     $fieldValues = [];
     if ($fullItemValueCallback['service']) {
       $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);

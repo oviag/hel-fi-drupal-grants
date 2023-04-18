@@ -18,7 +18,7 @@ class GrantsPremisesDefinition extends ComplexDataDefinitionBase {
       $info = &$this->propertyDefinitions;
 
       $info['premiseName'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Nimi')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
@@ -26,7 +26,7 @@ class GrantsPremisesDefinition extends ComplexDataDefinitionBase {
         ]);
 
       $info['premiseAddress'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Osoite')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
@@ -34,28 +34,28 @@ class GrantsPremisesDefinition extends ComplexDataDefinitionBase {
         ]);
 
       $info['location'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Sijainti')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
           'location',
         ]);
       $info['streetAddress'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Katuosoite')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
           'streetAddress',
         ]);
       $info['address'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Osoite')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
           'address',
         ]);
       $info['postCode'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Postinumero')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',
@@ -146,7 +146,7 @@ class GrantsPremisesDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'bool',
         ]);
       $info['isOwnedByCity'] = DataDefinition::create('string')
-        ->setLabel('description')
+        ->setLabel('Kyseessä on kaupungin omistama tila')
         ->setSetting('jsonPath', [
           'activityInfo',
           'plannedPremisesArray',

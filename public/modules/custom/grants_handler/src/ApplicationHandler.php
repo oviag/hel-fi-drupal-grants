@@ -563,7 +563,7 @@ class ApplicationHandler {
     // Explode number.
     $exploded = explode('-', $applicationNumber);
     // Get serial.
-    $number = array_pop($exploded);
+    array_pop($exploded);
     // Get shortcode.
     $webformShortCode = array_pop($exploded);
 
@@ -822,7 +822,6 @@ class ApplicationHandler {
         $propertyPath = $violation->getPropertyPath();
 
         $thisProperty = $appProps[$propertyPath];
-        // $webformElement = $webformElements[$propertyPath];
         $thisDefinition = $thisProperty->getDataDefinition();
         $label = $thisDefinition->getLabel();
         $thisDefinitionSettings = $thisDefinition->getSettings();
@@ -1157,12 +1156,12 @@ class ApplicationHandler {
         $msgUnread = TRUE;
       }
 
-      if ($onlyUnread == TRUE && $msgUnread == TRUE) {
+      if ($onlyUnread === TRUE && $msgUnread === TRUE) {
         $unread[$ts] = $message;
       }
       $messages[$ts] = $message;
     }
-    if ($onlyUnread == TRUE) {
+    if ($onlyUnread === TRUE) {
       return $unread;
     }
     return $messages;
@@ -1306,7 +1305,7 @@ class ApplicationHandler {
         else {
           $submission = $submissionObject;
         }
-        if ($sortByFinished == TRUE) {
+        if ($sortByFinished === TRUE) {
           if (self::isSubmissionFinished($submission)) {
             $finished[$ts] = $submission;
           }
@@ -1314,7 +1313,7 @@ class ApplicationHandler {
             $unfinished[$ts] = $submission;
           }
         }
-        elseif ($sortByStatus == TRUE) {
+        elseif ($sortByStatus === TRUE) {
           $applications[$submissionData['status']][] = $submission;
         }
         else {
@@ -1323,7 +1322,7 @@ class ApplicationHandler {
       }
     }
 
-    if ($sortByFinished == TRUE) {
+    if ($sortByFinished === TRUE) {
       ksort($finished);
       ksort($unfinished);
       return [
