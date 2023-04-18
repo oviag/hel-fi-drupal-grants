@@ -8,6 +8,7 @@ use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
+use Drupal\Core\TypedData\Plugin\DataType\ItemList;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_attachments\AttachmentHandler;
@@ -271,7 +272,7 @@ class AtvSchema {
    * @return string[]
    *   Array with dataType & jsonType.
    */
-  protected function getJsonTypeForDataType(DataDefinition $definition): array {
+  public static function getJsonTypeForDataType(DataDefinition $definition): array {
     $propertyType = $definition->getDataType();
     // Default both types same.
     $retval = [
@@ -349,6 +350,7 @@ class AtvSchema {
       $requiredInJson = $definition->getSetting('requiredInJson');
       $defaultValue = $definition->getSetting('defaultValue');
       $valueCallback = $definition->getSetting('valueCallback');
+      $fullItemValueCallback = $definition->getSetting('fullItemValueCallback');
 
       $propertyName = $property->getName();
       $propertyLabel = $definition->getLabel();
@@ -372,7 +374,7 @@ class AtvSchema {
 
       $schema = $this->getPropertySchema($elementName, $this->structure);
 
-      $itemTypes = $this->getJsonTypeForDataType($definition);
+      $itemTypes = self::getJsonTypeForDataType($definition);
       $itemValue = $this->getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
 
       switch ($numberOfItems) {
@@ -388,37 +390,50 @@ class AtvSchema {
 
         case 3:
           if (is_array($itemValue) && $this->numericKeys($itemValue)) {
-            if (empty($itemValue)) {
-              if ($requiredInJson == TRUE) {
-                $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName] = $itemValue;
+            if ($fullItemValueCallback) {
+              $fieldValues = $this->getFieldValuesFromFullItemCallback($fullItemValueCallback, $property, $definition);
+              if (empty($fieldValues)) {
+                if ($requiredInJson) {
+                  $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName] = $fieldValues;
+                }
+              }
+              else {
+                $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName] = $fieldValues;
               }
             }
             else {
-              foreach ($property as $itemIndex => $item) {
-                $fieldValues = [];
-                $propertyItem = $item->getValue();
-                $itemDataDefinition = $item->getDataDefinition();
-                $itemValueDefinitions = $itemDataDefinition->getPropertyDefinitions();
-                foreach ($itemValueDefinitions as $itemName => $itemValueDefinition) {
-                  $itemValueDefinitionLabel = $itemValueDefinition->getLabel();
-                  $itemTypes = $this->getJsonTypeForDataType($itemValueDefinition);
-
-                  if (isset($propertyItem[$itemName])) {
-                    $itemValue = $propertyItem[$itemName];
-
-                    $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
-
-                    $idValue = $itemName;
-                    $valueArray = [
-                      'ID' => $idValue,
-                      'value' => $itemValue,
-                      'valueType' => $itemTypes['jsonType'],
-                      'label' => $itemValueDefinitionLabel,
-                    ];
-                    $fieldValues[] = $valueArray;
-                  }
+              if (empty($itemValue)) {
+                if ($requiredInJson) {
+                  $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName] = $itemValue;
                 }
-                $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName][$itemIndex] = $fieldValues;
+              }
+              else {
+                foreach ($property as $itemIndex => $item) {
+                  $fieldValues = [];
+                  $propertyItem = $item->getValue();
+                  $itemDataDefinition = $item->getDataDefinition();
+                  $itemValueDefinitions = $itemDataDefinition->getPropertyDefinitions();
+                  foreach ($itemValueDefinitions as $itemName => $itemValueDefinition) {
+                    $itemValueDefinitionLabel = $itemValueDefinition->getLabel();
+                    $itemTypes = self::getJsonTypeForDataType($itemValueDefinition);
+
+                    if (isset($propertyItem[$itemName])) {
+                      $itemValue = $propertyItem[$itemName];
+
+                      $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
+
+                      $idValue = $itemName;
+                      $valueArray = [
+                        'ID' => $idValue,
+                        'value' => $itemValue,
+                        'valueType' => $itemTypes['jsonType'],
+                        'label' => $itemValueDefinitionLabel,
+                      ];
+                      $fieldValues[] = $valueArray;
+                    }
+                  }
+                  $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName][$itemIndex] = $fieldValues;
+                }
               }
             }
           }
@@ -431,7 +446,7 @@ class AtvSchema {
             ];
             if ($schema['type'] == 'number') {
               if ($itemValue == NULL) {
-                if ($requiredInJson == TRUE) {
+                if ($requiredInJson) {
                   $documentStructure[$jsonPath[0]][$jsonPath[1]][] = $valueArray;
                 }
               }
@@ -455,7 +470,7 @@ class AtvSchema {
                 $itemValueDefinitions = $itemDataDefinition->getPropertyDefinitions();
                 foreach ($itemValueDefinitions as $itemName => $itemValueDefinition) {
                   $itemValueDefinitionLabel = $itemValueDefinition->getLabel();
-                  $itemTypes = $this->getJsonTypeForDataType($itemValueDefinition);
+                  $itemTypes = self::getJsonTypeForDataType($itemValueDefinition);
                   if (isset($propertyItem[$itemName])) {
                     // What to do with empty values.
                     $itemSkipEmpty = $itemValueDefinition->getSetting('skipEmptyValue');
@@ -711,6 +726,40 @@ class AtvSchema {
       }
     }
     return $itemValue;
+  }
+
+  /**
+   * Get field values from full item callback.
+   *
+   * @param array $fullItemValueCallback
+   *   Callback config.
+   * @param \Drupal\Core\TypedData\Plugin\DataType\ItemList $property
+   *   Property.
+   * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
+   *   Definition.
+   *
+   * @return array
+   *   Full item callback array.
+   */
+  public function getFieldValuesFromFullItemCallback(
+    array $fullItemValueCallback,
+    ItemList $property,
+    DataDefinitionInterface $definition
+  ): mixed {
+    $fieldValues = [];
+    if ($fullItemValueCallback['service']) {
+      $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);
+      $funcName = $fullItemValueCallback['method'];
+
+      $fieldValues = $fullItemValueService->$funcName($property);
+    }
+    else {
+      if ($fullItemValueCallback['class']) {
+        $funcName = $fullItemValueCallback['method'];
+        $fieldValues = $fullItemValueCallback['class']::$funcName($definition, $property);
+      }
+    }
+    return $fieldValues;
   }
 
 }
