@@ -2,6 +2,7 @@
 
 namespace Drupal\grants_handler\Plugin\WebformHandler;
 
+use Drupal\grants_handler\ApplicationException;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -710,6 +711,9 @@ class GrantsHandler extends WebformHandlerBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function validateForm(
     array &$form,
@@ -733,9 +737,13 @@ class GrantsHandler extends WebformHandlerBase {
     $this->setTotals();
 
     // Merge form sender data from handler.
-    $this->submittedFormData = array_merge(
-      $this->submittedFormData,
-      $this->applicationHandler->parseSenderDetails());
+    try {
+      $this->submittedFormData = array_merge(
+        $this->submittedFormData,
+        $this->applicationHandler->parseSenderDetails());
+    }
+    catch (ApplicationException $e) {
+    }
 
     $this->submittedFormData['applicant_type'] = $form_state
       ->getValue('applicant_type');
@@ -972,6 +980,14 @@ class GrantsHandler extends WebformHandlerBase {
         // @todo log errors here.
       }
       $applicationUploadStatus = FALSE;
+      $redirectUrl = Url::fromRoute(
+        '<front>',
+        [
+          'attributes' => [
+            'data-drupal-selector' => 'application-saving-failed-link',
+          ],
+        ]
+      );
       try {
         $applicationUploadStatus = $this->applicationHandler->handleApplicationUploadToAtv(
           $applicationData,
@@ -1027,7 +1043,6 @@ class GrantsHandler extends WebformHandlerBase {
       $this->applicationHandler->clearCache($this->applicationNumber);
       $redirectResponse->send();
 
-      // Return $redirectResponse;.
     }
     if ($this->triggeringElement == '::submit') {
       // Submit is trigger when exiting from confirmation page.
