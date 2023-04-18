@@ -148,7 +148,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     ];
     $form['addressWrapper']['country'] = [
       '#type' => 'select',
-      '#title' => $this->t('Country', [], ['context' => 'Profile Address']),
+      '#title' => $this->t('Country'),
       '#options' => CountryManager::getStandardList(),
       '#default_value' => $address['country'] ?? 'FI'
     ];

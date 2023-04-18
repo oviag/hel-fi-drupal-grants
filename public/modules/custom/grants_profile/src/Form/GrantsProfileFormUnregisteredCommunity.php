@@ -4,6 +4,7 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Locale\CountryManager;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfileUnregisteredCommunityDefinition;
@@ -427,7 +428,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . ($propertyPathArray[1] + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . (intval($propertyPathArray[1]) + 1) . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -436,12 +437,12 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . ($propertyPathArray[1] + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . (intval($propertyPathArray[1]) + 1) . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . ($propertyPathArray[1] + 1) . '][official][' . $propertyPathArray[2];
+            $propertyPath = 'officialWrapper][' . (intval($propertyPathArray[1]) + 1) . '][official][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
@@ -627,6 +628,12 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
         '#type' => 'textfield',
         '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
         '#default_value' => $address['city'],
+      ];
+      $form['addressWrapper'][$delta]['address']['country'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Country'),
+        '#options' => CountryManager::getStandardList(),
+        '#default_value' => $address['country'] ?? 'FI'
       ];
       // We need the delta / id to create delete links in element.
       $form['addressWrapper'][$delta]['address']['address_id'] = [
