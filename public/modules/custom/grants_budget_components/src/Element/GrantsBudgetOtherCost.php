@@ -50,12 +50,12 @@ class GrantsBudgetOtherCost extends WebformCompositeBase {
     $element = parent::processWebformComposite($element, $form_state, $complete_form);
     $dataForElement = $element['#value'];
 
-    if (isset($dataForElement['incomeGroupName'])) {
-      $element['incomeGroupName']['#value'] = $dataForElement['incomeGroupName'];
+    if (isset($dataForElement['costGroupName'])) {
+      $element['costGroupName']['#value'] = $dataForElement['costGroupName'];
     }
 
     if (empty($element['incomeGroupName']['#value']) && isset($element['#incomeGroup'])) {
-      $element['incomeGroupName']['#value'] = $element['#incomeGroup'];
+      $element['costGroupName']['#value'] = $element['#incomeGroup'];
     }
 
     return $element;
@@ -81,14 +81,13 @@ class GrantsBudgetOtherCost extends WebformCompositeBase {
       ],
     ];
 
-    $default_value = $element['#incomeGroupName__placeholder'] ?? NULL;
-    $elements['incomeGroupName'] = [
+    $elements['costGroupName'] = [
       '#type' => 'hidden',
-      '#title' => t('incomeGroupName'),
+      '#title' => t('costGroupName'),
       // Add .js-form-wrapper to wrapper (ie td) to prevent #states API from
       // disabling the entire table row when this element is disabled.
       '#wrapper_attributes' => ['class' => 'js-form-wrapper'],
-      '#value' => $default_value,
+      '#value' => '',
     ];
     return $elements;
   }

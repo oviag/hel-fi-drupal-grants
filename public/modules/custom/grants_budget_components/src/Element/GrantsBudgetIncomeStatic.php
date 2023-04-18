@@ -81,14 +81,12 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
       ];
     }
 
-    $default_value = $element['#incomeGroupName__placeholder'] ?? NULL;
     $elements['incomeGroupName'] = [
       '#type' => 'hidden',
       '#title' => t('incomeGroupName'),
       // Add .js-form-wrapper to wrapper (ie td) to prevent #states API from
       // disabling the entire table row when this element is disabled.
       '#wrapper_attributes' => ['class' => 'js-form-wrapper'],
-      '#value' => $default_value,
     ];
     return $elements;
   }
