@@ -147,6 +147,17 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
       '#default_value' => $grantsProfileContent['companyNameShort'],
     ];
     $form['companyNameShortWrapper']['companyNameShort']['#attributes']['class'][] = 'webform--large';
+
+    $form['companyEmailWrapper'] = [
+      '#type' => 'webform_section',
+      '#title' => $this->t('Company email address'),
+    ];
+    $form['companyEmailWrapper']['companyEmail'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Company email address'),
+      '#default_value' => $grantsProfileContent['companyEmail'],
+    ];
+
     $form['companyHomePageWrapper'] = [
       '#type' => 'webform_section',
       '#title' => $this->t('Website address'),
@@ -409,6 +420,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
 
     $grantsProfileContent["foundingYear"] = $values["foundingYearWrapper"]["foundingYear"];
     $grantsProfileContent["companyNameShort"] = $values["companyNameShortWrapper"]["companyNameShort"];
+    $grantsProfileContent["companyEmail"] = $values["companyEmailWrapper"]["companyEmail"];
     $grantsProfileContent["companyHomePage"] = $values["companyHomePageWrapper"]["companyHomePage"];
     $grantsProfileContent["businessPurpose"] = $values["businessPurposeWrapper"]["businessPurpose"];
 
@@ -453,7 +465,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . ($propertyPathArray[1] + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . (intval($propertyPathArray[1]) + 1) . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -462,12 +474,12 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . ($propertyPathArray[1] + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . (intval($propertyPathArray[1]) + 1) . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . ($propertyPathArray[1] + 1) . '][official][' . $propertyPathArray[2];
+            $propertyPath = 'officialWrapper][' . (intval($propertyPathArray[1]) + 1) . '][official][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();

@@ -4,6 +4,7 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Locale\CountryManager;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfilePrivatePersonDefinition;
@@ -116,7 +117,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     $address = $grantsProfileContent['addresses'][0] ?? NULL;
 
     // Make sure we have proper UUID as address id.
-    if (!$this->grantsProfileService->isValidUuid($address['address_id'])) {
+    if ($address && !$this->grantsProfileService->isValidUuid($address['address_id'])) {
       $address['address_id'] = Uuid::uuid4()->toString();
     }
 
@@ -144,6 +145,12 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
       '#default_value' => $address['city'] ?? '',
       '#required' => TRUE,
+    ];
+    $form['addressWrapper']['country'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Country', [], ['context' => 'Profile Address']),
+      '#options' => CountryManager::getStandardList(),
+      '#default_value' => $address['country'] ?? 'FI'
     ];
     // We need the delta / id to create delete links in element.
     $form['addressWrapper']['address_id'] = [
@@ -537,7 +544,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       $form['bankAccountWrapper'][$delta]['bank'] = [
 
         '#type' => 'fieldset',
-        '#title' => $this->t('Community bank account'),
+        '#title' => $this->t('Personal bank account'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
@@ -597,7 +604,7 @@ rtf, txt, xls, xlsx, zip.'),
 
       $form['bankAccountWrapper'][count($bankAccountValues) + 1]['bank'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Community bank account'),
+        '#title' => $this->t('Personal bank account'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
