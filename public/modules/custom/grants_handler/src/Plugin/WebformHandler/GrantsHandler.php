@@ -252,7 +252,7 @@ class GrantsHandler extends WebformHandlerBase {
     if (isset($this->submittedFormData['myonnetty_avustus']) &&
       is_array($this->submittedFormData['myonnetty_avustus'])) {
       $tempTotal = 0;
-      foreach ($this->submittedFormData['myonnetty_avustus'] as $key => $item) {
+      foreach ($this->submittedFormData['myonnetty_avustus'] as $item) {
         $amount = self::convertToFloat($item['amount']);
         $tempTotal += $amount;
       }
@@ -397,7 +397,7 @@ class GrantsHandler extends WebformHandlerBase {
     }
     catch (\Exception $e) {
       $this->messenger()
-        ->addWarning(t('You must have grants profile created.'));
+        ->addWarning($this->t('You must have grants profile created.'));
 
       $url = Url::fromRoute('grants_profile.edit');
       $redirect = new RedirectResponse($url->toString());
@@ -407,11 +407,11 @@ class GrantsHandler extends WebformHandlerBase {
     if (empty($grantsProfile["addresses"]) || empty($grantsProfile["bankAccounts"])) {
       if (empty($grantsProfile["addresses"])) {
         $this->messenger()
-          ->addWarning(t('You must have address saved to your profile.'));
+          ->addWarning($this->t('You must have address saved to your profile.'));
       }
       if (empty($grantsProfile["bankAccounts"])) {
         $this->messenger()
-          ->addWarning(t('You must have bank account saved to your profile.'));
+          ->addWarning($this->t('You must have bank account saved to your profile.'));
       }
       $url = Url::fromRoute('grants_profile.edit');
       $redirect = new RedirectResponse($url->toString());
@@ -789,17 +789,9 @@ class GrantsHandler extends WebformHandlerBase {
     if ($this->applicationHandler->getNewStatusHeader() == ApplicationHandler::getApplicationStatuses()['SUBMITTED']) {
       $this->submittedFormData['form_timestamp_submitted'] = $dt->format('Y-m-d\TH:i:s');
     }
-
-    $current_errors = $this->validate($webform_submission, $form_state, $form);
+    $this->validate($webform_submission, $form_state, $form);
     $all_errors = $this->grantsFormNavigationHelper->getAllErrors($webform_submission);
 
-    // If ($triggeringElement == '::next') {
-    // // parent::validateForm($form, $form_state, $webform_submission);.
-    // }
-    // if ($triggeringElement == '::gotoPage') {
-    // }
-    // if ($triggeringElement == '::submitForm') {
-    // }.
     if ($triggeringElement == '::submit') {
       if ($all_errors === NULL || self::emptyRecursive($all_errors)) {
         $applicationData = $this->applicationHandler->webformToTypedData(
@@ -815,7 +807,7 @@ class GrantsHandler extends WebformHandlerBase {
         if ($violations->count() === 0) {
           // If we have no violations clear all errors.
           $form_state->clearErrors();
-          $deleted = $this->grantsFormNavigationHelper->deleteSubmissionLogs($webform_submission, GrantsHandlerNavigationHelper::ERROR_OPERATION);
+          $this->grantsFormNavigationHelper->deleteSubmissionLogs($webform_submission, GrantsHandlerNavigationHelper::ERROR_OPERATION);
         }
         else {
           // If we HAVE errors, then refresh them from the.
@@ -969,6 +961,14 @@ class GrantsHandler extends WebformHandlerBase {
         // @todo log errors here.
       }
       $applicationUploadStatus = FALSE;
+      $redirectUrl = Url::fromRoute(
+        '<front>',
+        [
+          'attributes' => [
+            'data-drupal-selector' => 'application-saving-failed-link',
+          ],
+        ]
+      );
       try {
         $applicationUploadStatus = $this->applicationHandler->handleApplicationUploadToAtv(
           $applicationData,
@@ -1024,7 +1024,6 @@ class GrantsHandler extends WebformHandlerBase {
       $this->applicationHandler->clearCache($this->applicationNumber);
       $redirectResponse->send();
 
-      // Return $redirectResponse;.
     }
     if ($this->triggeringElement == '::submit') {
       // Submit is trigger when exiting from confirmation page.
@@ -1179,7 +1178,7 @@ class GrantsHandler extends WebformHandlerBase {
   public static function cleanUpArrayValues(mixed $value): array {
     $retval = [];
     if (is_array($value)) {
-      foreach ($value as $k => $v) {
+      foreach ($value as $v) {
         if (is_array($v)) {
           $retval[] = $v;
         }
