@@ -18,11 +18,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
       $info = &$this->propertyDefinitions;
 
       $info['incomeGroupName'] = DataDefinition::create('string')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'incomeGroupName',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -30,11 +25,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['compensation'] = DataDefinition::create('string')
         ->setLabel('Haettu avustus')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'compensation',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -42,11 +32,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['plannedOtherCompensations'] = DataDefinition::create('string')
         ->setLabel('Muut avustukset')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'plannedOtherCompensations',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -54,11 +39,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['sponsorships'] = DataDefinition::create('string')
         ->setLabel('Yksityinen rahoitus (esim. sponsorointi, yritysyhteistyö,lahjoitukset)')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'sponsorships',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -66,11 +46,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['entryFees'] = DataDefinition::create('string')
         ->setLabel('Pääsy- ja osallistumismaksut')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'entryFees',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -78,11 +53,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['sales'] = DataDefinition::create('string')
         ->setLabel('Muut oman toiminnan tulot')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'sales',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -90,11 +60,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['ownFunding'] = DataDefinition::create('string')
         ->setLabel('Yhteisön oma rahoitus')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'ownFunding',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -102,11 +67,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['plannedTotalIncome'] = DataDefinition::create('string')
         ->setLabel('Ehdotetut tulot yhteensä Euroa')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'plannedTotalIncome',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -114,11 +74,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['otherCompensationFromCity'] = DataDefinition::create('string')
         ->setLabel('Helsingin kaupungin kulttuuripalveluiden toiminta-avustus')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'otherCompensationFromCity',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -126,11 +81,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['otherCompensations'] = DataDefinition::create('string')
         ->setLabel('Muut avustukset')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'otherCompensations',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -138,11 +88,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['totalIncome'] = DataDefinition::create('string')
         ->setLabel('Tulot yhteensä')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'totalIncome',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -150,11 +95,6 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['totalIncomeWithoutSubventions'] = DataDefinition::create('string')
         ->setLabel('Tulot ilman avustuksia')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'totalIncomeWithoutSubventions',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
@@ -162,22 +102,12 @@ class GrantsBudgetIncomeStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['shareOfIncomeWithoutSubventions'] = DataDefinition::create('string')
         ->setLabel('Muiden kuin avustusten osuus tuloista')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'shareOfIncomeWithoutSubventions',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',
         ]);
 
       $info['donations'] = DataDefinition::create('string')
-        ->setSetting('jsonPath', [
-          'budgetInfo',
-          'incomeGroupsArrayStatic',
-          'donations',
-        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'double',

@@ -2,6 +2,7 @@
 
 namespace Drupal\grants_budget_components;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\TypedData\ListInterface;
 use Drupal\grants_metadata\AtvSchema;
 
@@ -40,10 +41,57 @@ class GrantsBudgetComponentService {
         $itemDefinition = $item->getDataDefinition();
         $valueTypes = AtvSchema::getJsonTypeForDataType($itemDefinition);
 
-        if ($itemName !== 'incomeGroupName') {
-          $itemValues[] = [
+        if ($itemName === 'incomeGroupName') {
+        }
+        else {
+          $items[] = [
             'ID' => $itemName,
             'label' => $itemDefinition->getLabel(),
+            'value' => $item->getValue(),
+            'valueType' => $valueTypes['jsonType'],
+          ];
+        }
+      }
+    }
+    return $items;
+  }
+
+    /**
+   * Parse budget income fields.
+   *
+   * @param \Drupal\Core\TypedData\ListInterface $property
+   *   Property that is handled.
+   *
+   * @return array
+   *   Processed items.
+   */
+  public static function processBudgetCostStatic(ListInterface $property): array {
+
+    $items = [];
+
+    $dataDefinition = $property->getDataDefinition();
+    $usedFields = $dataDefinition->getSetting('fieldsForApplication');
+
+    foreach ($property as $itemIndex => $p) {
+      $itemValues = [];
+      foreach ($p as $item) {
+        $itemName = $item->getName();
+
+        // If this item is not selected for jsonData.
+        if (!in_array($itemName, $usedFields)) {
+          // Just continue...
+          continue;
+        }
+        // Get item value types from item definition.
+        $itemDefinition = $item->getDataDefinition();
+        $valueTypes = AtvSchema::getJsonTypeForDataType($itemDefinition);
+
+        if ($itemName === 'costGroupName') {
+        }
+        else {
+          $itemValues[] = [
+            'ID' => $itemName,
+            'label' => $itemName, // @TODO: Real labels.
             'value' => $item->getValue(),
             'valueType' => $valueTypes['jsonType'],
           ];
@@ -52,6 +100,82 @@ class GrantsBudgetComponentService {
       }
     }
     return $items;
+  }
+
+  public static function processBudgetIncomeOther(ListInterface $property): array {
+    $items = [];
+
+    $dataDefinition = $property->getDataDefinition();
+
+    foreach ($property as $itemIndex => $p) {
+      $asd = $p->getValues();
+      $itemValues = [
+        'ID' => '123',
+        'label' => $asd['label'] ?? NULL,
+        'value' => $asd['value'] ?? NULL,
+        'valueType' => 'double',
+      ];
+
+      $items[$itemIndex] = $itemValues;
+    }
+    return $items;
+  }
+
+  public static function getBudgetIncomeOtherValues(array $documentData): array {
+
+    $retVal = [];
+    $elements = NestedArray::getValue(
+      $documentData,
+      ['compensation', 'budgetInfo', 'incomeGroupsArrayStatic', 'otherIncomeRowsArrayStatic']
+    );
+
+    if (!empty($elements)) {
+      $retVal = array_map(function ($e) {
+        return [
+          'label' => $e['label'] ?? NULL,
+          'value' => $e['value'] ?? NULL,
+        ];
+      }, $elements);
+    }
+
+    return $retVal;
+  }
+
+  public static function getBudgetIncomeStaticValues(array $documentData) {
+    $retVal = [];
+    $elements = NestedArray::getValue(
+      $documentData,
+      ['compensation', 'budgetInfo', 'incomeGroupsArrayStatic', 'incomeRowsArrayStatic']
+    );
+
+    if (!empty($elements)) {
+
+          $values = [];
+          foreach ($elements as $row) {
+            $values[$row['ID']] = $row['value'];
+          }
+          $retVal[] = $values;
+
+    }
+    return $retVal;
+  }
+
+  public static function getBudgetCostStaticValues(array $documentData) {
+    $retVal = [];
+    $elements = NestedArray::getValue(
+      $documentData,
+      ['compensation', 'budgetInfo', 'costGroupsArrayStatic', 'costRowsArrayStatic']
+    );
+
+    if (!empty($elements)) {
+          $values = [];
+          foreach (reset($elements) as $row) {
+            $values[$row['ID']] = $row['value'];
+          }
+          $retVal[] = $values;
+        }
+
+    return $retVal;
   }
 
 }
