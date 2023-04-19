@@ -463,6 +463,9 @@ class GrantsProfileService {
     if (!isset($profileContent['phone_number'])) {
       $profileContent['phone_number'] = NULL;
     }
+    if (!isset($profileContent['email'])) {
+      $profileContent['email'] = NULL;
+    }
     if (!isset($profileContent['bankAccounts'])) {
       $profileContent['bankAccounts'] = [];
     }

@@ -18,26 +18,26 @@ class ApplicationMemberDefinition extends ComplexDataDefinitionBase {
       $info = &$this->propertyDefinitions;
 
       $info['name'] = DataDefinition::create('string')
-        ->setLabel('Nimi')
+        ->setLabel('Name')
         ->setSetting('jsonPath', ['grantsProfile', 'membersArray', 'name'])
         ->setRequired(TRUE)
         ->addConstraint('NotBlank');
 
       $info['email'] = DataDefinition::create('string')
-        ->setLabel('Sähköposti')
+        ->setLabel('Email address')
         ->setSetting('jsonPath', ['grantsProfile', 'membersArray', 'email'])
         ->addConstraint('Email')
         ->addConstraint('NotBlank')
         ->setRequired(TRUE);
 
       $info['phone'] = DataDefinition::create('string')
-        ->setLabel('Puhelinnumero')
+        ->setLabel('Phone number')
         ->setSetting('jsonPath', ['grantsProfile', 'membersArray', 'phone'])
         ->addConstraint('NotBlank')
         ->setRequired(TRUE);
 
       $info['additional'] = DataDefinition::create('string')
-        ->setLabel('Lisätietoja')
+        ->setLabel('Additional information')
         ->setSetting('jsonPath', ['grantsProfile', 'membersArray', 'additional']);
 
     }

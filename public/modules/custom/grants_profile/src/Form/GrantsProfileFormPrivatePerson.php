@@ -164,6 +164,19 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       '#required' => TRUE,
     ];
 
+    $form['emailWrapper'] = [
+      '#type' => 'webform_section',
+      '#title' => $this->t('Email address'),
+      '#prefix' => '<div id="email-wrapper">',
+      '#suffix' => '</div>',
+    ];
+    $form['emailWrapper']['email'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Email address'),
+      '#default_value' => $grantsProfileContent['email'],
+      '#required' => TRUE,
+    ];
+
     $this->addbankAccountBits($form, $form_state, $grantsProfileContent['bankAccounts'], $newItem);
 
     $form['actions'] = [
@@ -376,6 +389,9 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     }
     if (array_key_exists('phoneWrapper', $values)) {
       $grantsProfileContent['phone_number'] = $values["phoneWrapper"]['phone_number'];
+    }
+    if (array_key_exists('emailWrapper', $values)) {
+      $grantsProfileContent['email'] = $values["emailWrapper"]['email'];
     }
 
     $this->validateBankAccounts($values, $formState);
