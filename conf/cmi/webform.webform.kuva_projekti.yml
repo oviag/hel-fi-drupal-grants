@@ -567,15 +567,14 @@ elements: |-
         '#type': grants_attachments
         '#title': 'Työryhmän jäsenten ansioluettelot, kun kyseessä on taiteen ammattilaisten hanke.'
         '#multiple': 10
-        '#filetype': '0'
+        '#filetype': '30'
         '#title_display': before
         '#multiple__item_label': liite
         '#multiple__sorting': false
         '#multiple__add': false
         '#multiple__add_more_input': false
         '#multiple__add_more_button_label': 'Lisää liite'
-        '#isDeliveredLater__access': false
-        '#isIncludedInOtherFile__access': false
+        '#description__access': false
       extra_info:
         '#type': textarea
         '#title': 'Lisäselvitys liitteistä'
