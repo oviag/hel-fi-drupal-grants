@@ -4,7 +4,6 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Locale\CountryManager;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfilePrivatePersonDefinition;
@@ -145,12 +144,6 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
       '#default_value' => $address['city'] ?? '',
       '#required' => TRUE,
-    ];
-    $form['addressWrapper']['country'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Country'),
-      '#options' => CountryManager::getStandardList(),
-      '#default_value' => $address['country'] ?? 'FI'
     ];
     // We need the delta / id to create delete links in element.
     $form['addressWrapper']['address_id'] = [
