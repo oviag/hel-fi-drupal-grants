@@ -182,6 +182,52 @@ elements: |-
         '#subvention_type_id__access': false
         '#subvention_type__title': Avustuslaji
         '#subvention_amount__title': 'Avustuksen summa'
+      avustukset_summa:
+        '#type': grants_webform_summation_field
+        '#title': 'Avustukset summa'
+        '#title_display': none
+        '#collect_field':
+          subventions%%amount: subventions%%amount
+          application_number: 0
+          status: 0
+          applicant_type: 0
+          email: 0
+          contact_person: 0
+          contact_person_phone_number: 0
+          community_address: 0
+          bank_account: 0
+          community_officials: 0
+          acting_year: 0
+          subventions%%subventionTypeTitle: 0
+          subventions%%subventionType: 0
+          ensisijainen_taiteen_ala: 0
+          hankkeen_nimi: 0
+          kyseessa_on_festivaali_tai_tapahtuma: 0
+          hankkeen_tai_toiminnan_lyhyt_esittelyteksti: 0
+          olemme_saaneet_muita_avustuksia: 0
+          myonnetty_avustus: 0
+          members_applicant_person_global: 0
+          members_applicant_person_local: 0
+          members_applicant_community_global: 0
+          members_applicant_community_local: 0
+          kokoaikainen_henkilosto: 0
+          osa_aikainen_henkilosto: 0
+          vapaaehtoinen_henkilosto: 0
+          toiminta_taiteelliset_lahtokohdat: 0
+          toiminta_tasa_arvo: 0
+          toiminta_saavutettavuus: 0
+          toiminta_yhteisollisyys: 0
+          toiminta_kohderyhmat: 0
+          toiminta_ammattimaisuus: 0
+          toiminta_ekologisuus: 0
+          toiminta_yhteistyokumppanit: 0
+          organisaatio_kuuluu_valtionosuusjarjestelmaan: 0
+          additional_information: 0
+          tyoryhman_jasenten_ansioluettelot: 0
+          extra_info: 0
+          muu_liite: 0
+        '#data_type': euro
+        '#form_item': hidden
       ensisijainen_taiteen_ala:
         '#type': select
         '#title': 'Ensisijainen taiteen ala'
@@ -230,6 +276,11 @@ elements: |-
     muut_samaan_tarkoitukseen_myonnetyt_avustukset:
       '#type': webform_section
       '#title': 'Muut samaan tarkoitukseen myönnetyt avustukset'
+      '#states':
+        visible:
+          ':input[name="avustukset_summa"]':
+            value:
+              greater_equal: '5000'
       info_muut_samaan_tarkoitukseen_myonnetty:
         '#type': processed_text
         '#text': |
