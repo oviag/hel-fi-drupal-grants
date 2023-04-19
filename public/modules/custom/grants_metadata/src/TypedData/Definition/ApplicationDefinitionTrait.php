@@ -26,6 +26,10 @@ trait ApplicationDefinitionTrait {
         'service' => 'grants_applicant_info.service',
         'method' => 'processApplicantInfo',
       ])
+      ->setSetting('webformDataExtracter', [
+        'service' => 'grants_applicant_info.service',
+        'method' => 'extractDataForWebform',
+      ])
       ->setSetting('fieldsForApplication', [
         'premiseName',
         'isOwnedByCity',

@@ -72,17 +72,24 @@ class ApplicantInfoService {
   }
 
   /**
-   * @param $jsonStructure
+   * @param $property
+   * @param $content
    *
    * @return array $webformStructure
    */
-  public function generateWebformData($jsonStructure){
+  public function extractDataForWebform($property,$content){
 
-    // ...
-
-    // webform rakenne
     return [
-
+      'companyNumber' => $content["compensation"]["applicantInfoArray"]["companyNumber"]["value"] ?? '',
+      'communityOfficialName' => $content["compensation"]["applicantInfoArray"]["communityOfficialName"]["value"] ?? '',
+      'communityOfficialNameShort' => $content["compensation"]["applicantInfoArray"]["communityOfficialNameShort"]["value"] ?? '',
+      'registrationDate' => $content["compensation"]["applicantInfoArray"]["registrationDate"]["value"] ?? '',
+      'foundingYear' => $content["compensation"]["applicantInfoArray"]["foundingYear"]["value"] ?? '',
+      'home' => $content["compensation"]["applicantInfoArray"]["home"]["value"] ?? '',
+      'homePage' => $content["compensation"]["applicantInfoArray"]["homePage"]["value"] ?? '',
+      'socialSecurityNumber' => $content["compensation"]["applicantInfoArray"]["socialSecurityNumber"]["value"] ?? '',
+      'firstname' => $content["compensation"]["applicantInfoArray"]["firstname"]["value"] ?? '',
+      'lastname' => $content["compensation"]["applicantInfoArray"]["lastname"]["value"] ?? '',
     ];
 
   }

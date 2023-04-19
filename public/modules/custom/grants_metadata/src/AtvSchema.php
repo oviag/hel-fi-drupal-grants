@@ -14,6 +14,7 @@ use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_attachments\AttachmentHandler;
 use Drupal\grants_attachments\Plugin\WebformElement\GrantsAttachments;
+use Drupal\grants_handler\ApplicationHandler;
 use Drupal\webform\Entity\WebformSubmission;
 
 /**
@@ -102,6 +103,10 @@ class AtvSchema {
       $documentContent = $documentData;
     }
 
+    $webform = ApplicationHandler::getWebformFromApplicationNumber($metadata["applicationnumber"]);
+    $elements = $webform->getElementsDecodedAndFlattened();
+    $elements2 = $webform->getElementsDecoded();
+
     $propertyDefinitions = $typedDataDefinition->getPropertyDefinitions();
 
     // $typedData = $this->typedDataManager->create($typedDataDefinition);
@@ -110,12 +115,19 @@ class AtvSchema {
     foreach ($propertyDefinitions as $definitionKey => $definition) {
 
       $jsonPath = $definition->getSetting('jsonPath');
+      $webformDataExtractor = $definition->getSetting('webformDataExtracter');
 
-      // If json path not configured for item, do nothing.
-      if (is_array($jsonPath)) {
-        $elementName = array_pop($jsonPath);
 
-        $typedDataValues[$definitionKey] = $this->getValueFromDocument($documentContent, $jsonPath, $elementName, $definition);
+      if ($webformDataExtractor) {
+        $typedDataValues[$definitionKey] = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
+      }
+      else {
+        // If json path not configured for item, do nothing.
+        if (is_array($jsonPath)) {
+          $elementName = array_pop($jsonPath);
+
+          $typedDataValues[$definitionKey] = $this->getValueFromDocument($documentContent, $jsonPath, $elementName, $definition);
+        }
       }
     }
     if (isset($typedDataValues['status_updates']) && is_array($typedDataValues['status_updates'])) {
@@ -592,7 +604,12 @@ class AtvSchema {
    * @return mixed
    *   Parsed typed data structure.
    */
-  protected function getValueFromDocument(array $content, array $pathArray, string $elementName, ?DataDefinitionInterface $definition): mixed {
+  protected function getValueFromDocument(
+    array                    $content,
+    array                    $pathArray,
+    string                   $elementName,
+    ?DataDefinitionInterface $definition
+  ): mixed {
     // Get new key to me evalued.
     $newKey = array_shift($pathArray);
 
@@ -763,7 +780,7 @@ class AtvSchema {
    */
   public function getFieldValuesFromFullItemCallback(
     array                   $fullItemValueCallback,
-    TypedDataInterface                $property,
+    TypedDataInterface      $property,
     DataDefinitionInterface $definition
   ): mixed {
     $fieldValues = [];
@@ -783,35 +800,37 @@ class AtvSchema {
   }
 
   /**
-   * @param array $documentStructure
-   * @param array $propertyStructureCallback
-   * @param \Drupal\Core\TypedData\Plugin\DataType\ItemList $property
+   * Get field values from full item callback.
+   *
+   * @param array $fullItemValueCallback
+   *   Callback config.
+   * @param TypedDataInterface $property
+   *   Property.
    * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
+   *   Definition.
    *
    * @return array
+   *   Full item callback array.
    */
-  private function fillStructureFromPropertyCallback(
-    array                   $documentStructure,
-    array                   $propertyStructureCallback,
-    ItemList                $property,
+  public function getWebformDataFromContent(
+    array                   $fullItemValueCallback,
+    array                   $content,
     DataDefinitionInterface $definition
-  ) {
-
+  ): mixed {
     $fieldValues = [];
-    if ($propertyStructureCallback['service']) {
-      $fullItemValueService = \Drupal::service($propertyStructureCallback['service']);
-      $funcName = $propertyStructureCallback['method'];
+    if ($fullItemValueCallback['service']) {
+      $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);
+      $funcName = $fullItemValueCallback['method'];
 
-      $fieldValues = $fullItemValueService->$funcName($property);
+      $fieldValues = $fullItemValueService->$funcName($definition, $content);
     }
     else {
-      if ($propertyStructureCallback['class']) {
-        $funcName = $propertyStructureCallback['method'];
-        $fieldValues = $propertyStructureCallback['class']::$funcName($definition, $property);
+      if ($fullItemValueCallback['class']) {
+        $funcName = $fullItemValueCallback['method'];
+        $fieldValues = $fullItemValueCallback['class']::$funcName($definition, $content);
       }
     }
-    return array_merge($documentStructure, $fieldValues);
-
+    return $fieldValues;
   }
 
 }

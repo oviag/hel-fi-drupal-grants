@@ -688,9 +688,9 @@ class ApplicationHandler {
         $document->getMetadata()
       );
 
-      if ($selectedCompany['identifier'] !== $sData['company_number']) {
-        throw new AccessException('Selected company ID does not match with one from document');
-      }
+//      if ($selectedCompany['identifier'] !== $sData['company_number']) {
+//        throw new AccessException('Selected company ID does not match with one from document');
+//      }
 
       $sData['messages'] = self::parseMessages($sData);
 
@@ -742,6 +742,8 @@ class ApplicationHandler {
    *
    * @param string $transactionId
    *   Id of the transaction.
+   * @param bool $refetch
+   *  Force atv document fetch
    *
    * @return \Drupal\helfi_atv\AtvDocument
    *   FEtched document.
@@ -749,11 +751,10 @@ class ApplicationHandler {
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \Drupal\helfi_atv\AtvFailedToConnectException
    * @throws \GuzzleHttp\Exception\GuzzleException
-   * @throws \Drupal\Core\TempStore\TempStoreException
    */
-  public function getAtvDocument(string $transactionId): AtvDocument {
+  public function getAtvDocument(string $transactionId, bool $refetch = FALSE): AtvDocument {
 
-    if (!isset($this->atvDocument)) {
+    if (!isset($this->atvDocument) || $refetch === TRUE) {
       $res = $this->atvService->searchDocuments([
         'transaction_id' => $transactionId,
         'lookfor' => 'appenv:' . self::getAppEnv(),
@@ -994,7 +995,7 @@ class ApplicationHandler {
 
     $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData);
 
-    $atvDocument = $this->getAtvDocument($applicationNumber);
+    $atvDocument = $this->getAtvDocument($applicationNumber, TRUE);
     $atvDocument->addMetadata(
       'saveid',
       $this->logSubmissionSaveid(NULL, $applicationNumber)

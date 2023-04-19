@@ -19,6 +19,7 @@ trait DataFormatTrait {
       $defaultValue = $definition->getSetting('defaultValue');
       $valueCallback = $definition->getSetting('valueCallback');
 
+
       if (!is_array($values)) {
         $formattedData[$name] = NULL;
       }
