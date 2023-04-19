@@ -83,6 +83,14 @@ class CommunityAddressComposite extends WebformCompositeBase {
    */
   public static function buildAddressOptions(array $element, FormStateInterface $form_state): array {
 
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+
+    if (!in_array('helsinkiprofiili', $roles)) {
+      return [];
+    }
+
+
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
 

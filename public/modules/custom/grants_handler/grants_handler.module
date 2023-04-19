@@ -245,6 +245,13 @@ function grants_handler_page_attachments(array &$attachments) {
  */
 function grants_handler_webform_element_alter(array &$element, FormStateInterface $form_state, array $context) {
 
+  $user = Drupal::currentUser();
+  $roles = $user->getRoles();
+
+  if (!in_array('helsinkiprofiili', $roles)) {
+    return;
+  }
+
   // Code here acts on all elements included in a webform.
   /** @var \Drupal\webform\WebformSubmissionForm $form_object */
   $form_object = $form_state->getFormObject();
@@ -521,6 +528,14 @@ function _grants_handler_missing_data(
  * Implements hook_form_alter().
  */
 function grants_handler_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  $user = \Drupal::currentUser();
+  $roles = $user->getRoles();
+
+  if (!in_array('helsinkiprofiili', $roles)) {
+    return;
+  }
+
 
   $form['actions']['wizard_next']['#validate'][] = '::noValidate';
 

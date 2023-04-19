@@ -4,6 +4,7 @@ namespace Drupal\grants_metadata;
 
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelFactory;
+use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
@@ -89,9 +90,9 @@ class AtvSchema {
    *   Mapped dta from document.
    */
   public function documentContentToTypedData(
-    array $documentData,
+    array                          $documentData,
     ComplexDataDefinitionInterface $typedDataDefinition,
-    ?array $metadata = []
+    ?array                         $metadata = []
   ): array {
 
     if (isset($documentData['content']) && is_array($documentData['content'])) {
@@ -339,7 +340,7 @@ class AtvSchema {
    */
   public function typedDataToDocumentContent(
     TypedDataInterface $typedData,
-    WebformSubmission $webformSubmission = NULL): array {
+    WebformSubmission  $webformSubmission = NULL): array {
 
     $documentStructure = [];
 
@@ -349,9 +350,11 @@ class AtvSchema {
       $jsonPath = $definition->getSetting('jsonPath');
       $requiredInJson = $definition->getSetting('requiredInJson');
       $defaultValue = $definition->getSetting('defaultValue');
-      $valueCallback = $definition->getSetting('valueCallback');
 
+      $valueCallback = $definition->getSetting('valueCallback');
       $fullItemValueCallback = $definition->getSetting('fullItemValueCallback');
+
+      $propertyStructureCallback = $definition->getSetting('propertyStructureCallback');
 
       $propertyName = $property->getName();
       $propertyLabel = $definition->getLabel();
@@ -376,7 +379,20 @@ class AtvSchema {
       $schema = $this->getPropertySchema($elementName, $this->structure);
 
       $itemTypes = self::getJsonTypeForDataType($definition);
-      $itemValue = $this->getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
+      $itemValue = self::getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
+
+      // If we have structure callback defined, then get property structure
+      if ($propertyStructureCallback) {
+        $documentStructure = array_merge(
+          $documentStructure,
+          $this->getFieldValuesFromFullItemCallback(
+            $propertyStructureCallback,
+            $property,
+            $definition
+          )
+        );
+        continue;
+      }
 
       switch ($numberOfItems) {
         case 4:
@@ -421,7 +437,7 @@ class AtvSchema {
                     if (isset($propertyItem[$itemName])) {
                       $itemValue = $propertyItem[$itemName];
 
-                      $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
+                      $itemValue = self::getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
 
                       $idValue = $itemName;
                       $valueArray = [
@@ -477,7 +493,7 @@ class AtvSchema {
                     $itemSkipEmpty = $itemValueDefinition->getSetting('skipEmptyValue');
 
                     $itemValue = $propertyItem[$itemName];
-                    $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
+                    $itemValue = self::getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
                     // If no value and skip is setting, then skip.
                     if (empty($itemValue) && $itemSkipEmpty === TRUE) {
                       continue;
@@ -597,6 +613,9 @@ class AtvSchema {
         $retval = [];
         // We need to loop values and structure data in array as well.
         foreach ($content[$elementName] as $key => $value) {
+          if (is_string($value)) {
+            $d = 'asdf';
+          }
           foreach ($value as $key2 => $v) {
             if (is_array($v)) {
               if (array_key_exists('value', $v)) {
@@ -697,7 +716,7 @@ class AtvSchema {
    * @return mixed
    *   Formatted value.
    */
-  public function getItemValue(array $itemTypes, mixed $itemValue, mixed $defaultValue, mixed $valueCallback): mixed {
+  public static function getItemValue(array $itemTypes, mixed $itemValue, mixed $defaultValue, mixed $valueCallback): mixed {
 
     if ($valueCallback) {
       $itemValue = call_user_func($valueCallback, $itemValue);
@@ -734,7 +753,7 @@ class AtvSchema {
    *
    * @param array $fullItemValueCallback
    *   Callback config.
-   * @param \Drupal\Core\TypedData\Plugin\DataType\ItemList $property
+   * @param TypedDataInterface $property
    *   Property.
    * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
    *   Definition.
@@ -743,8 +762,8 @@ class AtvSchema {
    *   Full item callback array.
    */
   public function getFieldValuesFromFullItemCallback(
-    array $fullItemValueCallback,
-    ItemList $property,
+    array                   $fullItemValueCallback,
+    TypedDataInterface                $property,
     DataDefinitionInterface $definition
   ): mixed {
     $fieldValues = [];
@@ -761,6 +780,38 @@ class AtvSchema {
       }
     }
     return $fieldValues;
+  }
+
+  /**
+   * @param array $documentStructure
+   * @param array $propertyStructureCallback
+   * @param \Drupal\Core\TypedData\Plugin\DataType\ItemList $property
+   * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
+   *
+   * @return array
+   */
+  private function fillStructureFromPropertyCallback(
+    array                   $documentStructure,
+    array                   $propertyStructureCallback,
+    ItemList                $property,
+    DataDefinitionInterface $definition
+  ) {
+
+    $fieldValues = [];
+    if ($propertyStructureCallback['service']) {
+      $fullItemValueService = \Drupal::service($propertyStructureCallback['service']);
+      $funcName = $propertyStructureCallback['method'];
+
+      $fieldValues = $fullItemValueService->$funcName($property);
+    }
+    else {
+      if ($propertyStructureCallback['class']) {
+        $funcName = $propertyStructureCallback['method'];
+        $fieldValues = $propertyStructureCallback['class']::$funcName($definition, $property);
+      }
+    }
+    return array_merge($documentStructure, $fieldValues);
+
   }
 
 }

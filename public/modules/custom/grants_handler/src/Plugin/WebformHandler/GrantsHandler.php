@@ -432,6 +432,13 @@ class GrantsHandler extends WebformHandlerBase {
    */
   public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
 
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+
+    if (!in_array('helsinkiprofiili', $roles)) {
+      return;
+    }
+
     $this->alterFormNavigation($form, $form_state, $webform_submission);
 
     $form['#webform_submission'] = $webform_submission;

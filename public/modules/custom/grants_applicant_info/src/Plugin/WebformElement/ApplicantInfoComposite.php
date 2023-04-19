@@ -7,13 +7,13 @@ use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
- * Provides a 'form_tool_profile_data' element.
+ * Provides a 'premises_composite' element.
  *
  * @WebformElement(
- *   id = "applicant_info_composite",
- *   label = @Translation("Grants applicant info"),
- *   description = @Translation("Provides webform component to gather details from helsinki profile."),
- *   category = @Translation("Helfi"),
+ *   id = "applicant_info",
+ *   label = @Translation("Grants Applicant info"),
+ *   description = @Translation("Provides a premises elemebnt."),
+ *   category = @Translation("Hel.fi elements"),
  *   multiline = TRUE,
  *   composite = TRUE,
  *   states_wrapper = TRUE,
@@ -35,78 +35,81 @@ class ApplicantInfoComposite extends WebformCompositeBase {
     //
     // @see \Drupal\webform\Plugin\WebformElementBase::defaultProperties
     // @see \Drupal\webform\Plugin\WebformElementBase::defaultBaseProperties
-    return [
-      'noauth' => [],
-      'weak' => [],
-      'strong' => [],
-    ] + parent::defineDefaultProperties();
+    return [] + parent::defineDefaultProperties();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function form(array $form, FormStateInterface $form_state): array {
-
+  public function form(array $form, FormStateInterface $form_state) {
+    $form = parent::form($form, $form_state);
+    // Here you can define and alter a webform element's properties UI.
+    // Form element property visibility and default values are defined via
+    // ::defaultProperties.
+    //
+    // @see \Drupal\webform\Plugin\WebformElementBase::form
+    // @see \Drupal\webform\Plugin\WebformElement\TextBase::form
+//    $form['element']['premiseFields'] = [
+//      '#type' => 'select',
+//      '#required' => TRUE,
+//      '#multiple' => TRUE,
+//      '#title' => $this->t('Premise fields collected'),
+//      '#options' => self::buildPremiseFieldsOptions(),
+//    ];
 
     return $form;
   }
 
   /**
-   * Format a composite as a list of HTML items.
+   * Build fieldlist for UI.
    *
-   * @param array $element
-   *   An element.
-   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
-   *   A webform submission.
-   * @param array $options
-   *   An array of options.
+   * @return array
+   *   Updated element
    *
-   * @return array|string
-   *   A composite as a list of HTML items.
+   * @see grants_handler.module
    */
-  protected function formatCompositeHtmlItems(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $value = $this->getValue($element, $webform_submission, $options);
-    $titles = ApplicantInfoComposite::getFieldSelections();
-    $lines = [];
+  public static function buildPremiseFieldsOptions(): array {
 
-    foreach ($value as $fieldName => $fieldValue) {
-      foreach ($titles as $auth => $fields) {
-        if (
-          isset($fields[$fieldName]) &&
-          !array_key_exists($fieldName, $lines)
-        ) {
-          $items[$fieldName] = [
-            '#type' => 'inline_template',
-            '#template' => '<label>{{ title }}:</label> {{ value }}',
-            '#context' => [
-              'title' => $fields[$fieldName]->render(),
-              'value' => $fieldValue,
-            ],
-          ];
-        }
-      }
-    }
-    return $items;
+    return [
+      'premiseType' => t('Premise Type'),
+      'premiseName' => t('Premise Name'),
+      'premiseAddress' => t('Premise Address'),
+      'location' => t('Premise location'),
+      'streetAddress' => t('Street Address'),
+      'address' => t('Address'),
+      'postCode' => t('Postal Code'),
+      'studentCount' => t('Student Count'),
+      'specialStudents' => t('Special Students'),
+      'groupCount' => t('Group Count'),
+      'specialGroups' => t('Special Groups'),
+      'personnelCount' => t('Personnel Count'),
+      'totalRent' => t('Total Rent'),
+      'rentTimeBegin' => t('Rent time begin'),
+      'rentTimeEnd' => t('Rent time end'),
+      'free' => t('Free'),
+    ];
+
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function formatHtmlItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatHtmlItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []): array|string {
     return $this->formatTextItemValue($element, $webform_submission, $options);
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []): array {
     $value = $this->getValue($element, $webform_submission, $options);
-
     $lines = [];
     foreach ($value as $fieldName => $fieldValue) {
+      $webformElement = $element["#webform_composite_elements"][$fieldName];
+      $lines[] = $webformElement['#title']->render();
       $lines[] = $fieldValue;
-
     }
+
     return $lines;
   }
 
