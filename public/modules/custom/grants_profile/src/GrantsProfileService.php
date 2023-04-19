@@ -432,8 +432,8 @@ class GrantsProfileService {
     if (!isset($profileContent['addresses'])) {
       $profileContent['addresses'] = [];
     }
-    if (!isset($profileContent['officials'])) {
-      $profileContent['officials'] = [];
+    if (!isset($profileContent['members'])) {
+      $profileContent['members'] = [];
     }
     if (!isset($profileContent['bankAccounts'])) {
       $profileContent['bankAccounts'] = [];
