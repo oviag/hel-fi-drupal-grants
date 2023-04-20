@@ -54,7 +54,7 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
       $element['costGroupName']['#value'] = $dataForElement['costGroupName'];
     }
 
-    if (empty($element['incomeGroupName']['#value']) && isset($element['#incomeGroup'])) {
+    if (empty($element['costGroupName']['#value']) && isset($element['#incomeGroup'])) {
       $element['costGroupName']['#value'] = $element['#incomeGroup'];
     }
 

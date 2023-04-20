@@ -4,12 +4,18 @@ namespace Drupal\grants_budget_components;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\TypedData\ListInterface;
+use Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler;
 use Drupal\grants_metadata\AtvSchema;
 
 /**
  * Useful tools for budget components.
  */
 class GrantsBudgetComponentService {
+
+  const IGNORED_FIELDS = [
+    'costGroupName',
+    'incomeGroupName'
+  ];
 
   /**
    * Parse budget income fields.
@@ -20,7 +26,7 @@ class GrantsBudgetComponentService {
    * @return array
    *   Processed items.
    */
-  public static function processBudgetIncomeStatic(ListInterface $property): array {
+  public static function processBudgetStaticValues(ListInterface $property): array {
 
     $items = [];
 
@@ -40,63 +46,14 @@ class GrantsBudgetComponentService {
         $itemDefinition = $item->getDataDefinition();
         $valueTypes = AtvSchema::getJsonTypeForDataType($itemDefinition);
 
-        if ($itemName === 'incomeGroupName') {
-        }
-        else {
+        if (!in_array($itemName, self::IGNORED_FIELDS)) {
           $items[] = [
             'ID' => $itemName,
             'label' => $itemDefinition->getLabel(),
-            'value' => $item->getValue(),
+            'value' => (string)GrantsHandler::convertToFloat($item->getValue()),
             'valueType' => $valueTypes['jsonType'],
           ];
         }
-      }
-    }
-    return $items;
-  }
-
-  /**
-   * Parse budget income fields.
-   *
-   * @param \Drupal\Core\TypedData\ListInterface $property
-   *   Property that is handled.
-   *
-   * @return array
-   *   Processed items.
-   */
-  public static function processBudgetCostStatic(ListInterface $property): array {
-
-    $items = [];
-
-    $dataDefinition = $property->getDataDefinition();
-    $usedFields = $dataDefinition->getSetting('fieldsForApplication');
-
-    foreach ($property as $itemIndex => $p) {
-      $itemValues = [];
-      foreach ($p as $item) {
-        $itemName = $item->getName();
-
-        // If this item is not selected for jsonData.
-        if (!in_array($itemName, $usedFields)) {
-          // Just continue...
-          continue;
-        }
-        // Get item value types from item definition.
-        $itemDefinition = $item->getDataDefinition();
-        $valueTypes = AtvSchema::getJsonTypeForDataType($itemDefinition);
-
-        if ($itemName === 'costGroupName') {
-        }
-        else {
-          $itemValues[] = [
-            'ID' => $itemName,
-          // @todo Real labels.
-            'label' => $itemName,
-            'value' => $item->getValue(),
-            'valueType' => $valueTypes['jsonType'],
-          ];
-        }
-        $items[$itemIndex] = $itemValues;
       }
     }
     return $items;
@@ -119,7 +76,7 @@ class GrantsBudgetComponentService {
       $itemValues = [
         'ID' => '123',
         'label' => $values['label'] ?? NULL,
-        'value' => $values['value'] ?? NULL,
+        'value' => (string)GrantsHandler::convertToFloat($values['value']) ?? NULL,
         'valueType' => 'double',
       ];
 
@@ -137,51 +94,12 @@ class GrantsBudgetComponentService {
    * @return array
    *   Formatted data.
    */
-  public static function getBudgetIncomeOtherValues(array $documentData): array {
+  public static function getBudgetOtherValues(array $documentData, $jsonPath): array {
 
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      [
-        'compensation',
-        'budgetInfo',
-        'incomeGroupsArrayStatic',
-        'otherIncomeRowsArrayStatic',
-      ]
-    );
-
-    if (!empty($elements)) {
-      $retVal = array_map(function ($e) {
-        return [
-          'label' => $e['label'] ?? NULL,
-          'value' => $e['value'] ?? NULL,
-        ];
-      }, $elements);
-    }
-
-    return $retVal;
-  }
-
-  /**
-   * Transform ATV Data to Webform.
-   *
-   * @param array $documentData
-   *   Document data from ATV.
-   *
-   * @return array
-   *   Formatted data.
-   */
-  public static function getBudgetCostOtherValues(array $documentData): array {
-
-    $retVal = [];
-    $elements = NestedArray::getValue(
-      $documentData,
-      [
-        'compensation',
-        'budgetInfo',
-        'costGroupsArrayStatic',
-        'otherCostRowsArrayStatic',
-      ]
+      $jsonPath
     );
 
     if (!empty($elements)) {
@@ -205,16 +123,11 @@ class GrantsBudgetComponentService {
    * @return array
    *   Formatted Data.
    */
-  public static function getBudgetIncomeStaticValues(array $documentData) {
+  public static function getBudgetStaticValues(array $documentData, $jsonPath) {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      [
-        'compensation',
-        'budgetInfo',
-        'incomeGroupsArrayStatic',
-        'incomeRowsArrayStatic',
-      ]
+      $jsonPath
     );
 
     if (!empty($elements)) {
@@ -230,35 +143,35 @@ class GrantsBudgetComponentService {
   }
 
   /**
-   * Get Budget cost static values in webform format.
-   *
-   * @param array $documentData
-   *   ATV document data.
-   *
+   * Extract typed data to webform format based definition
    * @return array
-   *   Formatted Data.
    */
-  public static function getBudgetCostStaticValues(array $documentData) {
-    $retVal = [];
-    $elements = NestedArray::getValue(
-      $documentData,
-      [
-        'compensation',
-        'budgetInfo',
-        'costGroupsArrayStatic',
-        'costRowsArrayStatic',
-      ]
-    );
+  public static function extractToWebformData($definition,  array $documentData) {
 
-    if (!empty($elements)) {
-      $values = [];
-      foreach (reset($elements) as $row) {
-        $values[$row['ID']] = $row['value'];
-      }
-      $retVal[] = $values;
+    $retVal = [];
+    $jsonPath = $definition->getSetting('jsonPath');
+
+    $pathLast = end($jsonPath);
+
+    switch ($pathLast) {
+      case 'incomeRowsArrayStatic':
+      case 'costRowsArrayStatic':
+        $retVal = self::getBudgetStaticValues($documentData, $jsonPath);
+        break;
+      case 'otherIncomeRowsArrayStatic':
+      case 'otherCostRowsArrayStatic':
+        $retVal = self::getBudgetOtherValues($documentData, $jsonPath);
+        break;
     }
 
     return $retVal;
+  }
+
+  /**
+   * Process group name.
+   */
+  public static function processGroupName($property) {
+    return $property->getValue();
   }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Drupal\grants_handler\Plugin\WebformHandler;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\grants_handler\ApplicationException;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\Core\Datetime\DateFormatter;
@@ -303,6 +304,26 @@ class GrantsHandler extends WebformHandlerBase {
     if (isset($values['bank_account']) && $values['bank_account'] !== NULL) {
       $values['account_number'] = $values['bank_account']['account_number'];
       unset($values['bank_account']);
+    }
+
+    $budgetFields = NestedArray::filter($values, function ($i) {
+      if (is_array($i) && !empty(reset($i))) {
+        $elem = reset($i);
+        return isset($elem['costGroupName']) || isset($elem['incomeGroupName']);
+      }
+
+      return false;
+    });
+
+    // Force incomeGroupName by found fields.
+    foreach (array_keys($budgetFields) as $element) {
+      $element = reset($values[$element]);
+      if (isset($element['costGroupName'])) {
+        $values['costGroupName'] = $element['costGroupName'];
+      } elseif (isset($element['incomeGroupName'])) {
+        $values['incomeGroupName'] = $element['incomeGroupName'];
+      }
+
     }
 
     // If for some reason we don't have application number at this point.
