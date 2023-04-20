@@ -843,8 +843,10 @@ class GrantsProfileService {
    *   ID for user.
    * @param string $profileType
    *   Type of profile.
+   *
    * @return array
    *   ATV Document array.
+   *
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
