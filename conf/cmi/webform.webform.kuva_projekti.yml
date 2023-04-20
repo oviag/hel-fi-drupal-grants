@@ -45,7 +45,7 @@ elements: |-
       '#title': 'Hakemuksen tila'
       '#readonly': true
     applicant_type:
-      '#type': textfield
+      '#type': hidden
       '#title': 'Hakijan tyyppi'
     hakemusprofiili:
       '#type': webform_section
