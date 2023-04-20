@@ -2,7 +2,7 @@
 
 namespace Drupal\grants_applicant_info;
 
-use TypedData\Definition\ApplicantInfoDefinition;
+use Drupal\grants_applicant_info\TypedData\Definition\ApplicantInfoDefinition;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\grants_metadata\AtvSchema;
@@ -140,7 +140,7 @@ class ApplicantInfoService {
   /**
    * Extact data.
    *
-   * @param \Drupal\grants_applicant_info\TypedData\Definition\ApplicantInfoDefinition $property
+   * @param ApplicantInfoDefinition $property
    *   Property.
    * @param array $content
    *   Doc content.
