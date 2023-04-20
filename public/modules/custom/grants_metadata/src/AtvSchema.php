@@ -4,17 +4,14 @@ namespace Drupal\grants_metadata;
 
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelFactory;
-use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
-use Drupal\Core\TypedData\Plugin\DataType\ItemList;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_attachments\AttachmentHandler;
 use Drupal\grants_attachments\Plugin\WebformElement\GrantsAttachments;
-use Drupal\grants_handler\ApplicationHandler;
 use Drupal\webform\Entity\WebformSubmission;
 
 /**
@@ -91,9 +88,9 @@ class AtvSchema {
    *   Mapped dta from document.
    */
   public function documentContentToTypedData(
-    array                          $documentData,
+    array $documentData,
     ComplexDataDefinitionInterface $typedDataDefinition,
-    ?array                         $metadata = []
+    ?array $metadata = []
   ): array {
 
     if (isset($documentData['content']) && is_array($documentData['content'])) {
@@ -103,20 +100,14 @@ class AtvSchema {
       $documentContent = $documentData;
     }
 
-    $webform = ApplicationHandler::getWebformFromApplicationNumber($metadata["applicationnumber"]);
-    $elements = $webform->getElementsDecodedAndFlattened();
-    $elements2 = $webform->getElementsDecoded();
-
     $propertyDefinitions = $typedDataDefinition->getPropertyDefinitions();
 
-    // $typedData = $this->typedDataManager->create($typedDataDefinition);
     $typedDataValues = [];
 
     foreach ($propertyDefinitions as $definitionKey => $definition) {
 
       $jsonPath = $definition->getSetting('jsonPath');
       $webformDataExtractor = $definition->getSetting('webformDataExtracter');
-
 
       if ($webformDataExtractor) {
         $typedDataValues[$definitionKey] = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
@@ -352,10 +343,10 @@ class AtvSchema {
    */
   public function typedDataToDocumentContent(
     TypedDataInterface $typedData,
-    WebformSubmission  $webformSubmission = NULL): array {
+    WebformSubmission $webformSubmission = NULL): array {
 
     $documentStructure = [];
-
+    $addedElements = [];
     foreach ($typedData as $property) {
       $definition = $property->getDataDefinition();
 
@@ -376,6 +367,10 @@ class AtvSchema {
       $elementName = array_pop($jsonPath);
       $baseIndex = count($jsonPath);
 
+      if (!isset($addedElements[$numberOfItems])) {
+        $addedElements[$numberOfItems] = [];
+      }
+
       $value = self::sanitizeInput($property->getValue());
 
       if ($jsonPath == NULL &&
@@ -393,7 +388,7 @@ class AtvSchema {
       $itemTypes = self::getJsonTypeForDataType($definition);
       $itemValue = self::getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
 
-      // If we have structure callback defined, then get property structure
+      // If we have structure callback defined, then get property structure.
       if ($propertyStructureCallback) {
         $documentStructure = array_merge(
           $documentStructure,
@@ -415,10 +410,11 @@ class AtvSchema {
             'label' => $propertyLabel,
           ];
           $documentStructure[$jsonPath[0]][$jsonPath[1]][$jsonPath[2]][] = $valueArray;
+          $addedElements[$numberOfItems][] = $elementName;
           break;
 
         case 3:
-          if (is_array($itemValue) && $this->numericKeys($itemValue)) {
+          if (is_array($itemValue) && self::numericKeys($itemValue)) {
             if ($fullItemValueCallback) {
               $fieldValues = $this->getFieldValuesFromFullItemCallback($fullItemValueCallback, $property, $definition);
               if (empty($fieldValues)) {
@@ -462,6 +458,7 @@ class AtvSchema {
                     }
                   }
                   $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName][$itemIndex] = $fieldValues;
+                  $addedElements[$numberOfItems][] = $elementName;
                 }
               }
             }
@@ -490,7 +487,9 @@ class AtvSchema {
           break;
 
         case 2:
-          if (is_array($value) && $this->numericKeys($value)) {
+          if (
+            is_array($value) &&
+            self::numericKeys($value)) {
             if ($propertyType == 'list') {
               foreach ($property as $itemIndex => $item) {
                 $fieldValues = [];
@@ -578,7 +577,7 @@ class AtvSchema {
    * @return bool
    *   Is there only numeric keys?
    */
-  protected function numericKeys(array $array): bool {
+  public static function numericKeys(array $array): bool {
     $non_numeric_key_found = FALSE;
 
     foreach (array_keys($array) as $key) {
@@ -605,9 +604,9 @@ class AtvSchema {
    *   Parsed typed data structure.
    */
   protected function getValueFromDocument(
-    array                    $content,
-    array                    $pathArray,
-    string                   $elementName,
+    array $content,
+    array $pathArray,
+    string $elementName,
     ?DataDefinitionInterface $definition
   ): mixed {
     // Get new key to me evalued.
@@ -657,7 +656,7 @@ class AtvSchema {
     }
     // If keys are numeric, we know that we need to decode the last
     // item with id's / names in array.
-    elseif ($this->numericKeys($content)) {
+    elseif (self::numericKeys($content)) {
       // Loop content.
       foreach ($content as $value) {
         // If content is not array, it means that content is returnable as is.
@@ -770,7 +769,7 @@ class AtvSchema {
    *
    * @param array $fullItemValueCallback
    *   Callback config.
-   * @param TypedDataInterface $property
+   * @param \Drupal\Core\TypedData\TypedDataInterface $property
    *   Property.
    * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
    *   Definition.
@@ -779,8 +778,8 @@ class AtvSchema {
    *   Full item callback array.
    */
   public function getFieldValuesFromFullItemCallback(
-    array                   $fullItemValueCallback,
-    TypedDataInterface      $property,
+    array $fullItemValueCallback,
+    TypedDataInterface $property,
     DataDefinitionInterface $definition
   ): mixed {
     $fieldValues = [];
@@ -804,8 +803,8 @@ class AtvSchema {
    *
    * @param array $fullItemValueCallback
    *   Callback config.
-   * @param TypedDataInterface $property
-   *   Property.
+   * @param array $content
+   *   Content.
    * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
    *   Definition.
    *
@@ -813,8 +812,8 @@ class AtvSchema {
    *   Full item callback array.
    */
   public function getWebformDataFromContent(
-    array                   $fullItemValueCallback,
-    array                   $content,
+    array $fullItemValueCallback,
+    array $content,
     DataDefinitionInterface $definition
   ): mixed {
     $fieldValues = [];

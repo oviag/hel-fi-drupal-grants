@@ -43,6 +43,10 @@ class GrantsProfileController extends ControllerBase {
    *
    * @param \Drupal\Core\Form\FormBuilder $form_builder
    *   The form builder.
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Profile servie.
+   * @param \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $helsinkiProfiiliUserData
+   *   Hp data.
    */
   public function __construct(
     FormBuilder $form_builder,

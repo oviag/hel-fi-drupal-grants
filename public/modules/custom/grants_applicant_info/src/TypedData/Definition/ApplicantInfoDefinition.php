@@ -46,6 +46,7 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'applicantInfoArray',
           'socialSecurityNumber',
         ]);
+
       $info['email'] = DataDefinition::create('string')
         ->setLabel('Nimi')
         ->setSetting('jsonPath', [
@@ -53,6 +54,7 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'applicantInfoArray',
           'email',
         ]);
+
       $info['street'] = DataDefinition::create('string')
         ->setLabel('Nimi')
         ->setSetting('jsonPath', [
@@ -166,7 +168,6 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
         ])
         ->addConstraint('NotBlank')
         ->addConstraint('Email');
-
 
     }
     return $this->propertyDefinitions;

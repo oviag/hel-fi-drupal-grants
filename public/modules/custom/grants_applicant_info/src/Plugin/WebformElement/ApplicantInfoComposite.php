@@ -43,52 +43,8 @@ class ApplicantInfoComposite extends WebformCompositeBase {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
-    // Here you can define and alter a webform element's properties UI.
-    // Form element property visibility and default values are defined via
-    // ::defaultProperties.
-    //
-    // @see \Drupal\webform\Plugin\WebformElementBase::form
-    // @see \Drupal\webform\Plugin\WebformElement\TextBase::form
-//    $form['element']['premiseFields'] = [
-//      '#type' => 'select',
-//      '#required' => TRUE,
-//      '#multiple' => TRUE,
-//      '#title' => $this->t('Premise fields collected'),
-//      '#options' => self::buildPremiseFieldsOptions(),
-//    ];
 
     return $form;
-  }
-
-  /**
-   * Build fieldlist for UI.
-   *
-   * @return array
-   *   Updated element
-   *
-   * @see grants_handler.module
-   */
-  public static function buildPremiseFieldsOptions(): array {
-
-    return [
-      'premiseType' => t('Premise Type'),
-      'premiseName' => t('Premise Name'),
-      'premiseAddress' => t('Premise Address'),
-      'location' => t('Premise location'),
-      'streetAddress' => t('Street Address'),
-      'address' => t('Address'),
-      'postCode' => t('Postal Code'),
-      'studentCount' => t('Student Count'),
-      'specialStudents' => t('Special Students'),
-      'groupCount' => t('Group Count'),
-      'specialGroups' => t('Special Groups'),
-      'personnelCount' => t('Personnel Count'),
-      'totalRent' => t('Total Rent'),
-      'rentTimeBegin' => t('Rent time begin'),
-      'rentTimeEnd' => t('Rent time end'),
-      'free' => t('Free'),
-    ];
-
   }
 
   /**
@@ -105,12 +61,29 @@ class ApplicantInfoComposite extends WebformCompositeBase {
     $value = $this->getValue($element, $webform_submission, $options);
     $lines = [];
     foreach ($value as $fieldName => $fieldValue) {
-      $webformElement = $element["#webform_composite_elements"][$fieldName];
-      $lines[] = $webformElement['#title']->render();
-      $lines[] = $fieldValue;
+      if (isset($element["#webform_composite_elements"][$fieldName])) {
+        $webformElement = $element["#webform_composite_elements"][$fieldName];
+        if ($webformElement && isset($webformElement['#title'])) {
+          $lines[] = $webformElement['#title']->render();
+          $lines[] = $fieldValue;
+        }
+      }
     }
 
     return $lines;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $retval = [];
+    foreach ($element["#webform_composite_elements"] as $elName => $elVal) {
+      $retval[$elName] = $elVal['#value'];
+    }
+
+    return $retval;
+
   }
 
 }

@@ -36,6 +36,14 @@ trait ApplicationDefinitionTrait {
         'postCode',
       ]);
 
+    $info['email'] = DataDefinition::create('string')
+      ->setLabel('Nimi')
+      ->setSetting('jsonPath', [
+        'compensation',
+        'applicantInfoArray',
+        'email',
+      ]);
+
     $info['community_officials'] = ListDataDefinition::create('grants_profile_application_official')
       // ->setRequired(TRUE)
       ->setSetting('jsonPath', ['compensation', 'applicantOfficialsArray'])
@@ -116,8 +124,7 @@ trait ApplicationDefinitionTrait {
       ->setSetting('formErrorElement', [
         'formElement' => 'community_address',
         'formError' => 'You must select address',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['application_type'] = DataDefinition::create('string')
       ->setRequired(TRUE)

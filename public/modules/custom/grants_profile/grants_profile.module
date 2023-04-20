@@ -139,7 +139,6 @@ function grants_profile_cron(): void {
  */
 function grants_profile_form_alter(&$form, FormStateInterface $form_state, $form_id): void {
 
-
   // Hide fields from login forms without proper query strings.
   // If we're at user login.
   if ($form_id == 'user_login_form') {

@@ -89,8 +89,6 @@ class CommunityAddressComposite extends WebformCompositeBase {
     if (!in_array('helsinkiprofiili', $roles)) {
       return [];
     }
-
-
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
 

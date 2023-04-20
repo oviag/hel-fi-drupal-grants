@@ -73,7 +73,6 @@ class BankAccountComposite extends WebformCompositeBase {
       return [];
     }
 
-
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
 
