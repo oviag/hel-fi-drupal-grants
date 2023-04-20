@@ -271,3 +271,18 @@ div.grants-handler--prefilled-field, .grants-profile-prh-info {
   padding-bottom: 0;
   margin-bottom: 0;
 }
+
+.grants-mandate-type {
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    @media (min-width: $breakpoint-l) {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .hds-card--applicant-role {
+    margin-right: var(--spacing-l);
+  }
+}

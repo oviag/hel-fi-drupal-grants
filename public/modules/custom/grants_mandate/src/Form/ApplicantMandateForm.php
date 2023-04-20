@@ -103,46 +103,6 @@ class ApplicantMandateForm extends FormBase {
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['actions']['registered_community'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['hds-card__body']],
-      '#prefix' => '<div class="hds-card hds-card--applicant-role">',
-      '#suffix' => '</div>',
-    ];
-    $form['actions']['registered_community']['info'] = [
-      '#theme' => 'select_applicant_role',
-      '#icon' => 'group',
-      '#role' => $this->t('Registered community'),
-      '#role_description' => $this->t('This is a short description of the applicant role.'),
-    ];
-    $form['actions']['registered_community']['submit'] = [
-      '#type' => 'submit',
-      '#name' => 'registered_community',
-      '#value' => $this->t('Select Registered community role & authorize mandate'),
-    ];
-    $form['actions']['unregistered_community'] = [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['hds-card__body']],
-      '#prefix' => '<div class="hds-card hds-card--applicant-role">',
-      '#suffix' => '</div>',
-    ];
-    $form['actions']['unregistered_community']['info'] = [
-      '#theme' => 'select_applicant_role',
-      '#icon' => 'group',
-      '#role' => $this->t('Unegistered community'),
-      '#role_description' => $this->t('This is a short description of the applicant role.'),
-    ];
-
-    $form['actions']['unregistered_community']['unregistered_community_selection'] = [
-      '#type' => 'select',
-      '#options' => $profileOptions,
-    ];
-
-    $form['actions']['unregistered_community']['submit'] = [
-      '#type' => 'submit',
-      '#name' => 'unregistered_community',
-      '#value' => $this->t('Select Unegistered community role'),
-    ];
     $form['actions']['private_person'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['hds-card__body']],
@@ -159,6 +119,46 @@ class ApplicantMandateForm extends FormBase {
       '#name' => 'private_person',
       '#type' => 'submit',
       '#value' => $this->t('Select Private person role'),
+    ];
+    $form['actions']['unregistered_community'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['hds-card__body']],
+      '#prefix' => '<div class="hds-card hds-card--applicant-role">',
+      '#suffix' => '</div>',
+    ];
+    $form['actions']['unregistered_community']['info'] = [
+      '#theme' => 'select_applicant_role',
+      '#icon' => 'group',
+      '#role' => $this->t('Unregistered community'),
+      '#role_description' => $this->t('This is a short description of the applicant role.'),
+    ];
+
+    $form['actions']['unregistered_community']['unregistered_community_selection'] = [
+      '#type' => 'select',
+      '#options' => $profileOptions,
+    ];
+
+    $form['actions']['unregistered_community']['submit'] = [
+      '#type' => 'submit',
+      '#name' => 'unregistered_community',
+      '#value' => $this->t('Select Unregistered community role'),
+    ];
+    $form['actions']['registered_community'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['hds-card__body']],
+      '#prefix' => '<div class="hds-card hds-card--applicant-role">',
+      '#suffix' => '</div>',
+    ];
+    $form['actions']['registered_community']['info'] = [
+      '#theme' => 'select_applicant_role',
+      '#icon' => 'group',
+      '#role' => $this->t('Registered community'),
+      '#role_description' => $this->t('This is a short description of the applicant role.'),
+    ];
+    $form['actions']['registered_community']['submit'] = [
+      '#type' => 'submit',
+      '#name' => 'registered_community',
+      '#value' => $this->t('Select Registered community role & authorize mandate'),
     ];
 
     return $form;
