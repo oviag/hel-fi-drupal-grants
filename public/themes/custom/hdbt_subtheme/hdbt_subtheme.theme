@@ -10,6 +10,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Html;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * @file
@@ -433,6 +434,13 @@ function hdbt_subtheme_form_alter(&$form, FormStateInterface $form_state, $form_
 }
 
 /**
+ * Implements hook_preprocess_block__user_login_block().
+ */
+function hdbt_subtheme_preprocess_block__user_login_block(&$variables, $hook) {
+  $variables['content']['user_links'] = NULL;
+}
+
+/**
  * Implements template_preprocess_paragraph().
  */
 function hdbt_subtheme_preprocess_paragraph(&$variables) {
@@ -444,5 +452,58 @@ function hdbt_subtheme_preprocess_paragraph(&$variables) {
     $grantsProfileService = \Drupal::service('grants_profile.service');
     $selectedCompany = $grantsProfileService->getSelectedCompany();
     $variables['company'] = $selectedCompany;
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function hdbt_subtheme_preprocess_tpr_service_channel(array &$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $typeName = $node ? $node->bundle() : NULL;
+
+  if ($typeName === 'service') {
+
+    $webform = $node->get('field_webform')->target_id;
+
+    if (!isset($variables['content']['links']) || !$webform) {
+      return;
+    }
+
+    $items = $variables['content']['links']['#items'] ?? NULL;
+
+    if (!$items) {
+      return;
+    }
+
+    $current_url = Url::fromRoute('<current>');
+    $path = $current_url->toString();
+
+    foreach ($variables['content']['links']['#items']->getIterator() as $key => $item) {
+      $values = $item->getValue();
+      $item->setValue($values);
+      if (
+        strpos($values['uri'], $webform) !== FALSE ||
+        strpos($values['uri'], $path) !== FALSE
+      ) {
+        $items->removeItem($key);
+      }
+    }
+
+    $servicePageAuthBlock = \Drupal::service('plugin.manager.block')->createInstance('grants_handler_service_page_auth_block', []);
+    $blockLink = $servicePageAuthBlock->buildAsTprLink();
+    if ($blockLink) {
+      $items->appendItem($blockLink);
+    }
+
+    if (!\Drupal::currentUser()->isAuthenticated()) {
+      $link = Url::fromRoute('user.login', [], ['absolute' => TRUE]);
+      $items->appendItem([
+        'title' => t('Log into the service', [], ['context' => 'Login to grants']),
+        'uri' => $link->toString(),
+        'options' => [],
+        '_attributes' => [],
+      ]);
+    }
   }
 }
