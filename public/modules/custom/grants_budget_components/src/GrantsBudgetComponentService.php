@@ -28,7 +28,6 @@ class GrantsBudgetComponentService {
     $usedFields = $dataDefinition->getSetting('fieldsForApplication');
 
     foreach ($property as $itemIndex => $p) {
-      $itemValues = [];
       foreach ($p as $item) {
         $itemName = $item->getName();
 
@@ -102,17 +101,23 @@ class GrantsBudgetComponentService {
     return $items;
   }
 
-  public static function processBudgetIncomeOther(ListInterface $property): array {
+  /**
+   * Format Other Income/Cost values to ATV Schema format.
+   *
+   * @param ListInterface $property
+   * @return array
+   */
+  public static function processBudgetOtherValues(ListInterface $property): array {
     $items = [];
 
     $dataDefinition = $property->getDataDefinition();
 
     foreach ($property as $itemIndex => $p) {
-      $asd = $p->getValues();
+      $values = $p->getValues();
       $itemValues = [
         'ID' => '123',
-        'label' => $asd['label'] ?? NULL,
-        'value' => $asd['value'] ?? NULL,
+        'label' => $values['label'] ?? NULL,
+        'value' => $values['value'] ?? NULL,
         'valueType' => 'double',
       ];
 
@@ -121,12 +126,49 @@ class GrantsBudgetComponentService {
     return $items;
   }
 
+
+  /**
+   * Transform ATV Data to Webform.
+   *
+   * @param array $documentData
+   *   Document data from ATV
+   * @return array
+   *   Formatted data.
+   */
   public static function getBudgetIncomeOtherValues(array $documentData): array {
 
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
       ['compensation', 'budgetInfo', 'incomeGroupsArrayStatic', 'otherIncomeRowsArrayStatic']
+    );
+
+    if (!empty($elements)) {
+      $retVal = array_map(function ($e) {
+        return [
+          'label' => $e['label'] ?? NULL,
+          'value' => $e['value'] ?? NULL,
+        ];
+      }, $elements);
+    }
+
+    return $retVal;
+  }
+
+  /**
+   * Transform ATV Data to Webform.
+   *
+   * @param array $documentData
+   *   Document data from ATV
+   * @return array
+   *   Formatted data.
+   */
+  public static function getBudgetCostOtherValues(array $documentData): array {
+
+    $retVal = [];
+    $elements = NestedArray::getValue(
+      $documentData,
+      ['compensation', 'budgetInfo', 'costGroupsArrayStatic', 'otherCostRowsArrayStatic']
     );
 
     if (!empty($elements)) {
