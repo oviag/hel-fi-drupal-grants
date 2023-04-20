@@ -520,8 +520,8 @@ class AttachmentHandler {
     $atvSchema = \Drupal::service('grants_metadata.atv_schema');
 
     // If we have account number, load details.
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
-    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany['identifier']);
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
+    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany);
     $profileContent = $grantsProfileDocument->getContent();
     $applicationDocument = FALSE;
     $fileArray = [];
