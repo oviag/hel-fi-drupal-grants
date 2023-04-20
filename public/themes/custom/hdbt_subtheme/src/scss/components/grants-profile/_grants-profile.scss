@@ -70,6 +70,12 @@ $breakpoint-xl: 1248px;
   &--extrainfo {
     padding-top: var(--spacing-l);
     padding-bottom: var(--spacing-l);
+
+    fieldset.form-wrapper {
+      border: 0;
+      background-color: var(--color-silver-light);
+      padding: var(--spacing-l);
+    }
   }
     &--infotext {
     font-size: var(--fontsize-body-l);
@@ -148,6 +154,22 @@ $breakpoint-xl: 1248px;
     .tabledrag-toggle-weight-wrapper, .field-multiple-drag  {
       display: none;
     }
+  }
+}
+.page--oma-asiointi__private-person {
+  .grants-profile--basicinfo {
+    border-bottom: 8px solid var(--color-copper);
+  }
+
+  .grants-profile--wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.page--oma-asiointi__unregistered-community {
+  .grants-profile--wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 }
 .hds-link .hel-icon {

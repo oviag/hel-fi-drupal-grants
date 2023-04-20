@@ -458,3 +458,19 @@ msgstr "Sinun tulee liittää tilinumeron vahvistuliite: @iban"
 
 msgid "You must add one bank account"
 msgstr "Sinun tulee lisätä vähintään yksi pankkitili"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Personal information"
+msgstr "Omat tiedot"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Basic details"
+msgstr "Perustiedot"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Social security number"
+msgstr "Henkilötunnus"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Own contact information"
+msgstr "Omat yhteystiedot"

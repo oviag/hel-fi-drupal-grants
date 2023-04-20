@@ -217,3 +217,19 @@ msgstr "Du måste lägga till bekräftelsefil för konto: @iban"
 
 msgid "You must add one bank account"
 msgstr "Du måste lägga till ett bankkonto"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Personal information"
+msgstr "Personlig information"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Basic details"
+msgstr "Grundläggande detaljer"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Social security number"
+msgstr "Personnummer"
+
+msgctxt "Yksityishenkilön asiointi"
+msgid "Own contact information"
+msgstr "Egna kontaktuppgifter"
