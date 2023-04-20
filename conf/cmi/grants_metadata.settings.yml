@@ -25,7 +25,7 @@ third_party_options:
       id: KUVAPROJ
       code: KUVAPROJ
       dataDefinition:
-        definitionClass: Drupal\grants_metadata\TypedData\Definition\KaskoYleisavustusDefinition
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaProjektiDefinition
         definitionId: grants_metadata_kaskoyleis
       labels:
         fi: 'Taide ja kulttuuri: projektiavustus'
