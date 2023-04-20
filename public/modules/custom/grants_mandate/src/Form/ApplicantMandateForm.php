@@ -158,7 +158,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['private_person']['submit'] = [
       '#name' => 'private_person',
       '#type' => 'submit',
-      '#value' => $this->t('Select Private person role  '),
+      '#value' => $this->t('Select Private person role'),
     ];
 
     return $form;
@@ -174,7 +174,8 @@ class ApplicantMandateForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException|\Drupal\grants_mandate\GrantsMandateException
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \Drupal\grants_mandate\GrantsMandateException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 

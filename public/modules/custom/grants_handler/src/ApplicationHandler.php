@@ -3,7 +3,6 @@
 namespace Drupal\grants_handler;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Access\AccessException;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannel;
@@ -688,10 +687,6 @@ class ApplicationHandler {
         $document->getMetadata()
       );
 
-      if ($selectedCompany['identifier'] !== $sData['company_number']) {
-        throw new AccessException('Selected company ID does not match with one from document');
-      }
-
       $sData['messages'] = self::parseMessages($sData);
 
       // Set submission data from parsed mapper.
@@ -742,6 +737,8 @@ class ApplicationHandler {
    *
    * @param string $transactionId
    *   Id of the transaction.
+   * @param bool $refetch
+   *   Force atv document fetch.
    *
    * @return \Drupal\helfi_atv\AtvDocument
    *   FEtched document.
@@ -749,11 +746,10 @@ class ApplicationHandler {
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \Drupal\helfi_atv\AtvFailedToConnectException
    * @throws \GuzzleHttp\Exception\GuzzleException
-   * @throws \Drupal\Core\TempStore\TempStoreException
    */
-  public function getAtvDocument(string $transactionId): AtvDocument {
+  public function getAtvDocument(string $transactionId, bool $refetch = FALSE): AtvDocument {
 
-    if (!isset($this->atvDocument)) {
+    if (!isset($this->atvDocument) || $refetch === TRUE) {
       $res = $this->atvService->searchDocuments([
         'transaction_id' => $transactionId,
         'lookfor' => 'appenv:' . self::getAppEnv(),
@@ -818,10 +814,18 @@ class ApplicationHandler {
     $erroredItems = [];
 
     if ($violations->count() > 0) {
+      /** @var \Symfony\Component\Validator\ConstraintViolationInterface $violation */
       foreach ($violations as $violation) {
         $propertyPath = $violation->getPropertyPath();
 
-        $thisProperty = $appProps[$propertyPath];
+        if ($propertyPath == 'hakijan_tiedot.email') {
+          continue;
+        }
+
+        $propertyPathArray = explode('.', $propertyPath);
+
+        $thisProperty = $appProps[$propertyPathArray[0]];
+
         $thisDefinition = $thisProperty->getDataDefinition();
         $label = $thisDefinition->getLabel();
         $thisDefinitionSettings = $thisDefinition->getSettings();
@@ -950,7 +954,9 @@ class ApplicationHandler {
     $atvDocument->setUserId($userData['sub']);
     $atvDocument->setTosFunctionId(getenv('ATV_TOS_FUNCTION_ID'));
     $atvDocument->setTosRecordId(getenv('ATV_TOS_RECORD_ID'));
-    $atvDocument->setBusinessId($selectedCompany['identifier']);
+    if ($submissionData['applicant_type'] == 'registered_community') {
+      $atvDocument->setBusinessId($selectedCompany['identifier']);
+    }
     $atvDocument->setDraft(TRUE);
     $atvDocument->setDeletable(FALSE);
 
@@ -994,7 +1000,7 @@ class ApplicationHandler {
 
     $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData);
 
-    $atvDocument = $this->getAtvDocument($applicationNumber);
+    $atvDocument = $this->getAtvDocument($applicationNumber, TRUE);
     $atvDocument->addMetadata(
       'saveid',
       $this->logSubmissionSaveid(NULL, $applicationNumber)

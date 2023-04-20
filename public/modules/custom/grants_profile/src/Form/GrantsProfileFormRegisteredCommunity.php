@@ -39,6 +39,8 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
    *
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Profile.
    */
   public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
     $this->typedDataManager = $typed_data_manager;
@@ -666,11 +668,11 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
         '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
         '#default_value' => $address['city'],
       ];
-      // $form['addressWrapper'][$delta]['address']['country'] = [
-      //        '#type' => 'textfield',
-      //        '#title' => $this->t('Country'),
-      //        '#default_value' => $address['country'],
-      //      ];
+      $form['addressWrapper'][$delta]['address']['country'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Country'),
+        '#default_value' => $address['country'],
+      ];
       // We need the delta / id to create delete links in element.
       $form['addressWrapper'][$delta]['address']['address_id'] = [
         '#type' => 'hidden',
@@ -711,10 +713,10 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
             '#type' => 'textfield',
             '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
           ],
-          // 'country' => [
-          //            '#type' => 'textfield',
-          //            '#title' => $this->t('Country'),
-          //          ],
+          'country' => [
+            '#type' => 'textfield',
+            '#title' => $this->t('Country'),
+          ],
           // We need the delta / id to create delete links in element.
           'address_id' => [
             '#type' => 'hidden',

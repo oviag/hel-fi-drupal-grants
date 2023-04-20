@@ -3,7 +3,7 @@
 namespace Drupal\grants_handler\Element;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\grants_profile\Form\GrantsProfileFormPrivatePerson;
+use Drupal\grants_profile\Form\GrantsProfileFormRegisteredCommunity;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
@@ -89,7 +89,7 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
 
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
-    $officialRole = GrantsProfileFormPrivatePerson::getOfficialRoles();
+    $officialRole = GrantsProfileFormRegisteredCommunity::getOfficialRoles();
     $selectedCompany = $grantsProfileService->getSelectedRoleData();
     $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 
