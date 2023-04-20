@@ -27,7 +27,7 @@ class GrantsBudgetComponentService {
     $dataDefinition = $property->getDataDefinition();
     $usedFields = $dataDefinition->getSetting('fieldsForApplication');
 
-    foreach ($property as $itemIndex => $p) {
+    foreach ($property as $p) {
       foreach ($p as $item) {
         $itemName = $item->getName();
 
@@ -55,7 +55,7 @@ class GrantsBudgetComponentService {
     return $items;
   }
 
-    /**
+  /**
    * Parse budget income fields.
    *
    * @param \Drupal\Core\TypedData\ListInterface $property
@@ -90,7 +90,8 @@ class GrantsBudgetComponentService {
         else {
           $itemValues[] = [
             'ID' => $itemName,
-            'label' => $itemName, // @TODO: Real labels.
+          // @todo Real labels.
+            'label' => $itemName,
             'value' => $item->getValue(),
             'valueType' => $valueTypes['jsonType'],
           ];
@@ -104,13 +105,14 @@ class GrantsBudgetComponentService {
   /**
    * Format Other Income/Cost values to ATV Schema format.
    *
-   * @param ListInterface $property
+   * @param \Drupal\Core\TypedData\ListInterface $property
+   *   ListInterface property.
+   *
    * @return array
+   *   Formatted data.
    */
   public static function processBudgetOtherValues(ListInterface $property): array {
     $items = [];
-
-    $dataDefinition = $property->getDataDefinition();
 
     foreach ($property as $itemIndex => $p) {
       $values = $p->getValues();
@@ -126,12 +128,12 @@ class GrantsBudgetComponentService {
     return $items;
   }
 
-
   /**
    * Transform ATV Data to Webform.
    *
    * @param array $documentData
-   *   Document data from ATV
+   *   Document data from ATV.
+   *
    * @return array
    *   Formatted data.
    */
@@ -140,7 +142,12 @@ class GrantsBudgetComponentService {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      ['compensation', 'budgetInfo', 'incomeGroupsArrayStatic', 'otherIncomeRowsArrayStatic']
+      [
+        'compensation',
+        'budgetInfo',
+        'incomeGroupsArrayStatic',
+        'otherIncomeRowsArrayStatic',
+      ]
     );
 
     if (!empty($elements)) {
@@ -159,7 +166,8 @@ class GrantsBudgetComponentService {
    * Transform ATV Data to Webform.
    *
    * @param array $documentData
-   *   Document data from ATV
+   *   Document data from ATV.
+   *
    * @return array
    *   Formatted data.
    */
@@ -168,7 +176,12 @@ class GrantsBudgetComponentService {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      ['compensation', 'budgetInfo', 'costGroupsArrayStatic', 'otherCostRowsArrayStatic']
+      [
+        'compensation',
+        'budgetInfo',
+        'costGroupsArrayStatic',
+        'otherCostRowsArrayStatic',
+      ]
     );
 
     if (!empty($elements)) {
@@ -183,39 +196,67 @@ class GrantsBudgetComponentService {
     return $retVal;
   }
 
+  /**
+   * Get Budget income static values in webform format.
+   *
+   * @param array $documentData
+   *   ATV document data.
+   *
+   * @return array
+   *   Formatted Data.
+   */
   public static function getBudgetIncomeStaticValues(array $documentData) {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      ['compensation', 'budgetInfo', 'incomeGroupsArrayStatic', 'incomeRowsArrayStatic']
+      [
+        'compensation',
+        'budgetInfo',
+        'incomeGroupsArrayStatic',
+        'incomeRowsArrayStatic',
+      ]
     );
 
     if (!empty($elements)) {
 
-          $values = [];
-          foreach ($elements as $row) {
-            $values[$row['ID']] = $row['value'];
-          }
-          $retVal[] = $values;
+      $values = [];
+      foreach ($elements as $row) {
+        $values[$row['ID']] = $row['value'];
+      }
+      $retVal[] = $values;
 
     }
     return $retVal;
   }
 
+  /**
+   * Get Budget cost static values in webform format.
+   *
+   * @param array $documentData
+   *   ATV document data.
+   *
+   * @return array
+   *   Formatted Data.
+   */
   public static function getBudgetCostStaticValues(array $documentData) {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
-      ['compensation', 'budgetInfo', 'costGroupsArrayStatic', 'costRowsArrayStatic']
+      [
+        'compensation',
+        'budgetInfo',
+        'costGroupsArrayStatic',
+        'costRowsArrayStatic',
+      ]
     );
 
     if (!empty($elements)) {
-          $values = [];
-          foreach (reset($elements) as $row) {
-            $values[$row['ID']] = $row['value'];
-          }
-          $retVal[] = $values;
-        }
+      $values = [];
+      foreach (reset($elements) as $row) {
+        $values[$row['ID']] = $row['value'];
+      }
+      $retVal[] = $values;
+    }
 
     return $retVal;
   }
