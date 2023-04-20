@@ -399,7 +399,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . (intval($propertyPathArray[1]) + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . $propertyPathArray[1] . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -408,12 +408,12 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . (intval($propertyPathArray[1]) + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'members') {
-            $propertyPath = 'memberWrapper][' . (intval($propertyPathArray[1]) + 1) . '][member][' . $propertyPathArray[2];
+            $propertyPath = 'memberWrapper][' . $propertyPathArray[1] . '][member][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
