@@ -18,14 +18,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 class GrantsProfileUnregisteredCommunityData extends Map {
 
   /**
-   * {@inheritdoc}
-   */
-  public function setValue($values, $notify = TRUE) {
-
-    parent::setValue($values, $notify);
-  }
-
-  /**
    * This is where we could validate custom fields, bank accounts etc.
    */
   public function validate(): ConstraintViolationListInterface {

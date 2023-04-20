@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\grants_profile\Form\GrantsProfileFormRegisteredCommunity;
-use Drupal\grants_profile\Form\GrantsProfileFormUnregisteredCommunity;
 
 /**
  * Implements hook_theme().

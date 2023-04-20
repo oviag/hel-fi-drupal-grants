@@ -39,6 +39,8 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
    *
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Grants profile service.
    */
   public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
     $this->typedDataManager = $typed_data_manager;
@@ -695,10 +697,10 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
    *   Name of new item.
    */
   public function addMemberBits(
-    array              &$form,
+    array &$form,
     FormStateInterface $formState,
-    array              $members,
-    ?string            $newItem
+    array $members,
+    ?string $newItem
   ) {
     $form['memberWrapper'] = [
       '#type' => 'webform_section',

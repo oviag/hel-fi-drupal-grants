@@ -158,7 +158,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['private_person']['submit'] = [
       '#name' => 'private_person',
       '#type' => 'submit',
-      '#value' => $this->t('Select Private person role  '),
+      '#value' => $this->t('Select Private person role'),
     ];
 
     return $form;

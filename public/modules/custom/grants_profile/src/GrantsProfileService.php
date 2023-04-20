@@ -323,8 +323,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our registered community profile
-   * document.
+   * Ensure we have all fields in our registered community profile document.
    *
    * @param array $selectedCompanyData
    *   Selected company.
@@ -412,8 +411,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our UNregistered community profile
-   * document.
+   * Ensure we have all fields in our UNregistered community profile document.
    *
    * @param array $selectedCompanyData
    *   Selected company.
@@ -444,8 +442,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our UNregistered community profile
-   * document.
+   * Ensure we have all fields in our private person profile document.
    *
    * @param array $selectedRoleData
    *   Selected company.
@@ -840,11 +837,14 @@ class GrantsProfileService {
   }
 
   /**
+   * Try and fetch grant profile from ATV.
+   *
    * @param string $userId
+   *   ID for user.
    * @param string $profileType
-   *
+   *   Type of profile.
    * @return array
-   *
+   *   ATV Document array.
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException
    */
