@@ -35,28 +35,6 @@ class KaskoYleisavustusDefinition extends ComplexDataDefinitionBase {
           'compensationArray',
         ]);
 
-      $info['tilat'] = ListDataDefinition::create('grants_premises')
-        ->setLabel('Tilat')
-        ->setSetting('jsonPath', [
-          'compensation',
-          'activityInfo',
-          'plannedPremisesArray',
-        ])
-        ->setSetting('usedFields', [
-          'premiseName',
-          'postCode',
-          'isOwnedByCity',
-        ])
-        ->setSetting('fullItemValueCallback', [
-          'service' => 'grants_premises.service',
-          'method' => 'processPremises',
-        ])
-        ->setSetting('fieldsForApplication', [
-          'premiseName',
-          'isOwnedByCity',
-          'postCode',
-        ]);
-
     }
     return $this->propertyDefinitions;
   }

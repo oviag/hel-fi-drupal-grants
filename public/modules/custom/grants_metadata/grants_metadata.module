@@ -209,6 +209,7 @@ function grants_metadata_field_industry_options(): array {
  * Alter form.
  */
 function grants_metadata_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
   if ($form_id == 'webform_settings_form' || $form_id == 'webform_add_form' || $form_id == 'webform_duplicate_form') {
 
     $bundle = $form_state->getFormObject()->getEntity();
@@ -271,6 +272,7 @@ function grants_metadata_form_alter(&$form, FormStateInterface $form_state, $for
       '#default_value' => $bundle->getThirdPartySetting('grants_metadata', 'applicantTypes'),
       '#options' => $thirdPartyOptions['applicant_types'],
       '#required' => TRUE,
+      '#multiple' => TRUE,
     ];
 
     // Load the taxonomy terms.

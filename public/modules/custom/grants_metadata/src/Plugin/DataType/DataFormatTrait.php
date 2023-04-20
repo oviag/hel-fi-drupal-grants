@@ -19,17 +19,22 @@ trait DataFormatTrait {
       $defaultValue = $definition->getSetting('defaultValue');
       $valueCallback = $definition->getSetting('valueCallback');
 
-      if (array_key_exists($name, $values)) {
-        $value = $values[$name];
+      if (!is_array($values)) {
+        $formattedData[$name] = NULL;
+      }
+      else {
+        if (array_key_exists($name, $values)) {
+          $value = $values[$name];
 
-        if ($value === NULL) {
-          $value = $defaultValue;
-        }
+          if ($value === NULL) {
+            $value = $defaultValue;
+          }
 
-        if ($valueCallback) {
-          $value = call_user_func($valueCallback, $value);
+          if ($valueCallback) {
+            $value = call_user_func($valueCallback, $value);
+          }
+          $formattedData[$name] = $value;
         }
-        $formattedData[$name] = $value;
       }
     }
 
