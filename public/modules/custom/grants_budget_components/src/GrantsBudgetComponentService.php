@@ -14,7 +14,7 @@ class GrantsBudgetComponentService {
 
   const IGNORED_FIELDS = [
     'costGroupName',
-    'incomeGroupName'
+    'incomeGroupName',
   ];
 
   /**
@@ -50,7 +50,7 @@ class GrantsBudgetComponentService {
           $items[] = [
             'ID' => $itemName,
             'label' => $itemDefinition->getLabel(),
-            'value' => (string)GrantsHandler::convertToFloat($item->getValue()),
+            'value' => (string) GrantsHandler::convertToFloat($item->getValue()),
             'valueType' => $valueTypes['jsonType'],
           ];
         }
@@ -76,7 +76,7 @@ class GrantsBudgetComponentService {
       $itemValues = [
         'ID' => '123',
         'label' => $values['label'] ?? NULL,
-        'value' => (string)GrantsHandler::convertToFloat($values['value']) ?? NULL,
+        'value' => (string) GrantsHandler::convertToFloat($values['value']) ?? NULL,
         'valueType' => 'double',
       ];
 
@@ -90,11 +90,13 @@ class GrantsBudgetComponentService {
    *
    * @param array $documentData
    *   Document data from ATV.
+   * @param array $jsonPath
+   *   Json path as array.
    *
    * @return array
    *   Formatted data.
    */
-  public static function getBudgetOtherValues(array $documentData, $jsonPath): array {
+  public static function getBudgetOtherValues(array $documentData, array $jsonPath): array {
 
     $retVal = [];
     $elements = NestedArray::getValue(
@@ -119,11 +121,13 @@ class GrantsBudgetComponentService {
    *
    * @param array $documentData
    *   ATV document data.
+   * @param array $jsonPath
+   *   Json path as array.
    *
    * @return array
    *   Formatted Data.
    */
-  public static function getBudgetStaticValues(array $documentData, $jsonPath) {
+  public static function getBudgetStaticValues(array $documentData, array $jsonPath) {
     $retVal = [];
     $elements = NestedArray::getValue(
       $documentData,
@@ -143,10 +147,13 @@ class GrantsBudgetComponentService {
   }
 
   /**
-   * Extract typed data to webform format based definition
+   * Extract typed data to webform format based definition.
+   *
    * @return array
+   *
+   *   Formatted data.
    */
-  public static function extractToWebformData($definition,  array $documentData) {
+  public static function extractToWebformData($definition, array $documentData) {
 
     $retVal = [];
     $jsonPath = $definition->getSetting('jsonPath');
@@ -158,6 +165,7 @@ class GrantsBudgetComponentService {
       case 'costRowsArrayStatic':
         $retVal = self::getBudgetStaticValues($documentData, $jsonPath);
         break;
+
       case 'otherIncomeRowsArrayStatic':
       case 'otherCostRowsArrayStatic':
         $retVal = self::getBudgetOtherValues($documentData, $jsonPath);

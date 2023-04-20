@@ -312,7 +312,7 @@ class GrantsHandler extends WebformHandlerBase {
         return isset($elem['costGroupName']) || isset($elem['incomeGroupName']);
       }
 
-      return false;
+      return FALSE;
     });
 
     // Force incomeGroupName by found fields.
@@ -320,7 +320,8 @@ class GrantsHandler extends WebformHandlerBase {
       $element = reset($values[$element]);
       if (isset($element['costGroupName'])) {
         $values['costGroupName'] = $element['costGroupName'];
-      } elseif (isset($element['incomeGroupName'])) {
+      }
+      elseif (isset($element['incomeGroupName'])) {
         $values['incomeGroupName'] = $element['incomeGroupName'];
       }
 
