@@ -78,8 +78,10 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
 
     foreach ($fieldNames as $key => $fieldName) {
       $elements[$key] = [
-        '#type' => 'textfield',
         '#title' => $fieldName,
+        '#type' => 'textfield',
+        '#min' => 0,
+        '#step' => '.01',
         '#element_validate' => [
           [Number::class, 'validateNumber'],
         ],

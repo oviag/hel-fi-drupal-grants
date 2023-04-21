@@ -393,7 +393,8 @@ class AtvSchema {
           $documentStructure,
           self::getFieldValuesFromFullItemCallback(
             $propertyStructureCallback,
-            $property
+            $property,
+            $definition
           )
         );
         continue;
@@ -804,13 +805,14 @@ class AtvSchema {
     if ($fullItemValueCallback['service']) {
       $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);
       $funcName = $fullItemValueCallback['method'];
-
-      $fieldValues = $fullItemValueService->$funcName($property, $fullItemValueCallback['arguments']);
+      $arguments = $fullItemValueCallback['arguments'] ?? [];
+      $fieldValues = $fullItemValueService->$funcName($property, $arguments);
     }
     else {
       if ($fullItemValueCallback['class']) {
         $funcName = $fullItemValueCallback['method'];
-        $fieldValues = $fullItemValueCallback['class']::$funcName($property, $fullItemValueCallback['arguments']);
+        $arguments = $fullItemValueCallback['arguments'] ?? [];
+        $fieldValues = $fullItemValueCallback['class']::$funcName($property, $arguments);
       }
     }
     return $fieldValues;
