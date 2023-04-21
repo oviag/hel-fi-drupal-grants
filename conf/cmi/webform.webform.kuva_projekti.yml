@@ -425,16 +425,16 @@ elements: |-
       '#title': 'Arvio määristä'
       '#description': 'Sy&ouml;t&auml; tiedot koskien koko hanketta, johon avustusta haetaan. Sy&ouml;t&auml; tiedot vain fyysisten esitysten, n&auml;yttelyiden ja ty&ouml;pajojen osalta, &auml;l&auml; laske mukaan pelk&auml;st&auml;&auml;n digitaalisina toteutettuja ohjelmasis&auml;lt&ouml;j&auml;.'
       tapahtuma_tai_esityspaivien_maara_helsingissa:
-        '#type': number
+        '#type': textfield
         '#title': 'Tapahtuma- tai esityspäivien määrä Helsingissä.'
     esityksista:
       '#type': webform_section
       '#title': Esityksistä
       kantaesitysten_maara:
-        '#type': number
+        '#type': textfield
         '#title': 'Kantaesitysten määrä'
       ensi_iltojen_maara_helsingissa:
-        '#type': number
+        '#type': textfield
         '#title': 'Ensi-iltojen määrä Helsingissä'
     yleisolle_avoin_toiminta:
       '#type': webform_section
