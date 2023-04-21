@@ -180,6 +180,142 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'toiminta_yhteistyokumppanit',
         ]);
 
+      $info['tapahtuma_tai_esityspaivien_maara_helsingissa'] = DataDefinition::create('string')
+        ->setLabel('Tapahtuma- tai esityspäivien määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'eventDaysCountHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      $info['kantaesitysten_maara'] = DataDefinition::create('string')
+        ->setLabel('Kantaesitysten määrä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'firstPublicPerformancesCount',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      $info['ensi_iltojen_maara_helsingissa'] = DataDefinition::create('string')
+        ->setLabel('Ensi-iltojen määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'premiereCountHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      $info['postinumero'] = DataDefinition::create('string')
+        ->setLabel('Postinumero.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'firstPublicEventLocationPostCode',
+        ]);
+
+      $info['kyseessa_on_kaupungin_omistama_tila'] = DataDefinition::create('string')
+        ->setLabel('Kyseessä on kaupungin omistama tila.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'isOwnedByCity',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'bool',
+        ]);
+
+      $info['ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara'] = DataDefinition::create('string')
+        ->setLabel('Ensimmäisen yleisölle avoimen tilaisuuden päivämäärä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'firstPublicOccasionDate',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'datetime',
+        ])
+        ->setSetting('valueCallback', [
+          'service' => 'grants_metadata.converter',
+          'method' => 'convertDates',
+          'arguments' => [
+            'dateFormat' => 'c',
+          ],
+        ]);
+      $info['hanke_alkaa'] = DataDefinition::create('string')
+        ->setLabel('Hanke alkaa.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'projectStartDate',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'datetime',
+        ])
+        ->setSetting('valueCallback', [
+          'service' => 'grants_metadata.converter',
+          'method' => 'convertDates',
+          'arguments' => [
+            'dateFormat' => 'c',
+          ],
+        ]);
+      $info['hanke_loppuu'] = DataDefinition::create('string')
+        ->setLabel('Hanke loppuu.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'projectEndDate',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'datetime',
+        ])
+        ->setSetting('valueCallback', [
+          'service' => 'grants_metadata.converter',
+          'method' => 'convertDates',
+          'arguments' => [
+            'dateFormat' => 'c',
+          ],
+        ]);
+
+      $info['festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat'] = DataDefinition::create('string')
+        ->setLabel('Tapahtuman tai festivaalin kohdalla tapahtuman päivämäärät.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'eventOrFestivalDates',
+        ]);
+      $info['laajempi_hankekuvaus'] = DataDefinition::create('string')
+        ->setLabel('Laajempi hankekuvaus.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'detailedProjectDescription',
+        ]);
+
     }
     return $this->propertyDefinitions;
   }

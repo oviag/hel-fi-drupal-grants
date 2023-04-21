@@ -424,9 +424,79 @@ elements: |-
       '#type': webform_section
       '#title': 'Arvio määristä'
       '#description': 'Sy&ouml;t&auml; tiedot koskien koko hanketta, johon avustusta haetaan. Sy&ouml;t&auml; tiedot vain fyysisten esitysten, n&auml;yttelyiden ja ty&ouml;pajojen osalta, &auml;l&auml; laske mukaan pelk&auml;st&auml;&auml;n digitaalisina toteutettuja ohjelmasis&auml;lt&ouml;j&auml;.'
-      markup:
-        '#type': webform_markup
-        '#markup': 'T&auml;h&auml;n tulee Toiminta-osiolle custom composite.'
+      tapahtuma_tai_esityspaivien_maara_helsingissa:
+        '#type': number
+        '#title': 'Tapahtuma- tai esityspäivien määrä Helsingissä.'
+    esityksista:
+      '#type': webform_section
+      '#title': Esityksistä
+      kantaesitysten_maara:
+        '#type': number
+        '#title': 'Kantaesitysten määrä'
+      ensi_iltojen_maara_helsingissa:
+        '#type': number
+        '#title': 'Ensi-iltojen määrä Helsingissä'
+    yleisolle_avoin_toiminta:
+      '#type': webform_section
+      '#title': 'Yleisölle avoin toiminta'
+      postinumero:
+        '#type': textfield
+        '#title': Postinumero
+        '#input_mask': '99999[-9999]'
+      kyseessa_on_kaupungin_omistama_tila:
+        '#type': radios
+        '#title': 'Kyseessä on kaupungin omistama tila'
+        '#options': yes_no
+      tila:
+        '#type': premises_composite
+        '#title': Tila
+        '#multiple': true
+        '#premiseAddress__access': false
+        '#location__access': false
+        '#streetAddress__access': false
+        '#address__access': false
+        '#studentCount__access': false
+        '#specialStudents__access': false
+        '#groupCount__access': false
+        '#specialGroups__access': false
+        '#personnelCount__access': false
+        '#totalRent__access': false
+        '#rentTimeBegin__access': false
+        '#rentTimeEnd__access': false
+        '#free__access': false
+        '#isOthersUse__access': false
+        '#isOwnedByApplicant__access': false
+      ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara:
+        '#type': datetime
+        '#title': 'Ensimmäisen yleisölle avoimen tilaisuuden päivämäärä'
+        '#date_date_element': datepicker
+        '#date_date_format': d.m.Y
+        '#date_year_range': '2023:2010'
+        '#date_time_element': none
+      festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat:
+        '#type': textfield
+        '#title': 'Festivaalin tai tapahtuman kohdalla tapahtuman päivämäärät'
+      hanke_alkaa:
+        '#type': datetime
+        '#title': 'Hanke alkaa'
+        '#date_date_element': datepicker
+        '#date_date_format': d.m.Y
+        '#date_year_range': '2023:2030'
+        '#date_time_element': none
+      hanke_loppuu:
+        '#type': datetime
+        '#title': 'Hanke loppuu'
+        '#date_date_element': datepicker
+        '#date_date_format': d.m.Y
+        '#date_year_range': '2023:2030'
+        '#date_time_element': none
+    hankekuvaus:
+      '#type': webform_section
+      '#title': Hankekuvaus
+      laajempi_hankekuvaus:
+        '#type': textarea
+        '#title': 'Laajempi hankekuvaus'
+        '#description': 'Kerro hankkeesta tiiviisti. Esim. miksi, mit&auml;, kenelle, miten ja mitk&auml; ovat tavoitteet.'
   5_toiminnan_lahtokohdat:
     '#type': webform_wizard_page
     '#title': '5. Toiminnan lähtökohdat'
