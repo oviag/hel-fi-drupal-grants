@@ -3,6 +3,7 @@
 namespace Drupal\grants_budget_components\Element;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element\Number;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
@@ -46,6 +47,10 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
    */
   public static function processWebformComposite(&$element, FormStateInterface $form_state, &$complete_form): array {
 
+
+    $storage = $form_state->getStorage();
+    $errors = $storage['errors'];
+
     $element['#tree'] = TRUE;
     $element = parent::processWebformComposite($element, $form_state, $complete_form);
     $dataForElement = $element['#value'];
@@ -75,8 +80,8 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
       $elements[$key] = [
         '#type' => 'textfield',
         '#title' => $fieldName,
-        '#attributes' => [
-          ' type' => 'number',
+        '#element_validate' => [
+          [Number::class, 'validateNumber'],
         ],
       ];
     }

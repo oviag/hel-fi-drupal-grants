@@ -333,6 +333,135 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'postCode',
         ]);
 
+      // Budget components.
+      $info['budget_static_income'] = ListDataDefinition::create('grants_budget_income_static')
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetStaticValues',
+        ])
+        ->setSetting('fieldsForApplication', [
+          'incomeGroupName',
+          'donations',
+          'totalIncome',
+          "compensation",
+          "plannedOtherCompensations",
+          "sponsorships",
+          "entryFees",
+          "sales",
+          "ownFunding",
+          "plannedTotalIncome",
+          "otherCompensationFromCity",
+          "stateOperativeSubvention",
+          "otherCompensations",
+          "totalIncome",
+          "totalIncomeWithoutSubventions",
+          "shareOfIncomeWithoutSubventions",
+        ])
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetStaticValues',
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'extractToWebformData',
+        ])
+        ->setSetting('jsonPath', [
+          'compensation',
+          'budgetInfo',
+          'incomeGroupsArrayStatic',
+          'incomeRowsArrayStatic',
+        ]);
+
+      $info['budget_cost_static'] = ListDataDefinition::create('grants_budget_cost_static')
+        ->setSetting('fieldsForApplication', [
+          'costGroupName',
+          "performerFees",
+          "otherFees",
+          "personnelSideCosts",
+          "showCosts",
+          "travelCosts",
+          "transportCosts",
+          "equipment",
+          "premises",
+          "marketing",
+          "totalCosts",
+        ])
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetStaticValues',
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'extractToWebformData',
+        ])
+        ->setSetting('jsonPath', [
+          'compensation',
+          'budgetInfo',
+          'costGroupsArrayStatic',
+          'costRowsArrayStatic',
+        ]);
+
+      /* Not in use for this application (?).
+      $info['budget_other_income'] = ListDataDefinition::create(
+      'grants_budget_income_other'
+      )
+      ->setSetting('fullItemValueCallback', [
+      'service' => 'grants_budget_components.service',
+      'method' => 'processBudgetOtherValues',
+      ])
+      ->setSetting('webformDataExtracter', [
+      'service' => 'grants_budget_components.service',
+      'method' => 'extractToWebformData',
+      ])
+      ->setSetting('defaultValue', [])
+      ->setSetting('jsonPath', [
+      'compensation',
+      'budgetInfo',
+      'incomeGroupsArrayStatic',
+      'otherIncomeRowsArrayStatic',
+      ]); */
+      $info['budget_other_cost'] = ListDataDefinition::create('grants_budget_cost_other')
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetOtherValues',
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'extractToWebformData',
+        ])
+        ->setSetting('jsonPath', [
+          'compensation',
+          'budgetInfo',
+          'costGroupsArrayStatic',
+          'otherCostRowsArrayStatic',
+        ]);
+
+      $info['costGroupName'] = DataDefinition::create('string')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'budgetInfo',
+          'costGroupsArrayStatic',
+          'costGroupName',
+        ])
+        ->setSetting('defaultValue', 'general')
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processGroupName',
+        ]);
+
+      $info['incomeGroupName'] = DataDefinition::create('string')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'budgetInfo',
+          'incomeGroupsArrayStatic',
+          'incomeGroupName',
+        ])
+        ->setSetting('defaultValue', 'general')
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processGroupName',
+        ]);
+
     }
     return $this->propertyDefinitions;
   }

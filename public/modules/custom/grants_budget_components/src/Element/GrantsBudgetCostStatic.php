@@ -3,6 +3,7 @@
 namespace Drupal\grants_budget_components\Element;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element\Number;
 use Drupal\webform\Element\WebformCompositeBase;
 
 /**
@@ -75,8 +76,8 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
       $elements[$key] = [
         '#type' => 'textfield',
         '#title' => $fieldName,
-        '#attributes' => [
-          ' type' => 'number',
+        '#element_validate' => [
+          [Number::class, 'validateNumber'],
         ],
       ];
     }

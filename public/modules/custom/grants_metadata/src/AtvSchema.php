@@ -401,6 +401,16 @@ class AtvSchema {
 
       switch ($numberOfItems) {
         case 4:
+
+          if ($fullItemValueCallback) {
+            $fieldValues = $this->getFieldValuesFromFullItemCallback($fullItemValueCallback, $property, $definition);
+            if (!empty($fieldValues)) {
+
+              $documentStructure[$jsonPath[0]][$jsonPath[1]][$jsonPath[2]][$elementName] = $fieldValues;
+              break;
+            }
+          }
+
           $valueArray = [
             'ID' => $elementName,
             'value' => $itemValue,
