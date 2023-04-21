@@ -565,15 +565,15 @@ class GrantsProfileFormPrivatePerson extends FormBase {
             'readonly' => 'readonly',
           ],
         ],
-        // Required by unregistered community form, insert dummy data
+        // Required by unregistered community form, insert dummy data.
         'ownerName' => [
           '#type' => 'hidden',
-          '#value' => 'dummy'
+          '#value' => 'dummy',
         ],
-        // Required by unregistered community form, insert dummy data
+        // Required by unregistered community form, insert dummy data.
         'ownerSsn' => [
           '#type' => 'hidden',
-          '#value' => '010101-001R'
+          '#value' => '010101-001R',
         ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
@@ -630,15 +630,15 @@ rtf, txt, xls, xlsx, zip.'),
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
         ],
-        // Required by unregistered community form, insert dummy data
+        // Required by unregistered community form, insert dummy data.
         'ownerName' => [
           '#type' => 'hidden',
-          '#value' => 'dummy'
+          '#value' => 'dummy',
         ],
-        // Required by unregistered community form, insert dummy data
+        // Required by unregistered community form, insert dummy data.
         'ownerSsn' => [
           '#type' => 'hidden',
-          '#value' => '010101-001R'
+          '#value' => '010101-001R',
         ],
         'confirmationFileName' => [
           '#type' => 'textfield',
