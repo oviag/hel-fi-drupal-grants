@@ -892,6 +892,16 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
             'readonly' => 'readonly',
           ],
         ],
+        'ownerName' => [
+          '#title' => $this->t('Bank account owner name'),
+          '#type' => 'textfield',
+          '#default_value' => $bankAccount['ownerName'] ?? '',
+        ],
+        'ownerSsn' => [
+          '#title' => $this->t('Bank account owner SSN'),
+          '#type' => 'textfield',
+          '#default_value' => $bankAccount['ownerSsn'] ?? '',
+        ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
           '#type' => 'textfield',
@@ -946,6 +956,14 @@ rtf, txt, xls, xlsx, zip.'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
+        ],
+        'ownerName' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Bank account owner name'),
+        ],
+        'ownerSsn' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Bank account owner SSN'),
         ],
         'confirmationFileName' => [
           '#type' => 'textfield',
