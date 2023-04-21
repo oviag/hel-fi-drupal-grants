@@ -791,16 +791,16 @@ class AtvSchema {
     TypedDataInterface $property
   ): mixed {
     $fieldValues = [];
-    if ($fullItemValueCallback['service']) {
+    if (isset($fullItemValueCallback['service'])) {
       $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);
       $funcName = $fullItemValueCallback['method'];
 
-      $fieldValues = $fullItemValueService->$funcName($property, $fullItemValueCallback['arguments']);
+      $fieldValues = $fullItemValueService->$funcName($property, $fullItemValueCallback['arguments'] ?? []);
     }
     else {
-      if ($fullItemValueCallback['class']) {
+      if (isset($fullItemValueCallback['class'])) {
         $funcName = $fullItemValueCallback['method'];
-        $fieldValues = $fullItemValueCallback['class']::$funcName($property, $fullItemValueCallback['arguments']);
+        $fieldValues = $fullItemValueCallback['class']::$funcName($property, $fullItemValueCallback['arguments'] ?? []);
       }
     }
     return $fieldValues;
