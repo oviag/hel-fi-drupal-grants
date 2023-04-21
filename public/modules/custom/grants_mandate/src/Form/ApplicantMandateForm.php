@@ -4,7 +4,6 @@ namespace Drupal\grants_mandate\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
 use Drupal\grants_mandate\GrantsMandateService;
 use Drupal\grants_profile\GrantsProfileService;
@@ -235,8 +234,7 @@ class ApplicantMandateForm extends FormBase {
           $redirectUrl = Url::fromRoute('grants_profile.show');
         }
 
-        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
-        $form_state->setResponse($redirect);
+        $form_state->setRedirectUrl($redirectUrl);
 
         break;
 
@@ -251,16 +249,14 @@ class ApplicantMandateForm extends FormBase {
 
         // Redirect user to grants profile page.
         $redirectUrl = Url::fromRoute('grants_profile.show');
-        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
-        $form_state->setResponse($redirect);
+        $form_state->setRedirectUrl($redirectUrl);
 
         break;
 
       default:
         $mandateMode = 'ypa';
-        $redirectUrl = $this->grantsMandateService->getUserMandateRedirectUrl($mandateMode);
-        $redirect = new TrustedRedirectResponse($redirectUrl);
-        $form_state->setResponse($redirect);
+        $redirectUrl = Url::fromUri($this->grantsMandateService->getUserMandateRedirectUrl($mandateMode));
+        $form_state->setRedirectUrl($redirectUrl);
         break;
     }
   }

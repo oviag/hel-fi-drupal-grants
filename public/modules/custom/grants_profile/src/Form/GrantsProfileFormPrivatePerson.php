@@ -162,7 +162,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     $form['phoneWrapper']['phone_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Phone number'),
-      '#default_value' => $grantsProfileContent['phone_number'],
+      '#default_value' => $grantsProfileContent['phone_number'] ?? '',
       '#required' => TRUE,
     ];
 
@@ -175,7 +175,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     $form['emailWrapper']['email'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Email address'),
-      '#default_value' => $grantsProfileContent['email'],
+      '#default_value' => $grantsProfileContent['email'] ?? '',
       '#required' => TRUE,
     ];
 
