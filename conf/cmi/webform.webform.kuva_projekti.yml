@@ -719,18 +719,6 @@ elements: |-
           </div>
           </div>
         '#format': full_html
-      tyoryhman_jasenten_ansioluettelot:
-        '#type': grants_attachments
-        '#title': 'Työryhmän jäsenten ansioluettelot, kun kyseessä on taiteen ammattilaisten hanke.'
-        '#multiple': 10
-        '#filetype': '30'
-        '#title_display': before
-        '#multiple__item_label': liite
-        '#multiple__sorting': false
-        '#multiple__add': false
-        '#multiple__add_more_input': false
-        '#multiple__add_more_button_label': 'Lisää liite'
-        '#description__access': false
       extra_info:
         '#type': textarea
         '#title': 'Lisäselvitys liitteistä'
