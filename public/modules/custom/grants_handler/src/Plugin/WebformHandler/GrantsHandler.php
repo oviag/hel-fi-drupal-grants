@@ -2,6 +2,7 @@
 
 namespace Drupal\grants_handler\Plugin\WebformHandler;
 
+use Drupal\grants_handler\ApplicationException;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\Core\Datetime\DateFormatter;
 use Drupal\Core\Datetime\DrupalDateTime;
@@ -431,6 +432,13 @@ class GrantsHandler extends WebformHandlerBase {
    */
   public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
 
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+
+    if (!in_array('helsinkiprofiili', $roles)) {
+      return;
+    }
+
     $this->alterFormNavigation($form, $form_state, $webform_submission);
 
     $form['#webform_submission'] = $webform_submission;
@@ -442,32 +450,9 @@ class GrantsHandler extends WebformHandlerBase {
     // use that, if not then get selected from profile.
     // we know that.
     $submissionData = $this->massageFormValuesFromWebform($webform_submission);
-    if (isset($submissionData['applicant_type'])) {
-      $applicantType = $submissionData['applicant_type'];
-    }
-    else {
-      $applicantTypeString = $this->grantsProfileService->getApplicantType();
-      $applicantType = '0';
-      switch ($applicantTypeString) {
-        case 'registered_community':
-          $applicantType = '0';
-          break;
 
-        case 'unregistered_community':
-          $applicantType = '1';
-          break;
-
-        case 'private_person':
-          $applicantType = '2';
-          break;
-      }
-    }
-
-    $form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]["applicant_type"] = [
-      '#type' => 'hidden',
-      '#value' => $applicantType,
-    ];
-
+    $form_state->setValue('applicant_type', $submissionData["hakijan_tiedot"]["applicantType"]);
+    $form["elements"]["1_hakijan_tiedot"]["applicant_type"]["#value"] = $submissionData["hakijan_tiedot"]["applicantType"];
     $thisYear = (integer) date('Y');
     $thisYearPlus1 = $thisYear + 1;
     $thisYearPlus2 = $thisYear + 2;
@@ -712,6 +697,9 @@ class GrantsHandler extends WebformHandlerBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function validateForm(
     array &$form,
@@ -735,9 +723,13 @@ class GrantsHandler extends WebformHandlerBase {
     $this->setTotals();
 
     // Merge form sender data from handler.
-    $this->submittedFormData = array_merge(
-      $this->submittedFormData,
-      $this->applicationHandler->parseSenderDetails());
+    try {
+      $this->submittedFormData = array_merge(
+        $this->submittedFormData,
+        $this->applicationHandler->parseSenderDetails());
+    }
+    catch (ApplicationException $e) {
+    }
 
     $this->submittedFormData['applicant_type'] = $form_state
       ->getValue('applicant_type');
@@ -770,8 +762,11 @@ class GrantsHandler extends WebformHandlerBase {
     // This data is immutable for end user so safe to this way.
     $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
     $grantsProfile = $this->grantsProfileService->getGrantsProfileContent($selectedCompany);
-    $regDate = new DrupalDateTime($grantsProfile["registrationDate"], 'Europe/Helsinki');
-    $this->submittedFormData["registration_date"] = $regDate->format('Y-m-d\TH:i:s');
+
+    if (isset($grantsProfile["registrationDate"])) {
+      $regDate = new DrupalDateTime($grantsProfile["registrationDate"], 'Europe/Helsinki');
+      $this->submittedFormData["registration_date"] = $regDate->format('Y-m-d\TH:i:s');
+    }
 
     // Set form update value based on new & old status + Avus2 logic.
     $this->submittedFormData["form_update"] = $this->getFormUpdate();
@@ -818,8 +813,7 @@ class GrantsHandler extends WebformHandlerBase {
           // If we HAVE errors, then refresh them from the.
           // @todo fix validation error messages.
           $this->messenger()
-            ->addError('Validation failed, please check inputs. This feature will get better.');
-
+            ->addError('Validation failed, please check inputs.');
           // @todo We need to figure out how to show these errors to user.
         }
       }
@@ -1124,7 +1118,7 @@ class GrantsHandler extends WebformHandlerBase {
               '@number' => $this->applicationNumber,
             ]
           )
-        );
+            );
     }
   }
 
