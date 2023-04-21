@@ -380,19 +380,56 @@ elements: |-
     '#title': '4. Toiminta'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
-    yleisolle_avoin_toiminta_helsingissa_toteutetaan:
+    yleisolle_avoin_toiminta:
       '#type': webform_section
       '#title': 'Yleisölle avoin toiminta Helsingissä toteutetaan'
-      markup_01:
-        '#type': webform_markup
-        '#markup': 'Tila-komponentti t&auml;h&auml;n'
-    arvio_maarista:
+      tila:
+        '#type': premises_composite
+        '#title': Tila
+        '#multiple': true
+        '#premiseAddress__access': false
+        '#location__access': false
+        '#streetAddress__access': false
+        '#address__access': false
+        '#studentCount__access': false
+        '#specialStudents__access': false
+        '#groupCount__access': false
+        '#specialGroups__access': false
+        '#personnelCount__access': false
+        '#totalRent__access': false
+        '#rentTimeBegin__access': false
+        '#rentTimeEnd__access': false
+        '#free__access': false
+        '#isOthersUse__access': false
+        '#isOwnedByApplicant__access': false
+    aikataulu:
       '#type': webform_section
-      '#title': 'Arvio määristä'
-      '#description': 'Sy&ouml;t&auml; tiedot koskien koko hanketta, johon avustusta haetaan. Sy&ouml;t&auml; tiedot vain fyysisten esitysten, n&auml;yttelyiden ja ty&ouml;pajojen osalta, &auml;l&auml; laske mukaan pelk&auml;st&auml;&auml;n digitaalisina toteutettuja ohjelmasis&auml;lt&ouml;j&auml;.'
-      markup:
-        '#type': webform_markup
-        '#markup': 'T&auml;h&auml;n tulee Toiminta-osiolle custom composite.'
+      '#title': Aikataulu
+      festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat:
+        '#type': textarea
+        '#title': 'Festivaalin tai tapahtuman kohdalla tapahtuman päivämäärät'
+        '#multiple': true
+      hanke_alkaa:
+        '#type': datetime
+        '#title': 'Hanke alkaa'
+        '#date_date_element': datepicker
+        '#date_date_format': d.m.Y
+        '#date_year_range': '2023:2030'
+        '#date_time_element': none
+      hanke_loppuu:
+        '#type': datetime
+        '#title': 'Hanke loppuu'
+        '#date_date_element': datepicker
+        '#date_date_format': d.m.Y
+        '#date_year_range': '2023:2030'
+        '#date_time_element': none
+    hankekuvaus:
+      '#type': webform_section
+      '#title': Hankekuvaus
+      laajempi_hankekuvaus:
+        '#type': textarea
+        '#title': 'Laajempi hankekuvaus'
+        '#description': 'Kerro hankkeesta tiiviisti. Esim. miksi, mit&auml;, kenelle, miten ja mitk&auml; ovat tavoitteet.'
   5_toiminnan_lahtokohdat:
     '#type': webform_wizard_page
     '#title': '5. Toiminnan lähtökohdat'
