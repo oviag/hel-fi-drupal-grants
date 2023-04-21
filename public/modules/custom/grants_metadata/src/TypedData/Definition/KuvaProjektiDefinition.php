@@ -316,6 +316,23 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'detailedProjectDescription',
         ]);
 
+      $info['tila'] = ListDataDefinition::create('grants_premises')
+        ->setLabel('Tilat')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedPremisesArray',
+        ])
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_premises.service',
+          'method' => 'processPremises',
+        ])
+        ->setSetting('fieldsForApplication', [
+          'premiseName',
+          'isOwnedByCity',
+          'postCode',
+        ]);
+
     }
     return $this->propertyDefinitions;
   }
