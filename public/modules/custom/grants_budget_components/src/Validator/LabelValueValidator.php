@@ -5,7 +5,7 @@ namespace Drupal\grants_budget_components\Validator;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- *
+ * Provides a validator function for other cost/income elements.
  */
 class LabelValueValidator {
 
