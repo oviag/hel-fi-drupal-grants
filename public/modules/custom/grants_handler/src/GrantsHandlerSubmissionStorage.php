@@ -91,7 +91,7 @@ class GrantsHandlerSubmissionStorage extends WebformSubmissionStorage {
    * @inheritdoc
    */
   public function saveData(WebformSubmissionInterface $webform_submission, $delete_first = TRUE) {
-    $d = 'asdf';
+
   }
 
   /**

@@ -4,7 +4,6 @@ namespace Drupal\grants_metadata;
 
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelFactory;
-use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Component\Serialization\Json;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
@@ -270,13 +269,13 @@ class AtvSchema {
   /**
    * PArse accepted json datatype & actual datatype from definitions.
    *
-   * @param \Drupal\Core\TypedData\DataDefinition $definition
+   * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
    *   Data definition for item.
    *
    * @return string[]
    *   Array with dataType & jsonType.
    */
-  public static function getJsonTypeForDataType(DataDefinition $definition): array {
+  public static function getJsonTypeForDataType(DataDefinitionInterface $definition): array {
     $propertyType = $definition->getDataType();
     // Default both types same.
     $retval = [
@@ -392,10 +391,9 @@ class AtvSchema {
       if ($propertyStructureCallback) {
         $documentStructure = array_merge(
           $documentStructure,
-          $this->getFieldValuesFromFullItemCallback(
+          self::getFieldValuesFromFullItemCallback(
             $propertyStructureCallback,
-            $property,
-            $definition
+            $property
           )
         );
         continue;
@@ -416,7 +414,7 @@ class AtvSchema {
         case 3:
           if (is_array($itemValue) && self::numericKeys($itemValue)) {
             if ($fullItemValueCallback) {
-              $fieldValues = $this->getFieldValuesFromFullItemCallback($fullItemValueCallback, $property, $definition);
+              $fieldValues = self::getFieldValuesFromFullItemCallback($fullItemValueCallback, $property);
               if (empty($fieldValues)) {
                 if ($requiredInJson) {
                   $documentStructure[$jsonPath[0]][$jsonPath[1]][$elementName] = $fieldValues;
@@ -734,8 +732,21 @@ class AtvSchema {
    */
   public static function getItemValue(array $itemTypes, mixed $itemValue, mixed $defaultValue, mixed $valueCallback): mixed {
 
+    // Support new value callback format to use either service or class.
     if ($valueCallback) {
-      $itemValue = call_user_func($valueCallback, $itemValue);
+      if (isset($valueCallback['service'])) {
+        $fullItemValueService = \Drupal::service($valueCallback['service']);
+        $funcName = $valueCallback['method'];
+        $itemValue = $fullItemValueService->$funcName($itemValue, $valueCallback['arguments']);
+      }
+      elseif (isset($valueCallback['class'])) {
+        $funcName = $valueCallback['method'];
+        $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments']);
+      }
+      else {
+        // But still support old way to just call function.
+        $itemValue = call_user_func($valueCallback, $itemValue);
+      }
     }
 
     // If value is null, try to set default value from config.
@@ -771,28 +782,25 @@ class AtvSchema {
    *   Callback config.
    * @param \Drupal\Core\TypedData\TypedDataInterface $property
    *   Property.
-   * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
-   *   Definition.
    *
    * @return array
    *   Full item callback array.
    */
-  public function getFieldValuesFromFullItemCallback(
+  public static function getFieldValuesFromFullItemCallback(
     array $fullItemValueCallback,
-    TypedDataInterface $property,
-    DataDefinitionInterface $definition
+    TypedDataInterface $property
   ): mixed {
     $fieldValues = [];
     if ($fullItemValueCallback['service']) {
       $fullItemValueService = \Drupal::service($fullItemValueCallback['service']);
       $funcName = $fullItemValueCallback['method'];
 
-      $fieldValues = $fullItemValueService->$funcName($property);
+      $fieldValues = $fullItemValueService->$funcName($property, $fullItemValueCallback['arguments']);
     }
     else {
       if ($fullItemValueCallback['class']) {
         $funcName = $fullItemValueCallback['method'];
-        $fieldValues = $fullItemValueCallback['class']::$funcName($definition, $property);
+        $fieldValues = $fullItemValueCallback['class']::$funcName($property, $fullItemValueCallback['arguments']);
       }
     }
     return $fieldValues;
