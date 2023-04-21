@@ -15,7 +15,7 @@ third_party_settings:
       private_person: private_person
     applicationTypeTerms:
       47: '47'
-    applicationOpen: '2022-10-03T11:08:26'
+    applicationOpen: '2022-10-02T11:08:26'
     applicationClose: '2023-06-14T11:19:00'
     applicationContinuous: 0
     applicationTargetGroup: '22'
