@@ -15,6 +15,7 @@ use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_atv\AtvService;
 use Drupal\helfi_audit_log\AuditLogService;
 use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
+use Drupal\helfi_helsinki_profiili\TokenExpiredException;
 use Drupal\helfi_yjdh\Exception\YjdhException;
 use Drupal\helfi_yjdh\YjdhClient;
 use Ramsey\Uuid\Uuid;
@@ -437,6 +438,40 @@ class GrantsProfileService {
       $profileContent['bankAccounts'] = [];
     }
 
+    // Try to load helsinki profile data.
+    try {
+      $profileData = $this->helsinkiProfiili->getUserProfileData();
+    }
+    catch (TokenExpiredException $e) {
+      $profileData = NULL;
+    }
+
+    // Prefill data from helsinki profile.
+    if ($profileData && isset($profileData['myProfile'])) {
+
+      if (isset($profileData['myProfile']['primaryAddress'])) {
+        $profileContent['addresses'][0] = [
+          'street' => $profileData['myProfile']['primaryAddress']['address'],
+          'postCode' => $profileData['myProfile']['primaryAddress']['postalCode'],
+          'city' => $profileData['myProfile']['primaryAddress']['city'],
+          'address_id' => $profileData['myProfile']['primaryAddress']['id'],
+        ];
+      }
+
+      $profileContent['members'][0] = [
+        'name' => $profileData['myProfile']['firstName'] . " " . $profileData['myProfile']['lastName'],
+      ];
+
+      if (isset($profileData['myProfile']['primaryPhone'])) {
+        $profileContent['members'][0]['phone'] = $profileData['myProfile']['primaryPhone']['phone'];
+      }
+
+      if (isset($profileData['myProfile']['primaryEmail'])) {
+        $profileContent['members'][0]['email'] = $profileData['myProfile']['primaryEmail']['email'];
+      }
+
+    }
+
     return $profileContent;
 
   }
@@ -468,6 +503,36 @@ class GrantsProfileService {
     }
     if (!isset($profileContent['unregisteredCommunities'])) {
       $profileContent['unregisteredCommunities'] = NULL;
+    }
+
+    // Try to load helsinki profile data.
+    try {
+      $profileData = $this->helsinkiProfiili->getUserProfileData();
+    }
+    catch (TokenExpiredException $e) {
+      $profileData = NULL;
+    }
+
+    // Prefill data from helsinki profile.
+    if ($profileData && isset($profileData['myProfile'])) {
+
+      if (isset($profileData['myProfile']['primaryAddress'])) {
+        $profileContent['addresses'][0] = [
+          'street' => $profileData['myProfile']['primaryAddress']['address'],
+          'postCode' => $profileData['myProfile']['primaryAddress']['postalCode'],
+          'city' => $profileData['myProfile']['primaryAddress']['city'],
+          'address_id' => $profileData['myProfile']['primaryAddress']['id'],
+        ];
+      }
+
+      if (isset($profileData['myProfile']['primaryPhone'])) {
+        $profileContent['phone_number'] = $profileData['myProfile']['primaryPhone']['phone'];
+      }
+
+      if (isset($profileData['myProfile']['primaryEmail'])) {
+        $profileContent['email'] = $profileData['myProfile']['primaryEmail']['email'];
+      }
+
     }
 
     return $profileContent;
