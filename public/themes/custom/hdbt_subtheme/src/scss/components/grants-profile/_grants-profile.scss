@@ -176,6 +176,12 @@ div.applicant-info--from-grants {
   @media (min-width: $breakpoint-m) {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
+  .form-required {
+    &::after {
+      content: none;
+    }
+  }
 }
 div.applicant-info--from-prh {
   border-bottom: 2px solid var(--color-silver);
