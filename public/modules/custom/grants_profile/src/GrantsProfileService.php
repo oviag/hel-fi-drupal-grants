@@ -460,6 +460,7 @@ class GrantsProfileService {
 
       $profileContent['members'][0] = [
         'name' => $profileData['myProfile']['firstName'] . " " . $profileData['myProfile']['lastName'],
+        'additional' => '',
       ];
 
       if (isset($profileData['myProfile']['primaryPhone'])) {

@@ -699,7 +699,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
   public function addMemberBits(
     array &$form,
     FormStateInterface $formState,
-    ?array $members,
+    array $members,
     ?string $newItem
   ) {
     $form['memberWrapper'] = [
@@ -720,7 +720,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
       }
 
       // Make sure we have proper UUID as address id.
-      if (!$this->isValidUuid($member['member_id'])) {
+      if (!isset($member['member_id']) || !$this->isValidUuid($member['member_id'])) {
         $member['member_id'] = Uuid::uuid4()->toString();
       }
 
@@ -1146,16 +1146,37 @@ rtf, txt, xls, xlsx, zip.'),
           }
           if (!$ibanValid) {
             $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-            $formState->setErrorByName($elementName, t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
+            $formState->setErrorByName($elementName, $this->t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
           }
         }
         else {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-          $formState->setErrorByName($elementName, t('You must enter valid Finnish iban'));
+          $formState->setErrorByName($elementName, $this->t('You must enter valid Finnish iban'));
+        }
+        if (empty($accountData['ownerName'])) {
+          $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerName';
+          $formState->setErrorByName($elementName, $this->t('@fieldname field is required', [
+            '@fieldname' => 'Bank account owner name',
+          ]));
+        }
+        if (empty($accountData['ownerSsn'])) {
+          $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerSsn';
+          $formState->setErrorByName($elementName, $this->t('@fieldname field is required', [
+            '@fieldname' => 'Bank account owner SSN',
+          ]));
+        }
+        else {
+          // Check for valid Finnish SSN.
+          if (!preg_match("/([0-2][0-9]|3[0-1])(0[0-9]|1[0-2])([0-9][0-9])([\+\-A])([[:digit:]]{3})([A-Z]|[[:digit:]])/", $accountData['ownerSsn'])) {
+            $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerSsn';
+            $formState->setErrorByName($elementName, $this->t('%value is not valid Finnish social security number', [
+              '%value' => $accountData['ownerSsn'],
+            ]));
+          }
         }
         if ((empty($accountData["confirmationFileName"]) && empty($accountData["confirmationFile"]['fids']))) {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][confirmationFile';
-          $formState->setErrorByName($elementName, t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
+          $formState->setErrorByName($elementName, $this->t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
         }
       }
     }
