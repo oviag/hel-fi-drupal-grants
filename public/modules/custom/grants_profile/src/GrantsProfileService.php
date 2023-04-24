@@ -323,8 +323,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our registered community profile
-   * document.
+   * Make sure we have needed fields in our registered community profile.
    *
    * @param array $selectedCompanyData
    *   Selected company.
@@ -412,8 +411,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our UNregistered community profile
-   * document.
+   * Make sure we have needed fields in our UNregistered community profile.
    *
    * @param array $selectedCompanyData
    *   Selected company.
@@ -432,8 +430,8 @@ class GrantsProfileService {
     if (!isset($profileContent['addresses'])) {
       $profileContent['addresses'] = [];
     }
-    if (!isset($profileContent['officials'])) {
-      $profileContent['officials'] = [];
+    if (!isset($profileContent['members'])) {
+      $profileContent['members'] = [];
     }
     if (!isset($profileContent['bankAccounts'])) {
       $profileContent['bankAccounts'] = [];
@@ -444,8 +442,7 @@ class GrantsProfileService {
   }
 
   /**
-   * Make sure we have needed fields in our UNregistered community profile
-   * document.
+   * Make sure we have needed fields in our UNregistered community profile.
    *
    * @param array $selectedRoleData
    *   Selected company.
@@ -462,6 +459,9 @@ class GrantsProfileService {
     }
     if (!isset($profileContent['phone_number'])) {
       $profileContent['phone_number'] = NULL;
+    }
+    if (!isset($profileContent['email'])) {
+      $profileContent['email'] = NULL;
     }
     if (!isset($profileContent['bankAccounts'])) {
       $profileContent['bankAccounts'] = [];
@@ -837,10 +837,15 @@ class GrantsProfileService {
   }
 
   /**
+   * Get users profiles.
+   *
    * @param string $userId
+   *   User id.
    * @param string $profileType
+   *   Profile type.
    *
    * @return array
+   *   Users profiles
    *
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \GuzzleHttp\Exception\GuzzleException

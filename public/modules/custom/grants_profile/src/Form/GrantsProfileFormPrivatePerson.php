@@ -38,6 +38,8 @@ class GrantsProfileFormPrivatePerson extends FormBase {
    *
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Profile service.
    */
   public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
     $this->typedDataManager = $typed_data_manager;
@@ -116,7 +118,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     $address = $grantsProfileContent['addresses'][0] ?? NULL;
 
     // Make sure we have proper UUID as address id.
-    if (!$this->grantsProfileService->isValidUuid($address['address_id'])) {
+    if ($address && !$this->grantsProfileService->isValidUuid($address['address_id'])) {
       $address['address_id'] = Uuid::uuid4()->toString();
     }
 
@@ -145,6 +147,13 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       '#default_value' => $address['city'] ?? '',
       '#required' => TRUE,
     ];
+    $form['addressWrapper']['country'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Country', [], ['context' => 'Profile Address']),
+      '#attributes' => ['readonly' => 'readonly'],
+      '#default_value' => $address['country'] ?? 'Suomi',
+      '#value' => $address['country'] ?? 'Suomi',
+    ];
     // We need the delta / id to create delete links in element.
     $form['addressWrapper']['address_id'] = [
       '#type' => 'hidden',
@@ -160,7 +169,20 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     $form['phoneWrapper']['phone_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Phone number'),
-      '#default_value' => $grantsProfileContent['phone_number'],
+      '#default_value' => $grantsProfileContent['phone_number'] ?? '',
+      '#required' => TRUE,
+    ];
+
+    $form['emailWrapper'] = [
+      '#type' => 'webform_section',
+      '#title' => $this->t('Email address'),
+      '#prefix' => '<div id="email-wrapper">',
+      '#suffix' => '</div>',
+    ];
+    $form['emailWrapper']['email'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Email address'),
+      '#default_value' => $grantsProfileContent['email'] ?? '',
       '#required' => TRUE,
     ];
 
@@ -377,6 +399,9 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     if (array_key_exists('phoneWrapper', $values)) {
       $grantsProfileContent['phone_number'] = $values["phoneWrapper"]['phone_number'];
     }
+    if (array_key_exists('emailWrapper', $values)) {
+      $grantsProfileContent['email'] = $values["emailWrapper"]['email'];
+    }
 
     $this->validateBankAccounts($values, $formState);
 
@@ -416,7 +441,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . ((int) $propertyPathArray[1] + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
@@ -537,7 +562,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       $form['bankAccountWrapper'][$delta]['bank'] = [
 
         '#type' => 'fieldset',
-        '#title' => $this->t('Community bank account'),
+        '#title' => $this->t('Personal bank account'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
@@ -546,6 +571,16 @@ class GrantsProfileFormPrivatePerson extends FormBase {
           '#attributes' => [
             'readonly' => 'readonly',
           ],
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerName' => [
+          '#type' => 'hidden',
+          '#value' => 'dummy',
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerSsn' => [
+          '#type' => 'hidden',
+          '#value' => '010101-001R',
         ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
@@ -597,10 +632,20 @@ rtf, txt, xls, xlsx, zip.'),
 
       $form['bankAccountWrapper'][count($bankAccountValues) + 1]['bank'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Community bank account'),
+        '#title' => $this->t('Personal bank account'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerName' => [
+          '#type' => 'hidden',
+          '#value' => 'dummy',
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerSsn' => [
+          '#type' => 'hidden',
+          '#value' => '010101-001R',
         ],
         'confirmationFileName' => [
           '#type' => 'textfield',

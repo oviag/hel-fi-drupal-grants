@@ -84,6 +84,8 @@ class GrantsMandateService {
    *   Http client.
    * @param \Drupal\Core\Logger\LoggerChannelFactory $loggerFactory
    *   Logger.
+   * @param \Drupal\Core\Http\RequestStack $requestStack
+   *   Request.
    */
   public function __construct(
     HelsinkiProfiiliUserData $helsinkiProfiiliUserData,

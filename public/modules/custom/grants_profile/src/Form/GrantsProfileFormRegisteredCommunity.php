@@ -39,6 +39,8 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
    *
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Profile.
    */
   public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
     $this->typedDataManager = $typed_data_manager;
@@ -147,6 +149,17 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
       '#default_value' => $grantsProfileContent['companyNameShort'],
     ];
     $form['companyNameShortWrapper']['companyNameShort']['#attributes']['class'][] = 'webform--large';
+
+    $form['companyEmailWrapper'] = [
+      '#type' => 'webform_section',
+      '#title' => $this->t('Company email address'),
+    ];
+    $form['companyEmailWrapper']['companyEmail'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Company email address'),
+      '#default_value' => $grantsProfileContent['companyEmail'],
+    ];
+
     $form['companyHomePageWrapper'] = [
       '#type' => 'webform_section',
       '#title' => $this->t('Website address'),
@@ -409,6 +422,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
 
     $grantsProfileContent["foundingYear"] = $values["foundingYearWrapper"]["foundingYear"];
     $grantsProfileContent["companyNameShort"] = $values["companyNameShortWrapper"]["companyNameShort"];
+    $grantsProfileContent["companyEmail"] = $values["companyEmailWrapper"]["companyEmail"];
     $grantsProfileContent["companyHomePage"] = $values["companyHomePageWrapper"]["companyHomePage"];
     $grantsProfileContent["businessPurpose"] = $values["businessPurposeWrapper"]["businessPurpose"];
 
@@ -453,7 +467,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . ($propertyPathArray[1] + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . $propertyPathArray[1] . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -462,12 +476,12 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . ($propertyPathArray[1] + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . ($propertyPathArray[1] + 1) . '][official][' . $propertyPathArray[2];
+            $propertyPath = 'officialWrapper][' . $propertyPathArray[1] . '][official][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
@@ -654,11 +668,12 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
         '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
         '#default_value' => $address['city'],
       ];
-      // $form['addressWrapper'][$delta]['address']['country'] = [
-      //        '#type' => 'textfield',
-      //        '#title' => $this->t('Country'),
-      //        '#default_value' => $address['country'],
-      //      ];
+      $form['addressWrapper'][$delta]['address']['country'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Country'),
+        '#default_value' => $address['country'],
+      ];
+
       // We need the delta / id to create delete links in element.
       $form['addressWrapper'][$delta]['address']['address_id'] = [
         '#type' => 'hidden',
@@ -699,10 +714,6 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
             '#type' => 'textfield',
             '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
           ],
-          // 'country' => [
-          //            '#type' => 'textfield',
-          //            '#title' => $this->t('Country'),
-          //          ],
           // We need the delta / id to create delete links in element.
           'address_id' => [
             '#type' => 'hidden',
@@ -955,6 +966,16 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
             'readonly' => 'readonly',
           ],
         ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerName' => [
+          '#type' => 'hidden',
+          '#value' => 'dummy',
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerSsn' => [
+          '#type' => 'hidden',
+          '#value' => '010101-001R',
+        ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
           '#type' => 'textfield',
@@ -1009,6 +1030,16 @@ rtf, txt, xls, xlsx, zip.'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerName' => [
+          '#type' => 'hidden',
+          '#value' => 'dummy',
+        ],
+        // Required by unregistered community form, insert dummy data.
+        'ownerSsn' => [
+          '#type' => 'hidden',
+          '#value' => '010101-001R',
         ],
         'confirmationFileName' => [
           '#type' => 'textfield',

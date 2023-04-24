@@ -4,7 +4,6 @@ namespace Drupal\grants_mandate\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
 use Drupal\grants_mandate\GrantsMandateService;
 use Drupal\grants_profile\GrantsProfileService;
@@ -129,7 +128,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['unregistered_community']['info'] = [
       '#theme' => 'select_applicant_role',
       '#icon' => 'group',
-      '#role' => $this->t('Unegistered community'),
+      '#role' => $this->t('Unregistered community'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
 
@@ -141,7 +140,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['unregistered_community']['submit'] = [
       '#type' => 'submit',
       '#name' => 'unregistered_community',
-      '#value' => $this->t('Select Unegistered community role'),
+      '#value' => $this->t('Select Unregistered community role'),
     ];
     $form['actions']['private_person'] = [
       '#type' => 'container',
@@ -158,7 +157,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['private_person']['submit'] = [
       '#name' => 'private_person',
       '#type' => 'submit',
-      '#value' => $this->t('Select Private person role  '),
+      '#value' => $this->t('Select Private person role'),
     ];
 
     return $form;
@@ -174,7 +173,8 @@ class ApplicantMandateForm extends FormBase {
   /**
    * {@inheritdoc}
    *
-   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException|\Drupal\grants_mandate\GrantsMandateException
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \Drupal\grants_mandate\GrantsMandateException
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
@@ -234,8 +234,7 @@ class ApplicantMandateForm extends FormBase {
           $redirectUrl = Url::fromRoute('grants_profile.show');
         }
 
-        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
-        $form_state->setResponse($redirect);
+        $form_state->setRedirectUrl($redirectUrl);
 
         break;
 
@@ -250,16 +249,14 @@ class ApplicantMandateForm extends FormBase {
 
         // Redirect user to grants profile page.
         $redirectUrl = Url::fromRoute('grants_profile.show');
-        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
-        $form_state->setResponse($redirect);
+        $form_state->setRedirectUrl($redirectUrl);
 
         break;
 
       default:
         $mandateMode = 'ypa';
-        $redirectUrl = $this->grantsMandateService->getUserMandateRedirectUrl($mandateMode);
-        $redirect = new TrustedRedirectResponse($redirectUrl);
-        $form_state->setResponse($redirect);
+        $redirectUrl = Url::fromUri($this->grantsMandateService->getUserMandateRedirectUrl($mandateMode));
+        $form_state->setRedirectUrl($redirectUrl);
         break;
     }
   }

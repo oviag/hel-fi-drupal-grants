@@ -27,6 +27,13 @@ class GrantsProfilePrivatePersonDefinition extends ComplexDataDefinitionBase {
           'companyNameShort',
         ]);
 
+      $info['email'] = DataDefinition::create('string')
+        ->setLabel('Email address')
+        ->setSetting('jsonPath', ['grantsProfile', 'profileInfoArray', 'email'])
+        ->addConstraint('Email')
+        ->addConstraint('NotBlank')
+        ->setRequired(TRUE);
+
       $info['addresses'] = ListDataDefinition::create('grants_profile_address')
         ->setRequired(TRUE)
         ->setSetting('jsonPath', ['grantsProfile', 'addressesArray'])
