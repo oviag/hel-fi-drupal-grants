@@ -699,7 +699,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
   public function addMemberBits(
     array &$form,
     FormStateInterface $formState,
-    array $members,
+    ?array $members,
     ?string $newItem
   ) {
     $form['memberWrapper'] = [

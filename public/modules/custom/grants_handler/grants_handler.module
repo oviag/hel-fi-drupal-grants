@@ -530,10 +530,14 @@ function _grants_handler_imported_handler(
  * @todo Must be fixed with proper template & things.
  */
 function _grants_handler_missing_data(
-  array &$element,
+  ?array &$element,
   string $str1 = 'Field is missing.',
   string $str2 = 'Go to grants profile',
   string $str3 = 'to fill out missing data.') {
+
+  if (is_null($element)) {
+    return;
+  }
 
   unset($element['#value']);
   unset($element['#default_value']);

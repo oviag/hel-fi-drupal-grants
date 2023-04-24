@@ -57,8 +57,7 @@ trait ApplicationDefinitionTrait {
         'compensation',
         'currentAddressInfoArray',
         'contactPerson',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['contact_person_phone_number'] = DataDefinition::create('string')
       // ->setRequired(TRUE)
@@ -67,8 +66,7 @@ trait ApplicationDefinitionTrait {
         'compensation',
         'currentAddressInfoArray',
         'phoneNumber',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['community_street'] = DataDefinition::create('string')
       ->setRequired(TRUE)
@@ -81,8 +79,7 @@ trait ApplicationDefinitionTrait {
       ->setSetting('formSettings', [
         'formElement' => 'community_address',
         'formError' => 'You must select address',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['community_city'] = DataDefinition::create('string')
       ->setRequired(TRUE)
@@ -95,8 +92,7 @@ trait ApplicationDefinitionTrait {
       ->setSetting('formErrorElement', [
         'formElement' => 'community_address',
         'formError' => 'You must select address',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['community_post_code'] = DataDefinition::create('string')
       ->setRequired(TRUE)
@@ -110,7 +106,6 @@ trait ApplicationDefinitionTrait {
         'formElement' => 'community_address',
         'formError' => 'You must select address',
       ])
-      ->addConstraint('NotBlank')
       ->addConstraint('ValidPostalCode');
 
     $info['community_country'] = DataDefinition::create('string')
@@ -380,7 +375,6 @@ trait ApplicationDefinitionTrait {
         'compensation',
         'activitiesInfoArray',
         'membersApplicantPersonLocal',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['members_applicant_person_global'] = DataDefinition::create('string')
@@ -391,7 +385,6 @@ trait ApplicationDefinitionTrait {
         'compensation',
         'activitiesInfoArray',
         'membersApplicantPersonGlobal',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['members_applicant_community_local'] = DataDefinition::create('string')
