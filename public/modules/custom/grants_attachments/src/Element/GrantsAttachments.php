@@ -154,7 +154,11 @@ class GrantsAttachments extends WebformCompositeBase {
           $element["description"]["#attributes"] = ['readonly' => 'readonly'];
         }
 
-        if (isset($dataForElement['fileType']) && $dataForElement['fileType'] != '45') {
+        if (
+          isset($dataForElement['fileType'])
+          && $dataForElement['fileType'] != '45'
+          && (isset($submissionData['status']) && $submissionData['status'] === 'DRAFT')
+        ) {
           $element['deleteItem'] = [
             '#type' => 'submit',
             '#name' => 'delete_' . $arrayKey,

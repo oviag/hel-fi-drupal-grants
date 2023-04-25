@@ -211,18 +211,15 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['compensation_purpose'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('')
       ->setSetting('jsonPath', [
         'compensation',
         'compensationInfo',
         'generalInfoArray',
         'purpose',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['compensation_boolean'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('compensationPreviousYear')
       ->setSetting('defaultValue', FALSE)
       ->setSetting('typeOverride', [
@@ -234,8 +231,7 @@ trait ApplicationDefinitionTrait {
         'compensationInfo',
         'generalInfoArray',
         'compensationPreviousYear',
-      ])
-      ->addConstraint('NotBlank');
+      ]);
 
     $info['compensation_total_amount'] = DataDefinition::create('float')
       // ->setRequired(TRUE)
@@ -428,9 +424,8 @@ trait ApplicationDefinitionTrait {
         'businessPurpose',
       ])
       ->setSetting('defaultValue', '');
-    // ->addConstraint('NotBlank')
-    $info['community_practices_business'] = DataDefinition::create('boolean')
-      // ->setRequired(TRUE)
+
+    $info['community_practices_business'] = DataDefinition::create('string')
       ->setLabel('communityPracticesBusiness')
       ->setSetting('defaultValue', FALSE)
       ->setSetting('jsonPath', [
@@ -444,7 +439,6 @@ trait ApplicationDefinitionTrait {
       ])
       ->setSetting('defaultValue', FALSE);
 
-    // ->addConstraint('NotBlank')
     $info['additional_information'] = DataDefinition::create('string')
       // ->setRequired(TRUE)
       ->setLabel('additionalInformation')

@@ -33,6 +33,7 @@ function grants_handler_theme(): array {
     'webform_handler_grants_summary' => [
       'variables' => ['settings' => NULL, 'handler' => []],
     ],
+
     'webform_submission_messages' => [
       'variables' => [
         'messages' => NULL,
@@ -40,44 +41,52 @@ function grants_handler_theme(): array {
         'submission' => NULL,
       ],
     ],
+
     'webform_submission_message_attachments' => [
       'variables' => [
         'attachments_to_print' => NULL,
         'attachments' => NULL,
       ],
     ],
+
     'webform_submission_events' => [
       'variables' => [
         'submission' => NULL,
       ],
     ],
+
     'webform_submission_handler_details' => [
       'variables' => [
         'submission' => NULL,
       ],
     ],
+
     'webform_submission_attachment_list' => [
       'variables' => [
         'submission' => NULL,
       ],
     ],
+
     'webform_submission_status_history' => [
       'variables' => [
         'submission' => NULL,
       ],
     ],
+
     'grants_handler_completion' => [
       'variables' => [
         'submissionId' => NULL,
         'submissionObject' => NULL,
       ],
     ],
+
     'grants_handler_view_application' => [
       'variables' => [
         'submissionId' => NULL,
         'submissionObject' => NULL,
       ],
     ],
+
     'grants_handler_edit_application' => [
       'variables' => [
         'submissionId' => NULL,
@@ -85,6 +94,7 @@ function grants_handler_theme(): array {
         'editForm' => NULL,
       ],
     ],
+
     // Override the webform progress bar so we can add our page classes.
     'webform_progress_bar' => [
       'variables' => [
@@ -96,6 +106,7 @@ function grants_handler_theme(): array {
         'page_classes' => [],
       ],
     ],
+
     // Override the webform progress tracker so we can add our page classes.
     'webform_progress_tracker' => [
       'variables' => [
@@ -107,6 +118,7 @@ function grants_handler_theme(): array {
         'page_classes' => [],
       ],
     ],
+
     'application_list' => [
       'variables' => [
         'items' => NULL,
@@ -116,39 +128,46 @@ function grants_handler_theme(): array {
         'description' => NULL,
       ],
     ],
+
     'application_list_item' => [
       'variables' => [
         'submission' => NULL,
         'document' => NULL,
       ],
     ],
+
     'application_status_tag' => [
       'variables' => [
         'applicationID' => NULL,
       ],
     ],
+
     'message_list' => [
       'variables' => [
         'items' => NULL,
         'style' => NULL,
       ],
     ],
+
     'message_list_item' => [
       'variables' => [
         'message' => NULL,
       ],
     ],
+
     'message_notification_item' => [
       'variables' => [
         'message' => NULL,
       ],
     ],
+
     'submission_for_modal_form' => [
       'variables' => [
         'submission_id' => NULL,
         'submission' => NULL,
       ],
     ],
+
     'application_copy_modal_form' => [
       'render element' => 'form',
       'template' => 'grants-handler-copy-application-modal',
@@ -167,6 +186,16 @@ function grants_handler_theme(): array {
         'label' => NULL,
         'body' => NULL,
       ],
+    ],
+
+    'community_officials_composite' => [
+      'render element' => 'element',
+    ],
+    'bank_account_composite' => [
+      'render element' => 'element',
+    ],
+    'community_address_composite' => [
+      'render element' => 'element',
     ],
   ];
 }
@@ -266,8 +295,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
   if (get_class($form_object) == 'Drupal\webform\WebformSubmissionForm') {
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webformSubmission = $form_object->getEntity();
-    /** @var \Drupal\webform\WebformInterface $webform */
-    $webform = $webformSubmission->getWebform();
+
     // Get data from webform.
     $webformData = $webformSubmission->getData();
 
@@ -349,7 +377,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
     if (isset($element['#webform_key']) && ($element['#webform_key'] == 'myonnetty_avustus' || $element['#webform_key'] == 'haettu_avustus_tieto')) {
       $newValues = [];
       if (isset($element["#default_value"])) {
-        foreach ($element["#default_value"] as $key => $default) {
+        foreach ($element["#default_value"] as $default) {
           $new = $default;
           if (isset($default['issuerName'])) {
             $new['issuer_name'] = $default['issuerName'];
@@ -525,7 +553,7 @@ function _grants_handler_missing_data(
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
 function grants_handler_webform_submission_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
@@ -629,10 +657,44 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
           '#label' => t('Fields marked with an asterisk * are required, that need to be filled before saving.'),
         ],
     ];
+    foreach ($form['elements'] as $page_name => $page_contents) {
+      $page_prefetched = FALSE;
+      $page_required = FALSE;
+      if ($page_name === 'actions') {
+        break;
+      }
+      foreach ($form['elements'][$page_name] as $section_key => $section_contents) {
+        if (!strstr($section_key, '#') && is_array($section_contents)) {
+          foreach ($section_contents as $element_key => $element_contents) {
+            if (!strstr($element_key, '#') && is_array($element_contents)) {
+              if (array_key_exists('#required', $element_contents) && $element_contents['#required'] === TRUE) {
+                $page_required = TRUE;
+              }
+              if (array_key_exists('#type', $element_contents) &&
+                ($element_contents['#type'] === 'community_address_composite' ||
+                  $element_contents['#type'] === 'community_officials_composite' ||
+                  $element_contents['#type'] === 'bank_account_composite' ||
+                  $element_key === 'community_purpose'
+                )
+              ) {
+                $page_prefetched = TRUE;
+              }
+              if ($page_required && $page_prefetched) {
+                break 2;
+              }
+            }
+          }
+        }
+      }
+      if (!$isClosed && $page_required) {
+        $form['elements'][$page_name] = array_merge($required_fields_info_element, $form['elements'][$page_name]);
+      }
+      if (!$isClosed && $page_prefetched) {
+        $form['elements'][$page_name] = array_merge($infoelement, $form['elements'][$page_name]);
+      }
+    }
 
     if (!$isClosed && array_key_exists('1_hakijan_tiedot', $form['elements']) && is_array($form['elements']['1_hakijan_tiedot'])) {
-      $form['elements']['1_hakijan_tiedot'] = array_merge($required_fields_info_element, $form['elements']['1_hakijan_tiedot']);
-      $form['elements']['1_hakijan_tiedot'] = array_merge($infoelement, $form['elements']['1_hakijan_tiedot']);
 
       if (isset($grantsProfile["companyName"])) {
         _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["yhteiso_jolle_haetaan_avustusta"]["community_official_name"], $grantsProfile["companyName"]);
@@ -678,16 +740,6 @@ function grants_handler_webform_submission_form_alter(&$form, FormStateInterface
         _grants_handler_imported_handler($form["elements"]["1_hakijan_tiedot"]["verkkosivut"]["homepage"], $grantsProfile["companyHomePage"], FALSE);
       }
 
-    }
-    if (!$isClosed && array_key_exists('2_avustustiedot', $form['elements']) && is_array($form['elements']['2_avustustiedot'])) {
-      $form['elements']['2_avustustiedot'] = array_merge($required_fields_info_element, $form['elements']['2_avustustiedot']);
-    }
-    if (!$isClosed && array_key_exists('3_yhteison_tiedot', $form['elements']) && is_array($form['elements']['3_yhteison_tiedot'])) {
-      $form['elements']['3_yhteison_tiedot'] = array_merge($required_fields_info_element, $form['elements']['3_yhteison_tiedot']);
-      $form['elements']['3_yhteison_tiedot'] = array_merge($infoelement, $form['elements']['3_yhteison_tiedot']);
-    }
-    if (!$isClosed && array_key_exists('lisatiedot_ja_liitteet', $form['elements']) && is_array($form['elements']['lisatiedot_ja_liitteet'])) {
-      $form['elements']['lisatiedot_ja_liitteet'] = array_merge($required_fields_info_element, $form['elements']['lisatiedot_ja_liitteet']);
     }
 
   }
@@ -795,12 +847,7 @@ function grants_handler_preprocess_webform_submission_messages(&$variables) {
   $submission = $variables['submission'];
   $submissionData = $submission->getData();
 
-  $currentUri = \Drupal::request()->getUri();
-  $currentHost = \Drupal::request()->getSchemeAndHttpHost();
-  $currentDestination = str_replace($currentHost, '', $currentUri);
-
   /** @var \Drupal\grants_handler\ApplicationHandler $applicationHandler */
-  $applicationHandler = \Drupal::service('grants_handler.application_handler');
 
   $messages = [];
   if (isset($submissionData['messages']) && is_array($submissionData['messages'])) {
@@ -1320,9 +1367,6 @@ function grants_handler_preprocess_message_list_item(&$variables) {
  * Implements hook_preprocess().
  */
 function grants_handler_preprocess_message_notification_item(&$variables) {
-  $currentUri = \Drupal::request()->getUri();
-  $currentHost = \Drupal::request()->getSchemeAndHttpHost();
-
   $message = $variables['message'];
 
   $message_url = Url::fromRoute('grants_handler.view_application', [

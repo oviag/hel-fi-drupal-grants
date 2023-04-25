@@ -2,6 +2,8 @@
 
 namespace Drupal\grants_metadata\Plugin\DataType;
 
+use Drupal\grants_metadata\AtvSchema;
+
 /**
  * Trait to handle generic value settings for implementing data.
  */
@@ -18,6 +20,7 @@ trait DataFormatTrait {
 
       $defaultValue = $definition->getSetting('defaultValue');
       $valueCallback = $definition->getSetting('valueCallback');
+      $itemTypes = AtvSchema::getJsonTypeForDataType($definition);
 
       if (!is_array($values)) {
         $formattedData[$name] = NULL;
@@ -31,7 +34,7 @@ trait DataFormatTrait {
           }
 
           if ($valueCallback) {
-            $value = call_user_func($valueCallback, $value);
+            $value = AtvSchema::getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
           }
           $formattedData[$name] = $value;
         }

@@ -1017,6 +1017,8 @@ class ApplicationHandler {
       $atvDocument->toArray()
     );
 
+    $this->atvDocument = $updatedDocument;
+
     return $updatedDocument;
 
   }
