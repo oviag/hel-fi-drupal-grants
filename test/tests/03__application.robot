@@ -15,7 +15,7 @@ Resource            ../resources/dev-env-variables.resource
 Fill Application Form
     Open Browser To Home Page
     Accept Cookies Banner
-    Do Login Process With Tunnistamo
+    Do Company Login Process With Tunnistamo
     Go To Application Search
     Start New Application
     Fill Step 1 Data

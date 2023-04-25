@@ -2,6 +2,7 @@
 ${TUNNISTAMO_HETU}                    210281-9988
 ${TUNNISTAMO_COMPANY_ID}              2036583-2
 ${TUNNISTAMO_COMPANY_NAME}            Maanrakennus Ari Eerola T:mi
+${TUNNISTAMO_PERSON_NAME}             Nordea Demo
 ${SITE_NAME}                          Helsingin kaupunki
 ${SITE_NAME_ALT}                      Hel.fi Avustusasiointi
 ${APPLICATION_TITLE}                  Kaupunginhallituksen yleisavustushakemus
