@@ -40,7 +40,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
-   *   PRofile service.
+   *   Grants profile service.
    */
   public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
     $this->typedDataManager = $typed_data_manager;
@@ -74,24 +74,6 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
    */
   public function getFormId() {
     return 'grants_profile_unregistered_community';
-  }
-
-  /**
-   * Get officials' roles.
-   *
-   * @return array
-   *   Available roles.
-   */
-  public static function getOfficialRoles(): array {
-    return [
-      1 => t('Chairperson'),
-      2 => t('Contact person'),
-      3 => t('Other'),
-      4 => t('Treasurer'),
-      5 => t('Auditor'),
-      7 => t('Secretary'),
-      8 => t('Deputy chairperson'),
-    ];
   }
 
   /**
@@ -145,7 +127,7 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
     $newItem = $form_state->getValue('newItem');
 
     $this->addAddressBits($form, $form_state, $grantsProfileContent['addresses'], $newItem);
-    $this->addOfficialBits($form, $form_state, $grantsProfileContent['officials'], $newItem);
+    $this->addMemberBits($form, $form_state, $grantsProfileContent['members'], $newItem);
     $this->addbankAccountBits($form, $form_state, $grantsProfileContent['bankAccounts'], $newItem);
 
     $form['actions'] = [
@@ -356,8 +338,8 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
       $values["addressWrapper"] = $input["addressWrapper"];
     }
 
-    if (array_key_exists('officialWrapper', $input)) {
-      $values["officialWrapper"] = $input["officialWrapper"];
+    if (array_key_exists('memberWrapper', $input)) {
+      $values["memberWrapper"] = $input["memberWrapper"];
     }
 
     if (array_key_exists('bankAccountWrapper', $input)) {
@@ -374,9 +356,9 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
       $grantsProfileContent['addresses'] = $values["addressWrapper"];
     }
 
-    if (array_key_exists('officialWrapper', $values)) {
-      unset($values["officialWrapper"]["actions"]);
-      $grantsProfileContent['officials'] = $values["officialWrapper"];
+    if (array_key_exists('memberWrapper', $values)) {
+      unset($values["memberWrapper"]["actions"]);
+      $grantsProfileContent['members'] = $values["memberWrapper"];
     }
 
     if (array_key_exists('bankAccountWrapper', $values)) {
@@ -411,25 +393,13 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
 
           $propertyPath = '';
 
-          if ($propertyPathArray[0] == 'companyNameShort') {
-            $propertyPath = 'companyNameShortWrapper][companyNameShort';
-          }
-          elseif ($propertyPathArray[0] == 'companyHomePage') {
-            $propertyPath = 'companyHomePageWrapper][companyHomePage';
-          }
-          elseif ($propertyPathArray[0] == 'businessPurpose') {
-            $propertyPath = 'businessPurposeWrapper][businessPurpose';
-          }
-          elseif ($propertyPathArray[0] == 'foundingYear') {
-            $propertyPath = 'foundingYearWrapper][foundingYear';
-          }
-          elseif ($propertyPathArray[0] == 'addresses') {
+          if ($propertyPathArray[0] == 'addresses') {
             if (count($propertyPathArray) == 1) {
               $errorElement = $form["addressWrapper"];
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . ($propertyPathArray[1] + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . $propertyPathArray[1] . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -438,12 +408,12 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . ($propertyPathArray[1] + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
-          elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . ($propertyPathArray[1] + 1) . '][official][' . $propertyPathArray[2];
+          elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'members') {
+            $propertyPath = 'memberWrapper][' . $propertyPathArray[1] . '][member][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
@@ -715,101 +685,97 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
   }
 
   /**
-   * Add official bits in separate method to improve readability.
+   * Add member bits in separate method to improve readability.
    *
    * @param array $form
    *   Form.
    * @param \Drupal\Core\Form\FormStateInterface $formState
    *   Form state.
-   * @param array $officials
-   *   Current officials.
+   * @param array $members
+   *   Current members.
    * @param string|null $newItem
    *   Name of new item.
    */
-  public function addOfficialBits(
+  public function addMemberBits(
     array &$form,
     FormStateInterface $formState,
-    array $officials,
+    array $members,
     ?string $newItem
   ) {
-    $form['officialWrapper'] = [
+    $form['memberWrapper'] = [
       '#type' => 'webform_section',
-      '#title' => $this->t('Persons responsible for operations'),
-      '#prefix' => '<div id="officials-wrapper">',
+      '#title' => $this->t('Members of the unregistered community'),
+      '#prefix' => '<div id="members-wrapper">',
       '#suffix' => '</div>',
     ];
 
-    $roles = [
-      0 => $this->t('Select'),
-    ] + self::getOfficialRoles();
+    $memberValues = $formState->getValue('memberWrapper') ?? $members;
+    unset($memberValues['actions']);
+    foreach ($memberValues as $delta => $member) {
 
-    $officialValues = $formState->getValue('officialWrapper') ?? $officials;
-    unset($officialValues['actions']);
-    foreach ($officialValues as $delta => $official) {
-
-      // Make sure we have proper UUID as address id.
-      if (!$this->isValidUuid($official['official_id'])) {
-        $official['official_id'] = Uuid::uuid4()->toString();
+      if (array_key_exists('member', $member)) {
+        $temp = $member['member'];
+        unset($member['member']);
+        $memberValues[$delta] = array_merge($member, $temp);
       }
 
-      $form['officialWrapper'][$delta]['official'] = [
+      // Make sure we have proper UUID as address id.
+      if (!isset($member['member_id']) || !$this->isValidUuid($member['member_id'])) {
+        $member['member_id'] = Uuid::uuid4()->toString();
+      }
+
+      $form['memberWrapper'][$delta]['member'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Community official'),
+        '#title' => $this->t('Community member'),
         'name' => [
           '#type' => 'textfield',
           '#title' => $this->t('Name'),
-          '#default_value' => $official['name'],
-        ],
-        'role' => [
-          '#type' => 'select',
-          '#options' => $roles,
-          '#title' => $this->t('Role'),
-          '#default_value' => $official['role'],
+          '#default_value' => $member['name'],
         ],
         'email' => [
           '#type' => 'textfield',
           '#title' => $this->t('Email address'),
-          '#default_value' => $official['email'],
+          '#default_value' => $member['email'],
         ],
         'phone' => [
           '#type' => 'textfield',
           '#title' => $this->t('Telephone'),
-          '#default_value' => $official['phone'],
+          '#default_value' => $member['phone'],
         ],
-        'official_id' => [
+        'additional' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Additional information'),
+          '#default_value' => $member['additional'],
+        ],
+        'member_id' => [
           '#type' => 'hidden',
-          '#default_value' => $official['official_id'],
+          '#default_value' => $member['member_id'],
         ],
         'deleteButton' => [
           '#type' => 'submit',
           '#icon_left' => 'trash',
           '#value' => $this
             ->t('Delete'),
-          '#name' => 'officialWrapper--' . $delta,
+          '#name' => 'memberWrapper--' . $delta,
           '#submit' => [
             '::removeOne',
           ],
           '#ajax' => [
             'callback' => '::addmoreCallback',
-            'wrapper' => 'officials-wrapper',
+            'wrapper' => 'members-wrapper',
           ],
         ],
       ];
     }
 
-    if ($newItem == 'officialWrapper') {
+    if ($newItem == 'memberWrapper') {
 
-      $form['officialWrapper'][count($officialValues) + 1]['official'] = [
+      $form['memberWrapper'][count($memberValues) + 1]['member'] = [
         '#type' => 'fieldset',
-        '#title' => $this->t('Community official'),
+        '#title' => $this->t('Community member'),
         'name' => [
           '#type' => 'textfield',
           '#title' => $this->t('Name'),
-        ],
-        'role' => [
-          '#type' => 'select',
-          '#options' => $roles,
-          '#title' => $this->t('Role'),
         ],
         'email' => [
           '#type' => 'textfield',
@@ -819,7 +785,11 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
           '#type' => 'textfield',
           '#title' => $this->t('Telephone'),
         ],
-        'official_id' => [
+        'additional' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Additional information'),
+        ],
+        'member_id' => [
           '#type' => 'hidden',
           '#value' => Uuid::uuid4()->toString(),
         ],
@@ -828,32 +798,32 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
           '#icon_left' => 'trash',
           '#value' => $this
             ->t('Delete'),
-          '#name' => 'officialWrapper--' . $delta,
+          '#name' => 'memberWrapper--' . $delta,
           '#submit' => [
             '::removeOne',
           ],
           '#ajax' => [
             'callback' => '::addmoreCallback',
-            'wrapper' => 'officials-wrapper',
+            'wrapper' => 'members-wrapper',
           ],
         ],
       ];
       $formState->setValue('newItem', NULL);
     }
 
-    $form['officialWrapper']['actions']['add_official'] = [
+    $form['memberWrapper']['actions']['add_member'] = [
       '#type' => 'submit',
       '#value' => $this
-        ->t('Add official'),
+        ->t('Add member'),
       '#is_supplementary' => TRUE,
       '#icon_left' => 'plus-circle',
-      '#name' => 'officialWrapper--1',
+      '#name' => 'memberWrapper--1',
       '#submit' => [
         '::addOne',
       ],
       '#ajax' => [
         'callback' => '::addmoreCallback',
-        'wrapper' => 'officials-wrapper',
+        'wrapper' => 'members-wrapper',
       ],
       '#prefix' => '<div class="profile-add-more"">',
       '#suffix' => '</div>',
@@ -861,14 +831,14 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
   }
 
   /**
-   * Add address bits in separate method to improve readability.
+   * Add bank account bits in separate method to improve readability.
    *
    * @param array $form
    *   Form.
    * @param \Drupal\Core\Form\FormStateInterface $formState
    *   Form state.
    * @param array|null $bankAccounts
-   *   Current officials.
+   *   Current bank accounts.
    * @param string|null $newItem
    *   New item.
    */
@@ -921,6 +891,16 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
           '#attributes' => [
             'readonly' => 'readonly',
           ],
+        ],
+        'ownerName' => [
+          '#title' => $this->t('Bank account owner name'),
+          '#type' => 'textfield',
+          '#default_value' => $bankAccount['ownerName'] ?? '',
+        ],
+        'ownerSsn' => [
+          '#title' => $this->t('Bank account owner SSN'),
+          '#type' => 'textfield',
+          '#default_value' => $bankAccount['ownerSsn'] ?? '',
         ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
@@ -976,6 +956,14 @@ rtf, txt, xls, xlsx, zip.'),
         'bankAccount' => [
           '#type' => 'textfield',
           '#title' => $this->t('Finnish bank account number in IBAN format'),
+        ],
+        'ownerName' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Bank account owner name'),
+        ],
+        'ownerSsn' => [
+          '#type' => 'textfield',
+          '#title' => $this->t('Bank account owner SSN'),
         ],
         'confirmationFileName' => [
           '#type' => 'textfield',
@@ -1074,18 +1062,18 @@ rtf, txt, xls, xlsx, zip.'),
           }
         }
       }
-      elseif ($key == 'officialWrapper' && array_key_exists($key, $input)) {
+      elseif ($key == 'memberWrapper' && array_key_exists($key, $input)) {
         $values[$key] = $input[$key];
         unset($values[$key]['actions']);
         foreach ($value as $key2 => $value2) {
 
-          if (empty($value2["official_id"])) {
-            $values[$key][$key2]['official_id'] = Uuid::uuid4()
+          if (empty($value2["member_id"])) {
+            $values[$key][$key2]['member_id'] = Uuid::uuid4()
               ->toString();
           }
-          if (array_key_exists('official', $value2) && !empty($value2['official'])) {
-            $temp = $value2['official'];
-            unset($values[$key][$key2]['official']);
+          if (array_key_exists('member', $value2) && !empty($value2['member'])) {
+            $temp = $value2['member'];
+            unset($values[$key][$key2]['member']);
             $values[$key][$key2] = array_merge($values[$key][$key2], $temp);
           }
         }
@@ -1158,16 +1146,37 @@ rtf, txt, xls, xlsx, zip.'),
           }
           if (!$ibanValid) {
             $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-            $formState->setErrorByName($elementName, t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
+            $formState->setErrorByName($elementName, $this->t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
           }
         }
         else {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-          $formState->setErrorByName($elementName, t('You must enter valid Finnish iban'));
+          $formState->setErrorByName($elementName, $this->t('You must enter valid Finnish iban'));
+        }
+        if (empty($accountData['ownerName'])) {
+          $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerName';
+          $formState->setErrorByName($elementName, $this->t('@fieldname field is required', [
+            '@fieldname' => 'Bank account owner name',
+          ]));
+        }
+        if (empty($accountData['ownerSsn'])) {
+          $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerSsn';
+          $formState->setErrorByName($elementName, $this->t('@fieldname field is required', [
+            '@fieldname' => 'Bank account owner SSN',
+          ]));
+        }
+        else {
+          // Check for valid Finnish SSN.
+          if (!preg_match("/([0-2][0-9]|3[0-1])(0[0-9]|1[0-2])([0-9][0-9])([\+\-A])([[:digit:]]{3})([A-Z]|[[:digit:]])/", $accountData['ownerSsn'])) {
+            $elementName = 'bankAccountWrapper][' . $key . '][bank][ownerSsn';
+            $formState->setErrorByName($elementName, $this->t('%value is not valid Finnish social security number', [
+              '%value' => $accountData['ownerSsn'],
+            ]));
+          }
         }
         if ((empty($accountData["confirmationFileName"]) && empty($accountData["confirmationFile"]['fids']))) {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][confirmationFile';
-          $formState->setErrorByName($elementName, t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
+          $formState->setErrorByName($elementName, $this->t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
         }
       }
     }

@@ -596,11 +596,14 @@ class AttachmentHandler {
 
       if (!$accountConfirmationExists) {
         $found = array_filter($submittedFormData, function ($fn) use ($filename) {
-          // Not an attachment field.
-          if (!isset($fn['fileName'])) {
-            return FALSE;
+          if (is_array($fn)) {
+            // Not an attachment field.
+            if (!isset($fn['fileName'])) {
+              return FALSE;
+            }
+            return $fn['fileName'] === $filename;
           }
-          return $fn['fileName'] === $filename;
+          return FALSE;
         });
         if (!empty($found)) {
           $accountConfirmationExists = TRUE;

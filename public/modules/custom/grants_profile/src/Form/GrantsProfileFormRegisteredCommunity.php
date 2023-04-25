@@ -467,7 +467,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . (intval($propertyPathArray[1]) + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . $propertyPathArray[1] . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -476,12 +476,12 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . (intval($propertyPathArray[1]) + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . (intval($propertyPathArray[1]) + 1) . '][official][' . $propertyPathArray[2];
+            $propertyPath = 'officialWrapper][' . $propertyPathArray[1] . '][official][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
@@ -673,6 +673,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
         '#title' => $this->t('Country'),
         '#default_value' => $address['country'],
       ];
+
       // We need the delta / id to create delete links in element.
       $form['addressWrapper'][$delta]['address']['address_id'] = [
         '#type' => 'hidden',
@@ -712,10 +713,6 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
           'city' => [
             '#type' => 'textfield',
             '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
-          ],
-          'country' => [
-            '#type' => 'textfield',
-            '#title' => $this->t('Country'),
           ],
           // We need the delta / id to create delete links in element.
           'address_id' => [

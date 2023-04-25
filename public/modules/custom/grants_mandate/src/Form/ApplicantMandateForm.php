@@ -258,9 +258,10 @@ class ApplicantMandateForm extends FormBase {
 
       default:
         $mandateMode = 'ypa';
-        $redirectUrl = $this->grantsMandateService->getUserMandateRedirectUrl($mandateMode);
-        $redirect = new TrustedRedirectResponse($redirectUrl);
+        $redirectUrl = Url::fromUri($this->grantsMandateService->getUserMandateRedirectUrl($mandateMode));
+        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
         $form_state->setResponse($redirect);
+
         break;
     }
   }

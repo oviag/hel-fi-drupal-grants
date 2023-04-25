@@ -188,62 +188,86 @@ class ApplicantInfoComposite extends WebformCompositeBase {
 
     $profileContent = $grantsProfile->getContent();
 
-    $elements['companyNumber'] = [
-      '#type' => 'textfield',
-      '#title' => t('Company number'),
-      '#readonly' => TRUE,
-      '#required' => TRUE,
-      '#value' => $profileContent["businessId"],
-      '#default_value' => $profileContent["businessId"],
-    ];
     $elements['communityOfficialName'] = [
       '#type' => 'textfield',
-      '#title' => t('Community official name'),
+      '#title' => t('Name of association'),
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["companyName"],
       '#default_value' => $profileContent["companyName"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#prefix' => '<div class="applicant-info--from-prh">',
     ];
-    $elements['communityOfficialNameShort'] = [
+    $elements['companyNumber'] = [
       '#type' => 'textfield',
-      '#title' => t('Community official shortname'),
+      '#title' => t('Business ID'),
       '#readonly' => TRUE,
       '#required' => TRUE,
-      '#value' => $profileContent["companyNameShort"],
-      '#default_value' => $profileContent["companyNameShort"],
+      '#value' => $profileContent["businessId"],
+      '#default_value' => $profileContent["businessId"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['registrationDate'] = [
       '#type' => 'textfield',
-      '#title' => t('Registartion date'),
+      '#title' => t('Date of registration'),
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["registrationDate"],
       '#default_value' => $profileContent["registrationDate"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#suffix' => '</div>',
     ];
-    $elements['foundingYear'] = [
-      '#type' => 'textfield',
-      '#title' => t('Founding year'),
-      '#readonly' => TRUE,
-      '#required' => TRUE,
-      '#value' => $profileContent["foundingYear"],
-      '#default_value' => $profileContent["foundingYear"],
-    ];
-
     $elements['home'] = [
       '#type' => 'textfield',
-      '#title' => t('Home'),
+      '#title' => t('Municipality where the association is based (domicile)'),
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["companyHome"],
       '#default_value' => $profileContent["companyHome"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#prefix' => '<div class="applicant-info--from-grants">',
+    ];
+    $elements['communityOfficialNameShort'] = [
+      '#type' => 'textfield',
+      '#title' => t('Abbreviated name'),
+      '#readonly' => TRUE,
+      '#required' => TRUE,
+      '#value' => $profileContent["companyNameShort"],
+      '#default_value' => $profileContent["companyNameShort"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+    ];
+    $elements['foundingYear'] = [
+      '#type' => 'textfield',
+      '#title' => t('Year of establishment'),
+      '#readonly' => TRUE,
+      '#required' => TRUE,
+      '#value' => $profileContent["foundingYear"],
+      '#default_value' => $profileContent["foundingYear"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['homePage'] = [
       '#type' => 'textfield',
-      '#title' => t('Home page'),
+      '#title' => t('Website address'),
       '#readonly' => TRUE,
       '#required' => FALSE,
       '#value' => $profileContent["homePage"] ?? '',
       '#default_value' => $profileContent["homePage"] ?? '',
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#suffix' => '</div>',
     ];
 
   }
