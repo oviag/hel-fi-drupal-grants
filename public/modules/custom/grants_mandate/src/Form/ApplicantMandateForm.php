@@ -103,22 +103,22 @@ class ApplicantMandateForm extends FormBase {
     $form['actions'] = [
       '#type' => 'actions',
     ];
-    $form['actions']['private_person'] = [
+    $form['actions']['registered_community'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['hds-card__body']],
       '#prefix' => '<div class="hds-card hds-card--applicant-role">',
       '#suffix' => '</div>',
     ];
-    $form['actions']['private_person']['info'] = [
+    $form['actions']['registered_community']['info'] = [
       '#theme' => 'select_applicant_role',
       '#icon' => 'group',
-      '#role' => $this->t('Private person'),
+      '#role' => $this->t('Registered community'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
-    $form['actions']['private_person']['submit'] = [
-      '#name' => 'private_person',
+    $form['actions']['registered_community']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Select Private person role'),
+      '#name' => 'registered_community',
+      '#value' => $this->t('Select Registered community role & authorize mandate'),
     ];
     $form['actions']['unregistered_community'] = [
       '#type' => 'container',
@@ -143,22 +143,22 @@ class ApplicantMandateForm extends FormBase {
       '#name' => 'unregistered_community',
       '#value' => $this->t('Select Unregistered community role'),
     ];
-    $form['actions']['registered_community'] = [
+    $form['actions']['private_person'] = [
       '#type' => 'container',
       '#attributes' => ['class' => ['hds-card__body']],
       '#prefix' => '<div class="hds-card hds-card--applicant-role">',
       '#suffix' => '</div>',
     ];
-    $form['actions']['registered_community']['info'] = [
+    $form['actions']['private_person']['info'] = [
       '#theme' => 'select_applicant_role',
       '#icon' => 'group',
-      '#role' => $this->t('Registered community'),
+      '#role' => $this->t('Private person'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
-    $form['actions']['registered_community']['submit'] = [
+    $form['actions']['private_person']['submit'] = [
+      '#name' => 'private_person',
       '#type' => 'submit',
-      '#name' => 'registered_community',
-      '#value' => $this->t('Select Registered community role & authorize mandate'),
+      '#value' => $this->t('Select Private person role'),
     ];
 
     return $form;
