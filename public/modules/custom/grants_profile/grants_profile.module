@@ -280,11 +280,10 @@ function grants_profile_preprocess_own_profile_form_private_person(&$variables) 
   $grantsProfile = $grantsProfileService->getGrantsProfileContent($selectedCompany);
 
   // Get profile data from parent form.
-  $variables['profile'] = $variables["form"]["#profilecontent"];
+  $variables['profile'] = $variables["form"]["#helsinkiprofilecontent"];
 
-  $sddsf = $variables;
   // Unset just in case.
-  unset($variables["form"]["#profilecontent"]);
+  unset($variables["form"]["#helsinkiprofilecontent"]);
 
 }
 

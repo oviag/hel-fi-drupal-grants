@@ -102,6 +102,10 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $userData["myProfile"]["verifiedPersonalInformation"]["firstName"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#prefix' => '<div class="applicant-info--from-grants">',
     ];
     $elements['lastname'] = [
       '#type' => 'textfield',
@@ -109,6 +113,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $userData["myProfile"]["verifiedPersonalInformation"]["lastName"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['socialSecurityNumber'] = [
       '#type' => 'textfield',
@@ -116,6 +123,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $userData["myProfile"]["verifiedPersonalInformation"]["nationalIdentificationNumber"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['email'] = [
       '#type' => 'textfield',
@@ -123,6 +133,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $userData["myProfile"]["primaryEmail"]["email"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
 
     $elements['street'] = [
@@ -131,6 +144,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["addresses"][0]["street"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['city'] = [
       '#type' => 'textfield',
@@ -138,6 +154,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["addresses"][0]["city"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['postCode'] = [
       '#type' => 'textfield',
@@ -145,6 +164,9 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["addresses"][0]["postCode"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
     ];
     $elements['country'] = [
       '#type' => 'textfield',
@@ -152,6 +174,10 @@ class ApplicantInfoComposite extends WebformCompositeBase {
       '#readonly' => TRUE,
       '#required' => FALSE,
       '#value' => $profileContent["addresses"][0]["country"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#suffix' => '</div>',
     ];
   }
 
@@ -168,11 +194,16 @@ class ApplicantInfoComposite extends WebformCompositeBase {
     $profileContent = $grantsProfile->getContent();
     $elements['communityOfficialName'] = [
       '#type' => 'textfield',
-      '#title' => t('Community official name'),
+      '#title' => t('Name of association'),
       '#readonly' => TRUE,
       '#required' => TRUE,
       '#value' => $profileContent["companyName"],
       '#default_value' => $profileContent["companyName"],
+      '#wrapper_attributes' => [
+        'class' => ['grants-handler--prefilled-field'],
+      ],
+      '#prefix' => '<div class="applicant-info--from-grants">',
+      '#suffix' => '</div>',
     ];
   }
 

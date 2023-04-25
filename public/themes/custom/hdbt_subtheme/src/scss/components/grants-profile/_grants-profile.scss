@@ -217,7 +217,8 @@ div.grants-handler--prefilled-field, .grants-profile-prh-info {
     top: 0;
     right: var(--spacing-layout-s);
   }
-  .hds-text-input__input-wrapper {
+  .hds-text-input__input-wrapper,
+  .description {
     white-space: normal;
     display: inline-block;
   }
@@ -225,7 +226,8 @@ div.grants-handler--prefilled-field, .grants-profile-prh-info {
     color: var(--color-success);
     vertical-align: middle;
   }
-  .hds-text-input__input {
+  .hds-text-input__input,
+  .webform-element-description {
     color: var(--color-black);
     line-height: var(--spacing-m);
     position: relative;

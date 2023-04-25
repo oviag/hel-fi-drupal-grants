@@ -295,6 +295,9 @@ msgstr "Tilinumerot"
 msgid "Finnish bank account number in IBAN format"
 msgstr "Suomalainen tilinumero IBAN-muodossa"
 
+msgid "Personal bank account"
+msgstr "Henkilökohtainen tilinumero"
+
 msgid "Saved confirmation file"
 msgstr "Tallennettu varmistustiedosto"
 

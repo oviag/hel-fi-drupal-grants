@@ -145,8 +145,8 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
     $newItem = $form_state->getValue('newItem');
 
     $this->addAddressBits($form, $form_state, $grantsProfileContent['addresses'], $newItem);
-    $this->addOfficialBits($form, $form_state, $grantsProfileContent['officials'], $newItem);
     $this->addbankAccountBits($form, $form_state, $grantsProfileContent['bankAccounts'], $newItem);
+    $this->addOfficialBits($form, $form_state, $grantsProfileContent['officials'], $newItem);
 
     $form['actions'] = [
       '#type' => 'actions',
