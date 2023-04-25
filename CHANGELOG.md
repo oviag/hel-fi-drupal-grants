@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## 2023.12
+- da2ba17e fix: AU-867: Remove TPR link to current service page and replace with serv… (#318)
+- 5c1b29dc fix: AU-867 AU-877: Fix delete button visibility to be only on draft versions (#323)
+
+## 2023.12
+da2ba17e fix: AU-867: Remove TPR link to current service page and replace with serv… (#318)
+5c1b29dc fix: AU-867 AU-877: Fix delete button visibility to be only on draft versions (#323)
+
 ## 2023.11
 - 5d0ffccc fix: Limit attachment validations to allow file deletion.
 - f962b90b fix: AU-855: Re-style status tags (#306)

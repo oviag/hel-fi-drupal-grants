@@ -1031,10 +1031,11 @@ function grants_handler_preprocess_webform_submission_attachment_list(&$variable
       catch (Exception $e) {
         $fileUploadTime = '';
       }
-      $attachmentLine = $att['fileName'];
+      $attachmentLine = $att['description'];
       if (!empty($fileUploadTime)) {
-        $attachmentLine .= ' (' . $fileUploadTime . ')';
+        $attachmentLine .= ', ' . $fileUploadTime . ': ';
       }
+      $attachmentLine .= $att['fileName'];
       $attachments[] = $attachmentLine;
     }
   }
