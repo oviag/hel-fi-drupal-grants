@@ -11,20 +11,8 @@
         <hr />
         <dl class="grants-profile--wrapper">
           <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "First name"|t }}</strong></dt>
-            <dd class="grants-profile--item grants-profile-company-name">{{ userData.myProfile.verifiedPersonalInformation.firstName }}</dd>
-          </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Last name"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ userData.myProfile.verifiedPersonalInformation.lastName }}</dd>
-          </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Social security number"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</strong></dt>
-            <dd class="grants-profile-item">{{ userData.myProfile.verifiedPersonalInformation.nationalIdentificationNumber }}</dd>
-          </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Email"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ userData.myProfile.primaryEmail.email }}</dd>
+            <dt><strong>{{ "Name of association"|t }}</strong></dt>
+            <dd class="grants-profile--item grants-profile-company-name">{{ profile.companyName }}</dd>
           </div>
         </dl>
       </div>
