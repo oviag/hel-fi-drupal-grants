@@ -36,13 +36,13 @@ trait ApplicationDefinitionTrait {
         'postCode',
       ]);
 
-    $info['email'] = DataDefinition::create('string')
-      ->setLabel('Nimi')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'applicantInfoArray',
-        'email',
-      ]);
+//    $info['email'] = DataDefinition::create('string')
+//      ->setLabel('Nimi')
+//      ->setSetting('jsonPath', [
+//        'compensation',
+//        'applicantInfoArray',
+//        'email',
+//      ]);
 
     $info['community_officials'] = ListDataDefinition::create('grants_profile_application_official')
       // ->setRequired(TRUE)

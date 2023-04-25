@@ -45,7 +45,7 @@ class GrantsPremisesService {
           $itemValues[] = [
             'ID' => $itemName,
             'label' => $itemDefinition->getLabel(),
-            'value' => $item->getValue() == 'true',
+            'value' => $item->getValue(),
             'valueType' => $valueTypes['jsonType'],
           ];
           continue;

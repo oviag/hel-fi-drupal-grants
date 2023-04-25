@@ -37,7 +37,6 @@ class CommunityAddressComposite extends WebformCompositeBase {
 
     $elements['community_address_select'] = [
       '#type' => 'select',
-      '#required' => TRUE,
       '#title' => t('Select address'),
       '#after_build' => [[get_called_class(), 'buildAddressOptions']],
       '#options' => [],
