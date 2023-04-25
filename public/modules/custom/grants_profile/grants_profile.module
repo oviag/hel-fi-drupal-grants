@@ -14,7 +14,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use Drupal\grants_profile\Form\GrantsProfileFormRegisteredCommunity;
-use Drupal\grants_profile\Form\GrantsProfileFormUnregisteredCommunity;
 
 /**
  * Implements hook_theme().
@@ -202,26 +201,6 @@ function grants_profile_preprocess_own_profile_registered_community(&$variables)
     $temprole = '' . $officialRole[(int) $official['role']];
     $variables['profile']['officials'][$key]['officialRole'] = $temprole;
   }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function grants_profile_preprocess_own_profile_unregistered_community(&$variables): void {
-  foreach ($variables['profile']['officials'] as $key => $official) {
-
-    $officialRole = GrantsProfileFormUnregisteredCommunity::getOfficialRoles();
-    $temprole = '' . $officialRole[(int) $official['role']];
-    $variables['profile']['officials'][$key]['officialRole'] = $temprole;
-  }
-}
-
-/**
- * Implements hook_preprocess_HOOK().
- */
-function grants_profile_preprocess_own_profile_private_person(&$variables): void {
-
-  $d = 'asdf';
 }
 
 /**

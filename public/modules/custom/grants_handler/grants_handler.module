@@ -535,6 +535,10 @@ function _grants_handler_missing_data(
   string $str2 = 'Go to grants profile',
   string $str3 = 'to fill out missing data.') {
 
+  if (is_null($element)) {
+    return;
+  }
+
   unset($element['#value']);
   unset($element['#default_value']);
   $element['#required'] = TRUE;
@@ -1089,10 +1093,11 @@ function grants_handler_preprocess_webform_submission_attachment_list(&$variable
       catch (Exception $e) {
         $fileUploadTime = '';
       }
-      $attachmentLine = $att['fileName'];
+      $attachmentLine = $att['description'];
       if (!empty($fileUploadTime)) {
-        $attachmentLine .= ' (' . $fileUploadTime . ')';
+        $attachmentLine .= ', ' . $fileUploadTime . ': ';
       }
+      $attachmentLine .= $att['fileName'];
       $attachments[] = $attachmentLine;
     }
   }

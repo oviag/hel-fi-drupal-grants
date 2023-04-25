@@ -90,8 +90,7 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'compensation',
           'applicantInfoArray',
           'companyNumber',
-        ])
-        ->addConstraint('NotBlank');
+        ]);
 
       $info['communityOfficialName'] = DataDefinition::create('string')
         ->setLabel('Yhteisön nimi')
@@ -99,8 +98,7 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'compensation',
           'applicantInfoArray',
           'communityOfficialName',
-        ])
-        ->addConstraint('NotBlank');
+        ]);
 
       $info['communityOfficialNameShort'] = DataDefinition::create('string')
         // ->setRequired(TRUE)
@@ -110,34 +108,26 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'applicantInfoArray',
           'communityOfficialNameShort',
         ]);
-      // ->addConstraint('NotBlank');
       $info['registrationDate'] = DataDefinition::create('datetime_iso8601')
-        // ->setRequired(TRUE)
         ->setLabel('Rekisteröimispäivä')
         ->setSetting('jsonPath', [
           'compensation',
           'applicantInfoArray',
           'registrationDate',
-        ])
-        ->addConstraint('NotBlank');
+        ]);
 
       $info['foundingYear'] = DataDefinition::create('string')
-        // ->setRequired(TRUE)
         ->setLabel('Perustamisvuosi')
         ->setSetting('jsonPath', [
           'compensation',
           'applicantInfoArray',
           'foundingYear',
         ]);
-      // ->addConstraint('NotBlank');
       $info['home'] = DataDefinition::create('string')
-        // ->setRequired(TRUE)
         ->setLabel('Kotipaikka')
-        ->setSetting('jsonPath', ['compensation', 'applicantInfoArray', 'home'])
-        ->addConstraint('NotBlank');
+        ->setSetting('jsonPath', ['compensation', 'applicantInfoArray', 'home']);
 
       $info['homePage'] = DataDefinition::create('string')
-        // ->setRequired(TRUE)
         ->setLabel('www-sivut')
         ->setSetting('jsonPath', [
           'compensation',
