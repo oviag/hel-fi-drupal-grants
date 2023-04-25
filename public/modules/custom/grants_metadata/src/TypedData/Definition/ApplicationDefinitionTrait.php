@@ -69,7 +69,7 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['community_street'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
+//      ->setRequired(TRUE)
       ->setLabel('Community street')
       ->setSetting('jsonPath', [
         'compensation',
@@ -82,7 +82,7 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['community_city'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
+//      ->setRequired(TRUE)
       ->setLabel('Community city')
       ->setSetting('jsonPath', [
         'compensation',
@@ -95,7 +95,7 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['community_post_code'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
+//      ->setRequired(TRUE)
       ->setLabel('Community postal code')
       ->setSetting('jsonPath', [
         'compensation',
@@ -109,7 +109,7 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('ValidPostalCode');
 
     $info['community_country'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
+//      ->setRequired(TRUE)
       ->setLabel('Community country')
       ->setSetting('jsonPath', [
         'compensation',

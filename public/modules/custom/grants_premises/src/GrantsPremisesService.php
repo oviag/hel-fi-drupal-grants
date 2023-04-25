@@ -28,8 +28,10 @@ class GrantsPremisesService {
 
     foreach ($property as $itemIndex => $p) {
       $itemValues = [];
+
       foreach ($p as $item) {
         $itemName = $item->getName();
+        $itemDef = $item->getDataDefinition();
 
         // If this item is not selected for jsonData.
         if (!in_array($itemName, $usedFields)) {
@@ -39,13 +41,17 @@ class GrantsPremisesService {
         // Get item value types from item definition.
         $itemDefinition = $item->getDataDefinition();
         $valueTypes = AtvSchema::getJsonTypeForDataType($itemDefinition);
+        $defaultValue = $itemDef->getSetting('defaultValue');
+        $valueCallback = $itemDef->getSetting('valueCallback');
+
+        $itemValue = AtvSchema::getItemValue($valueTypes,$item->getValue(), $defaultValue, $valueCallback);
 
         // Process boolean values separately.
         if ($itemName == 'isOwnedByCity' || $itemName == 'isOwnedByApplicant') {
           $itemValues[] = [
             'ID' => $itemName,
             'label' => $itemDefinition->getLabel(),
-            'value' => $item->getValue(),
+            'value' => $itemValue,
             'valueType' => $valueTypes['jsonType'],
           ];
           continue;
@@ -54,7 +60,7 @@ class GrantsPremisesService {
         $itemValues[] = [
           'ID' => $itemName,
           'label' => $itemDefinition->getLabel(),
-          'value' => $item->getValue(),
+          'value' => $itemValue,
           'valueType' => $valueTypes['jsonType'],
         ];
       }
