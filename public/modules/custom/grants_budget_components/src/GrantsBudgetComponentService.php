@@ -112,6 +112,10 @@ class GrantsBudgetComponentService {
       $jsonPath
     );
 
+    if (!$elements) {
+      return $retVal;
+    }
+
     $elements = reset($elements);
 
     if (!empty($elements) && isset($elements[$pathLast])) {
@@ -146,6 +150,10 @@ class GrantsBudgetComponentService {
       $documentData,
       $jsonPath
     );
+
+    if (!$elements) {
+      return $retVal;
+    }
 
     $elements = reset($elements);
 

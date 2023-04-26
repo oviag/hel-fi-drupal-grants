@@ -1299,6 +1299,16 @@ class ApplicationHandler {
      */
     foreach ($applicationDocuments as $document) {
       // Make sure the type is acceptable one.
+
+      $docArray = $document->toArray();
+      $id = AtvSchema::extractDataForWebForm(
+        $docArray['content'], ['applicationNumber']
+      );
+
+      if (!isset($id['applicationNumber']) || empty($id['applicationNumber'])) {
+        continue;
+      }
+
       if (array_key_exists($document->getType(), ApplicationHandler::getApplicationTypes())) {
         $submissionObject = self::submissionObjectFromApplicationNumber($document->getTransactionId(), $document);
         $submissionData = $submissionObject->getData();

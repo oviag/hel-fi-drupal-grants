@@ -851,4 +851,67 @@ class AtvSchema {
     return $fieldValues;
   }
 
+  /**
+   * Extracts data from ATV document compensation field.
+   *
+   * @param array $content
+   *   ATV document in array form.
+   * @param array $keys
+   *   Array with IDs that the function will look for.
+   *
+   * @return array
+   *   Assocative arrow with the results if they are found.
+   */
+  public static function extractDataForWebForm(array $content, array $keys) {
+    $values = [];
+
+    if (!isset($content['compensation'])) {
+      return $values;
+    }
+
+    foreach ($content['compensation'] as $key => $item) {
+      if (is_numeric($key)) {
+        if (in_array($item['ID'], $keys) && !in_array($item['ID'], $values)) {
+          $values[$item['ID']] = $item['value'];
+        }
+      }
+      else {
+        if (!is_array($item)) {
+          $values[$key] = $item;
+          continue;
+        }
+        foreach ($item as $key2 => $item2) {
+          if (!is_array($item2)) {
+            $values[$key2] = $item2;
+          }
+          elseif (AtvSchema::numericKeys($item2)) {
+            foreach ($item2 as $item3) {
+              if (AtvSchema::numericKeys($item3)) {
+                foreach ($item3 as $item4) {
+                  if (in_array($item4['ID'], $keys) && !array_key_exists($item4['ID'], $values)) {
+                    $values[$item4['ID']] = $item4['value'];
+                  }
+                }
+              }
+              else {
+                if (isset($item3['ID']) && in_array($item3['ID'], $keys) && !array_key_exists($item3['ID'], $values)) {
+                  $values[$item3['ID']] = $item3['value'];
+                }
+              }
+            }
+          }
+          else {
+            if (is_numeric($key2)) {
+              if (in_array($item2['ID'], $keys) && !in_array($item2['ID'], $values)) {
+                $values[$item2['ID']] = $item2['value'];
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return $values;
+  }
+
 }
