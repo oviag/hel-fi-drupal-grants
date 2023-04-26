@@ -109,7 +109,13 @@ class AtvSchema {
       $webformDataExtractor = $definition->getSetting('webformDataExtracter');
 
       if ($webformDataExtractor) {
-        $typedDataValues[$definitionKey] = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
+        $extractedValues = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
+        if (isset($webformDataExtractor['mergeResults']) && $webformDataExtractor['mergeResults']) {
+          $typedDataValues = array_merge($typedDataValues, $extractedValues);
+        }
+        else {
+          $typedDataValues[$definitionKey] = $extractedValues;
+        }
       }
       else {
         // If json path not configured for item, do nothing.
@@ -343,7 +349,6 @@ class AtvSchema {
   public function typedDataToDocumentContent(
     TypedDataInterface $typedData,
     WebformSubmission $webformSubmission = NULL): array {
-
     $documentStructure = [];
     $addedElements = [];
     foreach ($typedData as $property) {
@@ -389,7 +394,7 @@ class AtvSchema {
 
       // If we have structure callback defined, then get property structure.
       if ($propertyStructureCallback) {
-        $documentStructure = array_merge(
+        $documentStructure = array_merge_recursive(
           $documentStructure,
           self::getFieldValuesFromFullItemCallback(
             $propertyStructureCallback,
@@ -402,16 +407,6 @@ class AtvSchema {
 
       switch ($numberOfItems) {
         case 4:
-
-          if ($fullItemValueCallback) {
-            $fieldValues = $this->getFieldValuesFromFullItemCallback($fullItemValueCallback, $property, $definition);
-            if (!empty($fieldValues)) {
-
-              $documentStructure[$jsonPath[0]][$jsonPath[1]][$jsonPath[2]][$elementName] = $fieldValues;
-              break;
-            }
-          }
-
           $valueArray = [
             'ID' => $elementName,
             'value' => $itemValue,
@@ -748,11 +743,11 @@ class AtvSchema {
       if (isset($valueCallback['service'])) {
         $fullItemValueService = \Drupal::service($valueCallback['service']);
         $funcName = $valueCallback['method'];
-        $itemValue = $fullItemValueService->$funcName($itemValue, $valueCallback['arguments']);
+        $itemValue = $fullItemValueService->$funcName($itemValue, $valueCallback['arguments'] ?? []);
       }
       elseif (isset($valueCallback['class'])) {
         $funcName = $valueCallback['method'];
-        $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments']);
+        $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments'] ?? []);
       }
       else {
         // But still support old way to just call function.

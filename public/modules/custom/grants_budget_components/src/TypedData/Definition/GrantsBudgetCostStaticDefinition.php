@@ -20,16 +20,15 @@ class GrantsBudgetCostStaticDefinition extends ComplexDataDefinitionBase {
 
       $info['costGroupName'] = DataDefinition::create('string');
 
-      $fieldNames = array_keys(GrantsBudgetCostStatic::getFieldNames());
+      $fieldNames = GrantsBudgetCostStatic::getFieldNames();
 
-      foreach ($fieldNames as $fieldName) {
-        $info[$fieldName] = DataDefinition::create('string')
-          ->setLabel('Haettu avustus')
+      foreach ($fieldNames as $fieldKey => $fieldValue) {
+        $info[$fieldKey] = DataDefinition::create('string')
+          ->setLabel($fieldValue)
           ->setSetting('typeOverride', [
             'dataType' => 'string',
             'jsonType' => 'double',
           ]);
-
       }
 
     }

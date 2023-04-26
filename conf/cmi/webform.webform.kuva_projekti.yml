@@ -618,9 +618,9 @@ elements: |-
     menot:
       '#type': webform_section
       '#title': Menot
-      budget_cost_static:
+      budget_static_cost:
         '#type': grants_budget_cost_static
-        '#title': budget_cost_static
+        '#title': budget_static_cost
         '#multiple': true
         '#incomeGroup': general
         '#multiple__min_items': 1
@@ -671,6 +671,7 @@ elements: |-
         '#multiple__min_items': 1
         '#multiple__empty_items': 0
         '#multiple__sorting': false
+        '#multiple__operations': false
         '#multiple__add': false
         '#multiple__add_more_input': false
   lisatiedot_ja_liitteet:

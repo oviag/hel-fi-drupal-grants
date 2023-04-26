@@ -316,16 +316,19 @@ class GrantsHandler extends WebformHandlerBase {
     });
 
     // Force incomeGroupName by found fields.
-    foreach (array_keys($budgetFields) as $element) {
-      $element = reset($values[$element]);
-      if (isset($element['costGroupName'])) {
-        $values['costGroupName'] = $element['costGroupName'];
+    $budgetInfo = [];
+    foreach ($budgetFields as $fieldKey => $field) {
+      $field = reset($values[$fieldKey]);
+      if (isset($field['costGroupName'])) {
+        $values['costGroupName'] = $field['costGroupName'];
       }
-      elseif (isset($element['incomeGroupName'])) {
-        $values['incomeGroupName'] = $element['incomeGroupName'];
+      elseif (isset($field['incomeGroupName'])) {
+        $values['incomeGroupName'] = $field['incomeGroupName'];
       }
-
+      $budgetInfo[$fieldKey] = $values[$fieldKey];
     }
+
+    $values['budgetInfo'] = $budgetInfo;
 
     // If for some reason we don't have application number at this point.
     if (!isset($this->applicationNumber) || $this->applicationNumber == '') {

@@ -95,3 +95,15 @@ msgstr "Tiedotus, markkinointi ja painatus"
 msgctxt "grants_budget_components"
 msgid "Total costs"
 msgstr "Menot yhteensä"
+
+msgctxt "grants_budget_components"
+msgid "Donations"
+msgstr "Lahjoitukset"
+
+msgctxt "grants_budget_components"
+msgid "Cost explanation"
+msgstr "Kuvaus menosta"
+
+msgctxt "grants_budget_components"
+msgid "Amount (€)"
+msgstr "Määrä (€)"

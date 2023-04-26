@@ -109,7 +109,7 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
     return [
       "compensation" => t("Requested grants", [], $tOpts),
       "customerFees" => t("customerFees", [], $tOpts),
-      "donations" => t("donations", [], $tOpts),
+      "donations" => t("Donations", [], $tOpts),
       "entryFees" => t("Access and cancellation fees", [], $tOpts),
       "otherCompensations" => t("Other compensations", [], $tOpts),
       "sponsorships" => t("Private financier (e.g. sponsorship, severance pay, donation)", [], $tOpts),

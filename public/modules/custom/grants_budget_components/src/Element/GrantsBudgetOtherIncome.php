@@ -80,7 +80,7 @@ class GrantsBudgetOtherIncome extends WebformCompositeBase {
     ];
     $elements['value'] = [
       '#type' => 'textfield',
-      '#title' => t('Value'),
+      '#title' => t('Amount (€)'),
       '#min' => 0,
       '#step' => '.01',
       '#element_validate' => [
