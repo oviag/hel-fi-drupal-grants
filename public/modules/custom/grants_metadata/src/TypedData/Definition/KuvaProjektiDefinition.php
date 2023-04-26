@@ -188,12 +188,16 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'eventDaysCountHki',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
         ]);
 
-      /** Esitykset */
+      /* Esitykset */
       $info['esitykset_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -201,6 +205,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'performanceCountHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -214,6 +222,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'performanceCountAll',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
@@ -225,6 +237,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'performanceVisitorsHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -238,12 +254,16 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'performanceVisitorsAll',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
         ]);
 
-      /** Näyttelyt */
+      /* Näyttelyt */
       $info['nayttelyt_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -251,6 +271,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'exhibitionCountHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -264,6 +288,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'exhibitionCountAll',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
@@ -275,6 +303,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'exhibitionVisitorsHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -288,12 +320,16 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'exhibitionVisitorsAll',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
         ]);
 
-      /** Työpajat */
+      /* Työpajat */
       $info['tyopaja_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -301,6 +337,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'workshopCountHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -314,6 +354,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'workshopCountAll',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
@@ -326,6 +370,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'workshopVisitorsHki',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
@@ -337,6 +385,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'workshopVisitorsAll',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -351,6 +403,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'plannedActivityInfoArray',
           'firstPublicPerformancesCount',
         ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
+        ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'int',
@@ -363,6 +419,10 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'activityInfo',
           'plannedActivityInfoArray',
           'premiereCountHki',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToInt',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',

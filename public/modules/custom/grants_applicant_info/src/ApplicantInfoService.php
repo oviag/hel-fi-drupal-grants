@@ -28,7 +28,7 @@ class ApplicantInfoService {
    * Construct the service object.
    *
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
-   *  Grants profile access.
+   *   Grants profile access.
    */
   public function __construct(GrantsProfileService $grantsProfileService) {
     $this->grantsProfileService = $grantsProfileService;
@@ -129,7 +129,7 @@ class ApplicantInfoService {
       $retval["compensation"]["applicantInfoArray"] = array_values($retval["compensation"]["applicantInfoArray"]);
     }
 
-    if (is_array($retval["compensation"]["currentAddressInfoArray"])) {
+    if (isset($retval["compensation"]["currentAddressInfoArray"]) && is_array($retval["compensation"]["currentAddressInfoArray"])) {
       $retval["compensation"]["currentAddressInfoArray"] = array_values($retval["compensation"]["currentAddressInfoArray"]);
     }
 
