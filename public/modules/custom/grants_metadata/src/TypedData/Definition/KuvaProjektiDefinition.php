@@ -180,8 +180,6 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'toiminta_yhteistyokumppanit',
         ]);
 
-
-
       $info['tapahtuma_tai_esityspaivien_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Tapahtuma- tai esityspäivien määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -195,9 +193,7 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
-      /**
-       * Esitykset
-       */
+      /** Esitykset */
       $info['esitykset_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -247,9 +243,7 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
-      /**
-       * Näyttelyt
-       */
+      /** Näyttelyt */
       $info['nayttelyt_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
@@ -299,9 +293,7 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
-      /**
-       * Työpajat
-       */
+      /** Työpajat */
       $info['tyopaja_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
         ->setSetting('jsonPath', [
