@@ -180,7 +180,7 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'toiminta_yhteistyokumppanit',
         ]);
 
-      $info['tapahtuma_tai_esityspaivien_maara_helsingissa'] = DataDefinition::create('string')
+      $info['tapahtuma_tai_esityspaivien_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Tapahtuma- tai esityspäivien määrä Helsingissä.')
         ->setSetting('jsonPath', [
           'compensation',
@@ -193,7 +193,157 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
-      $info['kantaesitysten_maara'] = DataDefinition::create('string')
+      /** Esitykset */
+      $info['esitykset_maara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'performanceCountHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['esitykset_maara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'performanceCountAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['esitykset_kavijamaara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'performanceVisitorsHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['esitykset_kavijamaara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'performanceVisitorsAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      /** Näyttelyt */
+      $info['nayttelyt_maara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'exhibitionCountHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['nayttelyt_maara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'exhibitionCountAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['nayttelyt_kavijamaara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'exhibitionVisitorsHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['nayttelyt_kavijamaara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'exhibitionVisitorsAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      /** Työpajat */
+      $info['tyopaja_maara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'workshopCountHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['tyopaja_maara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'workshopCountAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['tyopaja_kavijamaara_helsingissa'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'workshopVisitorsHki',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+      $info['tyopaja_kavijamaara_kaikkiaan'] = DataDefinition::create('integer')
+        ->setLabel('Määrä Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'workshopVisitorsAll',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'int',
+        ]);
+
+      $info['kantaesitysten_maara'] = DataDefinition::create('integer')
         ->setLabel('Kantaesitysten määrä.')
         ->setSetting('jsonPath', [
           'compensation',
@@ -206,7 +356,7 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
-      $info['ensi_iltojen_maara_helsingissa'] = DataDefinition::create('string')
+      $info['ensi_iltojen_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Ensi-iltojen määrä Helsingissä.')
         ->setSetting('jsonPath', [
           'compensation',
