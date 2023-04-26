@@ -9,6 +9,10 @@ Resource            ../resources/tunnistamo.resource
 
 *** Test Cases ***
 
+#
+# Company
+#
+
 Update Company Bank Account
     Open Browser To Home Page
     Accept Cookies Banner
@@ -19,6 +23,30 @@ Update Company Bank Account
     Remove New Bank Account
     [Teardown]    Close Browser
 
+Update Company Email
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Company Login Process With Tunnistamo
+    Open Edit Form
+    Change Company Email To Temporary
+    Open Edit Form
+    Revert Company Email
+    [Teardown]    Close Browser
+
+Update Company Website
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Company Login Process With Tunnistamo
+    Open Edit Form
+    Change Company Website To Temporary
+    Open Edit Form
+    Revert Company Website
+    [Teardown]    Close Browser
+
+#
+# Unregistered Community
+#
+
 Update Unregistered Company Bank Account
     Open Browser To Home Page
     Accept Cookies Banner
@@ -28,6 +56,10 @@ Update Unregistered Company Bank Account
     Open Edit Form
     Remove New Bank Account
     [Teardown]    Close Browser
+
+#
+# Private Person
+#
 
 Update Private Person Bank Account
     Open Browser To Home Page
@@ -157,3 +189,33 @@ Revert Email
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     # Email is not displayed on profile page
     # Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_EMAIL}
+
+Change Company Email To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-companyemailwrapper-companyemail"]
+    Set Test Variable     ${old_email_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-companyemailwrapper-companyemail"]      ${INPUT_TEMP_EMAIL}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Email is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_EMAIL}
+
+Revert Company Email
+    Type Text        input[data-drupal-selector="edit-companyemailwrapper-companyemail"]      ${old_email_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Email is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_EMAIL}
+
+Change Company Website To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-companyhomepagewrapper-companyhomepage"]
+    Set Test Variable     ${old_website_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-companyhomepagewrapper-companyhomepage"]      ${INPUT_TEMP_WEBSITE}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_WEBSITE}
+
+Revert Company Website
+    Type Text        input[data-drupal-selector="edit-companyhomepagewrapper-companyhomepage"]      ${old_website_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_WEBSITE}
