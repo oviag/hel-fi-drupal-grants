@@ -419,9 +419,9 @@ elements: |-
       vapaaehtoinen_henkilosto:
         '#type': textfield
         '#title': 'Vapaaehtoinen henkilöstö'
-  4_toiminta:
+  4_suunniteltu_toiminta:
     '#type': webform_wizard_page
-    '#title': '4. Toiminta'
+    '#title': '4. Suunniteltu toiminta'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
     arvio_maarista:
@@ -431,15 +431,84 @@ elements: |-
       tapahtuma_tai_esityspaivien_maara_helsingissa:
         '#type': textfield
         '#title': 'Tapahtuma- tai esityspäivien määrä Helsingissä.'
+        '#input_mask': '999'
+      esitykset_fieldset:
+        '#type': fieldset
+        '#title': Esitykset
+        esitykset_maara_helsingissa:
+          '#type': textfield
+          '#title': 'Määrä Helsingissä'
+          '#input_mask': '99'
+        esitykset_maara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Määrä kaikkiaan'
+          '#help': 'T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '99'
+        esitykset_kavijamaara_helsingissa:
+          '#type': textfield
+          '#title': 'Kävijämäärä Helsingissä'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin.'
+          '#input_mask': '99999'
+        esitykset_kavijamaara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Kävijämäärä kaikkiaan'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin. T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '99999'
+      nayttelyt_fieldset:
+        '#type': fieldset
+        '#title': Näyttelyt
+        nayttelyt_maara_helsingissa:
+          '#type': textfield
+          '#title': 'Määrä Helsingissä'
+          '#input_mask': '999'
+        nayttelyt_maara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Määrä kaikkiaan'
+          '#help': 'T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '9999'
+        nayttelyt_kavijamaara_helsingissa:
+          '#type': textfield
+          '#title': 'Kävijämäärä Helsingissä'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin.'
+          '#input_mask': '99999'
+        nayttelyt_kavijamaara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Kävijämäärä kaikkiaan'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin. T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '99999'
+      tyopaja_fieldset:
+        '#type': fieldset
+        '#title': 'Työpaja tai muu osallistava toimintamuoto'
+        tyopaja_maara_helsingissa:
+          '#type': textfield
+          '#title': 'Määrä Helsingissä'
+          '#input_mask': '999'
+        tyopaja_maara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Määrä kaikkiaan'
+          '#help': 'T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '9999'
+        tyopaja_kavijamaara_helsingissa:
+          '#type': textfield
+          '#title': 'Kävijämäärä Helsingissä'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin.'
+          '#input_mask': '99999'
+        tyopaja_kavijamaara_kaikkiaan:
+          '#type': textfield
+          '#title': 'Kävijämäärä kaikkiaan'
+          '#help': '&Auml;l&auml; t&auml;yt&auml; samoja k&auml;vij&ouml;it&auml; kahteen kertaan, esim. n&auml;yttelytilassa j&auml;rjestetty&auml; ty&ouml;pajaa sek&auml; n&auml;yttelyihin ett&auml; ty&ouml;pajoihin. T&auml;yt&auml; luvut sis&auml;lt&auml;en toiminnan kokonaisuudessaan sek&auml; Suomessa ett&auml; mahdollisesti ulkomailla.'
+          '#input_mask': '99999'
     esityksista:
       '#type': webform_section
       '#title': Esityksistä
       kantaesitysten_maara:
         '#type': textfield
         '#title': 'Kantaesitysten määrä'
+        '#input_mask': '9999'
       ensi_iltojen_maara_helsingissa:
         '#type': textfield
         '#title': 'Ensi-iltojen määrä Helsingissä'
+        '#input_mask': '9999'
     yleisolle_avoin_toiminta:
       '#type': webform_section
       '#title': 'Yleisölle avoin toiminta'
@@ -449,7 +518,7 @@ elements: |-
       postinumero:
         '#type': textfield
         '#title': Postinumero
-        '#input_mask': '99999[-9999]'
+        '#input_mask': '99999'
       kyseessa_on_kaupungin_omistama_tila:
         '#type': radios
         '#title': 'Kyseessä on kaupungin omistama tila'

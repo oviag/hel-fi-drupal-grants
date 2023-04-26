@@ -28,6 +28,7 @@ class ApplicantInfoService {
    * Construct the service object.
    *
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *  Grants profile access.
    */
   public function __construct(GrantsProfileService $grantsProfileService) {
     $this->grantsProfileService = $grantsProfileService;
@@ -37,10 +38,10 @@ class ApplicantInfoService {
    * Since this is full property provider, we need to return full json array.
    *
    * @param \Drupal\Core\TypedData\ComplexDataInterface $property
-   *  Property to process
+   *   Property to process.
    *
    * @return array
-   *  PArsed values.
+   *   PArsed values.
    */
   public function processApplicantInfo(ComplexDataInterface $property) {
 

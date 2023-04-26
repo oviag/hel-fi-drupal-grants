@@ -772,6 +772,11 @@ class AtvSchema {
         $itemValue = 'true';
       }
     }
+
+    if ($itemTypes['jsonType'] == 'int') {
+      $itemValue = str_replace('_', '', $itemValue);
+    }
+
     return $itemValue;
   }
 
