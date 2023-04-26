@@ -126,7 +126,8 @@ trait ApplicationDefinitionTrait {
         ->setSetting('formErrorElement', [
           'formElement' => 'community_address',
           'formError' => 'You must select address',
-        ]);
+        ])
+        ->setSetting('defaultValue', 'Suomi');
     }
 
     $info['application_type'] = DataDefinition::create('string')

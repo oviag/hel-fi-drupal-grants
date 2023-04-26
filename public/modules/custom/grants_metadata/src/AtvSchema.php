@@ -569,6 +569,14 @@ class AtvSchema {
       $documentStructure['attachmentsInfo'] = [];
     }
 
+    if (!array_key_exists('budgetInfo', $documentStructure['compensation'])) {
+      $documentStructure['compensation']['budgetInfo'] = [
+        'budgetInfoArray' => [],
+        'incomeGroupsArrayStatic' => [],
+        'costGroupsArrayStatic' => [],
+      ];
+    }
+
     return $documentStructure;
   }
 
@@ -776,6 +784,12 @@ class AtvSchema {
       }
       if ($itemValue === '1') {
         $itemValue = 'true';
+      }
+      if ($itemValue == 'Yes') {
+        $itemValue = 'true';
+      }
+      if ($itemValue == 'No') {
+        $itemValue = 'false';
       }
     }
 
