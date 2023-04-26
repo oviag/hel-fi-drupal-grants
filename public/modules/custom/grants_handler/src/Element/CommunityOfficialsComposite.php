@@ -83,6 +83,8 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
    * @return array
    *   Fixed element
    *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
    * @see grants_handler.module
    */
   public static function buildOfficialOptions(array $element, FormStateInterface $form_state): array {
@@ -98,9 +100,25 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
     $options = [
       '' => '-' . t('Select official') . '-',
     ];
-    foreach ($profileData['officials'] as $delta => $official) {
+
+    if ($selectedCompany["type"] == 'unregistered_community') {
+      $persons = $profileData['members'];
+    }
+    elseif ($selectedCompany["type"] == 'registered_community') {
+      $persons = $profileData['officials'];
+    }
+    else {
+      $persons = [];
+    }
+
+    foreach ($persons as $delta => $official) {
       $deltaString = (string) $delta;
-      $optionSelection = $official['name'] . ' (' . $officialRole[$official['role']] . ')';
+      if (isset($official['role'])) {
+        $optionSelection = $official['name'] . ' (' . $officialRole[$official['role']] . ')';
+      }
+      else {
+        $optionSelection = $official['name'];
+      }
       $options[$deltaString] = $optionSelection;
     }
 
