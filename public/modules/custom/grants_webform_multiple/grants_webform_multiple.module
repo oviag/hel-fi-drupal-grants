@@ -4,23 +4,8 @@
  * @file
  * Primary module hooks for Webform Summation Field module.
  */
-
-/**
- * Implements hook_theme().
- */
-function grants_webform_summation_field_theme() {
-  $info = [
-    'grants_webform_summation_field' => [
-      'render element' => 'element',
-    ],
-  ];
-
-  return $info;
-}
-
-/**
- * Implements hook_page_attachments().
- */
-function grants_webform_summation_field_page_attachments(array &$page) {
-
+function grants_webform_multiple_preprocess_form_element(&$variables) {
+  if (array_key_exists('#webform_multiple', $variables['element']) && $variables['element']['#webform_multiple']) {
+    $variables['#attached']['library'][] = 'grants_webform_multiple/grants_webform_multiple';
+  }
 }

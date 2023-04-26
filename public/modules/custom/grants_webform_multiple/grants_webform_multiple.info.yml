@@ -4,6 +4,6 @@ description: Takes the webform multiple value fields and moves buttons and thing
 package: helfi
 core_version_requirement: ^8 || ^9
 libraries:
-  - grants_webform_multiple/webform_multiple
+  - grants_webform_multiple/grants_webform_multiple
 dependencies:
   - drupal:webform
