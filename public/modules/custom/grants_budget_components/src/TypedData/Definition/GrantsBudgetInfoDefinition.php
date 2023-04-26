@@ -32,17 +32,17 @@ class GrantsBudgetInfoDefinition extends ComplexDataDefinitionBase {
         ]);
 
       $info['budget_other_income'] = ListDataDefinition::create('grants_budget_income_other')
-      ->setSetting('fullItemValueCallback', [
-        'service' => 'grants_budget_components.service',
-        'method' => 'processBudgetOtherValues',
-      ])
-      ->setSetting('webformDataExtracter', [
-        'service' => 'grants_budget_components.service',
-        'method' => 'extractToWebformData',
-      ])
-      ->setSetting('jsonPath', [
-        'otherIncomeRowsArrayStatic',
-      ]);
+        ->setSetting('fullItemValueCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetOtherValues',
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'extractToWebformData',
+        ])
+        ->setSetting('jsonPath', [
+          'otherIncomeRowsArrayStatic',
+        ]);
 
       $info['budget_static_cost'] = ListDataDefinition::create('grants_budget_cost_static')
         ->setSetting('fullItemValueCallback', [
