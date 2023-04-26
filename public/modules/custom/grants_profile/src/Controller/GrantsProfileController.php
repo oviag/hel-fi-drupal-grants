@@ -44,9 +44,9 @@ class GrantsProfileController extends ControllerBase {
    * @param \Drupal\Core\Form\FormBuilder $form_builder
    *   The form builder.
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
-   *   Profile servie.
+   *   Grants profile service.
    * @param \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $helsinkiProfiiliUserData
-   *   Hp data.
+   *   Data for Helsinki Profile.
    */
   public function __construct(
     FormBuilder $form_builder,
@@ -140,9 +140,7 @@ class GrantsProfileController extends ControllerBase {
     $build = [];
     $build['#theme'] = 'edit_own_profile';
 
-    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
-    $grantsProfileService = \Drupal::service('grants_profile.service');
-    $selectedRoleData = $grantsProfileService->getSelectedRoleData();
+    $selectedRoleData = $this->grantsProfileService->getSelectedRoleData();
 
     $formObject = NULL;
 

@@ -4,6 +4,7 @@ namespace Drupal\grants_profile\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
@@ -19,6 +20,8 @@ use Drupal\helfi_yjdh\Exception\YjdhException;
  * Provides a Grants Profile form.
  */
 class GrantsProfileFormRegisteredCommunity extends FormBase {
+
+  use StringTranslationTrait;
 
   /**
    * Drupal\Core\TypedData\TypedDataManager definition.
@@ -184,7 +187,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
       '#counter_maximum' => 500,
       '#counter_minimum' => 1,
       '#counter_maximum_message' => '%d/500 merkkiä jäljellä',
-      '#help' => t('Briefly describe the purpose for which the community is
+      '#help' => $this->t('Briefly describe the purpose for which the community is
       working and how the community is fulfilling its purpose. For example,
       you can use the text "Community purpose and forms of action" in the
       Community rules. Please do not describe the purpose of the grant here,
@@ -467,7 +470,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one address';
             }
             else {
-              $propertyPath = 'addressWrapper][' . (intval($propertyPathArray[1]) + 1) . '][address][' . $propertyPathArray[2];
+              $propertyPath = 'addressWrapper][' . $propertyPathArray[1] . '][address][' . $propertyPathArray[2];
             }
           }
           elseif ($propertyPathArray[0] == 'bankAccounts') {
@@ -476,12 +479,12 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
               $errorMesg = 'You must add one bank account';
             }
             else {
-              $propertyPath = 'bankAccountWrapper][' . (intval($propertyPathArray[1]) + 1) . '][bank][' . $propertyPathArray[2];
+              $propertyPath = 'bankAccountWrapper][' . $propertyPathArray[1] . '][bank][' . $propertyPathArray[2];
             }
 
           }
           elseif (count($propertyPathArray) > 1 && $propertyPathArray[0] == 'officials') {
-            $propertyPath = 'officialWrapper][' . (intval($propertyPathArray[1]) + 1) . '][official][' . $propertyPathArray[2];
+            $propertyPath = 'officialWrapper][' . $propertyPathArray[1] . '][official][' . $propertyPathArray[2];
           }
           else {
             $propertyPath = $violation->getPropertyPath();
@@ -673,6 +676,7 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
         '#title' => $this->t('Country'),
         '#default_value' => $address['country'],
       ];
+
       // We need the delta / id to create delete links in element.
       $form['addressWrapper'][$delta]['address']['address_id'] = [
         '#type' => 'hidden',
@@ -712,10 +716,6 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
           'city' => [
             '#type' => 'textfield',
             '#title' => $this->t('City/town', [], ['context' => 'Profile Address']),
-          ],
-          'country' => [
-            '#type' => 'textfield',
-            '#title' => $this->t('Country'),
           ],
           // We need the delta / id to create delete links in element.
           'address_id' => [
@@ -1184,7 +1184,7 @@ rtf, txt, xls, xlsx, zip.'),
 
       if (empty($values["bankAccountWrapper"])) {
         $elementName = 'bankAccountWrapper]';
-        $formState->setErrorByName($elementName, t('You must add one bank account'));
+        $formState->setErrorByName($elementName, $this->t('You must add one bank account'));
         return;
       }
 
@@ -1205,16 +1205,16 @@ rtf, txt, xls, xlsx, zip.'),
           }
           if (!$ibanValid) {
             $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-            $formState->setErrorByName($elementName, t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
+            $formState->setErrorByName($elementName, $this->t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
           }
         }
         else {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-          $formState->setErrorByName($elementName, t('You must enter valid Finnish iban'));
+          $formState->setErrorByName($elementName, $this->t('You must enter valid Finnish iban'));
         }
         if ((empty($accountData["confirmationFileName"]) && empty($accountData["confirmationFile"]['fids']))) {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][confirmationFile';
-          $formState->setErrorByName($elementName, t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
+          $formState->setErrorByName($elementName, $this->t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
         }
       }
     }

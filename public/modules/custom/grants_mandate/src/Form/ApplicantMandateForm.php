@@ -129,7 +129,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['unregistered_community']['info'] = [
       '#theme' => 'select_applicant_role',
       '#icon' => 'group',
-      '#role' => $this->t('Unegistered community'),
+      '#role' => $this->t('Unregistered community'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
 
@@ -141,7 +141,7 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['unregistered_community']['submit'] = [
       '#type' => 'submit',
       '#name' => 'unregistered_community',
-      '#value' => $this->t('Select Unegistered community role'),
+      '#value' => $this->t('Select Unregistered community role'),
     ];
     $form['actions']['private_person'] = [
       '#type' => 'container',
@@ -258,9 +258,10 @@ class ApplicantMandateForm extends FormBase {
 
       default:
         $mandateMode = 'ypa';
-        $redirectUrl = $this->grantsMandateService->getUserMandateRedirectUrl($mandateMode);
-        $redirect = new TrustedRedirectResponse($redirectUrl);
+        $redirectUrl = Url::fromUri($this->grantsMandateService->getUserMandateRedirectUrl($mandateMode));
+        $redirect = new TrustedRedirectResponse($redirectUrl->toString());
         $form_state->setResponse($redirect);
+
         break;
     }
   }

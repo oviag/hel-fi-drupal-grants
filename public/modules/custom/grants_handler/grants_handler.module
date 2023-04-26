@@ -396,6 +396,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
 
       /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
       $grantsProfileService = \Drupal::service('grants_profile.service');
+      $applicantType = $grantsProfileService->getApplicantType();
 
       $selectedCompany = $grantsProfileService->getSelectedRoleData();
       try {
@@ -404,7 +405,7 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
       catch (GuzzleException $e) {
       }
 
-      if (isset($element['#default_value'])) {
+      if ($selectedCompany["type"] != 'private_person' && isset($element['#default_value'])) {
         $formValues = $element['#default_value'];
         $formSelection = $formValues['community_street'] . ', ' .
           $formValues['community_post_code'] . ', ' .
@@ -518,7 +519,7 @@ function _grants_handler_imported_handler(
 /**
  * Missing data prints.
  *
- * @param array $element
+ * @param array|null $element
  *   The element in question.
  * @param string $str1
  *   Header of the alert notification.
@@ -530,10 +531,14 @@ function _grants_handler_imported_handler(
  * @todo Must be fixed with proper template & things.
  */
 function _grants_handler_missing_data(
-  array &$element,
+  ?array &$element,
   string $str1 = 'Field is missing.',
   string $str2 = 'Go to grants profile',
-  string $str3 = 'to fill out missing data.') {
+  string $str3 = 'to fill out missing data.'): void {
+
+  if (is_null($element)) {
+    return;
+  }
 
   unset($element['#value']);
   unset($element['#default_value']);
@@ -1089,10 +1094,11 @@ function grants_handler_preprocess_webform_submission_attachment_list(&$variable
       catch (Exception $e) {
         $fileUploadTime = '';
       }
-      $attachmentLine = $att['fileName'];
+      $attachmentLine = $att['description'];
       if (!empty($fileUploadTime)) {
-        $attachmentLine .= ' (' . $fileUploadTime . ')';
+        $attachmentLine .= ', ' . $fileUploadTime . ': ';
       }
+      $attachmentLine .= $att['fileName'];
       $attachments[] = $attachmentLine;
     }
   }
