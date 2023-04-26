@@ -69,18 +69,19 @@ class GrantsBudgetOtherIncome extends WebformCompositeBase {
    * {@inheritdoc}
    */
   public static function getCompositeElements(array $element) {
+    $tOpts = ['context' => 'grants_budget_components'];
     $elements = [];
 
     $elements['label'] = [
       '#type' => 'textfield',
-      '#title' => t('Income explanation'),
+      '#title' => t('Income explanation', [], $tOpts),
       '#element_validate' => [
         [LabelValueValidator::class, 'validate'],
       ],
     ];
     $elements['value'] = [
       '#type' => 'textfield',
-      '#title' => t('Amount (€)'),
+      '#title' => t('Amount (€)', [], $tOpts),
       '#min' => 0,
       '#step' => '.01',
       '#element_validate' => [

@@ -107,3 +107,7 @@ msgstr "Kuvaus menosta"
 msgctxt "grants_budget_components"
 msgid "Amount (€)"
 msgstr "Määrä (€)"
+
+msgctxt "grants_budget_components"
+msgid "Income explanation"
+msgstr "Kuvaus tulosta"
