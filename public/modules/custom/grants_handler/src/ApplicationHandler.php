@@ -987,11 +987,18 @@ class ApplicationHandler {
   /**
    * Handle application upload directly to ATV.
    *
-   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   * @throws \Drupal\Core\TempStore\TempStoreException
+   * @param \Drupal\Core\TypedData\TypedDataInterface $applicationData
+   *   Application data in typed data object.
+   * @param string $applicationNumber
+   *   Application number.
+   *
+   * @return \Drupal\helfi_atv\AtvDocument|bool|null
+   *   Result of the upload.
+   *
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
-   * @throws \Exception
+   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function handleApplicationUploadToAtv(
     TypedDataInterface $applicationData,

@@ -28,7 +28,7 @@ class ApplicantInfoService {
    * Construct the service object.
    *
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
-   *  Grants profile access.
+   *   Grants profile access.
    */
   public function __construct(GrantsProfileService $grantsProfileService) {
     $this->grantsProfileService = $grantsProfileService;

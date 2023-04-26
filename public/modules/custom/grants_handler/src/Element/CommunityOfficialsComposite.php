@@ -84,6 +84,7 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
    *   Fixed element
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
+   *
    * @see grants_handler.module
    */
   public static function buildOfficialOptions(array $element, FormStateInterface $form_state): array {
