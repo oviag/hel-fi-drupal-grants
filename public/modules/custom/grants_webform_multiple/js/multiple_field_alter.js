@@ -2,10 +2,8 @@
 (($, Drupal, drupalSettings) => {
   Drupal.behaviors.grants_webform_multiple = {
     attach: function attach() {
-      $('.webform-multiple-table').each(() => {
-        console.log('table')
-        $('tr').each((index, row) => {
-          console.log('tr')
+      $('.webform-multiple-table').each((index, table) => {
+        $(table).find('tr').each((index, row) => {
           var removebutton = $(row).find('input[data-drupal-selector*="remove"]');
           removebutton.attr('type', 'button');
           removebutton.attr('src', null);
