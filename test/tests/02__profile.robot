@@ -39,6 +39,36 @@ Update Private Person Bank Account
     Remove New Bank Account
     [Teardown]    Close Browser
 
+Update Private Person Address
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Private Person Login Process With Tunnistamo
+    Open Edit Form
+    Change Address To Temporary
+    Open Edit Form
+    Revert Address
+    [Teardown]    Close Browser
+
+Update Private Person Phone
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Private Person Login Process With Tunnistamo
+    Open Edit Form
+    Change Phone To Temporary
+    Open Edit Form
+    Revert Phone
+    [Teardown]    Close Browser
+
+Update Private Person Email
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Private Person Login Process With Tunnistamo
+    Open Edit Form
+    Change Email To Temporary
+    Open Edit Form
+    Revert Email
+    [Teardown]    Close Browser
+
 *** Keywords ***
 
 Open Edit Form
@@ -81,3 +111,49 @@ Remove New Bank Account
     Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}
+
+Change Address To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-addresswrapper-street"]
+    Set Test Variable     ${old_address_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-addresswrapper-street"]      ${INPUT_TEMP_ADDRESS}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_ADDRESS}
+
+Revert Address
+    Type Text        input[data-drupal-selector="edit-addresswrapper-street"]      ${old_address_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_ADDRESS}
+
+Change Phone To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-phonewrapper-phone-number"]
+    Set Test Variable     ${old_phone_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-phonewrapper-phone-number"]      ${INPUT_TEMP_PHONE}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Phone is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_PHONE}
+
+Revert Phone
+    Type Text        input[data-drupal-selector="edit-phonewrapper-phone-number"]      ${old_phone_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Phone is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_PHONE}
+
+Change Email To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-emailwrapper-email"]
+    Set Test Variable     ${old_email_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-emailwrapper-email"]      ${INPUT_TEMP_EMAIL}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Email is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    *=    ${INPUT_TEMP_EMAIL}
+
+Revert Email
+    Type Text        input[data-drupal-selector="edit-emailwrapper-email"]      ${old_email_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    # Email is not displayed on profile page
+    # Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_EMAIL}
