@@ -219,6 +219,15 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'jsonType' => 'int',
         ]);
 
+      $info['ensimmainen_yleisolle_avoimen_tilaisuuden_paikka_helsingissa'] = DataDefinition::create('string')
+        ->setLabel('Ensimmäisen yleisölle avoimen tilaisuuden paikka Helsingissä.')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activityInfo',
+          'plannedActivityInfoArray',
+          'firstPublicEventLocationHki',
+        ]);
+
       $info['postinumero'] = DataDefinition::create('string')
         ->setLabel('Postinumero.')
         ->setSetting('jsonPath', [

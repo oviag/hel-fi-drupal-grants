@@ -140,9 +140,7 @@ class GrantsProfileController extends ControllerBase {
     $build = [];
     $build['#theme'] = 'edit_own_profile';
 
-    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
-    $grantsProfileService = \Drupal::service('grants_profile.service');
-    $selectedRoleData = $grantsProfileService->getSelectedRoleData();
+    $selectedRoleData = $this->grantsProfileService->getSelectedRoleData();
 
     $formObject = NULL;
 

@@ -77,7 +77,10 @@ elements: |-
         '#help': 'Ilmoita s&auml;hk&ouml;postiosoite, johon t&auml;h&auml;n hakemukseen liittyvät viestit sek&auml; her&auml;tteet osoitetaan ja jota luetaan aktiivisesti'
         '#size': 63
         '#autocomplete': 'off'
-        '#required': true
+        '#states':
+          required:
+            ':input[name="applicant_type"]':
+              '!value': private_person
     contact_person_section:
       '#type': webform_section
       '#title': 'Hakemuksen yhteyshenkilö'
@@ -100,20 +103,21 @@ elements: |-
     osoite:
       '#type': webform_section
       '#title': Osoite
+      '#required': true
       '#states':
         visible:
-          - ':input[name="applicant_type"]':
-              value: registered_community
-          - or
-          - ':input[name="applicant_type"]':
-              value: unregistered_community
+          ':input[name="applicant_type"]':
+            '!value': private_person
       community_address:
         '#type': community_address_composite
         '#title': 'Yhteisön osoite'
+        '#states':
+          required:
+            ':input[name="applicant_type"]':
+              '!value': private_person
         '#attributes':
           class:
             - webform--large
-        '#required': true
     tilinumero:
       '#type': webform_section
       '#title': Tilinumero
@@ -439,6 +443,9 @@ elements: |-
     yleisolle_avoin_toiminta:
       '#type': webform_section
       '#title': 'Yleisölle avoin toiminta'
+      ensimmainen_yleisolle_avoimen_tilaisuuden_paikka_helsingissa:
+        '#type': textfield
+        '#title': 'Ensimmäinen yleisölle avoimen tilaisuuden paikka Helsingissä'
       postinumero:
         '#type': textfield
         '#title': Postinumero
@@ -451,6 +458,11 @@ elements: |-
         '#type': premises_composite
         '#title': Tila
         '#multiple': true
+        '#multiple__min_items': 0
+        '#multiple__empty_items': 0
+        '#multiple__sorting': false
+        '#multiple__operations': false
+        '#multiple__add_more_input': false
         '#premiseAddress__access': false
         '#location__access': false
         '#streetAddress__access': false
@@ -695,7 +707,7 @@ settings:
   form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
-  form_disable_remote_addr: true
+  form_disable_remote_addr: false
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -727,8 +739,57 @@ settings:
   submission_label: ''
   submission_exception_message: ''
   submission_locked_message: ''
-  submission_log: true
-  submission_excluded_elements: {  }
+  submission_log: false
+  submission_excluded_elements:
+    application_number: application_number
+    status: status
+    applicant_type: applicant_type
+    hakijan_tiedot: hakijan_tiedot
+    email: email
+    contact_person: contact_person
+    contact_person_phone_number: contact_person_phone_number
+    community_address: community_address
+    bank_account: bank_account
+    community_officials: community_officials
+    acting_year: acting_year
+    subventions: subventions
+    avustukset_summa: avustukset_summa
+    ensisijainen_taiteen_ala: ensisijainen_taiteen_ala
+    hankkeen_nimi: hankkeen_nimi
+    kyseessa_on_festivaali_tai_tapahtuma: kyseessa_on_festivaali_tai_tapahtuma
+    hankkeen_tai_toiminnan_lyhyt_esittelyteksti: hankkeen_tai_toiminnan_lyhyt_esittelyteksti
+    olemme_saaneet_muita_avustuksia: olemme_saaneet_muita_avustuksia
+    myonnetty_avustus: myonnetty_avustus
+    members_applicant_person_global: members_applicant_person_global
+    members_applicant_person_local: members_applicant_person_local
+    members_applicant_community_global: members_applicant_community_global
+    members_applicant_community_local: members_applicant_community_local
+    kokoaikainen_henkilosto: kokoaikainen_henkilosto
+    osa_aikainen_henkilosto: osa_aikainen_henkilosto
+    vapaaehtoinen_henkilosto: vapaaehtoinen_henkilosto
+    tapahtuma_tai_esityspaivien_maara_helsingissa: tapahtuma_tai_esityspaivien_maara_helsingissa
+    kantaesitysten_maara: kantaesitysten_maara
+    ensi_iltojen_maara_helsingissa: ensi_iltojen_maara_helsingissa
+    postinumero: postinumero
+    kyseessa_on_kaupungin_omistama_tila: kyseessa_on_kaupungin_omistama_tila
+    tila: tila
+    ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara: ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara
+    festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat: festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat
+    hanke_alkaa: hanke_alkaa
+    hanke_loppuu: hanke_loppuu
+    laajempi_hankekuvaus: laajempi_hankekuvaus
+    toiminta_taiteelliset_lahtokohdat: toiminta_taiteelliset_lahtokohdat
+    toiminta_tasa_arvo: toiminta_tasa_arvo
+    toiminta_saavutettavuus: toiminta_saavutettavuus
+    toiminta_yhteisollisyys: toiminta_yhteisollisyys
+    toiminta_kohderyhmat: toiminta_kohderyhmat
+    toiminta_ammattimaisuus: toiminta_ammattimaisuus
+    toiminta_ekologisuus: toiminta_ekologisuus
+    toiminta_yhteistyokumppanit: toiminta_yhteistyokumppanit
+    organisaatio_kuuluu_valtionosuusjarjestelmaan: organisaatio_kuuluu_valtionosuusjarjestelmaan
+    additional_information: additional_information
+    extra_info: extra_info
+    muu_liite: muu_liite
   submission_exclude_empty: false
   submission_exclude_empty_checkbox: false
   submission_views: {  }
@@ -743,7 +804,102 @@ settings:
   previous_submissions_message: ''
   autofill: false
   autofill_message: ''
-  autofill_excluded_elements: {  }
+  autofill_excluded_elements:
+    application_number: application_number
+    status: status
+    applicant_type: applicant_type
+    hakijan_tiedot: hakijan_tiedot
+    email: email
+    contact_person: contact_person
+    contact_person_phone_number: contact_person_phone_number
+    community_address: community_address
+    community_address__community_address_select: community_address__community_address_select
+    community_address__community_street: community_address__community_street
+    community_address__community_post_code: community_address__community_post_code
+    community_address__community_city: community_address__community_city
+    community_address__community_country: community_address__community_country
+    bank_account: bank_account
+    bank_account__account_number_select: bank_account__account_number_select
+    bank_account__account_number: bank_account__account_number
+    community_officials: community_officials
+    community_officials__community_officials_select: community_officials__community_officials_select
+    community_officials__name: community_officials__name
+    community_officials__role: community_officials__role
+    community_officials__email: community_officials__email
+    community_officials__phone: community_officials__phone
+    acting_year: acting_year
+    subventions: subventions
+    subventions__subventionTypeTitle: subventions__subventionTypeTitle
+    subventions__subventionType: subventions__subventionType
+    subventions__amount: subventions__amount
+    avustukset_summa: avustukset_summa
+    ensisijainen_taiteen_ala: ensisijainen_taiteen_ala
+    hankkeen_nimi: hankkeen_nimi
+    kyseessa_on_festivaali_tai_tapahtuma: kyseessa_on_festivaali_tai_tapahtuma
+    hankkeen_tai_toiminnan_lyhyt_esittelyteksti: hankkeen_tai_toiminnan_lyhyt_esittelyteksti
+    olemme_saaneet_muita_avustuksia: olemme_saaneet_muita_avustuksia
+    myonnetty_avustus: myonnetty_avustus
+    myonnetty_avustus__issuer: myonnetty_avustus__issuer
+    myonnetty_avustus__issuer_name: myonnetty_avustus__issuer_name
+    myonnetty_avustus__year: myonnetty_avustus__year
+    myonnetty_avustus__amount: myonnetty_avustus__amount
+    myonnetty_avustus__purpose: myonnetty_avustus__purpose
+    members_applicant_person_global: members_applicant_person_global
+    members_applicant_person_local: members_applicant_person_local
+    members_applicant_community_global: members_applicant_community_global
+    members_applicant_community_local: members_applicant_community_local
+    kokoaikainen_henkilosto: kokoaikainen_henkilosto
+    osa_aikainen_henkilosto: osa_aikainen_henkilosto
+    vapaaehtoinen_henkilosto: vapaaehtoinen_henkilosto
+    tapahtuma_tai_esityspaivien_maara_helsingissa: tapahtuma_tai_esityspaivien_maara_helsingissa
+    kantaesitysten_maara: kantaesitysten_maara
+    ensi_iltojen_maara_helsingissa: ensi_iltojen_maara_helsingissa
+    postinumero: postinumero
+    kyseessa_on_kaupungin_omistama_tila: kyseessa_on_kaupungin_omistama_tila
+    tila: tila
+    tila__premiseName: tila__premiseName
+    tila__premiseAddress: tila__premiseAddress
+    tila__location: tila__location
+    tila__streetAddress: tila__streetAddress
+    tila__address: tila__address
+    tila__postCode: tila__postCode
+    tila__studentCount: tila__studentCount
+    tila__specialStudents: tila__specialStudents
+    tila__groupCount: tila__groupCount
+    tila__specialGroups: tila__specialGroups
+    tila__personnelCount: tila__personnelCount
+    tila__totalRent: tila__totalRent
+    tila__rentTimeBegin: tila__rentTimeBegin
+    tila__rentTimeEnd: tila__rentTimeEnd
+    tila__free: tila__free
+    tila__isOthersUse: tila__isOthersUse
+    tila__isOwnedByApplicant: tila__isOwnedByApplicant
+    tila__isOwnedByCity: tila__isOwnedByCity
+    ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara: ensimmaisen_yleisolle_avoimen_tilaisuuden_paivamaara
+    festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat: festivaalin_tai_tapahtuman_kohdalla_tapahtuman_paivamaarat
+    hanke_alkaa: hanke_alkaa
+    hanke_loppuu: hanke_loppuu
+    laajempi_hankekuvaus: laajempi_hankekuvaus
+    toiminta_taiteelliset_lahtokohdat: toiminta_taiteelliset_lahtokohdat
+    toiminta_tasa_arvo: toiminta_tasa_arvo
+    toiminta_saavutettavuus: toiminta_saavutettavuus
+    toiminta_yhteisollisyys: toiminta_yhteisollisyys
+    toiminta_kohderyhmat: toiminta_kohderyhmat
+    toiminta_ammattimaisuus: toiminta_ammattimaisuus
+    toiminta_ekologisuus: toiminta_ekologisuus
+    toiminta_yhteistyokumppanit: toiminta_yhteistyokumppanit
+    organisaatio_kuuluu_valtionosuusjarjestelmaan: organisaatio_kuuluu_valtionosuusjarjestelmaan
+    additional_information: additional_information
+    extra_info: extra_info
+    muu_liite: muu_liite
+    muu_liite__attachment: muu_liite__attachment
+    muu_liite__attachmentName: muu_liite__attachmentName
+    muu_liite__description: muu_liite__description
+    muu_liite__isDeliveredLater: muu_liite__isDeliveredLater
+    muu_liite__isIncludedInOtherFile: muu_liite__isIncludedInOtherFile
+    muu_liite__fileStatus: muu_liite__fileStatus
+    muu_liite__fileType: muu_liite__fileType
+    muu_liite__integrationID: muu_liite__integrationID
   wizard_progress_bar: true
   wizard_progress_pages: false
   wizard_progress_percentage: false

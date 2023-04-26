@@ -996,7 +996,7 @@ class ApplicationHandler {
   public function handleApplicationUploadToAtv(
     TypedDataInterface $applicationData,
     string $applicationNumber
-  ) {
+  ): AtvDocument|bool|null {
 
     $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData);
 
