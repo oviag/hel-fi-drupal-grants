@@ -111,3 +111,11 @@ msgstr "Määrä (€)"
 msgctxt "grants_budget_components"
 msgid "Income explanation"
 msgstr "Kuvaus tulosta"
+
+msgctxt "grants_budget_components"
+msgid "Explanation"
+msgstr "Kuvaus"
+
+msgctxt "grants_budget_components"
+msgid "%name can't be empty, when %pair has a value"
+msgstr "%name ei voi olla tyhjä, kun %pair sisältää arvon"

@@ -19,6 +19,7 @@ class LabelValueValidator {
     $parents = $element['#parents'];
     $field = array_pop($parents);
     $parent = $form_state->getValue($parents);
+    $tOpts = ['context' => 'grants_budget_components'];
 
     switch ($field) {
       case 'value':
@@ -34,9 +35,20 @@ class LabelValueValidator {
     }
 
     $pair_value = $parent[$pair] ?? NULL;
+    $strings = [
+      'label' => t('Explanation', [], $tOpts),
+      'value' => t('Amount (€)', [], $tOpts),
+    ];
 
     if (empty(trim($value)) && ($pair_value || trim($pair_value) !== '')) {
-      $form_state->setError($element, t("%name can't be empty, when %pair has a value", ['%pair' => $pair]));
+      $form_state->setError(
+        $element,
+        t(
+          "%name can't be empty, when %pair has a value",
+          ['%pair' => $strings[$pair], '%name' => $element['#title']],
+          $tOpts
+        )
+      );
     }
 
   }
