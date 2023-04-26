@@ -23,4 +23,5 @@ ${INPUT_TEMP_BANK_ACCOUNT_NUMBER}     FI20 7527 9645 7216 23
 ${INPUT_TEMP_ADDRESS}                 Robottikatu 123
 ${INPUT_TEMP_PHONE}                   +358409999999
 ${INPUT_TEMP_EMAIL}                   robotti@hel.fi
-${INPUT_TEMP_WEBSITE}                   https://robotti.fi
+${INPUT_TEMP_WEBSITE}                 https://robotti.fi
+${INPUT_TEMP_COMPANY_NAME}            Robottitestaus Ky

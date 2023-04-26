@@ -57,6 +57,16 @@ Update Unregistered Company Bank Account
     Remove New Bank Account
     [Teardown]    Close Browser
 
+Update Unregistered Community Name
+    Open Browser To Home Page
+    Accept Cookies Banner
+    Do Unregistered Community Login Process With Tunnistamo
+    Open Edit Form
+    Change Company Name To Temporary
+    Open Edit Form
+    Revert Company Name
+    [Teardown]    Close Browser
+
 #
 # Private Person
 #
@@ -219,3 +229,17 @@ Revert Company Website
     Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    .grants-profile--extrainfo    not contains    ${INPUT_TEMP_WEBSITE}
+
+Change Company Name To Temporary
+    ${input} =     Get Text      input[data-drupal-selector="edit-companynamewrapper-companyname"]
+    Set Test Variable     ${old_company_name_input}    ${input}
+    Type Text        input[data-drupal-selector="edit-companynamewrapper-companyname"]      ${INPUT_TEMP_COMPANY_NAME}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile-company-name    *=    ${INPUT_TEMP_COMPANY_NAME}
+
+Revert Company Name
+    Type Text        input[data-drupal-selector="edit-companynamewrapper-companyname"]      ${old_company_name_input}
+    Click           \#edit-actions-submit
+    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Text    .grants-profile-company-name    not contains    ${INPUT_TEMP_COMPANY_NAME}
