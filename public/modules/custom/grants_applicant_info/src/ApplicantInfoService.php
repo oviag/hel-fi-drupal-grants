@@ -6,6 +6,7 @@ use Drupal\grants_applicant_info\TypedData\Definition\ApplicantInfoDefinition;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\grants_metadata\AtvSchema;
+use Drupal\grants_profile\GrantsProfileService;
 
 /**
  * HAndle applicant info service.
@@ -17,7 +18,29 @@ class ApplicantInfoService {
   const UNREGISTERED_COMMUNITY = '1';
 
   /**
+   * Access to grants profile data.
+   *
+   * @var \Drupal\grants_profile\GrantsProfileService
+   */
+  protected GrantsProfileService $grantsProfileService;
+
+  /**
+   * Construct the service object.
+   *
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   */
+  public function __construct(GrantsProfileService $grantsProfileService) {
+    $this->grantsProfileService = $grantsProfileService;
+  }
+
+  /**
    * Since this is full property provider, we need to return full json array.
+   *
+   * @param \Drupal\Core\TypedData\ComplexDataInterface $property
+   *  Property to process
+   *
+   * @return array
+   *  PArsed values.
    */
   public function processApplicantInfo(ComplexDataInterface $property) {
 
@@ -39,7 +62,14 @@ class ApplicantInfoService {
       $itemValue = AtvSchema::getItemValue($itemTypes, $p->getValue(), $defaultValue, $valueCallback);
 
       if ($elementName == 'applicantType') {
-        $applicantType = $itemValue;
+        // If value is empty, make sure we get proper applicant type.
+        if (empty($itemValue)) {
+          $applicantType = $this->grantsProfileService->getApplicantType();
+        }
+        else {
+          $applicantType = $itemValue;
+        }
+
         if ($applicantType == 'private_person') {
           $itemValue = self::PRIVATE_PERSON;
         }
