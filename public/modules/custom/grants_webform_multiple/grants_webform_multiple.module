@@ -4,6 +4,10 @@
  * @file
  * Primary module hooks for Webform Summation Field module.
  */
+
+/**
+ *
+ */
 function grants_webform_multiple_preprocess_form_element(&$variables) {
   if (array_key_exists('#webform_multiple', $variables['element']) && $variables['element']['#webform_multiple']) {
     $variables['#attached']['library'][] = 'grants_webform_multiple/grants_webform_multiple';
