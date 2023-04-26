@@ -257,3 +257,7 @@ msgstr "Lägg till föreningsinformation"
 
 msgid "Personal bank account"
 msgstr "Personligt bankkonto"
+
+msgctxt "Profile Address"
+msgid "Country"
+msgstr "Land"

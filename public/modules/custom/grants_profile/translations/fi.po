@@ -429,6 +429,10 @@ msgctxt "Profile Address"
 msgid "City/town"
 msgstr "Toimipaikka"
 
+msgctxt "Profile Address"
+msgid "Country"
+msgstr "Maa"
+
 msgid "Community address"
 msgstr "Yhteisön osoite"
 
