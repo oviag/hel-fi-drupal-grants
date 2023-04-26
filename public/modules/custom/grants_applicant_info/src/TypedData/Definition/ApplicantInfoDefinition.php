@@ -165,7 +165,6 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'communityOfficialNameShort',
         ]);
 
-
     }
     return $this->propertyDefinitions;
   }
