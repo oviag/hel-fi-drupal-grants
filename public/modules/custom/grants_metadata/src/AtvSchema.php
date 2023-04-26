@@ -275,7 +275,7 @@ class AtvSchema {
    * @return string[]
    *   Array with dataType & jsonType.
    */
-  public static function getJsonTypeForDataType(DataDefinitionInterface $definition): array {
+  public static function  getJsonTypeForDataType(DataDefinitionInterface $definition): array {
     $propertyType = $definition->getDataType();
     // Default both types same.
     $retval = [
@@ -772,6 +772,11 @@ class AtvSchema {
         $itemValue = 'true';
       }
     }
+
+    if ($itemTypes['jsonType'] == 'int') {
+      $itemValue = str_replace('_', '', $itemValue);
+    }
+
     return $itemValue;
   }
 

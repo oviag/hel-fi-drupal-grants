@@ -124,6 +124,21 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           ->setSetting('defaultValue', "");
       }
 
+      if ($applicantType == 'private_person') {
+        $info['email'] = DataDefinition::create('email')
+          ->setLabel('Sähköpostiosoite')
+          ->setSetting('jsonPath', [
+            'compensation',
+            'applicantInfoArray',
+            'email',
+          ])
+          ->setSetting('typeOverride', [
+            'dataType' => 'email',
+            'jsonType' => 'string',
+          ])
+          ->addConstraint('Email');
+      }
+
       $info['applicantType'] = DataDefinition::create('string')
         ->setLabel('Hakijan tyyppi')
         ->setSetting('jsonPath', [
@@ -150,18 +165,6 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'communityOfficialNameShort',
         ]);
 
-      $info['email'] = DataDefinition::create('email')
-        ->setLabel('Sähköpostiosoite')
-        ->setSetting('jsonPath', [
-          'compensation',
-          'applicantInfoArray',
-          'email',
-        ])
-        ->setSetting('typeOverride', [
-          'dataType' => 'email',
-          'jsonType' => 'string',
-        ])
-        ->addConstraint('Email');
 
     }
     return $this->propertyDefinitions;
