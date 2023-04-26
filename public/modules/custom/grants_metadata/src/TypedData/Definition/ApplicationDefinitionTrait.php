@@ -43,6 +43,19 @@ trait ApplicationDefinitionTrait {
     // Both communities.
     if ($applicantType === 'registered_community' || $applicantType === 'unregistered_community') {
 
+      $info['email'] = DataDefinition::create('email')
+        ->setLabel('Sähköpostiosoite')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'applicantInfoArray',
+          'email',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'email',
+          'jsonType' => 'string',
+        ])
+        ->addConstraint('Email');
+
       $info['community_officials'] = ListDataDefinition::create('grants_profile_application_official')
         // ->setRequired(TRUE)
         ->setSetting('jsonPath', ['compensation', 'applicantOfficialsArray'])
@@ -113,7 +126,8 @@ trait ApplicationDefinitionTrait {
         ->setSetting('formErrorElement', [
           'formElement' => 'community_address',
           'formError' => 'You must select address',
-        ]);
+        ])
+        ->setSetting('defaultValue', 'Suomi');
     }
 
     $info['application_type'] = DataDefinition::create('string')

@@ -87,13 +87,13 @@ class GrantsProfileFormRegisteredCommunity extends FormBase {
    */
   public static function getOfficialRoles(): array {
     return [
-      1 => $this->t('Chairperson'),
-      2 => $this->t('Contact person'),
-      3 => $this->t('Other'),
-      4 => $this->t('Treasurer'),
-      5 => $this->t('Auditor'),
-      7 => $this->t('Secretary'),
-      8 => $this->t('Deputy chairperson'),
+      1 => t('Chairperson'),
+      2 => t('Contact person'),
+      3 => t('Other'),
+      4 => t('Treasurer'),
+      5 => t('Auditor'),
+      7 => t('Secretary'),
+      8 => t('Deputy chairperson'),
     ];
   }
 

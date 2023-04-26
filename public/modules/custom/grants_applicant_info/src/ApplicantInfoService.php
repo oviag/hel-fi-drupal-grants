@@ -128,7 +128,7 @@ class ApplicantInfoService {
       $retval["compensation"]["applicantInfoArray"] = array_values($retval["compensation"]["applicantInfoArray"]);
     }
 
-    if (is_array($retval["compensation"]["currentAddressInfoArray"])) {
+    if (isset($retval["compensation"]["currentAddressInfoArray"]) && is_array($retval["compensation"]["currentAddressInfoArray"])) {
       $retval["compensation"]["currentAddressInfoArray"] = array_values($retval["compensation"]["currentAddressInfoArray"]);
     }
 
