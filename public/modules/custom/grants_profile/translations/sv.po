@@ -185,6 +185,9 @@ msgstr "Verksamhetsställe"
 msgid "Community address"
 msgstr "Gemenskapsadress"
 
+msgid "Community email"
+msgstr "Gemenskapens e-post"
+
 msgid "Add address"
 msgstr "Lägg till adress"
 
