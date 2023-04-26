@@ -40,8 +40,6 @@ trait ApplicationDefinitionTrait {
         'postCode',
       ]);
 
-
-
     // Both communities.
     if ($applicantType === 'registered_community' || $applicantType === 'unregistered_community') {
 
@@ -80,7 +78,7 @@ trait ApplicationDefinitionTrait {
         ]);
 
       $info['community_city'] = DataDefinition::create('string')
-        //      ->setRequired(TRUE)
+        // ->setRequired(TRUE)
         ->setLabel('Community city')
         ->setSetting('jsonPath', [
           'compensation',
@@ -410,7 +408,7 @@ trait ApplicationDefinitionTrait {
     // Sender details.
     // @todo Maybe move sender info to custom definition?
     $info['sender_firstname'] = DataDefinition::create('string')
-       ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('firstname')
       ->setSetting('jsonPath', [
         'compensation',
@@ -418,7 +416,7 @@ trait ApplicationDefinitionTrait {
         'firstname',
       ]);
     $info['sender_lastname'] = DataDefinition::create('string')
-       ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('lastname')
       ->setSetting('jsonPath', [
         'compensation',
@@ -427,7 +425,7 @@ trait ApplicationDefinitionTrait {
       ]);
     // @todo Validate person id?
     $info['sender_person_id'] = DataDefinition::create('string')
-       ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('personID')
       ->setSetting('jsonPath', [
         'compensation',
@@ -435,11 +433,11 @@ trait ApplicationDefinitionTrait {
         'personID',
       ]);
     $info['sender_user_id'] = DataDefinition::create('string')
-       ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('userID')
       ->setSetting('jsonPath', ['compensation', 'senderInfoArray', 'userID']);
     $info['sender_email'] = DataDefinition::create('string')
-       ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('Email')
       ->setSetting('jsonPath', ['compensation', 'senderInfoArray', 'email']);
 

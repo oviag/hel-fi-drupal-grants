@@ -44,7 +44,7 @@ class GrantsPremisesService {
         $defaultValue = $itemDef->getSetting('defaultValue');
         $valueCallback = $itemDef->getSetting('valueCallback');
 
-        $itemValue = AtvSchema::getItemValue($valueTypes,$item->getValue(), $defaultValue, $valueCallback);
+        $itemValue = AtvSchema::getItemValue($valueTypes, $item->getValue(), $defaultValue, $valueCallback);
 
         // Process boolean values separately.
         if ($itemName == 'isOwnedByCity' || $itemName == 'isOwnedByApplicant') {

@@ -33,9 +33,14 @@ class ApplicantInfoService {
     $this->grantsProfileService = $grantsProfileService;
   }
 
-
   /**
    * Since this is full property provider, we need to return full json array.
+   *
+   * @param \Drupal\Core\TypedData\ComplexDataInterface $property
+   *  Property to process
+   *
+   * @return array
+   *  PArsed values.
    */
   public function processApplicantInfo(ComplexDataInterface $property) {
 
@@ -57,7 +62,7 @@ class ApplicantInfoService {
       $itemValue = AtvSchema::getItemValue($itemTypes, $p->getValue(), $defaultValue, $valueCallback);
 
       if ($elementName == 'applicantType') {
-        // If value is empty, make sure we get proper applicant type
+        // If value is empty, make sure we get proper applicant type.
         if (empty($itemValue)) {
           $applicantType = $this->grantsProfileService->getApplicantType();
         }

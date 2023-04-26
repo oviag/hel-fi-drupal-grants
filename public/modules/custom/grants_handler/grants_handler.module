@@ -398,7 +398,6 @@ function grants_handler_webform_element_alter(array &$element, FormStateInterfac
       $grantsProfileService = \Drupal::service('grants_profile.service');
       $applicantType = $grantsProfileService->getApplicantType();
 
-
       $selectedCompany = $grantsProfileService->getSelectedRoleData();
       try {
         $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
@@ -520,7 +519,7 @@ function _grants_handler_imported_handler(
 /**
  * Missing data prints.
  *
- * @param array $element
+ * @param array|null $element
  *   The element in question.
  * @param string $str1
  *   Header of the alert notification.

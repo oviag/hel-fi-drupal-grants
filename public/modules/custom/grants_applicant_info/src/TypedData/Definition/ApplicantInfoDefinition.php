@@ -20,7 +20,6 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
       $grantsProfileService = \Drupal::service('grants_profile.service');
       $applicantType = $grantsProfileService->getApplicantType();
 
-
       $info = &$this->propertyDefinitions;
 
       $info['applicantType'] = DataDefinition::create('string')
@@ -109,7 +108,11 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           ]);
         $info['home'] = DataDefinition::create('string')
           ->setLabel('Kotipaikka')
-          ->setSetting('jsonPath', ['compensation', 'applicantInfoArray', 'home']);
+          ->setSetting('jsonPath', [
+            'compensation',
+            'applicantInfoArray',
+            'home',
+          ]);
 
         $info['homePage'] = DataDefinition::create('string')
           ->setLabel('www-sivut')
@@ -146,8 +149,6 @@ class ApplicantInfoDefinition extends ComplexDataDefinitionBase {
           'applicantInfoArray',
           'communityOfficialNameShort',
         ]);
-
-
 
       $info['email'] = DataDefinition::create('email')
         ->setLabel('Sähköpostiosoite')

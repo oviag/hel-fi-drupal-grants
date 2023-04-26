@@ -79,6 +79,7 @@ class CommunityAddressComposite extends WebformCompositeBase {
    *   Updated element
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
+   *
    * @see grants_handler.module
    */
   public static function buildAddressOptions(array $element, FormStateInterface $form_state): array {
