@@ -1299,7 +1299,6 @@ class ApplicationHandler {
      */
     foreach ($applicationDocuments as $document) {
       // Make sure the type is acceptable one.
-
       $docArray = $document->toArray();
       $id = AtvSchema::extractDataForWebForm(
         $docArray['content'], ['applicationNumber']
