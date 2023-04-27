@@ -719,7 +719,8 @@ class ApplicationHandler {
       $to = new \DateTime($thirdPartySettings["applicationClose"]);
     }
     catch (\Exception $e) {
-      \Drupal::logger('application_handler')->error('isApplicationOpen date error: @error', ['@error' => $e->getMessage()]);
+      \Drupal::logger('application_handler')
+        ->error('isApplicationOpen date error: @error', ['@error' => $e->getMessage()]);
       return $applicationContinuous;
     }
 
@@ -965,6 +966,8 @@ class ApplicationHandler {
       // Hmm, maybe no save id at this point?
       'saveid' => $copy ? 'copiedSave' : 'initialSave',
       'applicationnumber' => $applicationNumber,
+      'applicant_type' => $selectedCompany['type'],
+      'applicant_id' => $selectedCompany['identifier'],
     ]);
 
     $typeData = $this->webformToTypedData($submissionData);
@@ -1289,15 +1292,46 @@ class ApplicationHandler {
     /** @var \Drupal\helfi_atv\AtvService $atvService */
     $atvService = \Drupal::service('helfi_atv.atv_service');
 
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $grantsProfileService = \Drupal::service('grants_profile.service');
+
+    /** @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $helsinkiProfiiliService */
+    $helsinkiProfiiliService = \Drupal::service('helfi_helsinki_profiili.userdata');
+    $userData = $helsinkiProfiiliService->getUserData();
+
     $applications = [];
     $finished = [];
     $unfinished = [];
 
-    $applicationDocuments = $atvService->searchDocuments([
-      'service' => 'AvustushakemusIntegraatio',
-      'business_id' => $selectedCompany['identifier'],
-      'lookfor' => 'appenv:' . $appEnv,
-    ]);
+    $selectedRoleData = $grantsProfileService->getSelectedRoleData();
+
+    if ($selectedRoleData['type'] == 'private_person') {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'user_id' => $userData['sub'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'],
+      ];
+    }
+    elseif ($selectedRoleData['type'] == 'unregistered_community') {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'user_id' => $userData['sub'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'] .
+        ',applicant_id:' . $selectedRoleData['identifier'],
+      ];
+    }
+    else {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'business_id' => $selectedCompany['identifier'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'],
+      ];
+    }
+
+    $applicationDocuments = $atvService->searchDocuments($searchParams);
 
     /**
      * Create rows for table.
