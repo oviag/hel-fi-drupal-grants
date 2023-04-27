@@ -569,14 +569,6 @@ class AtvSchema {
       $documentStructure['attachmentsInfo'] = [];
     }
 
-    if (!array_key_exists('budgetInfo', $documentStructure['compensation'])) {
-      $documentStructure['compensation']['budgetInfo'] = [
-        'budgetInfoArray' => [],
-        'incomeGroupsArrayStatic' => [],
-        'costGroupsArrayStatic' => [],
-      ];
-    }
-
     return $documentStructure;
   }
 
