@@ -1,39 +1,37 @@
 <div class="container">
-  <h2>{{ "Personal information"|t }}</h2>
-  <p class="grants-profile--infotext">{{ "To apply for grants, the community data must be completed. When you submit a grant application, the information you have provided will be filled in automatically."|t }}</p>
+  <h2>{{ "Personal information"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</h2>
+  <p class="grants-profile--infotext">{{ "By completing your own information, you will facilitate your dealings with grants. Based on the information, we can find grants that are more suitable for you or your community. In addition, filling out applications will be faster in the future."|t }}</p>
   <div class="grants-profile">
     <div class="grants-profile--basicinfo">
       <div class="container">
-        <h3>{{ "Basic details"|t }}</h3>
+        <h3>{{ "Basic details"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</h3>
         <div class="grants-profile-prh-info">
-          <p>{{ "The indicated information has been retrieved from the register of the Finnish Patent and Registration Office (PRH), and changing the information is only possible in the online service in question."|t }}</p>
+          <p>{{ "The information has been retrieved from your Helsinki profile. You need to go to your Helsinki profile to edit this information. When you have edited your information in the Helsinki profile, remember to update this field."|t }}</p>
         </div>
         <hr />
         <dl class="grants-profile--wrapper">
           <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Name of association"|t }}</strong></dt>
-            <dd class="grants-profile--item grants-profile-company-name">{{ profile.companyName }}</dd>
+            <dt><strong>{{ "First name"|t }}</strong></dt>
+            <dd class="grants-profile--item grants-profile-company-name">{{ profile.myProfile.verifiedPersonalInformation.firstName }}</dd>
           </div>
           <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Business ID"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.businessId }}</dd>
+            <dt><strong>{{ "Last name"|t }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.myProfile.verifiedPersonalInformation.lastName }}</dd>
           </div>
           <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Municipality where the association is based (domicile)"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.companyHome }}</dd>
+            <dt><strong>{{ "Social security number"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.myProfile.verifiedPersonalInformation.nationalIdentificationNumber }}</dd>
           </div>
           <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Date of registration"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.registrationDate|date('d.m.Y') }}</dd>
+            <dt><strong>{{ "Email"|t }}</strong></dt>
+            <dd class="grants-profile-item">{{ profile.myProfile.primaryEmail.email }}</dd>
           </div>
         </dl>
       </div>
     </div>
-    <h3 class="info-grants">{{ "Association information in Grants"|t }}</h3>
+    <h3 class="info-grants">{{ "Own contact information"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</h3>
     <div class="grants-profile--extrainfo">
-      <div class="container">
-        {{ form }}
-      </div>
+      {{ form }}
     </div>
   </div>
 </div>

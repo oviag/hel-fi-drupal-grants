@@ -4,7 +4,7 @@
   <div class="grants-profile">
     <div class="grants-profile--basicinfo">
       <div class="container">
-        <h3>{{ "Basic details"|t }}</h3>
+        <h3>{{ "Basic details"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</h3>
         <div class="grants-profile-prh-info">
           <p>{{ "The indicated information has been retrieved from the register of the Finnish Patent and Registration Office (PRH), and changing the information is only possible in the online service in question."|t }}</p>
         </div>
@@ -14,22 +14,10 @@
             <dt><strong>{{ "Name of association"|t }}</strong></dt>
             <dd class="grants-profile--item grants-profile-company-name">{{ profile.companyName }}</dd>
           </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Business ID"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.businessId }}</dd>
-          </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Municipality where the association is based (domicile)"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.companyHome }}</dd>
-          </div>
-          <div class="grants-profile--wrapper-item">
-            <dt><strong>{{ "Date of registration"|t }}</strong></dt>
-            <dd class="grants-profile-item">{{ profile.registrationDate|date('d.m.Y') }}</dd>
-          </div>
         </dl>
       </div>
     </div>
-    <h3 class="info-grants">{{ "Add association information"|t }}</h3>
+    <h3 class="info-grants">{{ "Own contact information"|t({}, {'context': 'Yksityishenkilön asiointi'}) }}</h3>
     <div class="grants-profile--extrainfo">
       {{ form }}
     </div>
