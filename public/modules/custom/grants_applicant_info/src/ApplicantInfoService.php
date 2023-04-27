@@ -6,6 +6,7 @@ use Drupal\grants_applicant_info\TypedData\Definition\ApplicantInfoDefinition;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\TypedData\ComplexDataInterface;
 use Drupal\grants_metadata\AtvSchema;
+use Drupal\grants_profile\GrantsProfileService;
 
 /**
  * HAndle applicant info service.
@@ -17,7 +18,30 @@ class ApplicantInfoService {
   const UNREGISTERED_COMMUNITY = '1';
 
   /**
+   * Access to grants profile data.
+   *
+   * @var \Drupal\grants_profile\GrantsProfileService
+   */
+  protected GrantsProfileService $grantsProfileService;
+
+  /**
+   * Construct the service object.
+   *
+   * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
+   *   Grants profile access.
+   */
+  public function __construct(GrantsProfileService $grantsProfileService) {
+    $this->grantsProfileService = $grantsProfileService;
+  }
+
+  /**
    * Since this is full property provider, we need to return full json array.
+   *
+   * @param \Drupal\Core\TypedData\ComplexDataInterface $property
+   *   Property to process.
+   *
+   * @return array
+   *   PArsed values.
    */
   public function processApplicantInfo(ComplexDataInterface $property) {
 
@@ -39,7 +63,14 @@ class ApplicantInfoService {
       $itemValue = AtvSchema::getItemValue($itemTypes, $p->getValue(), $defaultValue, $valueCallback);
 
       if ($elementName == 'applicantType') {
-        $applicantType = $itemValue;
+        // If value is empty, make sure we get proper applicant type.
+        if (empty($itemValue)) {
+          $applicantType = $this->grantsProfileService->getApplicantType();
+        }
+        else {
+          $applicantType = $itemValue;
+        }
+
         if ($applicantType == 'private_person') {
           $itemValue = self::PRIVATE_PERSON;
         }
@@ -98,7 +129,7 @@ class ApplicantInfoService {
       $retval["compensation"]["applicantInfoArray"] = array_values($retval["compensation"]["applicantInfoArray"]);
     }
 
-    if (is_array($retval["compensation"]["currentAddressInfoArray"])) {
+    if (isset($retval["compensation"]["currentAddressInfoArray"]) && is_array($retval["compensation"]["currentAddressInfoArray"])) {
       $retval["compensation"]["currentAddressInfoArray"] = array_values($retval["compensation"]["currentAddressInfoArray"]);
     }
 
@@ -164,48 +195,9 @@ class ApplicantInfoService {
       'lastname',
       'registrationDate',
     ];
-    $values = [];
-    foreach ($content['compensation'] as $key => $item) {
-      if (is_numeric($key)) {
-        if (in_array($item['ID'], $keys) && !in_array($item['ID'], $values)) {
-          $values[$item['ID']] = $item['value'];
-        }
-      }
-      else {
-        if (!is_array($item)) {
-          $values[$key] = $item;
-          continue;
-        }
-        foreach ($item as $key2 => $item2) {
-          if (!is_array($item2)) {
-            $values[$key2] = $item2;
-          }
-          elseif (AtvSchema::numericKeys($item2)) {
-            foreach ($item2 as $item3) {
-              if (AtvSchema::numericKeys($item3)) {
-                foreach ($item3 as $item4) {
-                  if (in_array($item4['ID'], $keys) && !array_key_exists($item4['ID'], $values)) {
-                    $values[$item4['ID']] = $item4['value'];
-                  }
-                }
-              }
-              else {
-                if (in_array($item3['ID'], $keys) && !array_key_exists($item3['ID'], $values)) {
-                  $values[$item3['ID']] = $item3['value'];
-                }
-              }
-            }
-          }
-          else {
-            if (is_numeric($key2)) {
-              if (in_array($item2['ID'], $keys) && !in_array($item2['ID'], $values)) {
-                $values[$item2['ID']] = $item2['value'];
-              }
-            }
-          }
-        }
-      }
-    }
+
+    $values = AtvSchema::extractDataForWebForm($content, $keys);
+
     if ($values['applicantType'] == self::REGISTERED_COMMUNITY) {
       $values['applicantType'] = 'registered_community';
       $values['applicant_type'] = 'registered_community';

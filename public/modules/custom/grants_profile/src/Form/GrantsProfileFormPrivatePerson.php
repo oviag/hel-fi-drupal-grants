@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\grants_profile\TypedData\Definition\GrantsProfilePrivatePersonDefinition;
+use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
 use Drupal\helfi_atv\AtvFailedToConnectException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -18,6 +19,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * Provides a Grants Profile form.
  */
 class GrantsProfileFormPrivatePerson extends FormBase {
+
+  use StringTranslationTrait;
 
   /**
    * Drupal\Core\TypedData\TypedDataManager definition.
@@ -34,16 +37,30 @@ class GrantsProfileFormPrivatePerson extends FormBase {
   protected GrantsProfileService $grantsProfileService;
 
   /**
+   * Helsinki profile service.
+   *
+   * @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData
+   */
+  protected HelsinkiProfiiliUserData $helsinkiProfiiliUserData;
+
+  /**
    * Constructs a new GrantsProfileForm object.
    *
    * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
    *   Data manager.
    * @param \Drupal\grants_profile\GrantsProfileService $grantsProfileService
    *   Profile service.
+   * @param \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $helsinkiProfiiliUserData
+   *   Data for Helsinki Profile.
    */
-  public function __construct(TypedDataManager $typed_data_manager, GrantsProfileService $grantsProfileService) {
+  public function __construct(
+    TypedDataManager $typed_data_manager,
+    GrantsProfileService $grantsProfileService,
+    HelsinkiProfiiliUserData $helsinkiProfiiliUserData
+  ) {
     $this->typedDataManager = $typed_data_manager;
     $this->grantsProfileService = $grantsProfileService;
+    $this->helsinkiProfiiliUserData = $helsinkiProfiiliUserData;
   }
 
   /**
@@ -52,7 +69,8 @@ class GrantsProfileFormPrivatePerson extends FormBase {
   public static function create(ContainerInterface $container): GrantsProfileFormPrivatePerson|static {
     return new static(
       $container->get('typed_data_manager'),
-      $container->get('grants_profile.service')
+      $container->get('grants_profile.service'),
+      $container->get('helfi_helsinki_profiili.userdata')
     );
   }
 
@@ -99,6 +117,8 @@ class GrantsProfileFormPrivatePerson extends FormBase {
 
     // Get content from document.
     $grantsProfileContent = $grantsProfile->getContent();
+
+    $helsinkiProfileContent = $this->helsinkiProfiiliUserData->getUserProfileData();
 
     $storage = $form_state->getStorage();
     $storage['profileDocument'] = $grantsProfile;
@@ -173,19 +193,6 @@ class GrantsProfileFormPrivatePerson extends FormBase {
       '#required' => TRUE,
     ];
 
-    $form['emailWrapper'] = [
-      '#type' => 'webform_section',
-      '#title' => $this->t('Email address'),
-      '#prefix' => '<div id="email-wrapper">',
-      '#suffix' => '</div>',
-    ];
-    $form['emailWrapper']['email'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Email address'),
-      '#default_value' => $grantsProfileContent['email'] ?? '',
-      '#required' => TRUE,
-    ];
-
     $this->addbankAccountBits($form, $form_state, $grantsProfileContent['bankAccounts'], $newItem);
 
     $form['actions'] = [
@@ -197,6 +204,7 @@ class GrantsProfileFormPrivatePerson extends FormBase {
     ];
 
     $form['#profilecontent'] = $grantsProfileContent;
+    $form['#helsinkiprofilecontent'] = $helsinkiProfileContent;
     $form_state->setStorage($storage);
 
     return $form;
@@ -765,7 +773,7 @@ rtf, txt, xls, xlsx, zip.'),
 
       if (empty($values["bankAccountWrapper"])) {
         $elementName = 'bankAccountWrapper]';
-        $formState->setErrorByName($elementName, t('You must add one bank account'));
+        $formState->setErrorByName($elementName, $this->t('You must add one bank account'));
         return;
       }
 
@@ -786,16 +794,16 @@ rtf, txt, xls, xlsx, zip.'),
           }
           if (!$ibanValid) {
             $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-            $formState->setErrorByName($elementName, t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
+            $formState->setErrorByName($elementName, $this->t('Not valid Finnish IBAN: @iban', ['@iban' => $accountData["bankAccount"]]));
           }
         }
         else {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][bankAccount';
-          $formState->setErrorByName($elementName, t('You must enter valid Finnish iban'));
+          $formState->setErrorByName($elementName, $this->t('You must enter valid Finnish iban'));
         }
         if ((empty($accountData["confirmationFileName"]) && empty($accountData["confirmationFile"]['fids']))) {
           $elementName = 'bankAccountWrapper][' . $key . '][bank][confirmationFile';
-          $formState->setErrorByName($elementName, t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
+          $formState->setErrorByName($elementName, $this->t('You must add confirmation file for account: @iban', ['@iban' => $accountData["bankAccount"]]));
         }
       }
     }

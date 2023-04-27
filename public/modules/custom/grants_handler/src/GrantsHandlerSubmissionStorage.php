@@ -119,7 +119,7 @@ class GrantsHandlerSubmissionStorage extends WebformSubmissionStorage {
         // .user authentication level is strong, allow them to load things.
         $userAuthLevel == 'strong') {
         /** @var \Drupal\webform\Entity\WebformSubmission $submission */
-        foreach ($webform_submissions as $submission) {
+        foreach ($webform_submissions as $key => $submission) {
           if (!empty($this->data[$submission->id()])) {
             $submission->setData($this->data[$submission->id()]);
           }
@@ -137,6 +137,15 @@ class GrantsHandlerSubmissionStorage extends WebformSubmissionStorage {
               $document = reset($results);
               if (!$document) {
                 throw new \Exception('Submission data load failed.');
+              }
+
+              $docArray = $document->toArray();
+              $id = AtvSchema::extractDataForWebForm(
+                $docArray['content'], ['applicationNumber']
+              );
+
+              if (!isset($id['applicationNumber']) || empty($id['applicationNumber'])) {
+                continue;
               }
 
               $dataDefinition = ApplicationHandler::getDataDefinition($document->getType());

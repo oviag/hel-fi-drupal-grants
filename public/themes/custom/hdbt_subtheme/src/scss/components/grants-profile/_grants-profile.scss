@@ -70,6 +70,12 @@ $breakpoint-xl: 1248px;
   &--extrainfo {
     padding-top: var(--spacing-l);
     padding-bottom: var(--spacing-l);
+
+    fieldset.form-wrapper {
+      border: 0;
+      background-color: var(--color-silver-light);
+      padding: var(--spacing-l);
+    }
   }
     &--infotext {
     font-size: var(--fontsize-body-l);
@@ -150,6 +156,22 @@ $breakpoint-xl: 1248px;
     }
   }
 }
+.page--oma-asiointi__private-person {
+  .grants-profile--basicinfo {
+    border-bottom: 8px solid var(--color-copper);
+  }
+
+  .grants-profile--wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.page--oma-asiointi__unregistered-community {
+  .grants-profile--wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
 .hds-link .hel-icon {
   vertical-align: bottom;
   margin-right: var(--spacing-2-xs);
@@ -195,7 +217,8 @@ div.grants-handler--prefilled-field, .grants-profile-prh-info {
     top: 0;
     right: var(--spacing-layout-s);
   }
-  .hds-text-input__input-wrapper {
+  .hds-text-input__input-wrapper,
+  .description {
     white-space: normal;
     display: inline-block;
   }
@@ -203,7 +226,8 @@ div.grants-handler--prefilled-field, .grants-profile-prh-info {
     color: var(--color-success);
     vertical-align: middle;
   }
-  .hds-text-input__input {
+  .hds-text-input__input,
+  .webform-element-description {
     color: var(--color-black);
     line-height: var(--spacing-m);
     position: relative;

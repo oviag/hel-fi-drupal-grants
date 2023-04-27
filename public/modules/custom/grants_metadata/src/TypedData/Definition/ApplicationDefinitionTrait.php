@@ -17,6 +17,10 @@ trait ApplicationDefinitionTrait {
    */
   public function getBaseProperties(): array {
 
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $grantsProfileService = \Drupal::service('grants_profile.service');
+    $applicantType = $grantsProfileService->getApplicantType();
+
     $info['hakijan_tiedot'] = ApplicantInfoDefinition::create('applicant_info')
       // ->setRequired(TRUE)
       ->setSetting('jsonPath', ['compensation', 'applicantOfficialsArray'])
@@ -36,90 +40,95 @@ trait ApplicationDefinitionTrait {
         'postCode',
       ]);
 
-    $info['email'] = DataDefinition::create('string')
-      ->setLabel('Nimi')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'applicantInfoArray',
-        'email',
-      ]);
+    // Both communities.
+    if ($applicantType === 'registered_community' || $applicantType === 'unregistered_community') {
 
-    $info['community_officials'] = ListDataDefinition::create('grants_profile_application_official')
-      // ->setRequired(TRUE)
-      ->setSetting('jsonPath', ['compensation', 'applicantOfficialsArray'])
-      ->setSetting('defaultValue', [])
-      ->setLabel('applicantOfficialsArray');
+      $info['email'] = DataDefinition::create('email')
+        ->setLabel('Sähköpostiosoite')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'applicantInfoArray',
+          'email',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'email',
+          'jsonType' => 'string',
+        ])
+        ->addConstraint('Email');
 
-    $info['contact_person'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
-      ->setLabel('currentAddressInfoArray=>contactPerson')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'contactPerson',
-      ]);
+      $info['community_officials'] = ListDataDefinition::create('grants_profile_application_official')
+        // ->setRequired(TRUE)
+        ->setSetting('jsonPath', ['compensation', 'applicantOfficialsArray'])
+        ->setSetting('defaultValue', [])
+        ->setLabel('applicantOfficialsArray');
 
-    $info['contact_person_phone_number'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
-      ->setLabel('Contact person phone')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'phoneNumber',
-      ]);
+      $info['contact_person'] = DataDefinition::create('string')
+        ->setLabel('currentAddressInfoArray=>contactPerson')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'contactPerson',
+        ]);
 
-    $info['community_street'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
-      ->setLabel('Community street')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'street',
-      ])
-      ->setSetting('formSettings', [
-        'formElement' => 'community_address',
-        'formError' => 'You must select address',
-      ]);
+      $info['contact_person_phone_number'] = DataDefinition::create('string')
+        ->setLabel('Contact person phone')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'phoneNumber',
+        ]);
 
-    $info['community_city'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
-      ->setLabel('Community city')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'city',
-      ])
-      ->setSetting('formErrorElement', [
-        'formElement' => 'community_address',
-        'formError' => 'You must select address',
-      ]);
+      $info['community_street'] = DataDefinition::create('string')
+        ->setLabel('Community street')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'street',
+        ])
+        ->setSetting('formSettings', [
+          'formElement' => 'community_address',
+          'formError' => 'You must select address',
+        ]);
 
-    $info['community_post_code'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
-      ->setLabel('Community postal code')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'postCode',
-      ])
-      ->setSetting('formErrorElement', [
-        'formElement' => 'community_address',
-        'formError' => 'You must select address',
-      ])
-      ->addConstraint('ValidPostalCode');
+      $info['community_city'] = DataDefinition::create('string')
+        // ->setRequired(TRUE)
+        ->setLabel('Community city')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'city',
+        ])
+        ->setSetting('formErrorElement', [
+          'formElement' => 'community_address',
+          'formError' => 'You must select address',
+        ]);
 
-    $info['community_country'] = DataDefinition::create('string')
-      ->setRequired(TRUE)
-      ->setLabel('Community country')
-      ->setSetting('jsonPath', [
-        'compensation',
-        'currentAddressInfoArray',
-        'country',
-      ])
-      ->setSetting('formErrorElement', [
-        'formElement' => 'community_address',
-        'formError' => 'You must select address',
-      ]);
+      $info['community_post_code'] = DataDefinition::create('string')
+        ->setLabel('Community postal code')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'postCode',
+        ])
+        ->setSetting('formErrorElement', [
+          'formElement' => 'community_address',
+          'formError' => 'You must select address',
+        ])
+        ->addConstraint('ValidPostalCode');
+
+      $info['community_country'] = DataDefinition::create('string')
+        ->setLabel('Community country')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'currentAddressInfoArray',
+          'country',
+        ])
+        ->setSetting('formErrorElement', [
+          'formElement' => 'community_address',
+          'formError' => 'You must select address',
+        ])
+        ->setSetting('defaultValue', 'Suomi');
+    }
 
     $info['application_type'] = DataDefinition::create('string')
       ->setRequired(TRUE)
@@ -165,7 +174,6 @@ trait ApplicationDefinitionTrait {
         'submittedFormTimeStamp',
       ]);
 
-    // ->addConstraint('NotBlank')
     $info['application_number'] = DataDefinition::create('string')
       // ->setRequired(TRUE)
       ->setLabel('applicationNumber')
@@ -174,29 +182,23 @@ trait ApplicationDefinitionTrait {
         'applicationInfoArray',
         'applicationNumber',
       ]);
-    // ->addConstraint('NotBlank')
     $info['status'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('Status')
       ->setSetting('jsonPath', [
         'compensation',
         'applicationInfoArray',
         'status',
       ]);
-    // ->addConstraint('NotBlank')
     $info['acting_year'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('Acting year')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'applicationInfoArray',
         'actingYear',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['account_number'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('accountNumber')
       ->setSetting('jsonPath', [
         'compensation',
@@ -229,7 +231,6 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['compensation_total_amount'] = DataDefinition::create('float')
-      // ->setRequired(TRUE)
       ->setLabel('compensationInfo=>purpose')
       ->setSetting('defaultValue', 0)
       ->setSetting('typeOverride', [
@@ -245,7 +246,6 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['compensation_explanation'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('compensationInfo=>explanation')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
@@ -253,11 +253,9 @@ trait ApplicationDefinitionTrait {
         'compensationInfo',
         'generalInfoArray',
         'explanation',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['myonnetty_avustus'] = ListDataDefinition::create('grants_metadata_other_compensation')
-      // ->setRequired(TRUE)
       ->setLabel('Myönnetty avustus')
       ->setSetting('defaultValue', [])
       ->setSetting('jsonPath', [
@@ -268,7 +266,6 @@ trait ApplicationDefinitionTrait {
       ->setSetting('requiredInJson', TRUE);
 
     $info['haettu_avustus_tieto'] = ListDataDefinition::create('grants_metadata_other_compensation')
-      // ->setRequired(TRUE)
       ->setLabel('Haettu avustus')
       ->setSetting('defaultValue', [])
       ->setSetting('jsonPath', [
@@ -278,7 +275,6 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['myonnetty_avustus_total'] = DataDefinition::create('float')
-      // ->setRequired(TRUE)
       ->setLabel('Myönnetty avustus total')
       ->setSetting('defaultValue', 0)
       ->setSetting('typeOverride', [
@@ -298,7 +294,6 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['haettu_avustus_tieto_total'] = DataDefinition::create('float')
-      // ->setRequired(TRUE)
       ->setLabel('Haettu avustus total')
       ->setSetting('defaultValue', 0)
       ->setSetting('typeOverride', [
@@ -318,29 +313,24 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['benefits_loans'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('Loans')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'benefitsInfoArray',
         'loans',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['benefits_premises'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('Premises')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'benefitsInfoArray',
         'premises',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['fee_person'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>feePerson')
       ->setSetting('jsonPath', [
         'compensation',
@@ -354,7 +344,6 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['fee_community'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>feeCommunity')
       ->setSetting('jsonPath', [
         'compensation',
@@ -368,7 +357,6 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['members_applicant_person_local'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>membersApplicantPersonLocal')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
@@ -378,7 +366,6 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['members_applicant_person_global'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>membersApplicantPersonGlobal')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
@@ -388,28 +375,23 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['members_applicant_community_local'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>membersApplicantCommunityLocal')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'activitiesInfoArray',
         'membersApplicantCommunityLocal',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['members_applicant_community_global'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('activitiesInfoArray=>membersApplicantCommunityGlobal')
       ->setSetting('jsonPath', [
         'compensation',
         'activitiesInfoArray',
         'membersApplicantCommunityGlobal',
-        // ->addConstraint('NotBlank')
       ]);
 
     $info['business_purpose'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('businessPurpose')
       ->setSetting('jsonPath', [
         'compensation',
@@ -433,59 +415,52 @@ trait ApplicationDefinitionTrait {
       ->setSetting('defaultValue', FALSE);
 
     $info['additional_information'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('additionalInformation')
       ->setSetting('jsonPath', ['compensation', 'additionalInformation'])
       ->setSetting('defaultValue', "");
-    // ->addConstraint('NotBlank')
+
     // Sender details.
     // @todo Maybe move sender info to custom definition?
     $info['sender_firstname'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('firstname')
       ->setSetting('jsonPath', [
         'compensation',
         'senderInfoArray',
         'firstname',
       ]);
-    // ->addConstraint('NotBlank')
     $info['sender_lastname'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('lastname')
       ->setSetting('jsonPath', [
         'compensation',
         'senderInfoArray',
         'lastname',
       ]);
-    // ->addConstraint('NotBlank')
     // @todo Validate person id?
     $info['sender_person_id'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('personID')
       ->setSetting('jsonPath', [
         'compensation',
         'senderInfoArray',
         'personID',
       ]);
-    // ->addConstraint('NotBlank')
     $info['sender_user_id'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('userID')
       ->setSetting('jsonPath', ['compensation', 'senderInfoArray', 'userID']);
-    // ->addConstraint('NotBlank')
     $info['sender_email'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
+      ->setRequired(TRUE)
       ->setLabel('Email')
       ->setSetting('jsonPath', ['compensation', 'senderInfoArray', 'email']);
 
     // Attachments.
     $info['attachments'] = ListDataDefinition::create('grants_metadata_attachment')
-      // ->setRequired(TRUE)
       ->setLabel('Attachments')
       ->setSetting('jsonPath', ['attachmentsInfo', 'attachmentsArray']);
 
     $info['extra_info'] = DataDefinition::create('string')
-      // ->setRequired(TRUE)
       ->setLabel('Extra Info')
       ->setSetting('jsonPath', [
         'attachmentsInfo',
