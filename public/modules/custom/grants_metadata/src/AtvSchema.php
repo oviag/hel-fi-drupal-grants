@@ -109,7 +109,13 @@ class AtvSchema {
       $webformDataExtractor = $definition->getSetting('webformDataExtracter');
 
       if ($webformDataExtractor) {
-        $typedDataValues[$definitionKey] = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
+        $extractedValues = self::getWebformDataFromContent($webformDataExtractor, $documentData, $definition);
+        if (isset($webformDataExtractor['mergeResults']) && $webformDataExtractor['mergeResults']) {
+          $typedDataValues = array_merge($typedDataValues, $extractedValues);
+        }
+        else {
+          $typedDataValues[$definitionKey] = $extractedValues;
+        }
       }
       else {
         // If json path not configured for item, do nothing.
@@ -343,7 +349,6 @@ class AtvSchema {
   public function typedDataToDocumentContent(
     TypedDataInterface $typedData,
     WebformSubmission $webformSubmission = NULL): array {
-
     $documentStructure = [];
     $addedElements = [];
     foreach ($typedData as $property) {
@@ -389,11 +394,12 @@ class AtvSchema {
 
       // If we have structure callback defined, then get property structure.
       if ($propertyStructureCallback) {
-        $documentStructure = array_merge(
+        $documentStructure = array_merge_recursive(
           $documentStructure,
           self::getFieldValuesFromFullItemCallback(
             $propertyStructureCallback,
-            $property
+            $property,
+            $definition
           )
         );
         continue;
@@ -561,14 +567,6 @@ class AtvSchema {
 
     if (!array_key_exists('attachmentsInfo', $documentStructure)) {
       $documentStructure['attachmentsInfo'] = [];
-    }
-
-    if (!array_key_exists('budgetInfo', $documentStructure['compensation'])) {
-      $documentStructure['compensation']['budgetInfo'] = [
-        'budgetInfoArray' => [],
-        'incomeGroupsArrayStatic' => [],
-        'costGroupsArrayStatic' => [],
-      ];
     }
 
     return $documentStructure;
@@ -745,11 +743,11 @@ class AtvSchema {
       if (isset($valueCallback['service'])) {
         $fullItemValueService = \Drupal::service($valueCallback['service']);
         $funcName = $valueCallback['method'];
-        $itemValue = $fullItemValueService->$funcName($itemValue, $valueCallback['arguments']);
+        $itemValue = $fullItemValueService->$funcName($itemValue, $valueCallback['arguments'] ?? []);
       }
       elseif (isset($valueCallback['class'])) {
         $funcName = $valueCallback['method'];
-        $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments']);
+        $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments'] ?? []);
       }
       else {
         // But still support old way to just call function.
@@ -857,6 +855,69 @@ class AtvSchema {
       }
     }
     return $fieldValues;
+  }
+
+  /**
+   * Extracts data from ATV document compensation field.
+   *
+   * @param array $content
+   *   ATV document in array form.
+   * @param array $keys
+   *   Array with IDs that the function will look for.
+   *
+   * @return array
+   *   Assocative arrow with the results if they are found.
+   */
+  public static function extractDataForWebForm(array $content, array $keys) {
+    $values = [];
+
+    if (!isset($content['compensation'])) {
+      return $values;
+    }
+
+    foreach ($content['compensation'] as $key => $item) {
+      if (is_numeric($key)) {
+        if (in_array($item['ID'], $keys) && !in_array($item['ID'], $values)) {
+          $values[$item['ID']] = $item['value'];
+        }
+      }
+      else {
+        if (!is_array($item)) {
+          $values[$key] = $item;
+          continue;
+        }
+        foreach ($item as $key2 => $item2) {
+          if (!is_array($item2)) {
+            $values[$key2] = $item2;
+          }
+          elseif (AtvSchema::numericKeys($item2)) {
+            foreach ($item2 as $item3) {
+              if (AtvSchema::numericKeys($item3)) {
+                foreach ($item3 as $item4) {
+                  if (in_array($item4['ID'], $keys) && !array_key_exists($item4['ID'], $values)) {
+                    $values[$item4['ID']] = $item4['value'];
+                  }
+                }
+              }
+              else {
+                if (isset($item3['ID']) && in_array($item3['ID'], $keys) && !array_key_exists($item3['ID'], $values)) {
+                  $values[$item3['ID']] = $item3['value'];
+                }
+              }
+            }
+          }
+          else {
+            if (is_numeric($key2)) {
+              if (in_array($item2['ID'], $keys) && !in_array($item2['ID'], $values)) {
+                $values[$item2['ID']] = $item2['value'];
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return $values;
   }
 
 }

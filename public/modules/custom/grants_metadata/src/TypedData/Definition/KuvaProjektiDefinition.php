@@ -5,6 +5,7 @@ namespace Drupal\grants_metadata\TypedData\Definition;
 use Drupal\Core\TypedData\ComplexDataDefinitionBase;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\ListDataDefinition;
+use Drupal\grants_budget_components\TypedData\Definition\GrantsBudgetInfoDefinition;
 
 /**
  * Define Yleisavustushakemus data.
@@ -551,6 +552,18 @@ class KuvaProjektiDefinition extends ComplexDataDefinitionBase {
           'isOwnedByCity',
           'postCode',
         ]);
+
+      $info['budgetInfo'] = GrantsBudgetInfoDefinition::create('grants_budget_info')
+        ->setSetting('propertyStructureCallback', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'processBudgetInfo',
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_budget_components.service',
+          'method' => 'extractToWebformData',
+          'mergeResults' => TRUE,
+        ])
+        ->setSetting('jsonPath', ['compensation', 'budgetInfo']);
 
     }
     return $this->propertyDefinitions;
