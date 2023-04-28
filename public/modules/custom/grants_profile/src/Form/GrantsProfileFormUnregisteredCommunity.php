@@ -80,24 +80,6 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
   }
 
   /**
-   * Get officials' roles.
-   *
-   * @return array
-   *   Available roles.
-   */
-  public static function getOfficialRoles(): array {
-    return [
-      1 => t('Chairperson'),
-      2 => t('Contact person'),
-      3 => t('Other'),
-      4 => t('Treasurer'),
-      5 => t('Auditor'),
-      7 => t('Secretary'),
-      8 => t('Deputy chairperson'),
-    ];
-  }
-
-  /**
    * {@inheritdoc}
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
@@ -742,10 +724,6 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
       '#suffix' => '</div>',
     ];
 
-    $roles = [
-      0 => $this->t('Select'),
-    ] + self::getOfficialRoles();
-
     if (!$officials) {
       $officials = [];
     }
@@ -766,12 +744,6 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
           '#type' => 'textfield',
           '#title' => $this->t('Name'),
           '#default_value' => $official['name'],
-        ],
-        'role' => [
-          '#type' => 'select',
-          '#options' => $roles,
-          '#title' => $this->t('Role'),
-          '#default_value' => $official['role'] ?? 0,
         ],
         'email' => [
           '#type' => 'textfield',
@@ -812,11 +784,6 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
         'name' => [
           '#type' => 'textfield',
           '#title' => $this->t('Name'),
-        ],
-        'role' => [
-          '#type' => 'select',
-          '#options' => $roles,
-          '#title' => $this->t('Role'),
         ],
         'email' => [
           '#type' => 'textfield',
@@ -933,11 +900,19 @@ class GrantsProfileFormUnregisteredCommunity extends FormBase {
           '#title' => $this->t('Bank account owner name'),
           '#type' => 'textfield',
           '#default_value' => $bankAccount['ownerName'] ?? '',
+          '#readonly' => TRUE,
+          '#attributes' => [
+            'readonly' => 'readonly',
+          ],
         ],
         'ownerSsn' => [
           '#title' => $this->t('Bank account owner SSN'),
           '#type' => 'textfield',
           '#default_value' => $bankAccount['ownerSsn'] ?? '',
+          '#readonly' => TRUE,
+          '#attributes' => [
+            'readonly' => 'readonly',
+          ],
         ],
         'confirmationFileName' => [
           '#title' => $this->t('Confirmation file'),
