@@ -207,11 +207,6 @@ function grants_profile_preprocess_own_profile_registered_community(&$variables)
  */
 function grants_profile_preprocess_own_profile_unregistered_community(&$variables): void {
 
-  $officialRoles = GrantsProfileFormRegisteredCommunity::getOfficialRoles();
-
-  foreach ($variables['profile']['officials'] as $key => $official) {
-    $variables['profile']['officials'][$key]['officialRole'] = $officialRoles[(int) $official['role']];
-  }
 }
 
 /**
