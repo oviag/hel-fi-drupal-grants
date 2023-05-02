@@ -427,7 +427,7 @@ function hdbt_subtheme_preprocess_html(&$variables) {
   $grantsProfileService = \Drupal::service('grants_profile.service');
   $selectedRoleData = $grantsProfileService->getSelectedRoleData();
 
-  if(isset($selectedRoleData)) {
+  if (isset($selectedRoleData)) {
     if ($selectedRoleData['type'] == 'private_person') {
       $variables['attributes']['class'][] = 'page--oma-asiointi__private-person';
     }
