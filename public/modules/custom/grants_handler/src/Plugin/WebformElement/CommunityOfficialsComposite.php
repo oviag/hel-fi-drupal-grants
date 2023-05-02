@@ -38,16 +38,10 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
    * {@inheritdoc}
    */
   protected function formatTextItemValue(array $element, WebformSubmissionInterface $webform_submission, array $options = []): array {
-    $roles = GrantsProfileFormRegisteredCommunity::getOfficialRoles();
     $value = $this->getValue($element, $webform_submission, $options);
-
-    /** @var \Drupal\Core\StringTranslation\TranslatableMarkup $role */
-    $role = $roles[(int) $value['role']];
-    $roleRender = $role ? $role->render() : '';
 
     return [
       $value['name'],
-      $roleRender,
       $value['email'],
       $value['phone'],
     ];
