@@ -261,13 +261,25 @@ elements: |-
         '#help': 'Valitse hankkeelle nimi, joka voidaan julkaista p&auml;&auml;t&ouml;ksen yhteydess&auml;.'
         '#maxlength': 100
         '#required': true
+      info_festivaali:
+        '#type': processed_text
+        '#text': |
+          <div class="hds-notification hds-notification--info">
+            <div class="hds-notification__content">
+              <div class="hds-notification__label" role="heading" aria-level="2">
+                <span class="hel-icon hel-icon--alert-circle-fill" aria-hidden="true"></span>
+                <span>Myöntävä vastaus avaa lisäkysymyksen</span>
+              </div>
+            </div>
+          </div>
+        '#format': full_html
       kyseessa_on_festivaali_tai_tapahtuma:
         '#type': radios
         '#title': 'Kyseessä on festivaali tai tapahtuma'
         '#help': 'T&auml;ss&auml; tarkoitetaan festivaalia tai tapahtumaa, joka tapahtuu tiiviin ajanjakson sis&auml;ll&auml; ja on ohjelmaltaan ja kestoltaan laajempi kuin yksitt&auml;inen konsertti, esitys tms. Festivaali tai tapahtuma sis&auml;lt&auml;&auml; useampia eri ohjelmasis&auml;lt&ouml;j&auml;, esim. esityksi&auml;, joiden v&auml;liss&auml; yleis&ouml; voi my&ouml;s vaihtua. Esimerkiksi kaupunginosatapahtumat. Ei esimerkiksi esityssarjat. Festivaali tai tapahtuma voi olla toistuva tai kertaluonteinen.'
         '#options':
-          Kyllä: Kyllä
-          Ei: Ei
+          1: Kyllä
+          0: Ei
         '#required': true
       hankkeen_tai_toiminnan_lyhyt_esittelyteksti:
         '#type': textarea
@@ -281,7 +293,7 @@ elements: |-
         '#states':
           visible:
             ':input[name="kyseessa_on_festivaali_tai_tapahtuma"]':
-              value: Kyllä
+              value: 1
     muut_samaan_tarkoitukseen_myonnetyt_avustukset:
       '#type': webform_section
       '#title': 'Muut samaan tarkoitukseen myönnetyt avustukset'
@@ -308,8 +320,8 @@ elements: |-
         '#title': 'Olemme saaneet muita avustuksia'
         '#description_display': before
         '#options':
-          Kyllä: Kyllä
-          Ei: Ei
+          1: Kyllä
+          0: Ei
       myonnetty_avustus:
         '#type': webform_custom_composite
         '#title': 'Myönnetty avustus'
@@ -317,10 +329,10 @@ elements: |-
         '#states':
           visible:
             ':input[name="olemme_saaneet_muita_avustuksia"]':
-              value: Kyllä
+              value: 1
           required:
             ':input[name="olemme_saaneet_muita_avustuksia"]':
-              value: Kyllä
+              value: 1
         '#multiple__header': false
         '#multiple__item_label': 'myönnetty avustus'
         '#multiple__no_items_message': 'Ei sy&ouml;tettyj&auml; arvoja. Lis&auml;&auml; uusi my&ouml;nnetty avustus alta.'
@@ -555,8 +567,8 @@ elements: |-
           '#type': radios
           '#title': 'Kyseessä on kaupungin omistama tila'
           '#options':
-            Kyllä: Kyllä
-            Ei: Ei
+            1: Kyllä
+            0: Ei
       tila:
         '#type': premises_composite
         '#title': 'Muut tilat'
@@ -708,9 +720,12 @@ elements: |-
           - or
           - ':input[name="applicant_type"]':
               value: registered_community
-      organisaatio_kuuluu_valtionosuusjarjestelmaan:
-        '#type': checkbox
+      organisaatio_kuuluu_valtionosuusjarjestelmaan_vos_:
+        '#type': radios
         '#title': 'Organisaatio kuuluu valtionosuusjärjestelmään (VOS)'
+        '#options':
+          1: Kyllä
+          0: Ei
     tulot:
       '#type': webform_section
       '#title': 'Suunnitellut tulot'
