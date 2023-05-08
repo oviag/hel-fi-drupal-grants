@@ -851,7 +851,7 @@ rtf, txt, xls, xlsx, zip.'),
         return FALSE;
       });
 
-    $attachmentToDelete = reset($attachmentToDelete);
+    $attachmentToDelete = end($attachmentToDelete);
     $hrefToDelete = NULL;
 
     // If attachment is found.
