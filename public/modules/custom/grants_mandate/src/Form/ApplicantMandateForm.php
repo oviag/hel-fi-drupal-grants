@@ -3,6 +3,7 @@
 namespace Drupal\grants_mandate\Form;
 
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
@@ -111,7 +112,7 @@ class ApplicantMandateForm extends FormBase {
     ];
     $form['actions']['registered_community']['info'] = [
       '#theme' => 'select_applicant_role',
-      '#icon' => 'group',
+      '#icon' => 'company',
       '#role' => $this->t('Registered community'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
@@ -136,12 +137,19 @@ class ApplicantMandateForm extends FormBase {
     $form['actions']['unregistered_community']['unregistered_community_selection'] = [
       '#type' => 'select',
       '#options' => $profileOptions,
+      '#empty_option' => 'Valitse',
+      '#empty_value' => '0',
     ];
 
     $form['actions']['unregistered_community']['submit'] = [
       '#type' => 'submit',
       '#name' => 'unregistered_community',
       '#value' => $this->t('Select Unregistered community role'),
+      '#attached' => [
+        'library' => [
+          'grants_mandate/disable-mandate-submit',
+        ],
+      ],
     ];
     $form['actions']['private_person'] = [
       '#type' => 'container',
@@ -151,7 +159,7 @@ class ApplicantMandateForm extends FormBase {
     ];
     $form['actions']['private_person']['info'] = [
       '#theme' => 'select_applicant_role',
-      '#icon' => 'group',
+      '#icon' => 'user',
       '#role' => $this->t('Private person'),
       '#role_description' => $this->t('This is a short description of the applicant role.'),
     ];
