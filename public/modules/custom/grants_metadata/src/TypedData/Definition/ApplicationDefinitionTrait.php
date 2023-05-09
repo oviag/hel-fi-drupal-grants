@@ -190,12 +190,17 @@ trait ApplicationDefinitionTrait {
         'status',
       ]);
     $info['acting_year'] = DataDefinition::create('string')
-      ->setLabel('Acting year')
+      ->setLabel('Vuosi, jolle haen avustusta')
       ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'applicationInfoArray',
         'actingYear',
+      ])
+      ->addConstraint('NotBlank')
+      ->setRequired(TRUE)
+      ->setSetting('formSettings', [
+        'formElement' => 'acting_year',
       ]);
 
     $info['account_number'] = DataDefinition::create('string')
@@ -283,7 +288,7 @@ trait ApplicationDefinitionTrait {
       ]);
 
     $info['fee_person'] = DataDefinition::create('string')
-      ->setLabel('activitiesInfoArray=>feePerson')
+      ->setLabel('Fee Person')
       ->setSetting('jsonPath', [
         'compensation',
         'activitiesInfoArray',
@@ -296,7 +301,7 @@ trait ApplicationDefinitionTrait {
       ->addConstraint('NotBlank');
 
     $info['fee_community'] = DataDefinition::create('string')
-      ->setLabel('activitiesInfoArray=>feeCommunity')
+      ->setLabel('Fee Community')
       ->setSetting('jsonPath', [
         'compensation',
         'activitiesInfoArray',
