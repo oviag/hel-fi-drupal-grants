@@ -3,7 +3,6 @@
 namespace Drupal\grants_mandate\Form;
 
 use Drupal\Core\Form\FormBase;
-use Drupal\Core\Form\FormHelper;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Url;
