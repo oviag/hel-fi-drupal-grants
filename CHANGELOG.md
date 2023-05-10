@@ -2,6 +2,8 @@
 
 
 ## 2023.13
+- a39cb59f feat: AU-910: KUVA kehitys form (#372)
+- cf762d6a fix: AU-842: Fix error message indexes for profile forms (#382)
 - de8a0cfb feat: AU-XX: Conditional validator (#379)
 - bb5f3a02 feat: AU-1034: Add support for bank account details for unreg community. (#384)
 - 128e81a7 fix: AU-1004: fix Unregistered community in mandate (#381)
