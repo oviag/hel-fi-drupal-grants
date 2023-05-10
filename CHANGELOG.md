@@ -1,6 +1,38 @@
 # CHANGELOG
 
 
+## 2023.13
+- de8a0cfb feat: AU-XX: Conditional validator (#379)
+- bb5f3a02 feat: AU-1034: Add support for bank account details for unreg community. (#384)
+- 128e81a7 fix: AU-1004: fix Unregistered community in mandate (#381)
+- 9ab0f84b fix: AU-1030: Always Run property structure callback (Budget Info) (#376)
+- 2db0f497 fix: AU-1031: Fix validations & data mappings. (#377)
+- d158d9fa fix: AU-1015: style login page block (#371)
+- 1d03848d fix: AU-1005: add max width to number element (#375)
+- 0b47d2ac fix: AU-1014: add translations to preview warning (#373)
+- 834a631d feat: AU-488: Print applications with metadata. (#237)
+- b5faed4e fix: AU-950: fix accessible tooltips (#369)
+- 897b1263 feat: AU-915 kuva toiminta avustus webform changes (#356) (#370)
+- f2fd9ba1 fix: AU-1019: remove dot from frontpage info block title & change site name (#367)
+- 394f5e14 fix: AU-XX: Kuvaprojektikorjauksia (#368)
+- 4a22d10d fix: AU-997: Restore missing prints (#366)
+- 83218989 fix: AU-866: Validate addresses and display errors (#365)
+- 319f95c4 fix: AU-994: Service channel link modification cache settings, missing attachment description (#363)
+- c7716d2a fix: AU-999: Add role check to new application buttons (#362)
+- 559cd2bd fix: AU-953: Fixed cards in application search view (#360)
+- ba5600d0 fix: AU-895: Add form styles for kuva projekti (#359)
+- 30930206 fix: AU-847: Allow language switcher to work on edit application pages (#358)
+- 5308806b fix: AU-930: Azure pipelines setup (#357)
+- 2f70b1c6 feat: AU-930: Extensive robot tests (#353)
+- c4e2782a Fix: AU-996: Change budget component amount fields to number (#352)
+- fc7f6cb3 feat: AU-1000: Make GrantsHandler respect applicant type for all users. (#354)
+- 889afebb Fix: AU-881: Fix profile forms (#351)
+- c8dcd9fb fix: AU-XX: Do some checking for arrays before accessing arrays (#349)
+- f6e467dc fix: AU-995 add remove button to a multiple field missing it. (#348)
+- 11449265 feat: AU-889: KUVA Projektihakemus (#322)
+- 2f36ae26 fix: AU-795: change link to mandate in all roles
+
+
 ## 2023.12
 - da2ba17e fix: AU-867: Remove TPR link to current service page and replace with serv… (#318)
 - 5c1b29dc fix: AU-867 AU-877: Fix delete button visibility to be only on draft versions (#323)
