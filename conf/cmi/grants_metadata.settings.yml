@@ -61,6 +61,16 @@ third_party_options:
         fi: 'Taide ja kulttuuri: toiminta-avustus'
         en: 'EN Taide ja kulttuuri: toiminta-avustus'
         sv: 'SV Taide ja kulttuuri: toiminta-avustus'
+    50:
+      id: KUVAPERUS
+      code: KUVAPERUS
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaToimintaDefinition
+        definitionId: grants_metadata_kuvatoiminta
+      labels:
+        fi: 'Taide ja kulttuuri: perusopetuksen avustus'
+        en: 'EN Taide ja kulttuuri: perusopetuksen avustus'
+        sv: 'SV Taide ja kulttuuri: perusopetuksen avustus'
   application_statuses:
     DRAFT: DRAFT
     SENT: SENT
