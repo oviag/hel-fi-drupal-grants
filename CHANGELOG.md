@@ -2,6 +2,20 @@
 
 
 ## 2023.13
+- b490b41a config: Automatic update (#398)
+- dd8b5678 fix: AU-877:  Add block for mandate button (#383)
+- 2b95df4d feat: AU-917 Webform of KUVA-toiminta-avustus to match design (#396)
+- c36636f9 feat: AU-1033: Metadata to budget component generated data (#397)
+- a87d2b00 fix: AU-1020: remove error message from mandate (#394)
+- ac11f2c6 feat: AU-935: add translations to front banner (#392)
+- c846fb6a config: Update composer (#393)
+- dfb7a514 config: Update configuration (#391)
+- daaa2442 fix: AU-1023 fix summation field effects on different pages (#389)
+- 2c2e0bc2 feat: AU-1021: Add multi budget component mappings (#390)
+- 2874f2dd fix: AU-895 design changes to the projekti form (#388)
+- 035dcc2f feat: AU-1027: Import webforms with drush command (#374)
+- 9be682b1 fix: AU-1022: Handle dummy boolean fields in webform (#380)
+- 9a2c74d6 fix: Fix code styles in grants handler module (#387)
 - a39cb59f feat: AU-910: KUVA kehitys form (#372)
 - cf762d6a fix: AU-842: Fix error message indexes for profile forms (#382)
 - de8a0cfb feat: AU-XX: Conditional validator (#379)
