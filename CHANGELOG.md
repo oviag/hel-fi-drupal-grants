@@ -2,6 +2,11 @@
 
 
 ## 2023.13
+- e9c430d2 fix: AU-1047: style budget component (#402)
+- 4a357ad5 feat: AU-865: Make business purpose editable (#401)
+- 8b8d894d feat: AU-911 kuva kehittamisavustus update for design (#403)
+- 3d6e91e3 fix: AU-1040: Test & fix general applications (#395)
+- 5db0830c fix: AU-877: fix logic and a few warnings (#399)
 - b490b41a config: Automatic update (#398)
 - dd8b5678 fix: AU-877:  Add block for mandate button (#383)
 - 2b95df4d feat: AU-917 Webform of KUVA-toiminta-avustus to match design (#396)
