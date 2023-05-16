@@ -68,9 +68,9 @@ third_party_options:
         definitionClass: Drupal\grants_metadata\TypedData\Definition\NuorisoProjektiDefinition
         definitionId: grants_metadata_nuorisoprojekti
       labels:
-        fi: 'Taide ja kulttuuri: toiminta-avustus'
-        en: 'EN Taide ja kulttuuri: toiminta-avustus'
-        sv: 'SV Taide ja kulttuuri: toiminta-avustus'
+        fi: 'Nuorisopalvelu: projektiavustushakemus'
+        en: 'EN Nuorisopalvelu: projektiavustushakemus'
+        sv: 'SV Nuorisopalvelu: projektiavustushakemus'
   application_statuses:
     DRAFT: DRAFT
     SENT: SENT
