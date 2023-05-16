@@ -2,6 +2,10 @@
 
 
 ## 2023.13
+- 19ce8118 config: Automatic update (#400)
+- 97c7d3ea fix: AU-1045: Update premise radiobutton translations (#408)
+- ecc5935a fix: AU-1008: Delete company email (#407)
+- 428ca10d fix: AU-993: Add sv translations (#361)
 - e9c430d2 fix: AU-1047: style budget component (#402)
 - 4a357ad5 feat: AU-865: Make business purpose editable (#401)
 - 8b8d894d feat: AU-911 kuva kehittamisavustus update for design (#403)
