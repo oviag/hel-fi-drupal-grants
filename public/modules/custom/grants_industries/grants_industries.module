@@ -104,6 +104,11 @@ function grants_industries_node_grants(AccountInterface $account, $op) {
  */
 function grants_industries_openid_connect_post_authorize(UserInterface $account, array $context) {
 
+  Drupal::logger('helfi_helsinki_profiili')->debug($account->getAccountName());
+  Drupal::logger('helfi_helsinki_profiili')->debug(Json::encode([$context["sub"]]));
+  Drupal::logger('helfi_helsinki_profiili')->debug(Json::encode([$context["userinfo"]]));
+  Drupal::logger('helfi_helsinki_profiili')->debug(Json::encode([$context["user_data"]]));
+
   // If user has AD groups.
   if (isset($context["user_data"]["ad_groups"]) && !empty($context["user_data"]["ad_groups"])) {
 
