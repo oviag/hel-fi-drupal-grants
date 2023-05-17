@@ -2,6 +2,13 @@
 
 
 ## 2023.13
+- 155785a1 fix: AU-878: Login redirect user to oma asiointi (#418)
+- 733b1301 fix: AU-1044: Correct configuration to other attachment fields (#412)
+- 3c37113e config: Update configuration (#413)
+- 7fa8bb49 fix: AU-1028: add translations to metadata (#406)
+- e3993164 fix: AU-1050, AU-1051: field fixes to kehitys form (#411)
+- a9593a41 fix: AU-1036: Move remove button to inside fieldsets when there is a fieldset (#410)
+- 19ce8118 config: Automatic update (#400)
 - 19ce8118 config: Automatic update (#400)
 - 97c7d3ea fix: AU-1045: Update premise radiobutton translations (#408)
 - ecc5935a fix: AU-1008: Delete company email (#407)
