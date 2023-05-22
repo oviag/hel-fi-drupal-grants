@@ -2,6 +2,21 @@
 
 
 ## 2023.13
+- 410c8502 Merge branch 'develop' into release/2023.13
+- 50fc3862 feat: AU-828: Check for used application numbers (#424)
+- dc6bca43 fix: AU-1085: Reorder budget field component order (#426)
+- 1b84577f fix: AU-1038: Profile form fixes (#409)
+- 7ac99beb config: Update configuration (#430)
+- d3567167 feat: AU-1026: Redirect to profile form if missing (#429)
+- 087cb97d fix: AU-922: Fix misconfigured file types on yleisavus applcation (#428)
+- 72511199 fix: AU-1059: Add tooltips to budget component fields on KUVA PROJ&TOIM (#427)
+- 495f0bc1 fix: AU-917, AU-1060, AU-1061, AU-1062, AU-1063: partial fixes to projekti and toiminta forms, tooltips in fieldsets, tooltips in first page composites, fieldset for other tila component (#422)
+- be39388a config: Update configuration (#423)
+- 5e29beb8 fix: AU-1057: Fix premises component (#421)
+- 7f84a90b fix: AU-1049: translate status strings (#419)
+- 2ffece15 fix: AU-XX: Make applicant info fields not required. (#420)
+- bb81dd36 (origin/release/2023.13) Remove debug prints for hp
+- a103fe0b Merge branch 'develop' into release/2023.13
 - 155785a1 fix: AU-878: Login redirect user to oma asiointi (#418)
 - 733b1301 fix: AU-1044: Correct configuration to other attachment fields (#412)
 - 3c37113e config: Update configuration (#413)
