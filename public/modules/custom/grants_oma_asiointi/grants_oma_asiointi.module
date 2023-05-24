@@ -50,6 +50,7 @@ function grants_oma_asiointi_theme() {
     'render element' => 'build',
     'variables' => [
       'title' => NULL,
+      'notification' => NULL,
       'drafts' => NULL,
       'others' => NULL,
       'unread' => NULL,

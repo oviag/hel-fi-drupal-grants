@@ -80,3 +80,9 @@ msgstr "Yksityishenkilö"
 
 msgid "New on your applications"
 msgstr "Huomioitavaa hakemuksissasi"
+
+msgid "Remember to keep your information up to date"
+msgstr "Muista pitää omat tiedot ajan tasalla"
+
+msgid "Please make sure that all your information in grants is correct and up-to-date. You can edit your information on the My data tab."
+msgstr "Varmistathan, että kaikki tietosi avustusasioinnissa ovat oikein ja ajan tasalla. Voit muokata tietojasi Omat tiedot -välilehdellä."

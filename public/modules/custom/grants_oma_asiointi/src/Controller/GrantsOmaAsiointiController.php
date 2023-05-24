@@ -169,6 +169,7 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
         '#id' => 'oma-asiointi__sent',
         '#items' => $other,
       ],
+      /* @todo add 3 month interval, make notification closable */
       '#notification' => [
         '#theme' => 'grants_user_data_notification',
       ],
