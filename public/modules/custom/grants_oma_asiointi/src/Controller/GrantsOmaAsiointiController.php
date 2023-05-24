@@ -169,6 +169,9 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
         '#id' => 'oma-asiointi__sent',
         '#items' => $other,
       ],
+      '#notification' => [
+        '#theme' => 'grants_user_data_notification',
+      ],
       '#unread' => $unreadMsg,
     ];
   }

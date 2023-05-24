@@ -56,6 +56,10 @@ function grants_oma_asiointi_theme() {
       'link' => NULL,
     ],
   ];
+  $theme['grants_user_data_notification'] = [
+    'render element' => 'build',
+    'variables' => [],
+  ];
 
   return $theme;
 }
