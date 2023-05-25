@@ -2,7 +2,18 @@
 
 
 ## 2023.13
-- 410c8502 Merge branch 'develop' into release/2023.13
+- 87c22c80 fix: AU-1089: Get budget compensation value from subventions (#444)
+- d87f06d4 fix: AU-1071: Number fields, dot and comma number processing (#434)
+- 53d1ce39 fix: AU-911: kehittamisavustus updates (#437)
+- 6b405e15 fix: AU-1067: Return address metadata (#442)
+- b6f8b131 fix: AU-1087: Disable premise type from kuva proj and keha (#441)
+- 682e6046 fix: AU-XX fix minify in hdbt_subtheme to ignore Drupal and DrupalSettings to make Drupal.t() work again in theme.
+- c86bfc76 config: Update configuration (#440)
+- 64229ae8 fix: AU-1006: Fix tests, separate robot tests to make commands (#435)
+- b4be95ff fix: AU-1073: Remove extra character from attachment description (#432)
+- d72a05e5 fix: AU-1083: remove parenthesis if no role (#438)
+- cf41ee65 config: Update configuration (#439)
+- bb5a5400 fix: AU-1086: Update project mappings (#433)
 - 50fc3862 feat: AU-828: Check for used application numbers (#424)
 - dc6bca43 fix: AU-1085: Reorder budget field component order (#426)
 - 1b84577f fix: AU-1038: Profile form fixes (#409)
