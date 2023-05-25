@@ -55,6 +55,15 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
     $element = parent::processWebformComposite($element, $form_state, $complete_form);
     $dataForElement = $element['#value'];
 
+    $fieldKeys = array_keys(self::getFieldNames());
+
+    foreach ($fieldKeys as $fieldKey) {
+      $keyToCheck = '#' . $fieldKey . '__access';
+      if (isset($element[$keyToCheck]) && $element[$keyToCheck] === FALSE) {
+        unset($element[$fieldKey]);
+      }
+    }
+
     if (isset($dataForElement['incomeGroupName'])) {
       $element['incomeGroupName']['#value'] = $dataForElement['incomeGroupName'];
     }
@@ -86,6 +95,13 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
           [NumberProcessor::class, 'process'],
         ],
       ];
+
+      if ($key === 'compensation') {
+        $elements[$key]['#disabled'] = TRUE;
+        $elements[$key]['#process'][] = [
+          self::class, 'getCompensationValue',
+        ];
+      }
     }
 
     $elements['incomeGroupName'] = [
@@ -96,6 +112,31 @@ class GrantsBudgetIncomeStatic extends WebformCompositeBase {
       '#wrapper_attributes' => ['class' => 'js-form-wrapper'],
     ];
     return $elements;
+  }
+
+  /**
+   * Get value for compensation field from subventions.
+   */
+  public static function getCompensationValue(&$element, FormStateInterface $form_state, &$complete_form) {
+
+    $subventions = $form_state->getValue('subventions');
+
+    $total = 0;
+    foreach ($subventions as $key => $subvention) {
+      if ($key === 'items' || !isset($subvention['amount'])) {
+        continue;
+      }
+
+      $trimmedString = str_replace([' ', '€'], '', $subvention['amount']);
+      $trimmedString = str_replace(',', '.', $trimmedString);
+      $floatVal = floatval($trimmedString);
+      $total += $floatVal;
+    }
+
+    $element['#value'] = $total;
+    $form_state->setValueForElement($element, $total);
+
+    return $element;
   }
 
   /**
