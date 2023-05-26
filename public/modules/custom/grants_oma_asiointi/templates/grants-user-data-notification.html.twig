@@ -11,3 +11,23 @@
     </div>
   </div>
 </div>
+
+{% if node.field_announcement_type.value == 'alert' %}
+  {% set block_modifier = 'announcement--alert' %}
+{% elseif node.field_announcement_type.value == 'attention' %}
+  {% set block_modifier = 'announcement--attention' %}
+{% else %}
+  {% set block_modifier = 'announcement--notification' %}
+{% endif %}
+
+<div class="announcement js-announcement {{ block_modifier }} container" data-uuid="{{ node.uuid.value }}">
+  <div class="announcement__container">
+    <div class="announcement__content">
+      <span class="announcenemnt__content-body">
+        <p><strong>{{ "Remember to keep your information up to date"|t }}</strong></p>
+        <p>{{ "Please make sure that all your information in grants is correct and up-to-date. You can edit your information on the My data tab."|t }}</p>
+      </span>
+    </div>
+    <button type="button" class="announcement__close js-announcement__close--disabled" aria-label="{{ "Close announcement"|t }}"></button>
+  </div>
+</div>
