@@ -99,6 +99,7 @@ class CommunityAddressComposite extends WebformCompositeBase {
     $grantsProfileService = \Drupal::service('grants_profile.service');
 
     $selectedCompany = $grantsProfileService->getSelectedRoleData();
+    $profileType = $grantsProfileService->getApplicantType();
     $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 
     $formValues = $form_state->getValues();
@@ -136,6 +137,11 @@ class CommunityAddressComposite extends WebformCompositeBase {
       $element['#attributes']['class'][] = 'has-error';
       $element['#attributes']['error_label'] = $errorStorage['errors']['community_address']['label'];
     }
+
+    if ($profileType === 'private_person') {
+      $element['#required'] = FALSE;
+    }
+
 
     return $element;
 
