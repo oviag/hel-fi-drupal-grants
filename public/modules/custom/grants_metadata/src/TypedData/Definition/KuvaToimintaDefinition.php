@@ -284,38 +284,6 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
           'dataType' => 'string',
           'jsonType' => 'int',
         ]);
-      // $info['maara_helsingissa'] = DataDefinition::create('integer')
-      //        ->setLabel('Määrä Helsingissä.')
-      //        ->setSetting('jsonPath', [
-      //          'compensation',
-      //          'activityInfo',
-      //          'plannedActivityInfoArray',
-      //          'eventsVisitorsTotal',
-      //        ])
-      //        ->setSetting('valueCallback', [
-      //          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
-      //          'convertToInt',
-      //        ])
-      //        ->setSetting('typeOverride', [
-      //          'dataType' => 'string',
-      //          'jsonType' => 'int',
-      //        ]);
-      //      $info['maara_kaikkiaan'] = DataDefinition::create('integer')
-      //        ->setLabel('Määrä Helsingissä.')
-      //        ->setSetting('jsonPath', [
-      //          'compensation',
-      //          'activityInfo',
-      //          'plannedActivityInfoArray',
-      //          'eventsVisitorsHkiTotal',
-      //        ])
-      //        ->setSetting('valueCallback', [
-      //          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
-      //          'convertToInt',
-      //        ])
-      //        ->setSetting('typeOverride', [
-      //          'dataType' => 'string',
-      //          'jsonType' => 'int',
-      //        ]);
       /* Näyttelyt */
       $info['nayttelyt_maara_helsingissa'] = DataDefinition::create('integer')
         ->setLabel('Määrä Helsingissä.')
