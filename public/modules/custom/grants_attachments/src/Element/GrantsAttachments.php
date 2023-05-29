@@ -198,10 +198,6 @@ class GrantsAttachments extends WebformCompositeBase {
         $element["fileStatus"]["#value"] = 'justUploaded';
       }
     }
-    else{
-
-      $d = 'asdf';
-    }
 
     $element['#prefix'] = '<div class="' . $element["#webform_id"] . '">';
     $element['#suffix'] = '</div>';

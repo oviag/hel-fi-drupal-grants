@@ -48,7 +48,7 @@ class GrantsAttachmentDefinition extends ComplexDataDefinitionBase {
           'fileType',
         ]);
 
-      $info['integrationID'] = DataDefinition::create('boolean')
+      $info['integrationID'] = DataDefinition::create('string')
         ->setRequired(FALSE)
         ->setLabel('Integration ID')
         ->setSetting('jsonPath', [
