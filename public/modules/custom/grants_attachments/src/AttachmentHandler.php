@@ -869,6 +869,8 @@ class AttachmentHandler {
           if (isset($field['isIncludedInOtherFile'])) {
             $retval['isIncludedInOtherFile'] = $field['isIncludedInOtherFile'] === "1";
           }
+
+          $retval['isNewAttachment'] = TRUE;
           break;
 
         case 'justUploaded':

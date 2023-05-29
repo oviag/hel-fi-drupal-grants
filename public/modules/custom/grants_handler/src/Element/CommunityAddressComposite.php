@@ -142,7 +142,6 @@ class CommunityAddressComposite extends WebformCompositeBase {
       $element['#required'] = FALSE;
     }
 
-
     return $element;
 
   }

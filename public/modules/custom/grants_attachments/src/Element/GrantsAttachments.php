@@ -77,7 +77,6 @@ class GrantsAttachments extends WebformCompositeBase {
     }
 
     if (isset($submissionData[$element['#webform_key']]) && is_array($submissionData[$element['#webform_key']])) {
-
       $dataForElement = $element['#value'];
 
       // When user goes to previous step etc. we might lose the additional data for the just
@@ -95,6 +94,12 @@ class GrantsAttachments extends WebformCompositeBase {
       }
 
       $uploadStatus = $dataForElement['fileStatus'] ?? NULL;
+
+      if ($uploadStatus === NULL) {
+        if (!empty($dataForElement['integrationID'])) {
+          $uploadStatus = 'uploaded';
+        }
+      }
 
       if (isset($dataForElement["fileType"])) {
         $element["fileType"]["#value"] = $dataForElement["fileType"];
@@ -193,6 +198,10 @@ class GrantsAttachments extends WebformCompositeBase {
         $element["fileStatus"]["#value"] = 'justUploaded';
       }
     }
+    else{
+
+      $d = 'asdf';
+    }
 
     $element['#prefix'] = '<div class="' . $element["#webform_id"] . '">';
     $element['#suffix'] = '</div>';
@@ -289,6 +298,10 @@ class GrantsAttachments extends WebformCompositeBase {
       '#value' => NULL,
     ];
     $elements['integrationID'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
+    ];
+    $elements['isAttachmentNew'] = [
       '#type' => 'hidden',
       '#value' => NULL,
     ];
