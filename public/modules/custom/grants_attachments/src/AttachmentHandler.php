@@ -699,7 +699,7 @@ class AttachmentHandler {
           'fileName' => $selectedAccount["confirmationFile"],
           // Since we're not adding/changing bank account, set this to false so
           // the file is not fetched again.
-          'isNewAttachment' => FALSE,
+          'isNewAttachment' => TRUE,
           'fileType' => 45,
           'isDeliveredLater' => FALSE,
           'isIncludedInOtherFile' => FALSE,
