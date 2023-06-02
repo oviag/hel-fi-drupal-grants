@@ -119,12 +119,9 @@ class ServicePageAnonBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $node = \Drupal::routeMatch()->getParameter('node');
 
-    $webformId = $node->get('field_webform')->target_id;
-
     $applicantTypes = $node->get('field_hakijatyyppi')->getValue();
 
-    $profileService = \Drupal::service('grants_profile.service');
-    $currentRole = $profileService->getSelectedRoleData();
+    $currentRole = $this->grantsProfileService->getSelectedRoleData();
     $currentRoleType = NULL;
     if ($currentRole) {
       $currentRoleType = $currentRole['type'];
