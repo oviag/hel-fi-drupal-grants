@@ -55,7 +55,7 @@ class AtvSchema {
   public function __construct(TypedDataManager $typed_data_manager, LoggerChannelFactory $loggerFactory) {
 
     $this->typedDataManager = $typed_data_manager;
-    $this->logger = $loggerFactory->get('grants_attachments');
+    $this->logger = $loggerFactory->get('grants_atv_schema');
 
   }
 
@@ -1025,8 +1025,14 @@ class AtvSchema {
         $itemValue = $valueCallback['class']::$funcName($itemValue, $valueCallback['arguments'] ?? []);
       }
       else {
-        // But still support old way to just call function.
-        $itemValue = call_user_func($valueCallback, $itemValue);
+        if (isset($valueCallback['arguments'])) {
+          $args = $valueCallback['arguments'];
+          unset($valueCallback['arguments']);
+          $itemValue = call_user_func($valueCallback, $itemValue, $args);
+        }
+        else {
+          $itemValue = call_user_func($valueCallback, $itemValue);
+        }
       }
     }
 

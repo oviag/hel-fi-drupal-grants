@@ -1134,4 +1134,49 @@ class AttachmentHandler {
     return str_replace($baseUrlApps, '', $integrationId);
   }
 
+  /**
+   * @return void
+   */
+  public static function processAttachments($itemValue, $arguments){
+    $retval = [];
+    foreach ($itemValue as $value) {
+      if (empty($arguments)) {
+        continue;
+      }
+      $submittedField = array_filter($arguments["full_values"],function($item) use($value){
+        if (is_array($item)) {
+          if (isset($item['fileType'])) {
+            $valueType = (int) $value['fileType'];
+            $itemType = (int) $item['fileType'];
+            return $valueType === $itemType;
+          }
+        }
+        return FALSE;
+      });
+      $submittedField = reset($submittedField);
+      $tempValue = $value;
+      if ($submittedField["isDeliveredLater"] == '1') {
+        $tempValue['isDeliveredLater'] = TRUE;
+      } else {
+        $tempValue['isDeliveredLater'] = FALSE;
+      }
+      if ($submittedField["isIncludedInOtherFile"] == '1') {
+        $tempValue['isIncludedInOtherFile'] = TRUE;
+      } else {
+        $tempValue['isIncludedInOtherFile'] = FALSE;
+      }
+      $d = 'asdf';
+    }
+
+    return $itemValue;
+  }
+
+  /**
+   * @return void
+   */
+  public static function emptyAsBoolean($itemValue, $arguments){
+
+    return $itemValue;
+  }
+
 }

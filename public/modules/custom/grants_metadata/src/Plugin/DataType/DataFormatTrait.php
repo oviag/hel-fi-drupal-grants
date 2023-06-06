@@ -22,11 +22,16 @@ trait DataFormatTrait {
       $valueCallback = $definition->getSetting('valueCallback');
       $itemTypes = AtvSchema::getJsonTypeForDataType($definition);
 
+      if ($name === 'attachments') {
+        $d = 'asdf';
+      }
+
       if (!is_array($values)) {
         $formattedData[$name] = NULL;
       }
       else {
         if (array_key_exists($name, $values)) {
+          // this gets form attachments, which is NOT updated from form
           $value = $values[$name];
 
           if ($value === NULL) {
@@ -34,6 +39,7 @@ trait DataFormatTrait {
           }
 
           if ($valueCallback) {
+            $valueCallback['arguments']['full_values'] = $values;
             $value = AtvSchema::getItemValue($itemTypes, $value, $defaultValue, $valueCallback);
           }
           $formattedData[$name] = $value;

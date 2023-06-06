@@ -394,6 +394,10 @@ trait ApplicationDefinitionTrait {
     // Attachments.
     $info['attachments'] = ListDataDefinition::create('grants_metadata_attachment')
       ->setLabel('Attachments')
+      ->setSetting('valueCallback', [
+        'class' => 'Drupal\grants_attachments\AttachmentHandler',
+        'method' => 'processAttachments',
+      ])
       ->setSetting('jsonPath', ['attachmentsInfo', 'attachmentsArray']);
 
     $info['extra_info'] = DataDefinition::create('string')

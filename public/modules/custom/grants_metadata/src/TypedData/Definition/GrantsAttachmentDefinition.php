@@ -60,7 +60,7 @@ class GrantsAttachmentDefinition extends ComplexDataDefinitionBase {
       $info['isDeliveredLater'] = DataDefinition::create('boolean')
         ->setRequired(TRUE)
         ->setLabel('Is delivered later')
-        ->setSetting('defaultValue', FALSE)
+//        ->setSetting('defaultValue', FALSE)
         ->setSetting('typeOverride', [
           'dataType' => 'string',
           'jsonType' => 'bool',
