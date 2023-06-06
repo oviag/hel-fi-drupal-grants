@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Webform Summation Field module.
+ */
+
+/**
+ * Implements hook_webform_submission_form_alter().
+ */
+function grants_webform_actions_alter_form_alter(&$form, $form_state, $form_id) {
+  $form['actions']['draft']['#weight'] = 2222;
+}
