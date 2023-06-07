@@ -518,15 +518,13 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
         ->setSetting('fullItemValueCallback', [
           'service' => 'grants_premises.service',
           'method' => 'processPremises',
+          'webform' => TRUE,
         ])
         ->setSetting('fieldsForApplication', [
           'premiseName',
-          'premiseType',
-          'isOthersUse',
-          'premiseName',
-          'isOwnedByApplicant',
           'postCode',
           'isOwnedByCity',
+          //          'premiseType',
         ]);
 
       $info['maara_helsingissa_toteutuneet'] = DataDefinition::create('integer')
