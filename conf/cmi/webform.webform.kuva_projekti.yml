@@ -333,8 +333,6 @@ elements: |-
           ':input[name="avustukset_summa"]':
             value:
               greater_equal: '5000'
-          ':input[name="applicant_type"]':
-            value: registered_community
       info_muut_samaan_tarkoitukseen_myonnetty:
         '#type': processed_text
         '#text': |
@@ -738,8 +736,6 @@ elements: |-
             ':input[name="avustukset_summa"]':
               value:
                 greater_equal: '5000'
-            ':input[name="applicant_type"]':
-              value: registered_community
     toiminnan_tavoittavuus:
       '#type': webform_section
       '#title': 'Toiminnan tavoittavuus'
@@ -758,8 +754,6 @@ elements: |-
             ':input[name="avustukset_summa"]':
               value:
                 greater_equal: '5000'
-            ':input[name="applicant_type"]':
-              value: registered_community
       toiminta_yhteisollisyys:
         '#type': textarea
         '#title': 'Miten toiminta vahvistaa yhteisöllisyyttä, verkostomaista yhteistyöskentelyä ja miten kaupunkilaisten on mahdollista osallistua toiminnan eri vaiheisiin? Minkälaisia toimenpiteitä, resursseja ja osaamista on asian edistämiseksi?'
@@ -775,8 +769,6 @@ elements: |-
             ':input[name="avustukset_summa"]':
               value:
                 greater_equal: '5000'
-            ':input[name="applicant_type"]':
-              value: registered_community
       toiminta_kohderyhmat:
         '#type': textarea
         '#title': 'Keitä toiminnalla tavoitellaan? Miten kyseiset kohderyhmät aiotaan tavoittaa ja mitä osaamista näiden kanssa työskentelyyn on?'
@@ -795,8 +787,6 @@ elements: |-
           ':input[name="avustukset_summa"]':
             value:
               greater_equal: '5000'
-          ':input[name="applicant_type"]':
-            value: registered_community
       toiminta_ammattimaisuus:
         '#type': textarea
         '#title': 'Kuvaa toiminnan järjestämisen ammattimaisuutta ja organisoimista'
