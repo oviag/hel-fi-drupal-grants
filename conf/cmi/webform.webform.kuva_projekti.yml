@@ -132,7 +132,7 @@ elements: |-
           - grants-profile--imported-section
       prh_markup:
         '#type': webform_markup
-        '#markup': 'Tämä haetaan automaattisesti muualta. Komponentti tulee jossain vaiheessa (tm)'
+        '#markup': 'Tiedot on haettu hakuprofiilistasi.'
       hakijan_tiedot:
         '#type': applicant_info
         '#title': 'Hakijan tiedot'
@@ -219,11 +219,11 @@ elements: |-
               value: unregistered_community
       community_officials:
         '#type': community_officials_composite
-        '#description': 'Valitse toiminnasta vastaavat henkilöt, henkiöitä ylläpidetään omissa tiedoissa.'
         '#help': 'Jos haluat lisätä, poistaa tai muuttaa henkilöitä tallenna hakemus luonnokseksi ja siirry ylläpitämään henkilöiden tietoja omiin tietoihin.'
         '#title': 'Valitse toiminnasta vastaavat henkilöt'
-        '#required': true
         '#multiple': true
+        '#description': 'Valitse toiminnasta vastaavat henkil&ouml;t, henkil&ouml;it&auml; yll&auml;pidet&auml;&auml;n omissa tiedoissa.'
+        '#required': true
         '#multiple__item_label': henkilö
         '#multiple__no_items_message': 'Ei toiminnasta vastaavia henkil&ouml;it&auml;. Lis&auml;&auml; uusi henkil&ouml; alta.'
         '#multiple__min_items': 0
@@ -648,11 +648,13 @@ elements: |-
         '#title': 'Muut tilat'
         '#multiple': true
         '#title_display': before
+        '#multiple__no_items_message': ''
         '#multiple__min_items': 0
         '#multiple__empty_items': 0
         '#multiple__sorting': false
         '#multiple__add': false
         '#multiple__add_more_input': false
+        '#multiple__add_more_button_label': 'Lisää uusi tila'
         '#premiseType__access': false
         '#premiseAddress__access': false
         '#location__access': false
@@ -983,7 +985,7 @@ elements: |-
           <strong>Vaaditut liitteet</strong><br />
           Avustushakemuksen k&auml;sittely&auml; varten tarvitaan ty&ouml;ryhm&auml;n j&auml;senten ansioluettelot, kun kyseess&auml; on taiteen ammattilaisten hanke.&nbsp;<br />
           <br />
-          Uusilta hakijoilta ja tapauksissa, joissa pankkiyhteystiedot ovat muuttuneet, tarvitaan my&ouml;s tiliote tai vastaava asiakirja, josta selvi&auml;&auml; tilinomistajan nimi ja tilinumero.<br />
+          Uusilta hakijoilta ja tapauksissa, joissa pankkiyhteystiedot ovat muuttuneet, tarvitaan hakijan Omiin tietoihin my&ouml;s tiliote tai vastaava asiakirja, josta selvi&auml;&auml; tilinomistajan nimi ja tilinumero.<br />
           <br />
           <strong>Usean liitteen toimittaminen</strong><br />
           Voit toimittaa useampia ty&ouml;ryhm&auml;n j&auml;senten ansioluetteloita erillisin&auml; tiedostoina liitt&auml;m&auml;ll&auml; ne Muu liite -kohtaan. Voit halutessasi my&ouml;s toimittaa useampia liitteit&auml; yhten&auml; tiedostona.
