@@ -76,7 +76,7 @@ class GrantsBudgetCostStatic extends WebformCompositeBase {
     }
 
     $appEnv = ApplicationHandler::getAppEnv();
-    if ($appEnv === 'DEV' || strpos($appEnv, 'LOCAL') !== FALSE) {
+    if ($appEnv === 'DEV' || strpos($appEnv, 'LOCALA') !== FALSE) {
       $element['debugging'] = [
         '#type' => 'details',
         '#title' => 'Dev DEBUG:',
