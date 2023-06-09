@@ -28,7 +28,6 @@ class GrantsBudgetComponentService {
    */
   public static function processBudgetStaticValues($property): array {
     $items = [];
-    $tets = $property->getValue();
 
     foreach ($property as $item) {
       $itemName = $item->getName();
