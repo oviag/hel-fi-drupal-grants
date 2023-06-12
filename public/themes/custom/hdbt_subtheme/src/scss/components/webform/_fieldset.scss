@@ -22,13 +22,18 @@ fieldset.grants-budget-other-income--wrapper.fieldgroup {
   span.visually-hidden {
     height: auto;
     width: auto;
-    overflow: auto;
     clip: initial;
     clip-path: initial;
     left: var(--spacing-layout-2-xs);
-    top: -12px;
     background: white;
     padding-right: var(--spacing-xl);
+    display: block;
+    position: relative !important;
   }
 }
 
+div.community_officials_wrapper {
+  >label {
+    display: none;
+  }
+}

@@ -39,8 +39,8 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
 
     $elements['community_officials_select'] = [
       '#type' => 'select',
-      // '#required' => TRUE,
-      '#title' => t('Select official'),
+      '#required' => TRUE,
+      '#title' => t('Select'),
       '#after_build' => [[get_called_class(), 'buildOfficialOptions']],
       '#options' => [],
       '#attributes' => [
