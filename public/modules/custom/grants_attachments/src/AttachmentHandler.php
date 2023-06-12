@@ -520,8 +520,8 @@ class AttachmentHandler {
     $atvSchema = \Drupal::service('grants_metadata.atv_schema');
 
     // If we have account number, load details.
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
-    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany['identifier']);
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
+    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany);
     $profileContent = $grantsProfileDocument->getContent();
     $applicationDocument = FALSE;
     $fileArray = [];
@@ -596,11 +596,14 @@ class AttachmentHandler {
 
       if (!$accountConfirmationExists) {
         $found = array_filter($submittedFormData, function ($fn) use ($filename) {
-          // Not an attachment field.
-          if (!isset($fn['fileName'])) {
-            return FALSE;
+          if (is_array($fn)) {
+            // Not an attachment field.
+            if (!isset($fn['fileName'])) {
+              return FALSE;
+            }
+            return $fn['fileName'] === $filename;
           }
-          return $fn['fileName'] === $filename;
+          return FALSE;
         });
         if (!empty($found)) {
           $accountConfirmationExists = TRUE;
@@ -696,7 +699,7 @@ class AttachmentHandler {
           'fileName' => $selectedAccount["confirmationFile"],
           // Since we're not adding/changing bank account, set this to false so
           // the file is not fetched again.
-          'isNewAttachment' => FALSE,
+          'isNewAttachment' => TRUE,
           'fileType' => 45,
           'isDeliveredLater' => FALSE,
           'isIncludedInOtherFile' => FALSE,
@@ -866,6 +869,8 @@ class AttachmentHandler {
           if (isset($field['isIncludedInOtherFile'])) {
             $retval['isIncludedInOtherFile'] = $field['isIncludedInOtherFile'] === "1";
           }
+
+          $retval['isNewAttachment'] = TRUE;
           break;
 
         case 'justUploaded':
@@ -880,13 +885,8 @@ class AttachmentHandler {
           $retval['isNewAttachment'] = FALSE;
           break;
 
-        case 'otherFile':
-          $retval['isDeliveredLater'] = FALSE;
-          $retval['isIncludedInOtherFile'] = TRUE;
-          $retval['isNewAttachment'] = FALSE;
-          break;
-
         case 'deliveredLater':
+        case 'otherFile':
           if (isset($field['isDeliveredLater'])) {
             $retval['isDeliveredLater'] = $field['isDeliveredLater'] === "1";
             $retval['isNewAttachment'] = FALSE;

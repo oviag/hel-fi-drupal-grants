@@ -106,24 +106,43 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
   /**
    * Builds the response.
    *
-   * @throws \GuzzleHttp\Exception\GuzzleException
+   * @return array
+   *   Render array
    */
-  public function build() {
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+  public function build(): array {
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
 
     if ($selectedCompany == NULL) {
       throw new AccessDeniedHttpException('User not authorised');
     }
 
+    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany);
+    if (gettype($grantsProfileDocument) == 'object' && get_class($grantsProfileDocument) == 'Drupal\helfi_atv\AtvDocument') {
+      $grantsProfile = $grantsProfileDocument->getContent();
+    }
+
+    $showProfileNotice = FALSE;
+
+    if (empty($grantsProfile["addresses"]) || empty($grantsProfile["bankAccounts"])) {
+      $showProfileNotice = TRUE;
+    }
+
     $appEnv = ApplicationHandler::getAppEnv();
 
-    $applications = ApplicationHandler::getCompanyApplications(
-      $selectedCompany,
-      $appEnv,
-      FALSE,
-      TRUE,
-      'application_list_item'
-    );
+    try {
+      // Get applications from ATV.
+      $applications = ApplicationHandler::getCompanyApplications(
+        $selectedCompany,
+        $appEnv,
+        FALSE,
+        TRUE,
+        'application_list_item'
+      );
+    }
+    catch (\Throwable $e) {
+      // If errors, just don't do anything.
+      $applications = [];
+    }
     $drafts = $applications['DRAFT'] ?? [];
     unset($applications['DRAFT']);
 
@@ -145,8 +164,12 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
       }
     }
 
-    $build = [
+    return [
       '#theme' => 'grants_oma_asiointi_front',
+      '#infoboxes' => [
+        '#theme' => 'grants_oma_asiointi_infoboxes',
+        '#profileNotice' => $showProfileNotice,
+      ],
       '#drafts' => [
         '#theme' => 'application_list',
         '#type' => 'drafts',
@@ -163,8 +186,6 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
       ],
       '#unread' => $unreadMsg,
     ];
-
-    return $build;
   }
 
   /**
@@ -174,7 +195,7 @@ class GrantsOmaAsiointiController extends ControllerBase implements ContainerInj
    *   Title.
    */
   public function title() :string {
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
     return $selectedCompany['name'];
   }
 

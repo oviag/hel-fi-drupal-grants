@@ -142,8 +142,9 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
    *   to mandate login page in case of error.
    *
    * @throws \GuzzleHttp\Exception\GuzzleException
+   * @throws \Drupal\grants_mandate\GrantsMandateException
    */
-  public function mandateCallbackYpa() {
+  public function mandateCallbackYpa(): RedirectResponse {
 
     $code = $this->requestStack->getMainRequest()->query->get('code');
     $state = $this->requestStack->getMainRequest()->query->get('state');
@@ -166,7 +167,9 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
         return new RedirectResponse($redirectUrl->toString());
       }
 
-      $this->grantsProfileService->setSelectedCompany(reset($roles));
+      $roles = reset($roles);
+      $roles['type'] = 'registered_community';
+      $this->grantsProfileService->setSelectedRoleData($roles);
     }
     else {
 
@@ -190,8 +193,14 @@ class GrantsMandateController extends ControllerBase implements ContainerInjecti
       return new RedirectResponse($redirectUrl->toString());
     }
 
-    // Redirect user to grants profile page.
-    $redirectUrl = Url::fromRoute('grants_profile.show');
+    $selectedRoleData = $this->grantsProfileService->getSelectedRoleData();
+
+    // Load grants profile.
+    $grantsProfile = $this->grantsProfileService->getGrantsProfile($selectedRoleData, TRUE);
+
+    // Redirect user based on if the user has a profile.
+    $redirectUrl = $grantsProfile ? Url::fromRoute('grants_oma_asiointi.front') : Url::fromRoute('grants_profile.edit');
+
     return new RedirectResponse($redirectUrl->toString());
   }
 

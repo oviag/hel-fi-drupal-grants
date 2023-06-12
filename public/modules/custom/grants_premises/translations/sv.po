@@ -1,0 +1,97 @@
+# Finnish translation of City of Helsinki Grants Metadata module
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2021-05-31 11:00+0300\n"
+"PO-Revision-Date: 2022-10-12 11:00+0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgctxt "grants_premises"
+msgid "City owns the property"
+msgstr "Staden äger fastigheten"
+
+msgctxt "grants_premises"
+msgid "Applicant owns property"
+msgstr "Sökande äger fastighet"
+
+msgctxt "grants_premises"
+msgid "Is other use"
+msgstr "Är annan användning"
+
+msgctxt "grants_premises"
+msgid "Post Code"
+msgstr "Postnummer"
+
+msgctxt "grants_premises"
+msgid "Is premise free"
+msgstr "Är premissfritt"
+
+msgctxt "grants_premises"
+msgid "Rent time end"
+msgstr "Hyrestiden slut"
+
+msgctxt "grants_premises"
+msgid "Rent time begin"
+msgstr "Hyrestiden börjar"
+
+msgctxt "grants_premises"
+msgid "Personnel Count"
+msgstr "Antal personal"
+
+msgctxt "grants_premises"
+msgid "Special Groups"
+msgstr "Specialgrupper"
+
+msgctxt "grants_premises"
+msgid "Group Count"
+msgstr "Gruppräkning"
+
+msgctxt "grants_premises"
+msgid "Special Students"
+msgstr "Specialstudenter"
+
+msgctxt "grants_premises"
+msgid "Student Count"
+msgstr "Studenträkning"
+
+msgctxt "grants_premises"
+msgid "Förutsättningsadress"
+msgstr "Lokal adress"
+
+msgctxt "grants_premises"
+msgid "Premise type"
+msgstr "Premisstyp"
+
+msgctxt "grants_premises"
+msgid "Premise name"
+msgstr "Premissnamn"
+
+msgctxt "grants_premises"
+msgid "Exhibition space"
+msgstr "Utställningslokal"
+
+msgctxt "grants_premises"
+msgid "Performance space"
+msgstr "Prestandautrymme"
+
+msgctxt "grants_premises"
+msgid "A separate practice space or other space for artistic work"
+msgstr "Ett separat övningsutrymme eller annat utrymme för konstnärligt arbete"
+
+msgctxt "grants_premises"
+msgid "Total Rent"
+msgstr "Total Hyra"
+
+msgctxt "grants_premises"
+msgid "Yes"
+msgstr "Ja"
+
+msgctxt "grants_premises"
+msgid "No"
+msgstr "Nej"

@@ -66,7 +66,7 @@ class GrantsAttachments extends WebformCompositeBase {
 
     if (isset($storage['errors'][$arrayKey])) {
       $errors = $storage['errors'][$arrayKey];
-      $element['#attributes']['class'][] = $errors['label'];
+      $element['#attributes']['class'][] = $errors['class'];
       $element['#attributes']['error_label'] = $errors['label'];
     }
 
@@ -77,7 +77,6 @@ class GrantsAttachments extends WebformCompositeBase {
     }
 
     if (isset($submissionData[$element['#webform_key']]) && is_array($submissionData[$element['#webform_key']])) {
-
       $dataForElement = $element['#value'];
 
       // When user goes to previous step etc. we might lose the additional data for the just
@@ -95,6 +94,12 @@ class GrantsAttachments extends WebformCompositeBase {
       }
 
       $uploadStatus = $dataForElement['fileStatus'] ?? NULL;
+
+      if ($uploadStatus === NULL) {
+        if (!empty($dataForElement['integrationID'])) {
+          $uploadStatus = 'uploaded';
+        }
+      }
 
       if (isset($dataForElement["fileType"])) {
         $element["fileType"]["#value"] = $dataForElement["fileType"];
@@ -251,7 +256,7 @@ class GrantsAttachments extends WebformCompositeBase {
     ];
     $elements['isDeliveredLater'] = [
       '#type' => 'checkbox',
-      '#title' => t('Attachment will delivered at later time'),
+      '#title' => t('Attachment will be delivered at later time'),
       '#element_validate' => ['\Drupal\grants_attachments\Element\GrantsAttachments::validateDeliveredLaterCheckbox'],
       '#attributes' => [
         'data-webform-composite-attachment-isDeliveredLater' => $uniqId,
@@ -289,6 +294,10 @@ class GrantsAttachments extends WebformCompositeBase {
       '#value' => NULL,
     ];
     $elements['integrationID'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
+    ];
+    $elements['isAttachmentNew'] = [
       '#type' => 'hidden',
       '#value' => NULL,
     ];
@@ -394,8 +403,13 @@ class GrantsAttachments extends WebformCompositeBase {
    *   Form state.
    * @param array $form
    *   The form.
+   *
+   * @return bool|null
+   *   Success or not.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public static function validateUpload(array &$element, FormStateInterface $form_state, array &$form) {
+  public static function validateUpload(array &$element, FormStateInterface $form_state, array &$form): bool|null {
 
     $webformKey = $element["#parents"][0];
     $triggeringElement = $form_state->getTriggeringElement();
@@ -465,7 +479,7 @@ class GrantsAttachments extends WebformCompositeBase {
       // If no application number, we cannot validate.
       // We should ALWAYS have it though at this point.
       if (!isset($webformData['application_number'])) {
-        return;
+        return NULL;
       }
       // Get application number from data.
       $application_number = $webformData['application_number'];
@@ -479,7 +493,7 @@ class GrantsAttachments extends WebformCompositeBase {
       if (str_contains($triggeringElement["#name"], 'attachment_upload_button')) {
 
         if (!$hasSameRootElement || ($multiValueField && !$validatingTriggeringElementParent)) {
-          return;
+          return NULL;
         }
 
         // Try to find filetype via array parents.
@@ -611,7 +625,7 @@ class GrantsAttachments extends WebformCompositeBase {
         // field which triggered the action.
         if (!$hasSameRootElement || ($multiValueField && !$validatingTriggeringElementParent)) {
           $form_state->setValue([...$valueParents], $webformDataElement);
-          return;
+          return NULL;
         }
 
         try {
@@ -639,6 +653,7 @@ class GrantsAttachments extends WebformCompositeBase {
         }
       }
     }
+    return NULL;
   }
 
   /**

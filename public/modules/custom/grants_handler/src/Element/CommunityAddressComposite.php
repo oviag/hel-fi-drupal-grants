@@ -37,14 +37,18 @@ class CommunityAddressComposite extends WebformCompositeBase {
 
     $elements['community_address_select'] = [
       '#type' => 'select',
-      '#required' => TRUE,
       '#title' => t('Select address'),
+      '#required' => TRUE,
       '#after_build' => [[get_called_class(), 'buildAddressOptions']],
       '#options' => [],
       '#attributes' => [
         'class' => [],
       ],
     ];
+
+    if (isset($element['#help'])) {
+      $elements['community_address_select']['#help'] = $element['#help'];
+    }
 
     $elements['community_street'] = [
       '#type' => 'hidden',
@@ -79,14 +83,23 @@ class CommunityAddressComposite extends WebformCompositeBase {
    * @return array
    *   Updated element
    *
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   *
    * @see grants_handler.module
    */
   public static function buildAddressOptions(array $element, FormStateInterface $form_state): array {
 
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+
+    if (!in_array('helsinkiprofiili', $roles)) {
+      return [];
+    }
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
 
-    $selectedCompany = $grantsProfileService->getSelectedCompany();
+    $selectedCompany = $grantsProfileService->getSelectedRoleData();
+    $profileType = $grantsProfileService->getApplicantType();
     $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 
     $formValues = $form_state->getValues();
@@ -104,7 +117,7 @@ class CommunityAddressComposite extends WebformCompositeBase {
       return $element;
     }
 
-    foreach ($profileData['addresses'] as $delta => $address) {
+    foreach ($profileData['addresses'] as $address) {
       $deltaString = $address['address_id'];
       $optionSelection = $address['street'] . ', ' . $address['postCode'] .
         ', ' . $address['city'];
@@ -123,6 +136,10 @@ class CommunityAddressComposite extends WebformCompositeBase {
     if (isset($errorStorage['errors']['community_address'])) {
       $element['#attributes']['class'][] = 'has-error';
       $element['#attributes']['error_label'] = $errorStorage['errors']['community_address']['label'];
+    }
+
+    if ($profileType === 'private_person') {
+      $element['#required'] = FALSE;
     }
 
     return $element;

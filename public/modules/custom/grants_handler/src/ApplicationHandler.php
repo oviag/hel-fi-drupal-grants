@@ -3,9 +3,9 @@
 namespace Drupal\grants_handler;
 
 use Drupal\Component\Serialization\Json;
-use Drupal\Core\Access\AccessException;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Language\LanguageManager;
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelFactory;
 use Drupal\Core\Messenger\Messenger;
@@ -151,6 +151,13 @@ class ApplicationHandler {
   protected $database;
 
   /**
+   * The Language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManager
+   */
+  protected $languageManager;
+
+  /**
    * Applicationtypes.
    *
    * @var array
@@ -163,6 +170,13 @@ class ApplicationHandler {
    * @var array
    */
   protected static array $applicationStatuses;
+
+  /**
+   * Access form errors.
+   *
+   * @var \Drupal\grants_handler\GrantsHandlerNavigationHelper
+   */
+  protected GrantsHandlerNavigationHelper $grantsHandlerNavigationHelper;
 
   /**
    * Constructs an ApplicationUploader object.
@@ -185,6 +199,10 @@ class ApplicationHandler {
    *   Access to events.
    * @param \Drupal\Core\Database\Connection $datababse
    *   Database connection.
+   * @param \Drupal\Core\Language\LanguageManager $languageManager
+   *   Language manager.
+   * @param \Drupal\grants_handler\GrantsHandlerNavigationHelper $grantsFormNavigationHelper
+   *   Access error messages.
    */
   public function __construct(
     ClientInterface $http_client,
@@ -196,6 +214,8 @@ class ApplicationHandler {
     Messenger $messenger,
     EventsService $eventsService,
     Connection $datababse,
+    LanguageManager $languageManager,
+    GrantsHandlerNavigationHelper $grantsFormNavigationHelper
   ) {
 
     $this->httpClient = $http_client;
@@ -216,6 +236,8 @@ class ApplicationHandler {
 
     $this->newStatusHeader = '';
     $this->database = $datababse;
+    $this->languageManager = $languageManager;
+    $this->grantsHandlerNavigationHelper = $grantsFormNavigationHelper;
   }
 
   /*
@@ -518,8 +540,7 @@ class ApplicationHandler {
    * @return string
    *   Generated number.
    */
-  public static function createApplicationNumber(WebformSubmission $submission): string {
-
+  public static function createApplicationNumber(WebformSubmission &$submission): string {
     $appParam = self::getAppEnv();
 
     $serial = $submission->serial();
@@ -533,6 +554,89 @@ class ApplicationHandler {
       return 'GRANTS-' . $typeCode . '-' . sprintf('%08d', $serial);
     }
     return 'GRANTS-' . $appParam . '-' . $typeCode . '-' . sprintf('%08d', $serial);
+  }
+
+  /**
+   * Generate next available application number for the submission.
+   *
+   * @param \Drupal\webform\Entity\WebformSubmission $submission
+   *   Webform data.
+   *
+   * @return string
+   *   Generated number.
+   *
+   * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
+   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \GuzzleHttp\Exception\GuzzleException
+   */
+  public static function getAvailableApplicationNumber(WebformSubmission &$submission): string {
+
+    $appParam = self::getAppEnv();
+    $serial = $submission->serial();
+    $webform_id = $submission->getWebform()->id();
+    $lastSerialKey = $webform_id . '_' . $appParam;
+    $kvService = \Drupal::service('keyvalue.database');
+    $kvStorage = $kvService->get('application_numbers');
+    $savedSerial = $kvStorage->get($lastSerialKey);
+
+    if (!empty($submission->getData())) {
+      return self::createApplicationNumber($submission);
+    }
+
+    if ($savedSerial && $savedSerial > $serial) {
+      $serial = $savedSerial;
+    }
+
+    /** @var \Drupal\helfi_atv\AtvService $atvService */
+    $atvService = \Drupal::service('helfi_atv.atv_service');
+
+    $applicationType = $submission->getWebform()
+      ->getThirdPartySetting('grants_metadata', 'applicationType');
+
+    $typeCode = self::getApplicationTypes()[$applicationType]['code'] ?? '';
+    $check = TRUE;
+
+    while ($check) {
+      $applicationNumber = self::getApplicationNumberInEnvFormat($appParam, $typeCode, $serial);
+      $applNumberIsAvailable = $atvService->checkDocumentExistsByTransactionId($applicationNumber);
+      if ($applNumberIsAvailable) {
+        // Check that there is no local submission with given serial.
+        $query = \Drupal::entityQuery('webform_submission')
+          ->condition('webform_id', $webform_id)
+          ->condition('serial', $serial);
+        $results = $query->execute();
+
+        if (empty($results)) {
+          $check = FALSE;
+        }
+        else {
+          // Increase serial because we found local a submission.
+          $serial++;
+        }
+      }
+      else {
+        // No luck, let's check another one.
+        $serial++;
+      }
+    }
+
+    $submission->set('serial', $serial);
+    $kvStorage->set($lastSerialKey, $serial);
+    return $applicationNumber;
+  }
+
+  /**
+   * Format application number based by the enviroment.
+   */
+  private static function getApplicationNumberInEnvFormat($appParam, $typeCode, $serial): string {
+    $applicationNumber = 'GRANTS-' . $appParam . '-' . $typeCode . '-' . sprintf('%08d', $serial);
+
+    if ($appParam == 'PROD') {
+      $applicationNumber = 'GRANTS-' . $typeCode . '-' . sprintf('%08d', $serial);
+    }
+
+    return $applicationNumber;
   }
 
   /**
@@ -563,7 +667,7 @@ class ApplicationHandler {
     // Explode number.
     $exploded = explode('-', $applicationNumber);
     // Get serial.
-    $number = array_pop($exploded);
+    array_pop($exploded);
     // Get shortcode.
     $webformShortCode = array_pop($exploded);
 
@@ -642,9 +746,9 @@ class ApplicationHandler {
     /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
     $atvSchema = \Drupal::service('grants_metadata.atv_schema');
 
-    /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
-    $selectedCompany = $grantsProfileService->getSelectedCompany();
+    $selectedCompany = $grantsProfileService->getSelectedRoleData();
 
     // If no company selected, no mandates no access.
     if ($selectedCompany == NULL) {
@@ -672,6 +776,13 @@ class ApplicationHandler {
       if ($webform) {
         $submissionObject = WebformSubmission::create(['webform_id' => $webform->id()]);
         $submissionObject->set('serial', $submissionSerial);
+
+        // Lets mark that we don't want to generate new application
+        // number, as we just assigned the serial from ATV application id.
+        // check GrantsHandler@preSave.
+        // @todo notes field handling to separate service etc.
+        $customSettings = ['skip_available_number_check' => TRUE];
+        $submissionObject->set('notes', serialize($customSettings));
         $submissionObject->save();
       }
     }
@@ -688,10 +799,6 @@ class ApplicationHandler {
         $document->getMetadata()
       );
 
-      if ($selectedCompany['identifier'] !== $sData['company_number']) {
-        throw new AccessException('Selected company ID does not match with one from document');
-      }
-
       $sData['messages'] = self::parseMessages($sData);
 
       // Set submission data from parsed mapper.
@@ -700,6 +807,55 @@ class ApplicationHandler {
       return $submissionObject;
     }
     return NULL;
+  }
+
+  /**
+   * Extract serial numbor from application number string.
+   *
+   * @param string $applicationNumber
+   *   Application number.
+   * @param bool $refetch
+   *   Force refetch from ATV.
+   *
+   * @return Drupal\helfi_atv\AtvDocument
+   *   ATV Document
+   *
+   * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
+   */
+  public static function atvDocumentFromApplicationNumber(
+    string $applicationNumber,
+    bool $refetch = FALSE
+  ) {
+
+    $submissionSerial = self::getSerialFromApplicationNumber($applicationNumber);
+
+    /** @var \Drupal\helfi_atv\AtvService $atvService */
+    $atvService = \Drupal::service('helfi_atv.atv_service');
+
+    /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
+    $atvSchema = \Drupal::service('grants_metadata.atv_schema');
+
+    /** @var \Drupal\grants_metadata\AtvSchema $atvSchema */
+    $grantsProfileService = \Drupal::service('grants_profile.service');
+    $selectedCompany = $grantsProfileService->getSelectedRoleData();
+
+    // If no company selected, no mandates no access.
+    if ($selectedCompany == NULL) {
+      throw new CompanySelectException('User not authorised');
+    }
+    /** @var Drupal\helfi_atv\AtvDocument[] $document */
+    $document = $atvService->searchDocuments(
+      [
+        'transaction_id' => $applicationNumber,
+        'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
+      ],
+      $refetch
+    );
+    if (empty($document)) {
+      throw new AtvDocumentNotFoundException('Document not found');
+    }
+    $document = reset($document);
+    return $document;
   }
 
   /**
@@ -724,7 +880,8 @@ class ApplicationHandler {
       $to = new \DateTime($thirdPartySettings["applicationClose"]);
     }
     catch (\Exception $e) {
-      \Drupal::logger('application_handler')->error('isApplicationOpen date error: @error', ['@error' => $e->getMessage()]);
+      \Drupal::logger('application_handler')
+        ->error('isApplicationOpen date error: @error', ['@error' => $e->getMessage()]);
       return $applicationContinuous;
     }
 
@@ -742,6 +899,8 @@ class ApplicationHandler {
    *
    * @param string $transactionId
    *   Id of the transaction.
+   * @param bool $refetch
+   *   Force atv document fetch.
    *
    * @return \Drupal\helfi_atv\AtvDocument
    *   FEtched document.
@@ -749,11 +908,10 @@ class ApplicationHandler {
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
    * @throws \Drupal\helfi_atv\AtvFailedToConnectException
    * @throws \GuzzleHttp\Exception\GuzzleException
-   * @throws \Drupal\Core\TempStore\TempStoreException
    */
-  public function getAtvDocument(string $transactionId): AtvDocument {
+  public function getAtvDocument(string $transactionId, bool $refetch = FALSE): AtvDocument {
 
-    if (!isset($this->atvDocument)) {
+    if (!isset($this->atvDocument) || $refetch === TRUE) {
       $res = $this->atvService->searchDocuments([
         'transaction_id' => $transactionId,
         'lookfor' => 'appenv:' . self::getAppEnv(),
@@ -817,16 +975,29 @@ class ApplicationHandler {
 
     $erroredItems = [];
 
+    $webform = $webform_submission->getWebform();
+    $formElementsDecodedAndFlattened = $webform->getElementsDecodedAndFlattened();
+
     if ($violations->count() > 0) {
+      $violationPrints = [];
+      /** @var \Symfony\Component\Validator\ConstraintViolationInterface $violation */
       foreach ($violations as $violation) {
         $propertyPath = $violation->getPropertyPath();
 
-        $thisProperty = $appProps[$propertyPath];
-        // $webformElement = $webformElements[$propertyPath];
+        if ($propertyPath == 'hakijan_tiedot.email') {
+          continue;
+        }
+
+        $propertyPathArray = explode('.', $propertyPath);
+
+        $thisProperty = $appProps[$propertyPathArray[0]];
+
         $thisDefinition = $thisProperty->getDataDefinition();
         $label = $thisDefinition->getLabel();
         $thisDefinitionSettings = $thisDefinition->getSettings();
         $message = $violation->getMessage();
+
+        $violationPrints[$propertyPath] = $message;
 
         // formErrorElement setting controls what element on form errors
         // if data validation fails.
@@ -856,18 +1027,73 @@ class ApplicationHandler {
           }
         }
         else {
-          // Add errors to form.
-          $formState->setErrorByName(
-            $propertyPath,
-            $message
-          );
-          // Add propertypath to errored items to have only
-          // single error from whole address item.
+          if (($formElement = $formElementsDecodedAndFlattened[$propertyPath]) && isset($formElement['#parents'])) {
+            // Add errors to form.
+            $formState->setError(
+              $formElement,
+              $message
+            );
+            // Add propertypath to errored items to have only
+            // single error from whole address item.
+          }
+          else {
+            if (count($propertyPathArray) > 1) {
+              $propertyKey = str_replace('.', '][', $propertyPath);
+              // Add errors to form.
+              $formState->setErrorByName(
+                $propertyKey,
+                $message
+              );
+            }
+            else {
+              // Add errors to form.
+              $formState->setErrorByName(
+                $propertyPath,
+                $message
+              );
+            }
+
+            // Add propertypath to errored items to have only
+            // single error from whole address item.
+          }
           $erroredItems[] = $propertyPath;
         }
       }
+      $values = $applicationData->getValue();
+
+      if ($this->isDebug()) {
+        $this->logger->error('@appno data validation failed, errors: @errors',
+          [
+            '@appno' => $values["application_number"],
+            '@errors' => json_encode($violationPrints),
+          ]);
+      }
     }
+    try {
+      $this->grantsHandlerNavigationHelper->logPageErrors($webform_submission, $formState);
+    }
+    catch (\Exception $e) {
+    }
+
     return $violations;
+  }
+
+  /**
+   * Get webform title based on id and language code.
+   */
+  private function getWebformTitle($webform_id, $langCode) {
+    // Get the target language object.
+    $language = $this->languageManager->getLanguage($langCode);
+
+    // Remember original language before this operation.
+    $originalLanguage = $this->languageManager->getConfigOverrideLanguage();
+
+    // Set the translation target language on the configuration factory.
+    $this->languageManager->setConfigOverrideLanguage($language);
+    $translatedLabel = \Drupal::config("webform.webform.${webform_id}")
+      ->get('title');
+    $this->languageManager->setConfigOverrideLanguage($originalLanguage);
+    return $translatedLabel;
   }
 
   /**
@@ -900,7 +1126,8 @@ class ApplicationHandler {
       throw new ProfileDataException('No Helsinki profile data found');
     }
 
-    $selectedCompany = $this->grantsProfileService->getSelectedCompany();
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
+    $companyData = $this->grantsProfileService->getGrantsProfileContent($selectedCompany);
 
     // If we've given data to work with, clear it for copying.
     if (empty($submissionData)) {
@@ -917,6 +1144,7 @@ class ApplicationHandler {
     $submissionData['applicant_type'] = $this->grantsProfileService->getApplicantType();
     $submissionData['status'] = self::getApplicationStatuses()['DRAFT'];
     $submissionData['company_number'] = $selectedCompany['identifier'];
+    $submissionData['business_purpose'] = $companyData['businessPurpose'] ?? '';
 
     try {
       // Merge sender details to new stuff.
@@ -951,21 +1179,33 @@ class ApplicationHandler {
     $atvDocument->setUserId($userData['sub']);
     $atvDocument->setTosFunctionId(getenv('ATV_TOS_FUNCTION_ID'));
     $atvDocument->setTosRecordId(getenv('ATV_TOS_RECORD_ID'));
-    $atvDocument->setBusinessId($selectedCompany['identifier']);
+    if ($submissionData['applicant_type'] == 'registered_community') {
+      $atvDocument->setBusinessId($selectedCompany['identifier']);
+    }
     $atvDocument->setDraft(TRUE);
     $atvDocument->setDeletable(FALSE);
+
+    $humanReadableTypes = [
+      'en' => $this->getWebformTitle($webform_id, 'en'),
+      'fi' => $this->getWebformTitle($webform_id, 'fi'),
+      'sv' => $this->getWebformTitle($webform_id, 'sv'),
+    ];
+
+    $atvDocument->setHumanReadableType($humanReadableTypes);
 
     $atvDocument->setMetadata([
       'appenv' => self::getAppEnv(),
       // Hmm, maybe no save id at this point?
       'saveid' => $copy ? 'copiedSave' : 'initialSave',
       'applicationnumber' => $applicationNumber,
+      'language' => $this->languageManager->getCurrentLanguage()->getId(),
+      'applicant_type' => $selectedCompany['type'],
+      'applicant_id' => $selectedCompany['identifier'],
     ]);
 
     $typeData = $this->webformToTypedData($submissionData);
-
     /** @var \Drupal\Core\TypedData\TypedDataInterface $applicationData */
-    $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($typeData);
+    $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($typeData, $submissionObject);
 
     $atvDocument->setContent($appDocumentContent);
 
@@ -982,25 +1222,37 @@ class ApplicationHandler {
   /**
    * Handle application upload directly to ATV.
    *
-   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
-   * @throws \GuzzleHttp\Exception\GuzzleException
-   * @throws \Drupal\Core\TempStore\TempStoreException
+   * @param \Drupal\Core\TypedData\TypedDataInterface $applicationData
+   *   Application data in typed data object.
+   * @param string $applicationNumber
+   *   Application number.
+   *
+   * @return \Drupal\helfi_atv\AtvDocument|bool|null
+   *   Result of the upload.
+   *
    * @throws \Drupal\helfi_atv\AtvDocumentNotFoundException
+   * @throws \Drupal\helfi_atv\AtvFailedToConnectException
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
+   * @throws \GuzzleHttp\Exception\GuzzleException
    * @throws \Exception
    */
   public function handleApplicationUploadToAtv(
     TypedDataInterface $applicationData,
     string $applicationNumber
-  ) {
-
+  ): AtvDocument|bool|null {
+    $webform_submission = ApplicationHandler::submissionObjectFromApplicationNumber($applicationNumber);
     /** @var \Drupal\Core\TypedData\TypedDataInterface $applicationData */
-    $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData);
+    $appDocumentContent = $this->atvSchema->typedDataToDocumentContent($applicationData, $webform_submission);
 
-    $atvDocument = $this->getAtvDocument($applicationNumber);
-    $atvDocument->addMetadata(
-      'saveid',
-      $this->logSubmissionSaveid(NULL, $applicationNumber)
-    );
+    $atvDocument = $this->getAtvDocument($applicationNumber, TRUE);
+    try {
+      $atvDocument->addMetadata(
+        'saveid',
+        $this->logSubmissionSaveid(NULL, $applicationNumber)
+      );
+    }
+    catch (\Exception $e) {
+    }
 
     $atvDocument->setContent($appDocumentContent);
 
@@ -1012,6 +1264,8 @@ class ApplicationHandler {
       $atvDocument->getId(),
       $atvDocument->toArray()
     );
+
+    $this->atvDocument = $updatedDocument;
 
     return $updatedDocument;
 
@@ -1032,9 +1286,9 @@ class ApplicationHandler {
     TypedDataInterface $applicationData,
     string $applicationNumber
   ): bool {
-
-    /** @var \Drupal\helfi_atv\AtvDocument $appDocument */
-    $appDocument = $this->atvSchema->typedDataToDocumentContent($applicationData);
+    $webformSubmission = ApplicationHandler::submissionObjectFromApplicationNumber($applicationNumber);
+    /** @var \Drupal\Core\TypedData\TypedDataInterface $applicationData */
+    $appDocument = $this->atvSchema->typedDataToDocumentContent($applicationData, $webformSubmission);
     $myJSON = Json::encode($appDocument);
 
     if ($this->isDebug()) {
@@ -1158,12 +1412,12 @@ class ApplicationHandler {
         $msgUnread = TRUE;
       }
 
-      if ($onlyUnread == TRUE && $msgUnread == TRUE) {
+      if ($onlyUnread === TRUE && $msgUnread === TRUE) {
         $unread[$ts] = $message;
       }
       $messages[$ts] = $message;
     }
-    if ($onlyUnread == TRUE) {
+    if ($onlyUnread === TRUE) {
       return $unread;
     }
     return $messages;
@@ -1175,9 +1429,10 @@ class ApplicationHandler {
    * @return array
    *   Sender details.
    *
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
    * @throws \Drupal\grants_handler\ApplicationException
    */
-  public function parseSenderDetails() {
+  public function parseSenderDetails(): array {
     // Set sender information after save so no accidental saving of data.
     $userProfileData = $this->helfiHelsinkiProfiiliUserdata->getUserProfileData();
     $userData = $this->helfiHelsinkiProfiiliUserdata->getUserData();
@@ -1275,15 +1530,46 @@ class ApplicationHandler {
     /** @var \Drupal\helfi_atv\AtvService $atvService */
     $atvService = \Drupal::service('helfi_atv.atv_service');
 
+    /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
+    $grantsProfileService = \Drupal::service('grants_profile.service');
+
+    /** @var \Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData $helsinkiProfiiliService */
+    $helsinkiProfiiliService = \Drupal::service('helfi_helsinki_profiili.userdata');
+    $userData = $helsinkiProfiiliService->getUserData();
+
     $applications = [];
     $finished = [];
     $unfinished = [];
 
-    $applicationDocuments = $atvService->searchDocuments([
-      'service' => 'AvustushakemusIntegraatio',
-      'business_id' => $selectedCompany['identifier'],
-      'lookfor' => 'appenv:' . $appEnv,
-    ]);
+    $selectedRoleData = $grantsProfileService->getSelectedRoleData();
+
+    if ($selectedRoleData['type'] == 'private_person') {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'user_id' => $userData['sub'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'],
+      ];
+    }
+    elseif ($selectedRoleData['type'] == 'unregistered_community') {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'user_id' => $userData['sub'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'] .
+        ',applicant_id:' . $selectedRoleData['identifier'],
+      ];
+    }
+    else {
+      $searchParams = [
+        'service' => 'AvustushakemusIntegraatio',
+        'business_id' => $selectedCompany['identifier'],
+        'lookfor' => 'appenv:' . $appEnv .
+        ',applicant_type:' . $selectedRoleData['type'],
+      ];
+    }
+
+    $applicationDocuments = $atvService->searchDocuments($searchParams);
 
     /**
      * Create rows for table.
@@ -1292,6 +1578,15 @@ class ApplicationHandler {
      */
     foreach ($applicationDocuments as $document) {
       // Make sure the type is acceptable one.
+      $docArray = $document->toArray();
+      $id = AtvSchema::extractDataForWebForm(
+        $docArray['content'], ['applicationNumber']
+      );
+
+      if (!isset($id['applicationNumber']) || empty($id['applicationNumber'])) {
+        continue;
+      }
+
       if (array_key_exists($document->getType(), ApplicationHandler::getApplicationTypes())) {
         $submissionObject = self::submissionObjectFromApplicationNumber($document->getTransactionId(), $document);
         $submissionData = $submissionObject->getData();
@@ -1306,7 +1601,7 @@ class ApplicationHandler {
         else {
           $submission = $submissionObject;
         }
-        if ($sortByFinished == TRUE) {
+        if ($sortByFinished === TRUE) {
           if (self::isSubmissionFinished($submission)) {
             $finished[$ts] = $submission;
           }
@@ -1314,7 +1609,7 @@ class ApplicationHandler {
             $unfinished[$ts] = $submission;
           }
         }
-        elseif ($sortByStatus == TRUE) {
+        elseif ($sortByStatus === TRUE) {
           $applications[$submissionData['status']][] = $submission;
         }
         else {
@@ -1323,7 +1618,7 @@ class ApplicationHandler {
       }
     }
 
-    if ($sortByFinished == TRUE) {
+    if ($sortByFinished === TRUE) {
       ksort($finished);
       ksort($unfinished);
       return [

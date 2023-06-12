@@ -45,8 +45,17 @@ class BankAccountComposite extends WebformCompositeBase {
         'class' => [],
       ],
     ];
+    if (isset($element['#help'])) {
+      $elements['account_number_select']['#help'] = $element['#help'];
+    }
 
     $elements['account_number'] = [
+      '#type' => 'hidden',
+    ];
+    $elements['account_number_owner_name'] = [
+      '#type' => 'hidden',
+    ];
+    $elements['account_number_ssn'] = [
       '#type' => 'hidden',
     ];
 
@@ -63,12 +72,22 @@ class BankAccountComposite extends WebformCompositeBase {
    *
    * @return array
    *   Edited element.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
-  public static function buildAccountOptions(array $element, FormStateInterface $form_state) {
+  public static function buildAccountOptions(array $element, FormStateInterface $form_state): array {
+
+    $user = \Drupal::currentUser();
+    $roles = $user->getRoles();
+
+    if (!in_array('helsinkiprofiili', $roles)) {
+      return [];
+    }
+
     /** @var \Drupal\grants_profile\GrantsProfileService $grantsProfileService */
     $grantsProfileService = \Drupal::service('grants_profile.service');
 
-    $selectedCompany = $grantsProfileService->getSelectedCompany();
+    $selectedCompany = $grantsProfileService->getSelectedRoleData();
     $profileData = $grantsProfileService->getGrantsProfileContent($selectedCompany ?? '');
 
     $accOoptions = [
@@ -79,7 +98,7 @@ class BankAccountComposite extends WebformCompositeBase {
       return $element;
     }
 
-    foreach ($profileData["bankAccounts"] as $delta => $account) {
+    foreach ($profileData["bankAccounts"] as $account) {
       $accOoptions[$account['bankAccount']] = $account['bankAccount'];
     }
 

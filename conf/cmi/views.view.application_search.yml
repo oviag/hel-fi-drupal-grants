@@ -14,14 +14,14 @@ dependencies:
     - field.storage.node.field_webform
     - node.type.service
     - system.menu.main
-    - views.view.avustuslajit
+    - taxonomy.vocabulary.avustuslaji
   module:
     - better_exposed_filters
     - datetime_range
-    - entityreference_filter
     - node
     - options
     - paragraphs
+    - taxonomy
     - user
     - webform
 id: application_search
@@ -351,7 +351,7 @@ display:
           group_column: ''
           group_columns: {  }
           group_rows: true
-          delta_limit: 0
+          delta_limit: 1
           delta_offset: 0
           delta_reversed: false
           delta_first_last: false
@@ -892,29 +892,28 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           fields:
+            field_target_group: field_target_group
             title: title
             field_errand_service: field_errand_service
-            field_hakijatyyppi: field_hakijatyyppi
-            field_target_group: field_target_group
             field_webform: field_webform
-        field_avustuslaji_target_id_entityreference_filter:
-          id: field_avustuslaji_target_id_entityreference_filter
+        field_avustuslaji_target_id:
+          id: field_avustuslaji_target_id
           table: node__field_avustuslaji
-          field: field_avustuslaji_target_id_entityreference_filter
+          field: field_avustuslaji_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: entityreference_filter_view_result
+          plugin_id: taxonomy_index_tid
           operator: or
-          value: null
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: field_avustuslaji_target_id_entityreference_filter_op
+            operator_id: field_avustuslaji_target_id_op
             label: 'Millaiseen toimintaan haet avustusta?'
             description: ''
             use_operator: false
-            operator: field_avustuslaji_target_id_entityreference_filter_op
+            operator: field_avustuslaji_target_id_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: avustuslaji
@@ -924,10 +923,14 @@ display:
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
-              admin: '0'
-              content_producer: '0'
               read_only: '0'
               helsinkiprofiili: '0'
+              content_producer_industry: '0'
+              content_producer: '0'
+              grants_producer: '0'
+              ad_user: '0'
+              grants_admin: '0'
+              admin: '0'
             reduce: false
           is_grouped: false
           group_info:
@@ -941,11 +944,12 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
+          reduce_duplicates: true
+          vid: avustuslaji
           type: select
-          reference_display: 'avustuslajit:entity_reference_1'
-          reference_arguments: ''
-          hide_empty_filter: true
+          hierarchy: false
+          limit: true
+          error_message: true
         field_hakijatyyppi_value:
           id: field_hakijatyyppi_value
           table: node__field_hakijatyyppi
@@ -1143,7 +1147,6 @@ display:
         - 'config:field.storage.node.field_hakijatyyppi'
         - 'config:field.storage.node.field_target_group'
         - 'config:field.storage.node.field_webform'
-        - taxonomy_term_list
   page_1:
     id: page_1
     display_title: Page
@@ -1184,4 +1187,3 @@ display:
         - 'config:field.storage.node.field_hakijatyyppi'
         - 'config:field.storage.node.field_target_group'
         - 'config:field.storage.node.field_webform'
-        - taxonomy_term_list

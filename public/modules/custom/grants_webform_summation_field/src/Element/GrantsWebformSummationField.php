@@ -20,7 +20,7 @@ class GrantsWebformSummationField extends FormElement {
     return [
       '#input' => FALSE,
       '#size' => 60,
-      '#value' => 0,
+      '#default_value' => 0,
       '#pre_render' => [
         [$class, 'preRenderGrantsWebformSummationFieldElement'],
       ],
@@ -29,9 +29,15 @@ class GrantsWebformSummationField extends FormElement {
   }
 
   /**
-   * {@inheritdoc}
+   * Description.
+   *
+   * @param array $element
+   *   Element.
+   *
+   * @return mixed
+   *   Return value.
    */
-  public static function preRenderGrantsWebformSummationFieldElement($element) {
+  public static function preRenderGrantsWebformSummationFieldElement(array $element): mixed {
     $field = '';
     $column = '';
     $fieldarray = [];
@@ -52,14 +58,30 @@ class GrantsWebformSummationField extends FormElement {
     $element['#attributes']['name'] = $element['#name'];
     $element['#attributes']['value'] = $element['#value'];
     $summationType = 'integer';
+    $displayType = 'integer';
+    $formItem = 'text_field';
+    if (isset($element['#form_item'])) {
+      $formItem = $element['#form_item'];
+    }
+    if ($formItem === 'hidden') {
+      $element['#title_display'] = 'none';
+      $element['#description_display'] = 'none';
+      $element['#attributes']['readonly'] = 'readonly';
+      $element['#attributes']['style'] = 'display:none;';
+    }
+    $element['#type'] = 'text_field';
     if (isset($element['#data_type'])) {
       $summationType = $element['#data_type'];
+    }
+    if (isset($element['#display_type'])) {
+      $displayType = $element['#display_type'];
     }
     if (count($fieldarray) > 0) {
       $element['#attached']['drupalSettings']['sumFields'][$element['#id']] = [
         'sumFieldId' => $element['#id'],
         'fields' => $fieldarray,
         'summationType' => $summationType,
+        'displayType' => $displayType,
       ];
     }
     else {
