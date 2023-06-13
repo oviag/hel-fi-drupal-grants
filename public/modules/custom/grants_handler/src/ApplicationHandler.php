@@ -1575,18 +1575,13 @@ class ApplicationHandler {
 
     $selectedRoleData = $grantsProfileService->getSelectedRoleData();
 
-//    $lookForAppEnv = '';
-//    if (!self::isProduction($appEnv)) {
-//      $lookForAppEnv = 'appenv:' . $appEnv.',';
-//    }
-
-    $lookForAppEnv = 'appenv:' . $appEnv.',';
+    $lookForAppEnv = 'appenv:' . $appEnv;
 
     if ($selectedRoleData['type'] == 'private_person') {
       $searchParams = [
         'service' => 'AvustushakemusIntegraatio',
         'user_id' => $userData['sub'],
-        'lookfor' => $lookForAppEnv .
+        'lookfor' => $lookForAppEnv . ',' .
         'applicant_type:' . $selectedRoleData['type'],
       ];
     }
@@ -1594,7 +1589,7 @@ class ApplicationHandler {
       $searchParams = [
         'service' => 'AvustushakemusIntegraatio',
         'user_id' => $userData['sub'],
-        'lookfor' => $lookForAppEnv .
+        'lookfor' => $lookForAppEnv . ',' .
         'applicant_type:' . $selectedRoleData['type'] .
         ',applicant_id:' . $selectedRoleData['identifier'],
       ];
@@ -1603,8 +1598,7 @@ class ApplicationHandler {
       $searchParams = [
         'service' => 'AvustushakemusIntegraatio',
         'business_id' => $selectedCompany['identifier'],
-        'lookfor' => $lookForAppEnv .
-        'applicant_type:' . $selectedRoleData['type'],
+        'lookfor' => $lookForAppEnv,
       ];
     }
 
