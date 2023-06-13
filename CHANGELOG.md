@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## 2023.14
+- 90a951be fix: AU-1169: Application acting years dynamic values (#502)
+- b08ea34c config: Update configuration (#516)
+- a6d17776 hotfix: AU-1215-missing-frontpage-things'
+- 78aee8cf AU-1215: Remove check for appenv in application number.
+- 90b3520d hotfix: AU-1215-missing-applications-prod
+- 10f1c8d6 AU-1215: Restore appenv parameter for queries.
+- c4dc334b AU-1215: Remove applicant type from search params with registered community
+- 9dcda8f6 AU-1215: Remove appenv
+- 02da240e fix: AU-1153, AU-1203, AU-1184, AU-1186, AU-1167, AU-1183, AU-1196 (#510)
+- aaae6b79 feat: AU-1113 validation errors on fieldsets. (#512)
+- 014b7deb fix: AU-1163: Change static budget components to non multivalue (#511)
+
+
 ## 2023.13
 - 6045994f fix: AU-819: General robot tests improvements (#473)
 - ddaef87a fix: AU-1133: Disable form actions during ajax call (#491)
