@@ -758,17 +758,10 @@ class ApplicationHandler {
     }
 
     if ($document == NULL) {
-      if (!self::isProduction(ApplicationHandler::getAppEnv())) {
-        $sParams = [
-          'transaction_id' => $applicationNumber,
-          'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
-        ];
-      }
-      else {
-        $sParams = [
-          'transaction_id' => $applicationNumber,
-        ];
-      }
+      $sParams = [
+        'transaction_id' => $applicationNumber,
+        'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
+      ];
 
       $document = $atvService->searchDocuments(
         $sParams,
@@ -856,17 +849,10 @@ class ApplicationHandler {
     }
     /** @var Drupal\helfi_atv\AtvDocument[] $document */
     try {
-      if (!self::isProduction(ApplicationHandler::getAppEnv())) {
-        $sParams = [
-          'transaction_id' => $applicationNumber,
-          'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
-        ];
-      }
-      else {
-        $sParams = [
-          'transaction_id' => $applicationNumber,
-        ];
-      }
+      $sParams = [
+        'transaction_id' => $applicationNumber,
+        'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
+      ];
 
       $document = $atvService->searchDocuments(
         $sParams,
@@ -935,17 +921,10 @@ class ApplicationHandler {
   public function getAtvDocument(string $transactionId, bool $refetch = FALSE): AtvDocument {
 
     if (!isset($this->atvDocument) || $refetch === TRUE) {
-      if (!self::isProduction(ApplicationHandler::getAppEnv())) {
-        $sParams = [
-          'transaction_id' => $transactionId,
-          'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
-        ];
-      }
-      else {
-        $sParams = [
-          'transaction_id' => $transactionId,
-        ];
-      }
+      $sParams = [
+        'transaction_id' => $transactionId,
+        'lookfor' => 'appenv:' . ApplicationHandler::getAppEnv(),
+      ];
 
       $res = $this->atvService->searchDocuments($sParams);
       $this->atvDocument = reset($res);
