@@ -14,7 +14,7 @@ third_party_settings:
     applicationTypeTerms:
       49: '49'
     applicationOpen: '2022-10-03T11:08:26'
-    applicationClose: '2023-06-14T11:19:00'
+    applicationClose: '2023-07-30T11:19:00'
     applicationContinuous: 0
     applicationTargetGroup: '12'
     disableCopying: 0
@@ -224,6 +224,9 @@ elements: |-
           class:
             - subventions
         '#required': true
+      markup_01:
+        '#type': webform_markup
+        '#markup': '<p>Hae yhdell&auml; hakemuksella aina vain yht&auml; avustuslajia kerrallaan.</p>'
     kayttotarkoitus:
       '#type': webform_section
       '#title': Käyttötarkoitus
@@ -524,7 +527,6 @@ elements: |-
           0: Ei
         '#options_display': side_by_side
         '#options_description_display': help
-        '#required': false
     ensimmainen_otsikko:
       '#type': webform_section
       '#title': Jäsenmaksut
