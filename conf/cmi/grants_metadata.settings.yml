@@ -62,8 +62,8 @@ third_party_options:
         en: 'EN Taide ja kulttuuri: toiminta-avustus'
         sv: 'SV Taide ja kulttuuri: toiminta-avustus'
     66:
-      id: NUORTOIMENNAKKO
-      code: NUORTOIMENNAKKO
+      id: NUORTOIMPALKENNAKKO
+      code: NUORTOIMPALKENNAKKO
       dataDefinition:
         definitionClass: Drupal\grants_metadata\TypedData\Definition\NuorisoToimintaEnnakkoDefinition
         definitionId: grants_metadata_nuortoimennakko
