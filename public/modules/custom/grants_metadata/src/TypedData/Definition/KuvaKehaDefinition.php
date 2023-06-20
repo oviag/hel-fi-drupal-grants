@@ -84,10 +84,7 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
           '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
           'convertToInt',
         ])
-        ->setSetting('typeOverride', [
-          'dataType' => 'string',
-          'jsonType' => 'int',
-        ])->setSetting('valueCallback', [
+        ->setSetting('valueCallback', [
           '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
           'convertToInt',
         ])
@@ -107,10 +104,7 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
           '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
           'convertToInt',
         ])
-        ->setSetting('typeOverride', [
-          'dataType' => 'string',
-          'jsonType' => 'int',
-        ])->setSetting('valueCallback', [
+        ->setSetting('valueCallback', [
           '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
           'convertToInt',
         ])
@@ -321,6 +315,11 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         ->setSetting('fullItemValueCallback', [
           'service' => 'grants_premises.service',
           'method' => 'processPremises',
+          'webform' => TRUE,
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_premises.service',
+          'method' => 'extractToWebformData',
         ])
         ->setSetting('fieldsForApplication', [
           'premiseName',
@@ -339,7 +338,19 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
           'method' => 'extractToWebformData',
           'mergeResults' => TRUE,
         ])
-        ->setSetting('jsonPath', ['compensation', 'budgetInfo']);
+        ->setSetting('jsonPath', ['compensation', 'budgetInfo'])
+        ->setPropertyDefinition(
+          'budget_static_income',
+          GrantsBudgetInfoDefinition::getStaticIncomeDefinition()
+            ->setSetting('fieldsForApplication', [
+              'compensation',
+              'sponsorships',
+              'entryFees',
+              'sales',
+              'ownFunding',
+              'plannedOtherCompensations',
+            ])
+          );
 
       $info['sisaltyyko_toiminnan_toteuttamiseen_jotain_muuta_rahanarvoista_p'] = DataDefinition::create('string')
         ->setLabel('Sisältyykö toiminnan toteuttamiseen jotain muuta rahanarvoista panosta tai vaihtokauppaa, joka ei käy ilmi budjetista?')
@@ -350,13 +361,13 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
           'otherValuables',
         ]);
 
-      $info['organisaatio_kuuluu_valtionosuusjarjestelmaan'] = DataDefinition::create('string')
+      $info['organisaatio_kuuluu_valtionosuusjarjestelmaan_vos_'] = DataDefinition::create('boolean')
         ->setLabel('Organisaatio kuului valtionosuusjärjestelmään (VOS)')
         ->setSetting('jsonPath', [
           'compensation',
           'budgetInfo',
           'budgetInfoArray',
-          'wasPartOfVOS',
+          'isPartOfVOS',
         ])
         ->setSetting('typeOverride', [
           'dataType' => 'string',
@@ -378,12 +389,24 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
     }
 
     $info['vuodet_joille_monivuotista_avustusta_on_haettu_tai_myonetty'] = DataDefinition::create('string')
-      ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta on haettu tai myönnetty')
+      ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta haetaan tai on myönnetty')
       ->setSetting('jsonPath', [
         'compensation',
         'compensationInfo',
         'generalInfoArray',
         'yearsForMultiYearApplication',
+      ])
+      ->setSetting('webformDataExtracter', [
+        'service' => 'grants_metadata.atv_schema',
+        'method' => 'returnRelations',
+        'mergeResults' => TRUE,
+        'arguments' => [
+          'relations' => [
+            'slave' => 'kyseessa_on_monivuotinen_avustus',
+            'master' => 'vuodet_joille_monivuotista_avustusta_on_haettu_tai_myonetty',
+            'type' => 'boolean',
+          ],
+        ],
       ]);
 
     $info['erittely_kullekin_vuodelle_haettavasta_avustussummasta'] = DataDefinition::create('string')
@@ -395,9 +418,8 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         'breakdownOfYearlySums',
       ]);
 
-    $info['members_applicant_person_global'] = DataDefinition::create('string')
+    $info['members_applicant_person_global'] = DataDefinition::create('integer')
       ->setLabel('Henkilöjäsenet')
-      ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'communityInfo',
@@ -412,9 +434,8 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         'jsonType' => 'int',
       ]);
 
-    $info['members_applicant_person_local'] = DataDefinition::create('string')
+    $info['members_applicant_person_local'] = DataDefinition::create('integer')
       ->setLabel('Näistä helsinkiläisiä')
-      ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'communityInfo',
@@ -429,7 +450,7 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         'jsonType' => 'int',
       ]);
 
-    $info['members_applicant_community_global'] = DataDefinition::create('string')
+    $info['members_applicant_community_global'] = DataDefinition::create('integer')
       ->setLabel('Yhteisöjäsenet')
       ->setSetting('jsonPath', [
         'compensation',
@@ -445,9 +466,8 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         'jsonType' => 'int',
       ]);
 
-    $info['members_applicant_community_local'] = DataDefinition::create('string')
+    $info['members_applicant_community_local'] = DataDefinition::create('integer')
       ->setLabel('Näistä helsinkiläisiä')
-      ->setSetting('defaultValue', "")
       ->setSetting('jsonPath', [
         'compensation',
         'communityInfo',

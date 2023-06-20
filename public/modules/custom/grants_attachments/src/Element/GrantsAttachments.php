@@ -66,7 +66,7 @@ class GrantsAttachments extends WebformCompositeBase {
 
     if (isset($storage['errors'][$arrayKey])) {
       $errors = $storage['errors'][$arrayKey];
-      $element['#attributes']['class'][] = $errors['label'];
+      $element['#attributes']['class'][] = $errors['class'];
       $element['#attributes']['error_label'] = $errors['label'];
     }
 
@@ -77,7 +77,6 @@ class GrantsAttachments extends WebformCompositeBase {
     }
 
     if (isset($submissionData[$element['#webform_key']]) && is_array($submissionData[$element['#webform_key']])) {
-
       $dataForElement = $element['#value'];
 
       // When user goes to previous step etc. we might lose the additional data for the just
@@ -95,6 +94,12 @@ class GrantsAttachments extends WebformCompositeBase {
       }
 
       $uploadStatus = $dataForElement['fileStatus'] ?? NULL;
+
+      if ($uploadStatus === NULL) {
+        if (!empty($dataForElement['integrationID'])) {
+          $uploadStatus = 'uploaded';
+        }
+      }
 
       if (isset($dataForElement["fileType"])) {
         $element["fileType"]["#value"] = $dataForElement["fileType"];
@@ -251,7 +256,7 @@ class GrantsAttachments extends WebformCompositeBase {
     ];
     $elements['isDeliveredLater'] = [
       '#type' => 'checkbox',
-      '#title' => t('Attachment will delivered at later time'),
+      '#title' => t('Attachment will be delivered at later time'),
       '#element_validate' => ['\Drupal\grants_attachments\Element\GrantsAttachments::validateDeliveredLaterCheckbox'],
       '#attributes' => [
         'data-webform-composite-attachment-isDeliveredLater' => $uniqId,
@@ -289,6 +294,10 @@ class GrantsAttachments extends WebformCompositeBase {
       '#value' => NULL,
     ];
     $elements['integrationID'] = [
+      '#type' => 'hidden',
+      '#value' => NULL,
+    ];
+    $elements['isAttachmentNew'] = [
       '#type' => 'hidden',
       '#value' => NULL,
     ];

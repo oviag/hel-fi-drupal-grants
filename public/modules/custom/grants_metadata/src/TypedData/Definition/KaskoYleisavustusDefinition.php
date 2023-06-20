@@ -80,7 +80,7 @@ class KaskoYleisavustusDefinition extends ComplexDataDefinitionBase {
           'purpose',
         ]);
 
-      $info['compensation_boolean'] = DataDefinition::create('string')
+      $info['compensation_boolean'] = DataDefinition::create('boolean')
         ->setLabel('compensationPreviousYear')
         ->setSetting('defaultValue', FALSE)
         ->setSetting('typeOverride', [
@@ -117,6 +117,38 @@ class KaskoYleisavustusDefinition extends ComplexDataDefinitionBase {
           'compensationInfo',
           'generalInfoArray',
           'explanation',
+        ]);
+
+      $info['fee_person'] = DataDefinition::create('float')
+        ->setLabel('Fee Person')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activitiesInfoArray',
+          'feePerson',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToFloat',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'float',
+        ]);
+
+      $info['fee_community'] = DataDefinition::create('float')
+        ->setLabel('Fee Community')
+        ->setSetting('jsonPath', [
+          'compensation',
+          'activitiesInfoArray',
+          'feeCommunity',
+        ])
+        ->setSetting('valueCallback', [
+          '\Drupal\grants_handler\Plugin\WebformHandler\GrantsHandler',
+          'convertToFloat',
+        ])
+        ->setSetting('typeOverride', [
+          'dataType' => 'string',
+          'jsonType' => 'float',
         ]);
 
     }
