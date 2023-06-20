@@ -519,6 +519,44 @@ elements: |-
         yleinen_oppimaara:
           '#type': number
           '#title': 'Yleinen oppimäärä'
+      tytot:
+        '#type': fieldset
+        '#title': Tytöt
+        '#attributes':
+          class:
+            - grants-fieldset
+            - grants-fieldset-short
+        tytot_varhaisian_opinnot:
+          '#type': number
+          '#title': 'Varhaisiän opinnot'
+        tytot_laaja_oppimaara_perusopinnot:
+          '#type': number
+          '#title': 'Laaja oppimäärä perusopinnot'
+        tytot_laaja_oppimaara_syventavat_opinnot:
+          '#type': number
+          '#title': 'Laaja oppimäärä syventävät opinnot'
+        tytot_yleinen_oppimaara:
+          '#type': number
+          '#title': 'Yleinen oppimäärä'
+      pojat:
+        '#type': fieldset
+        '#title': Pojat
+        '#attributes':
+          class:
+            - grants-fieldset
+            - grants-fieldset-short
+        pojat_varhaisian_opinnot:
+          '#type': number
+          '#title': 'Varhaisiän opinnot'
+        pojat_laaja_oppimaara_perusopinnot:
+          '#type': number
+          '#title': 'Laaja oppimäärä perusopinnot'
+        pojat_laaja_oppimaara_syventavat_opinnot:
+          '#type': number
+          '#title': 'Laaja oppimäärä syventävät opinnot'
+        pojat_yleinen_oppimaara:
+          '#type': number
+          '#title': 'Yleinen oppimäärä'
       koko_opetushenkiloston_lukumaara_20_9:
         '#type': number
         '#title': 'Koko opetushenkilöstön lukumäärä 20.9'
@@ -537,9 +575,6 @@ elements: |-
       onko_vapaa_oppilaspaikkoja_montako_:
         '#type': textarea
         '#title': 'Onko vapaa oppilaspaikkoja? Montako?'
-      markup_02:
-        '#type': webform_markup
-        '#markup': 'Opetustunnit Helsingiss&auml; edellisen&auml; p&auml;&auml;ttyneen&auml; tilivuonna?'
       opetustunnit_helsingissa_edellisena_paattyneena_tilivuonna:
         '#type': fieldset
         '#title': 'Opetustunnit Helsingissä edellisenä päättyneenä tilivuonna'
