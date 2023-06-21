@@ -65,8 +65,8 @@ third_party_options:
       id: KUVAPERUS
       code: KUVAPERUS
       dataDefinition:
-        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaToimintaDefinition
-        definitionId: grants_metadata_kuvatoiminta
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaPerusDefinition
+        definitionId: grants_metadata_kuvaperus
       labels:
         fi: 'Taide ja kulttuuri: perusopetuksen avustus'
         en: 'EN Taide ja kulttuuri: perusopetuksen avustus'
