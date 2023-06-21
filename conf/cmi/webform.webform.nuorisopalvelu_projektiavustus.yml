@@ -249,7 +249,7 @@ elements: |-
       '#type': webform_section
       '#title': 'Avustuksen kohde'
       kenelle_haen_avustusta:
-        '#type': radios
+        '#type': select
         '#title': 'Kenelle haen avustusta'
         '#options':
           Nuorisoyhdistys: Nuorisoyhdistys
@@ -408,6 +408,9 @@ elements: |-
           visible:
             ':input[name="olemme_hakeneet_avustuksia_muualta_kuin_helsingin_kaupungilta"]':
               value: '1'
+          required:
+            ':input[name="olemme_hakeneet_avustuksia_muualta_kuin_helsingin_kaupungilta"]':
+              value: '1'
         '#multiple__header': false
         '#multiple__item_label': 'myönnetty avustus'
         '#multiple__no_items_message': 'Ei sy&ouml;tettyj&auml; arvoja. Lis&auml;&auml; uusi my&ouml;nnetty avustus alta.'
@@ -474,12 +477,10 @@ elements: |-
       jasenet_7_28:
         '#type': number
         '#title': 'Kuinka monta 7-28 -vuotiasta helsinkiläistä jäsentä tai aktiivista osallistujaa nuorten toimintaryhmässä / yhdistyksessä / talokerhossa on?'
-        '#help': 'Arvio nuorten osallistujam&auml;&auml;r&auml;st&auml;'
         '#required': true
       jasenet_kaikki:
         '#type': number
         '#title': 'Kuinka monta jäsentä tai aktiivista osallistujaa nuorten toimintaryhmässä / yhdistyksessä / talokerhossa on yhteensä?'
-        '#help': 'Arvio koko osallistujam&auml;&auml;r&auml;st&auml;'
         '#required': true
   projektisuunnitelma:
     '#type': webform_wizard_page
@@ -497,11 +498,9 @@ elements: |-
       projektin_tavoitteet:
         '#type': textarea
         '#title': 'Projektin tavoitteet'
-        '#required': true
       projektin_sisalto:
         '#type': textarea
         '#title': 'Projektin sisältö'
-        '#required': true
     projektin_aikataulu:
       '#type': webform_section
       '#title': 'Projektin aikataulu'
@@ -515,12 +514,26 @@ elements: |-
         '#title': 'Projekti loppuu'
         '#required': true
         '#date_date_format': ''
+    projektin_kaikki_osallistujat:
+      '#type': webform_section
+      '#title': 'Projektin kaikki osallistujat'
+      osallistujat_7_28:
+        '#type': number
+        '#title': 'Kuinka monta 7-28 -vuotiasta helsinkiläistä jäsentä tai aktiivista osallistujaa nuorten toimintaryhmässä / yhdistyksessä / talokerhossa on?'
+        '#help': 'Arvio nuorten osallistujam&auml;&auml;r&auml;st&auml;'
+        '#required': true
+      osallistujat_kaikki:
+        '#type': number
+        '#title': 'Kuinka paljon projektin osallistujia on yhteensä?'
+        '#help': 'Arvio koko osallistujam&auml;&auml;r&auml;st&auml;'
+        '#required': true
     projektin_paikka:
       '#type': webform_section
       '#title': 'Projektin paikka'
-      projektin_paikka_1:
-        '#type': textfield
+      projektin_paikka_2:
+        '#type': textarea
         '#title': 'Projektin paikka'
+        '#description': 'Paikka tai paikat, joissa suunnittelette toteuttavanne projektin toiminnan.'
         '#help': 'Laita t&auml;h&auml;n paikan mahdollinen nimi tai muu kuvaus paikasta. Esimerkiksi jos paikka on joku Helsingin kaupungin nuorisotiloista, voitte kirjoittaa sen nuorisotilan nimen. Jos projekti tapahtuu digitaalisessa ymp&auml;rist&ouml;ss&auml;, kertokaa, miss&auml; digitaalisessa ymp&auml;rist&ouml;ss&auml; toiminta tapahtuu. Jos kyseess&auml; olisi esimerkiksi podcast-projekti, joka &auml;&auml;nitet&auml;&auml;n tietyss&auml; fyysiess&auml; paikassa ja podcast julkaistaan digitaalisen alusta kautta internetiss&auml;, voit kertoa n&auml;m&auml; molemmat paikat.'
     lisakysymys:
       '#type': webform_section
@@ -613,16 +626,19 @@ elements: |-
         '#multiple': false
         '#filetype': '7'
         '#description': 'Uusi hakija tai s&auml;&auml;nn&ouml;t muuttuneet'
+        '#attachment__title': 'Yhteisön säännöt'
       projektisuunnitelma_liite:
         '#type': grants_attachments
         '#title': Projektisuunnitelma
         '#multiple': false
         '#filetype': '19'
+        '#attachment__title': Projektisuunnitelma
       projektin_talousarvio:
         '#type': grants_attachments
         '#title': 'Projektin talousarvio'
         '#multiple': false
         '#filetype': '2'
+        '#attachment__title': 'Projektin talousarvio'
       extra_info:
         '#type': textarea
         '#title': 'Lisäselvitys liitteistä'
