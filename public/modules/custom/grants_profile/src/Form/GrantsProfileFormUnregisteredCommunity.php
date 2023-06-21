@@ -32,6 +32,7 @@ class GrantsProfileFormUnregisteredCommunity extends GrantsProfileFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form = parent::buildForm($form, $form_state);
+
     $selectedRoleData = $this->grantsProfileService->getSelectedRoleData();
 
     // Load grants profile.
@@ -127,11 +128,11 @@ class GrantsProfileFormUnregisteredCommunity extends GrantsProfileFormBase {
 
       if ($attachmentDeleteResults) {
         \Drupal::messenger()
-          ->addStatus('Bank account & verification attachment deleted.');
+          ->addStatus(t('Bank account & verification attachment deleted.'));
       }
       else {
         \Drupal::messenger()
-          ->addError('Attachment deletion failed, error has been logged. Please contact customer support');
+          ->addError(t('Attachment deletion failed, error has been logged. Please contact customer support.'));
       }
     }
 

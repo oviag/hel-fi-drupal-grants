@@ -10,6 +10,7 @@ use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Logger\LoggerChannelFactory;
 use Drupal\Core\Messenger\Messenger;
 use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\grants_attachments\AttachmentHandler;
@@ -17,7 +18,6 @@ use Drupal\grants_metadata\AtvSchema;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocument;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
-use Drupal\helfi_atv\AtvFailedToConnectException;
 use Drupal\helfi_atv\AtvService;
 use Drupal\helfi_helsinki_profiili\HelsinkiProfiiliUserData;
 use Drupal\helfi_helsinki_profiili\ProfileDataException;
@@ -25,7 +25,6 @@ use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionInterface;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Drupal\grants_mandate\CompanySelectException;
@@ -858,7 +857,9 @@ class ApplicationHandler {
         $sParams,
         $refetch
       );
-    } catch (\Throwable $e) {}
+    }
+    catch (\Throwable $e) {
+    }
 
     if (empty($document)) {
       throw new AtvDocumentNotFoundException('Document not found');
@@ -1560,16 +1561,14 @@ class ApplicationHandler {
       $searchParams = [
         'service' => 'AvustushakemusIntegraatio',
         'user_id' => $userData['sub'],
-        'lookfor' => $lookForAppEnv . ',' .
-        'applicant_type:' . $selectedRoleData['type'],
+        'lookfor' => $lookForAppEnv . ',applicant_type:' . $selectedRoleData['type'],
       ];
     }
     elseif ($selectedRoleData['type'] == 'unregistered_community') {
       $searchParams = [
         'service' => 'AvustushakemusIntegraatio',
         'user_id' => $userData['sub'],
-        'lookfor' => $lookForAppEnv . ',' .
-        'applicant_type:' . $selectedRoleData['type'] .
+        'lookfor' => $lookForAppEnv . ',applicant_type:' . $selectedRoleData['type'] .
         ',applicant_id:' . $selectedRoleData['identifier'],
       ];
     }
@@ -1881,15 +1880,62 @@ class ApplicationHandler {
   }
 
   /**
-   * Easier method to check if we're in production.
+   * Gets webform & submission with data and determines access.
    *
-   * @param $appEnv
-   *  App env from handler.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   User account.
+   * @param string $operation
+   *   Operation we check access against.
+   * @param \Drupal\webform\Entity\Webform $webform
+   *   Webform object.
+   * @param \Drupal\webform\Entity\WebformSubmission $webform_submission
+   *   Submission object.
    *
    * @return bool
-   *  Is production env?
+   *   Access status
    */
-  public static function isProduction($appEnv): bool {
+  public function singleSubmissionAccess(AccountInterface $account, string $operation, Webform $webform, WebformSubmission $webform_submission): bool {
+
+    // If we have account number, load details.
+    $selectedCompany = $this->grantsProfileService->getSelectedRoleData();
+    $grantsProfileDocument = $this->grantsProfileService->getGrantsProfile($selectedCompany);
+    $profileContent = $grantsProfileDocument->getContent();
+    $webformData = $webform_submission->getData();
+    $companyType = $selectedCompany['type'] ?? NULL;
+
+    if (!$companyType) {
+      return FALSE;
+    }
+
+    $atvDoc = ApplicationHandler::atvDocumentFromApplicationNumber($webformData['application_number']);
+    $atvMetadata = $atvDoc->getMetadata();
+    // Mismatch between profile and application applicant type.
+    if ($companyType !== $webformData['hakijan_tiedot']['applicantType']) {
+      return FALSE;
+    }
+    elseif ($companyType == "registered_community" && $profileContent['businessId'] !== $atvDoc->getBusinessId()) {
+      return FALSE;
+    }
+    elseif ($companyType === "private_person" && $profileContent['businessId'] !== $atvDoc->getUserId()) {
+      return FALSE;
+    }
+    elseif ($companyType === "unregistered_community" && $profileContent['businessId'] !== $atvMetadata['applicant_id']) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * Easier method to check if we're in production.
+   *
+   * @param string $appEnv
+   *   App env from handler.
+   *
+   * @return bool
+   *   Is production env?
+   */
+  public static function isProduction(string $appEnv): bool {
     $proenvs = [
       'production',
       'PRODUCTION',

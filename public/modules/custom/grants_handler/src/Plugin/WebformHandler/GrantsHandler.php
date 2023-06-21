@@ -15,6 +15,7 @@ use Drupal\Core\TypedData\Exception\ReadOnlyException;
 use Drupal\Core\Url;
 use Drupal\grants_attachments\AttachmentHandler;
 use Drupal\grants_handler\ApplicationHandler;
+use Drupal\grants_handler\FormLockService;
 use Drupal\grants_handler\GrantsHandlerNavigationHelper;
 use Drupal\grants_profile\GrantsProfileService;
 use Drupal\helfi_atv\AtvDocumentNotFoundException;
@@ -89,6 +90,13 @@ class GrantsHandler extends WebformHandlerBase {
   protected string $applicationNumber;
 
   /**
+   * Application acting year options.
+   *
+   * @var string
+   */
+  protected array $applicationActingYears = [];
+
+  /**
    * Status for updated submission.
    *
    * Old one if no update.
@@ -138,6 +146,13 @@ class GrantsHandler extends WebformHandlerBase {
    * @var \Drupal\grants_handler\ApplicationHandler
    */
   protected ApplicationHandler $applicationHandler;
+
+  /**
+   * Form lock service.
+   *
+   * @var \Drupal\grants_handler\FormLockService
+   */
+  protected FormLockService $formLockService;
 
   /**
    * Save form trigger for methods where form_state is not available.
@@ -195,6 +210,8 @@ class GrantsHandler extends WebformHandlerBase {
 
     /** @var \Drupal\grants_handler\GrantsHandlerNavigationHelper */
     $instance->grantsFormNavigationHelper = $container->get('grants_handler.navigation_helper');
+
+    $instance->formLockService = $container->get('grants_handler.form_lock_service');
 
     $instance->triggeringElement = '';
     $instance->applicationNumber = '';
@@ -547,9 +564,6 @@ class GrantsHandler extends WebformHandlerBase {
     $form_state->setValue('applicant_type', $submissionData["hakijan_tiedot"]["applicantType"]);
     $form["elements"]["applicant_type"]["#value"] = $submissionData["hakijan_tiedot"]["applicantType"];
     $form["elements"]["1_hakijan_tiedot"]["applicant_type"]["#value"] = $submissionData["hakijan_tiedot"]["applicantType"];
-    $thisYear = (integer) date('Y');
-    $thisYearPlus1 = $thisYear + 1;
-    $thisYearPlus2 = $thisYear + 2;
 
     // If we have webform summation field present (agreed location)
     if (isset($form["elements"]['avustukset_summa']) && $form["elements"]['avustukset_summa']) {
@@ -569,11 +583,7 @@ class GrantsHandler extends WebformHandlerBase {
       $form_state->setValue('avustukset_summa', $subventionsTotalAmount);
     }
 
-    $form["elements"]["2_avustustiedot"]["avustuksen_tiedot"]["acting_year"]["#options"] = [
-      $thisYear => $thisYear,
-      $thisYearPlus1 => $thisYearPlus1,
-      $thisYearPlus2 => $thisYearPlus2,
-    ];
+    $form["elements"]["2_avustustiedot"]["avustuksen_tiedot"]["acting_year"]["#options"] = $this->applicationActingYears;
 
     if ($this->applicationNumber) {
       $dataIntegrityStatus = $this->applicationHandler->validateDataIntegrity(
@@ -586,6 +596,16 @@ class GrantsHandler extends WebformHandlerBase {
         $form['#disabled'] = TRUE;
         $this->messenger()
           ->addWarning($this->t('Application data is not yet fully saved, please refresh page in few moments.'));
+      }
+
+      $locked = $this->formLockService->isApplicationFormLocked($this->applicationNumber);
+      if ($locked) {
+        $form['#disabled'] = TRUE;
+        $this->messenger()
+          ->addWarning($this->t('This application is being modified by other person currently, you cannot do any modifications while the application is locked for them.'));
+      }
+      else {
+        $this->formLockService->createOrRefreshApplicationLock($this->applicationNumber);
       }
     }
     // This will remove rebuild action
@@ -635,6 +655,10 @@ class GrantsHandler extends WebformHandlerBase {
               elseif (isset($form['elements'][$pageName][$fieldName][$errorName]['#webform_composite_elements'][$errorSelectValue])) {
                 $errors[$errorName]['class'] = 'has-errors';
                 $errors[$errorName]['label'] = $error;
+                $errors[$errorName]['errors'][$errorSelectValue] = [
+                  'class' => 'has-errors',
+                  'label' => $error,
+                ];
               }
               elseif (isset($form['elements'][$pageName][$fieldName][$errorName])) {
                 $form['elements'][$pageName][$fieldName][$errorName]['#attributes']['class'][] = 'has-error';
@@ -1197,6 +1221,9 @@ class GrantsHandler extends WebformHandlerBase {
           ->error('Error uploadind application: @error', ['@error' => $e->getMessage()]);
       }
 
+      $lockService = \Drupal::service('grants_handler.form_lock_service');
+      $lockService->releaseApplicationLock($this->applicationNumber);
+
       $redirectResponse = new RedirectResponse($redirectUrl->toString());
       $this->applicationHandler->clearCache($this->applicationNumber);
       $redirectResponse->send();
@@ -1392,6 +1419,41 @@ class GrantsHandler extends WebformHandlerBase {
         $this->applicationType = $webform
           ->getThirdPartySetting('grants_metadata', 'applicationType');
         $this->submittedFormData['application_type'] = $this->applicationType;
+      }
+    }
+
+    $yearsType = $webform->getThirdPartySetting('grants_metadata', 'applicationActingYearsType') ?? 'fixed';
+    $yearsCount = $webform->getThirdPartySetting('grants_metadata', 'applicationActingYearsNextCount');
+
+    // Make sure we have our application acting years set.
+    if (!isset($this->applicationActingYears) || empty($this->applicationActingYears)) {
+      $actingYearOptions = [];
+      $current_year = (int) date("Y");
+
+      // Fixed years.
+      if ($yearsType === 'fixed' && $applicationActingYears = $webform->getThirdPartySetting('grants_metadata', 'applicationActingYears')) {
+        $this->applicationActingYears = array_combine($applicationActingYears, $applicationActingYears);
+      }
+      // Current year + x following years.
+      elseif ($yearsType === 'current_and_next_x_years') {
+        for ($i = 0; $i <= $yearsCount; $i++) {
+          $actingYearOptions[$current_year + $i] = $current_year + $i;
+        }
+        $this->applicationActingYears = $actingYearOptions;
+      }
+      // Following years only.
+      elseif ($yearsType === 'next_x_years') {
+        for ($i = 1; $i <= $yearsCount; $i++) {
+          $actingYearOptions[$current_year + $i] = $current_year + $i;
+        }
+        $this->applicationActingYears = $actingYearOptions;
+      }
+      // Fallback behaviour - Current + 2 years.
+      else {
+        for ($i = 0; $i <= 2; $i++) {
+          $actingYearOptions[$current_year + $i] = $current_year + $i;
+        }
+        $this->applicationActingYears = $actingYearOptions;
       }
     }
   }
