@@ -589,20 +589,20 @@ class KuvaPerusDefinition extends ComplexDataDefinitionBase {
             'sales',
             'financialFundingAndInterests',
           ])
-      )
+        )
         ->setPropertyDefinition(
         'menot_yhteensa',
         GrantsBudgetInfoDefinition::getStaticCostDefinition()
           ->setSetting('fieldsForApplication', ['totalCosts',
           ])
-      )
+        )
         ->setPropertyDefinition(
         'suunnitellut_menot',
         GrantsBudgetInfoDefinition::getStaticCostDefinition()
           ->setSetting('fieldsForApplication', [
             'plannedTotalCosts',
           ])
-      )
+        )
         ->setPropertyDefinition(
         'toteutuneet_tulot_data',
         GrantsBudgetInfoDefinition::getStaticIncomeDefinition()
