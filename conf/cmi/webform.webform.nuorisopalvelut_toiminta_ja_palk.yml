@@ -243,16 +243,6 @@ elements: |-
     '#title': '2. Avustustiedot'
     '#prev_button_label': '< Edellinen'
     '#next_button_label': 'Seuraava >'
-    avustuksen_kohde:
-      '#type': webform_section
-      '#title': 'Avustuksen kohde'
-      kenelle_haen_avustusta:
-        '#type': select
-        '#title': 'Kenelle haen avustusta'
-        '#options':
-          Nuorisoyhdistys: Nuorisoyhdistys
-          'Nuorten toimintaryhmä': 'Nuorten toimintaryhmä'
-          Talokerho: Talokerho
     avustuksen_tiedot:
       '#type': webform_section
       '#title': 'Avustuksen tiedot'
@@ -268,7 +258,8 @@ elements: |-
         '#title': Avustukset
         '#multiple': true
         '#subventionType':
-          4: '4'
+          1: '1'
+          2: '2'
         '#required': true
         '#multiple__header': true
         '#multiple__empty_items': 0
@@ -308,7 +299,7 @@ elements: |-
         '#title': 'Selvitys kuluvan vuoden palkkausavustuksen käytöstä'
         '#help': 'Ilmoita t&auml;ss&auml;, kuinka paljon yhdistys on k&auml;ytt&auml;nyt ja k&auml;ytt&auml;&auml; kuluvan vuoden palkkausavustusta. Ilmoitettu luku on aina osittain arvio, koska vuosi on viel&auml; kesken.&nbsp;&nbsp;'
       sanallinen_selvitys_avustuksen_kaytosta:
-        '#type': number
+        '#type': textarea
         '#title': 'Sanallinen selvitys avustuksen käytöstä'
   lisatiedot_ja_liitteet:
     '#type': webform_wizard_page
