@@ -26,6 +26,8 @@ Open Browser To Home Page
     ...    ELSE IF    "${environment}" == "stage"        New Page    https://avustukset.stage.hel.ninja/
     ...    ELSE IF    "${environment}" == "local"        New Page    https://hel-fi-drupal-grant-applications.docker.so/
     ...    ELSE                                          New Page    https://hel-fi-drupal-grant-applications.docker.so/
+    # Set default timeout
+    Set Browser Timeout     30s
     Get Title    ==    Avustukset | ${SITE_NAME_ALT}
 
 Accept Cookies Banner
@@ -124,4 +126,4 @@ Upload Drupal Ajax Dummy File
    Upload File By Selector    ${file_element}    ${CURDIR}/empty.pdf
    Wait For Elements State    ${file_element}    hidden
    # It's not enough to wait for upload element to be hidden, have to wait extra bit for JS to parse
-   Sleep     1
+   Sleep     2

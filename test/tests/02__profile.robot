@@ -17,6 +17,7 @@ Update Company Bank Account
     Initialize Browser Session
     Do Company Login Process With Tunnistamo
     Go To Profile Page
+    Ensure That Company Profile Has Required Info
     Open Edit Form
     Add New Bank Account
     Open Edit Form
@@ -27,6 +28,7 @@ Update Company Website
     Initialize Browser Session
     Do Company Login Process With Tunnistamo
     Go To Profile Page
+    Ensure That Company Profile Has Required Info
     Open Edit Form
     Change Company Website To Temporary
     Open Edit Form
@@ -64,7 +66,7 @@ Update Unregistered Community Name
 Update Private Person Bank Account
     Initialize Browser Session
     Do Private Person Login Process With Tunnistamo
-    Go To Profile Page
+    Go To Private Person Profile Page
     Open Edit Form
     Add New Bank Account
     Open Edit Form
@@ -74,7 +76,7 @@ Update Private Person Bank Account
 Update Private Person Address
     Initialize Browser Session
     Do Private Person Login Process With Tunnistamo
-    Go To Profile Page
+    Go To Private Person Profile Page
     Open Edit Form
     Change Address To Temporary
     Open Edit Form
@@ -84,7 +86,7 @@ Update Private Person Address
 Update Private Person Phone
     Initialize Browser Session
     Do Private Person Login Process With Tunnistamo
-    Go To Profile Page
+    Go To Private Person Profile Page
     Open Edit Form
     Change Phone To Temporary
     Open Edit Form
@@ -96,7 +98,16 @@ Update Private Person Phone
 Go To Profile Page
     Click           a[data-drupal-link-system-path="oma-asiointi/hakuprofiili"]
     Wait Until Network Is Idle
-    Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    Get Title       ==    Näytä oma profiili | ${SITE_NAME}
+
+Go To Private Person Profile Page
+    Click           a[data-drupal-link-system-path="oma-asiointi/hakuprofiili"]
+    Wait Until Network Is Idle
+    ${title} =      Get Title
+    IF    "${title}" == "Muokkaa omaa profiilia | ${SITE_NAME}"
+        Fill Private Person Profile Required Info
+    END
+    Get Title       ==    Näytä oma profiili | ${SITE_NAME}
 
 Open Edit Form
     Click           a[data-drupal-selector="profile-edit-link"]
@@ -194,3 +205,26 @@ Revert Company Name
     Click           \#edit-actions-submit
     Get Title           ==    Näytä oma profiili | ${SITE_NAME}
     Get Text    .grants-profile-company-name    not contains    ${INPUT_TEMP_COMPANY_NAME}
+
+Ensure That Company Profile Has Required Info
+    ${tarkoitus} =     Get Text     \#toiminna-tarkoitus + dd
+    IF    "${tarkoitus}" == "${EMPTY}"
+        Open Edit Form
+        Type Text             [data-drupal-selector="edit-businesspurposewrapper-businesspurpose"]           ${INPUT_COMPENSATION_PURPOSE}
+        Click           \#edit-actions-submit
+        Get Title           ==    Näytä oma profiili | ${SITE_NAME}
+    END
+
+Fill Private Person Profile Required Info
+    Type Text        input[data-drupal-selector="edit-addresswrapper-street"]       Vakiokatu 1
+    Type Text        input[data-drupal-selector="edit-addresswrapper-postcode"]     00100
+    Type Text        input[data-drupal-selector="edit-addresswrapper-city"]         Helsinki
+    Type Text        input[data-drupal-selector="edit-phonewrapper-phone-number"]         040 123 123
+    Type Text        input[data-drupal-selector="edit-emailwrapper-email"]         tama.on.robotin.vakioarvo@hel.fi
+    Click           button[data-drupal-selector="edit-bankaccountwrapper-actions-add-bankaccount"]
+    Sleep   2   # Have to manually wait for ajax load
+    Scroll To Element   [data-drupal-selector="edit-bankaccountwrapper"] fieldset:last-of-type .js-form-item:first-of-type input[type="text"]
+    Get Attribute    [data-drupal-selector="edit-bankaccountwrapper"] fieldset:last-of-type .js-form-item:first-of-type input[type="text"]      value   ==    ${Empty}
+    Type Text        [data-drupal-selector="edit-bankaccountwrapper"] fieldset:last-of-type .js-form-item:first-of-type input[type="text"]     FI5419166265394436
+    Upload Drupal Ajax Dummy File     [data-drupal-selector="edit-bankaccountwrapper"] fieldset:last-of-type .js-form-type-managed-file input[type="file"]
+    Click           \#edit-actions-submit
