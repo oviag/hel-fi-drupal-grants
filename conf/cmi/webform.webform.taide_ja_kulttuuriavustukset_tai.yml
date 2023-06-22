@@ -20,6 +20,9 @@ third_party_settings:
     applicationClose: '2023-07-31T11:19:00'
     applicationContinuous: 0
     disableCopying: 0
+    applicationActingYearsType: next_x_years
+    applicationActingYears: {  }
+    applicationActingYearsNextCount: '1'
 weight: 0
 open: null
 close: null
@@ -256,13 +259,10 @@ elements: |-
         '#options':
           'Design ja käsityö': 'Design ja käsityö'
           'Elokuva, valokuva ja media': 'Elokuva, valokuva ja media'
-          Kaupunkikulttuuri: Kaupunkikulttuuri
           Kirjallisuus: Kirjallisuus
           'Kuvataide ': 'Kuvataide ja sarjakuva'
           Monitaide: Monitaide
-          Museo: Museo
           Musiikki: Musiikki
-          Muu: Muu
           Sirkus: Sirkus
           Tanssi: Tanssi
           Teatteri: Teatteri
