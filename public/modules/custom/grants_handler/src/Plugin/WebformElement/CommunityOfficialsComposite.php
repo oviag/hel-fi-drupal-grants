@@ -41,7 +41,7 @@ class CommunityOfficialsComposite extends WebformCompositeBase {
     $value = $this->getValue($element, $webform_submission, $options);
     $roles = GrantsProfileFormRegisteredCommunity::getOfficialRoles();
     return [
-      ''.$roles[(int) $value['role']],
+      '' . $roles[(int) $value['role']],
       $value['name'],
       $value['email'],
       $value['phone'],
