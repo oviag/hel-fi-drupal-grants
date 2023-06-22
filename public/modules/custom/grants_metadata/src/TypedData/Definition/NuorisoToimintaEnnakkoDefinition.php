@@ -3,6 +3,7 @@
 namespace Drupal\grants_metadata\TypedData\Definition;
 
 use Drupal\Core\TypedData\ComplexDataDefinitionBase;
+use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\TypedData\ListDataDefinition;
 
 /**
@@ -34,6 +35,18 @@ class NuorisoToimintaEnnakkoDefinition extends ComplexDataDefinitionBase {
           'compensationInfo',
           'compensationArray',
         ]);
+
+      $info['sanallinen_selvitys_avustuksen_kaytosta'] = DataDefinition::create('string')
+      // ->setRequired(TRUE)
+      ->setLabel('Selvityksen kommentti')
+      ->setSetting('jsonPath', [
+        'compensation',
+        'generalInfoArray',
+        'explanation'
+      ]);
+
+      // @TODO: Aikaisempien avustuksien tiedot.
+
     }
 
     return $this->propertyDefinitions;
