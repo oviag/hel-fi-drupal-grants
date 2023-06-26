@@ -8,6 +8,8 @@ elements: |
     '#title': 'Community for which the grant is being applied for'
   prh_markup:
     '#markup': '<div class="grants-profile-prh-info">The indicated information has been retrieved from the register of the Finnish Patent and Registration Office (PRH), and changing the information is only possible in the online service in question.</div>'
+  hakijan_tiedot:
+    '#title': 'Applicant details'
   contact_person_email_section:
     '#title': Email
   contact_markup:
