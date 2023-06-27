@@ -42,7 +42,7 @@ Update Company Website
 Update Unregistered Company Bank Account
     Initialize Browser Session
     Do Unregistered Community Login Process With Tunnistamo
-    Go To Profile Page
+    Go To Unregistered Community Profile Page
     Open Edit Form
     Add New Bank Account For Unregistered Community
     Open Edit Form
@@ -52,7 +52,7 @@ Update Unregistered Company Bank Account
 Update Unregistered Community Name
     Initialize Browser Session
     Do Unregistered Community Login Process With Tunnistamo
-    Go To Profile Page
+    Go To Unregistered Community Profile Page
     Open Edit Form
     Change Company Name To Temporary
     Open Edit Form
@@ -102,6 +102,10 @@ Go To Company Profile Page
     IF    "${title}" == "Muokkaa omaa profiilia | ${SITE_NAME}"
         Fill Company Profile Required Info
     END
+    Get Title       ==    Näytä oma profiili | ${SITE_NAME}
+
+Go To Unregistered Community Profile Page
+    Click           a[data-drupal-link-system-path="oma-asiointi/hakuprofiili"]
     Get Title       ==    Näytä oma profiili | ${SITE_NAME}
 
 Go To Private Person Profile Page
