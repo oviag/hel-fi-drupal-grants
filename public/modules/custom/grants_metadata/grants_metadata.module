@@ -5,12 +5,14 @@
  * Module hooks.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * Update 3rd party settings so that they can be saved to data.
@@ -453,7 +455,6 @@ function grants_metadata_form_node_service_edit_form_alter(&$form, FormStateInte
  * Implements hook_preprocess_HOOK().
  */
 function grants_metadata_preprocess_block(&$variables) {
-
   // Also invalidate breadcrumb cache.
   if ($variables["plugin_id"] == 'system_breadcrumb_block') {
     $variables["elements"]["#cache"]["contexts"][] = 'user';
@@ -462,4 +463,28 @@ function grants_metadata_preprocess_block(&$variables) {
     $variables["content"]["#cache"]["max-age"] = 0;
     $variables["elements"]["#cache"]["max-age"] = 0;
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ *
+ * Calculate a value for the "avustukset_summa" element in order
+ * for the conditional visibility settings to work properly on
+ * other fields. This hook is called when viewing a webform submission.
+ */
+function grants_metadata_webform_submission_view_alter(array &$build, WebformSubmission $entity, EntityViewDisplayInterface $display): void {
+  $subventionsElement = $entity->getElementData('subventions');
+  $subventionsTotalAmount = 0;
+
+  if (!$subventionsElement) {
+    return;
+  }
+
+  foreach ($subventionsElement as $subvention) {
+    if (isset($subvention['amount'])) {
+      $subventionsTotalAmount += (int) $subvention['amount'];
+    }
+  }
+
+  $entity->setElementData('avustukset_summa', $subventionsTotalAmount);
 }
