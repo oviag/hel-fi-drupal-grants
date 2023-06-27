@@ -553,3 +553,6 @@ msgstr "Yhteisöllä on avustuksia käsittelyssä."
 
 msgid "Connection error"
 msgstr "Yhteysvirhe"
+
+msgid "Fill all fields, check that the information is correct and save in the end."
+msgstr "Täytä kaikki kentät, tarkista tietojen oikeellisuus ja tallenna lopuksi."
