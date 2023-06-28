@@ -28,17 +28,17 @@ statusStrings:
     CANCELLED: Peruttu
     CLOSED: Ratkaistu
   sv:
-    DRAFT: Draft
-    SENT: Sent
-    SUBMITTED: Submitted
+    DRAFT: Utkast
+    SENT: Skickas
+    SUBMITTED: Lämnats
     RECEIVED: Mottagits
-    PENDING: Pending
-    PROCESSING: Processing
-    READY: Ready
-    DONE: Done
-    REJECTED: Rejected
-    DELETED: Deleted
-    CANCELED: Canceled
-    CANCELLED: Canceled
-    CLOSED: Closed
+    PENDING: I väntan på
+    PROCESSING: Behandlas
+    READY: Redo
+    DONE: Avgjort
+    REJECTED: Avvisade
+    DELETED: Raderade
+    CANCELED: Annulerad
+    CANCELLED: Inställt
+    CLOSED: Stängd
 langcode: fi
