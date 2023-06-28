@@ -5,9 +5,9 @@ statusStrings:
     SUBMITTED: Submitted
     RECEIVED: Received
     PENDING: Pending
-    PROCESSING: Processing
+    PROCESSING: In Progress
     READY: Ready
-    DONE: Done
+    DONE: Solved
     REJECTED: Rejected
     DELETED: Deleted
     CANCELED: Canceled
@@ -21,12 +21,12 @@ statusStrings:
     PENDING: Odottaa
     PROCESSING: Käsittelyssä
     READY: Valmiina
-    DONE: Käsitelty
+    DONE: Ratkaistu
     REJECTED: Hylätty
     DELETED: Poistettu
     CANCELED: Peruttu
     CANCELLED: Peruttu
-    CLOSED: Ratkaistu
+    CLOSED: Suljettu
   sv:
     DRAFT: Utkast
     SENT: Skickas
