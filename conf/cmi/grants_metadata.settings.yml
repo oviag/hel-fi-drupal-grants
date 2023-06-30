@@ -65,12 +65,12 @@ third_party_options:
       id: LIIKUNTATAPAHTUMA
       code: LIIKUNTATAPAHTUMA
       dataDefinition:
-        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaToimintaDefinition
-        definitionId: grants_metadata_kuvatoiminta
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\LiikuntaTapahtumaDefinition
+        definitionId: grants_metadata_liikuntatapahtuma
       labels:
-        fi: 'Taide ja kulttuuri: toiminta-avustus'
-        en: 'EN Taide ja kulttuuri: toiminta-avustus'
-        sv: 'SV Taide ja kulttuuri: toiminta-avustus'
+        fi: 'Liikunta Tapahtuma'
+        en: 'Liikunta Tapahtuma'
+        sv: 'Liikunta Tapahtuma'
     56:
       id: LIIKUNTAYLEIS
       code: LIIKUNTAYLEIS
