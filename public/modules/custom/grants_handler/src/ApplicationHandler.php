@@ -1932,6 +1932,10 @@ class ApplicationHandler {
       return FALSE;
     }
 
+    if (!isset($webformData['application_number'])) {
+      return FALSE;
+    }
+
     try {
       $atvDoc = ApplicationHandler::atvDocumentFromApplicationNumber($webformData['application_number']);
     }
