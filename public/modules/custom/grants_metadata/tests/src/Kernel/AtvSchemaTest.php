@@ -100,6 +100,8 @@ class AtvSchemaTest extends KernelTestBase {
    *
    * @return \Drupal\Core\TypedData\TypedDataInterface
    *   Typed data with values set.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   public static function webformToTypedData(array $submittedFormData, string $formId): TypedDataInterface {
 
@@ -188,6 +190,7 @@ class AtvSchemaTest extends KernelTestBase {
 
   /**
    * @covers \Drupal\grants_metadata\AtvSchema::typedDataToDocumentContentWithWebform
+   * @throws \Drupal\Core\TypedData\Exception\ReadOnlyException
    */
   public function testYleisAvustusHakemus() : void {
     $schema = self::createSchema();
@@ -198,7 +201,7 @@ class AtvSchemaTest extends KernelTestBase {
     $submissionData = self::loadSubmissionData('yleisavustushakemus');
     $typedData = self::webformToTypedData($submissionData, 'yleisavustushakemus');
     // Run the actual data conversion.
-    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages);
+    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages, $submissionData);
     // Applicant info.
     $this->assertDocumentField($document, 'applicantInfoArray', 0, 'applicantType', '2');
     $this->assertDocumentField($document, 'applicantInfoArray', 1, 'companyNumber', '2036583-2');
@@ -283,7 +286,7 @@ class AtvSchemaTest extends KernelTestBase {
     $submissionData = self::loadSubmissionData('kasvatus_ja_koulutus_yleisavustu');
     $typedData = self::webformToTypedData($submissionData, 'kasvatus_ja_koulutus_yleisavustu');
     // Run the actual data conversion.
-    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages);
+    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages, $submissionData);
     // Applicant info.
     $this->assertDocumentField($document, 'applicantInfoArray', 0, 'applicantType', '2');
     $this->assertDocumentField($document, 'applicantInfoArray', 1, 'companyNumber', '2036583-2');
@@ -361,7 +364,7 @@ class AtvSchemaTest extends KernelTestBase {
     $submissionData = self::loadSubmissionData('kuva_projekti');
     $typedData = self::webformToTypedData($submissionData, 'kuva_projekti');
     // Run the actual data conversion.
-    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages);
+    $document = $schema->typedDataToDocumentContentWithWebform($typedData, $webform, $pages, $submissionData);
     $this->assertDocumentField($document, 'applicantInfoArray', 0, 'applicantType', '2');
     $this->assertDocumentField($document, 'applicantInfoArray', 1, 'companyNumber', '2036583-2');
     $this->assertDocumentField($document, 'applicantInfoArray', 2, 'registrationDate', '2006-05-10T00:00:00.000+00:00');
