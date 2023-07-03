@@ -15,6 +15,9 @@
 - 014b7deb fix: AU-1163: Change static budget components to non multivalue (#511)
 
 
+## 2023.13.1
+- hotfix update.
+
 ## 2023.13
 - 6045994f fix: AU-819: General robot tests improvements (#473)
 - ddaef87a fix: AU-1133: Disable form actions during ajax call (#491)
