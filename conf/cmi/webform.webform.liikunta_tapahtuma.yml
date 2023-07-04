@@ -1,4 +1,4 @@
-uuid: adda91de-ae46-46ef-b09e-bac9c303615a
+uuid: f7ac8742-a0b5-48e0-a20c-b184d478282c
 langcode: fi
 status: open
 dependencies:
@@ -87,6 +87,19 @@ elements: |-
     contact_person_email_section:
       '#type': webform_section
       '#title': Sähköposti
+      contact_markup:
+        '#type': webform_markup
+        '#markup': 'Ilmoita t&auml;ss&auml; sellainen yhteis&ouml;n s&auml;hk&ouml;postiosoite, jota luetaan aktiivisesti. S&auml;hk&ouml;postiin l&auml;hetet&auml;&auml;n avustushakemukseen liittyvi&auml; yhteydenottoja esim. lis&auml;selvitys- ja t&auml;ydennyspyynt&ouml;j&auml;.'
+      email:
+        '#type': email
+        '#title': Sähköpostiosoite
+        '#help': 'Ilmoita s&auml;hk&ouml;postiosoite, johon t&auml;h&auml;n hakemukseen liittyv&auml;t viestit sek&auml; her&auml;tteet osoitetaan ja jota luetaan aktiivisesti'
+        '#size': 63
+        '#autocomplete': 'off'
+        '#required': true
+    contact_person_section:
+      '#type': webform_section
+      '#title': 'Hakemuksen yhteyshenkilö'
       contact_person:
         '#type': textfield
         '#title': Yhteyshenkilö
@@ -108,6 +121,7 @@ elements: |-
       community_address:
         '#type': community_address_composite
         '#title': 'Yhteisön osoite'
+        '#description': 'Valitse osoite, osoitteita yll&auml;pidet&auml;&auml;n omissa tiedoissa.'
         '#required': true
     tilinumero:
       '#type': webform_section
@@ -115,6 +129,7 @@ elements: |-
       bank_account:
         '#type': bank_account_composite
         '#title': Tilinumero
+        '#description': 'Valitse tilinumero, tilinumeroita yll&auml;pidet&auml;&auml;n omissa tiedoissa.'
         '#required': true
         '#wrapper_attributes':
           class:
@@ -190,45 +205,71 @@ elements: |-
       20_age_participants:
         '#type': fieldset
         '#title': 'Yli 20-vuotiaat osallistujat'
+        '#attributes':
+          class:
+            - grants-fieldset
+            - grants-fieldset-medium
         20_men:
           '#type': number
           '#title': Miehet
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
         20_women:
           '#type': number
           '#title': Naiset
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
         20_other:
           '#type': number
           '#title': Muut
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
       under_20_age_participants:
         '#type': fieldset
         '#title': 'Alle 20-vuotiaat osallistujat'
+        '#attributes':
+          class:
+            - grants-fieldset
+            - grants-fieldset-medium
         under_20_men:
           '#type': number
           '#title': Pojat
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
         under_20_women:
           '#type': number
           '#title': Tytöt
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
         under_20_other:
           '#type': number
           '#title': Muut
           '#size': '32'
           '#autocomplete': 'off'
           '#required': true
+          '#attributes':
+            class:
+              - webform--small
     tapahtuman_tiedot:
       '#type': webform_section
       '#title': 'Tapahtuman tiedot'
@@ -239,6 +280,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
       event_target_group:
         '#type': textarea
         '#title': 'Tapahtuman kohderyhmä'
@@ -246,6 +288,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
       event_location:
         '#type': textarea
         '#title': Tapahtumapaikka
@@ -253,6 +296,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
       event_details:
         '#type': textarea
         '#title': 'Tarkemmat tiedot tapahtumasta ja sen sisällöstä'
@@ -260,6 +304,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 3000
+        '#counter_maximum_message': '%d/3000 merkkiä jäljellä'
       equality_checkbox:
         '#type': checkbox
         '#title': 'Tapahtuma edistää yhdenvertaisuutta ja tasa-arvoa'
@@ -271,6 +316,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
             ':input[name="equality_checkbox"]':
@@ -285,6 +331,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
             ':input[name="inclusion_checkbox"]':
@@ -299,6 +346,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
             ':input[name="environment_checkbox"]':
@@ -313,6 +361,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
             ':input[name="exercise_checkbox"]':
@@ -327,6 +376,7 @@ elements: |-
         '#required': true
         '#counter_type': character
         '#counter_maximum': 1000
+        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
             ':input[name="activity_checkbox"]':
@@ -486,10 +536,10 @@ settings:
   form_open_message: ''
   form_close_message: ''
   form_exception_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
-  form_disable_remote_addr: false
+  form_disable_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
@@ -521,7 +571,7 @@ settings:
   submission_label: ''
   submission_exception_message: ''
   submission_locked_message: ''
-  submission_log: false
+  submission_log: true
   submission_excluded_elements: {  }
   submission_exclude_empty: false
   submission_exclude_empty_checkbox: false
@@ -551,8 +601,8 @@ settings:
   wizard_auto_forward_hide_next_button: false
   wizard_keyboard: true
   wizard_track: ''
-  wizard_prev_button_label: ''
-  wizard_next_button_label: ''
+  wizard_prev_button_label: '< Edellinen'
+  wizard_next_button_label: 'Seuraava >'
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
@@ -564,7 +614,7 @@ settings:
   preview_message: ''
   preview_attributes: {  }
   preview_excluded_elements: {  }
-  preview_exclude_empty: true
+  preview_exclude_empty: false
   preview_exclude_empty_checkbox: false
   draft: all
   draft_multiple: false
@@ -608,12 +658,12 @@ settings:
 access:
   create:
     roles:
-      - anonymous
       - authenticated
     users: {  }
     permissions: {  }
   view_any:
-    roles: {  }
+    roles:
+      - admin
     users: {  }
     permissions: {  }
   update_any:
