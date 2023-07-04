@@ -305,9 +305,11 @@ elements: |-
         '#counter_type': character
         '#counter_maximum': 3000
         '#counter_maximum_message': '%d/3000 merkkiä jäljellä'
-      equality_checkbox:
-        '#type': checkbox
+      equality_radios:
+        '#type': radios
         '#title': 'Tapahtuma edistää yhdenvertaisuutta ja tasa-arvoa'
+        '#options': yes_no
+        '#options_display': side_by_side
       equality_how:
         '#type': textarea
         '#title': 'Miten?'
@@ -319,14 +321,17 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
-            ':input[name="equality_checkbox"]':
-              checked: true
-      inclusion_checkbox:
-        '#type': checkbox
+            ':input[name="equality_radios"]':
+              value: 'Yes'
+      inclusion_radios:
+        '#type': radios
         '#title': 'Tapahtuma edistää osallisuutta ja yhteisöllisyyttä'
+        '#options': yes_no
+        '#options_display': side_by_side
       inclusion_how:
         '#type': textarea
         '#title': 'Miten?'
+        '#size': 32
         '#autocomplete': 'off'
         '#required': true
         '#counter_type': character
@@ -334,11 +339,13 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
-            ':input[name="inclusion_checkbox"]':
-              checked: true
-      environment_checkbox:
-        '#type': checkbox
+            ':input[name="inclusion_radios"]':
+              value: 'Yes'
+      environment_radios:
+        '#type': radios
         '#title': 'Tapahtumassa on huomioitu ympäristöasiat'
+        '#options': yes_no
+        '#options_display': side_by_side
       environment_how:
         '#type': textarea
         '#title': 'Miten?'
@@ -349,11 +356,13 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
-            ':input[name="environment_checkbox"]':
-              checked: true
-      exercise_checkbox:
-        '#type': checkbox
+            ':input[name="environment_radios"]':
+              value: 'Yes'
+      exercise_radios:
+        '#type': radios
         '#title': 'Tapahtuma innostaa uusia harrastajia omatoimisen tai ohjatun liikunnan pariin'
+        '#options': yes_no
+        '#options_display': side_by_side
       exercise_how:
         '#type': textarea
         '#title': 'Miten?'
@@ -364,11 +373,13 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
-            ':input[name="exercise_checkbox"]':
-              checked: true
-      activity_checkbox:
-        '#type': checkbox
+            ':input[name="exercise_radios"]':
+              value: 'Yes'
+      activity_radios:
+        '#type': radios
         '#title': 'Tapahtuma innostaa ihmisiä arkiaktiivisuuteen'
+        '#options': yes_no
+        '#options_display': side_by_side
       activity_how:
         '#type': textarea
         '#title': 'Miten?'
@@ -379,8 +390,8 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
         '#states':
           visible:
-            ':input[name="activity_checkbox"]':
-              checked: true
+            ':input[name="activity_radios"]':
+              value: 'Yes'
     tapahtuma_ajankohta:
       '#type': webform_section
       '#title': Tapahtuma-ajankohta
@@ -440,6 +451,7 @@ elements: |-
         '#title': Lisätiedot
         '#help': 'T&auml;h&auml;n voit tarvittaessa kirjoittaa lis&auml;tietoja tai muita perusteluja hakemukseen liittyen tai ilmoittaa perustietoihin tulleista muutoksista&nbsp;'
         '#maxlength': 5000
+        '#autocomplete': 'off'
         '#counter_type': character
         '#counter_maximum': 5000
         '#counter_maximum_message': '%d/5000 merkkiä jäljellä'
@@ -490,7 +502,7 @@ elements: |-
         '#maxlength': 5000
         '#counter_type': character
         '#counter_maximum': 5000
-        '#counter_maximum_message': 'Max 5000 characters.'
+        '#counter_maximum_message': '%d/5000 merkkiä jäljellä'
         '#cols': 63
       muu_liite:
         '#type': grants_attachments
