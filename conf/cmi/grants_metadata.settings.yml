@@ -68,9 +68,19 @@ third_party_options:
         definitionClass: Drupal\grants_metadata\TypedData\Definition\LiikuntaTapahtumaDefinition
         definitionId: grants_metadata_liikuntatapahtuma
       labels:
-        fi: 'Liikunta Tapahtuma'
-        en: 'Liikunta Tapahtuma'
-        sv: 'Liikunta Tapahtuma'
+        fi: 'Liikunta, tapahtuma-avustushakemus'
+        en: 'EN Sports: Event grant application'
+        sv: 'SV Idrott: Ansökan om evenemangsunderstöd'
+    66:
+      id: NUORTOIMPALKENNAKKO
+      code: NUORTOIMPALKENNAKKO
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\NuorisoToimintaEnnakkoDefinition
+        definitionId: grants_metadata_nuortoimennakko
+      labels:
+        fi: 'Nuorisopalvelut, toiminta- ja palkkausavustus ennakkohakemus'
+        en: 'EN Nuorisopalvelut, toiminta- ja palkkausavustus ennakkohakemus'
+        sv: 'SV Nuorisopalvelut, toiminta- ja palkkausavustus ennakkohakemus'
     56:
       id: LIIKUNTAYLEIS
       code: LIIKUNTAYLEIS
@@ -81,6 +91,16 @@ third_party_options:
         fi: 'Liikunta yleisavustus'
         en: 'EN Liikunta yleisavustus'
         sv: 'SV Liikunta yleisavustus'
+    50:
+      id: KUVAPERUS
+      code: KUVAPERUS
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaPerusDefinition
+        definitionId: grants_metadata_kuvaperus
+      labels:
+        fi: 'Taide ja kulttuuri: perusopetuksen avustus'
+        en: 'EN Taide ja kulttuuri: perusopetuksen avustus'
+        sv: 'SV Taide ja kulttuuri: perusopetuksen avustus'
     53:
       id: KASKOIPLISA
       code: KASKOIPLISA
