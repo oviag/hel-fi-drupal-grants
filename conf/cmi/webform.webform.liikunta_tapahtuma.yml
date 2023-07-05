@@ -33,8 +33,8 @@ uid: 1
 template: false
 archive: false
 id: liikunta_tapahtuma
-title: 'Liikunta Tapahtuma'
-description: 'Liikunta Tapahtuma Grant Form'
+title: 'Liikunta: Tapahtuma-avustushakemus'
+description: LIIKUNTATAPAHTUMA
 category: ''
 elements: |-
   applicant_type:
@@ -419,6 +419,7 @@ elements: |-
         '#title': Tulo
         '#multiple': true
         '#incomeGroup': general
+        '#title_display': none
         '#multiple__min_items': 1
         '#multiple__empty_items': 0
         '#multiple__sorting': false
@@ -435,6 +436,7 @@ elements: |-
         '#title': Meno
         '#multiple': true
         '#incomeGroup': general
+        '#title_display': none
         '#multiple__min_items': 1
         '#multiple__empty_items': 0
         '#multiple__sorting': false
