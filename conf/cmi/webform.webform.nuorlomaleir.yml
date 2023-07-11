@@ -248,13 +248,7 @@ elements: |-
       '#title': 'Leirien tiedot'
       markup_02:
         '#type': webform_markup
-        '#markup': 'Leirien arvioidut tiedot ilmoitetaan erillisell&auml; Ennakkotiedot leireist&auml; excel-liitteell&auml;. T&auml;yt&auml; liite huolellisesti jokaisen leirin kohdalta. Liite on ladattavissa t&auml;st&auml;&nbsp; ja osoitteesta <strong>t&auml;h&auml;n linkki</strong> leiriavustuksen uuden nettisivun liitekohta. Liite on pakollinen ja se on toimitettava hakemuksen l&auml;hett&auml;misen yhteydess&auml;.'
-    lisakysymys:
-      '#type': webform_section
-      '#title': Lisäkysymys
-      lisakysymys_1:
-        '#type': textarea
-        '#title': 'Kysymyksen muutettu otsikko, joka viedään labeliks'
+        '#markup': 'Leirien arvioidut tiedot ilmoitetaan erillisell&auml; Ennakkotiedot leireist&auml; excel-liitteell&auml;. <strong>T&auml;yt&auml; liite huolellisesti jokaisen leirin kohdalta</strong>. <a href="https://www.hel.fi/static/liitteet/nk/LA_leiriavustushakemus_Liite_tiedot%20leireista.xls">Liite on ladattavissa t&auml;st&auml;</a> tai <a href="https://avustukset.hel.fi/fi/nuorisotoiminnan-loma-aikojen-leiriavustus">leiriavustuksen palvelukuvaussivulta</a>. Liite on pakollinen ja se on toimitettava hakemuksen l&auml;hett&auml;misen yhteydess&auml;.'
   3_talousarvio:
     '#type': webform_wizard_page
     '#title': '3. Talousarvio'
@@ -299,7 +293,7 @@ elements: |-
       additional_information:
         '#type': textarea
         '#title': Lisätiedot
-        '#help': 'T&auml;h&auml;n voit tarvittaessa kirjoittaa lis&auml;tietoja tai muita perusteluja hakemukseen liittyen tai ilmoittaa perustietoihin tulleista muutoksista&nbsp;'
+        '#help': 'T&auml;h&auml;n voit tarvittaessa kirjoittaa lis&auml;tietoja tai muita perusteluja hakemukseen liittyen&nbsp;'
         '#counter_type': character
         '#attributes':
           class:
