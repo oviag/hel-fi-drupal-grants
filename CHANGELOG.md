@@ -2,6 +2,7 @@
 
 
 ## 2023.14
+- 0bf0234e feat: AU-1233: Save application to ATV before sending it to integration for saving. (#595)
 - d1a2ee2a fix: AU-1343: Translate attachment field labels for print view (#607)
 - 90a3c368 fix: AU-1385: Change liikunta tapahtuma acting years (#606)
 - 19139d33 fix: AU-1383: Remove duplicate error message from the first page of application (#605)
