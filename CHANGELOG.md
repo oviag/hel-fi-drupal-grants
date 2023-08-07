@@ -2,6 +2,42 @@
 
 
 ## 2023.14
+- d1a2ee2a fix: AU-1343: Translate attachment field labels for print view (#607)
+- 90a3c368 fix: AU-1385: Change liikunta tapahtuma acting years (#606)
+- 19139d33 fix: AU-1383: Remove duplicate error message from the first page of application (#605)
+- caa9864a fix; AU-1363: Change disabled to readonly when doing automatic changes with compensation question.
+- 9135a836 AU-xxx: Maybe fix automatic tests(?)
+- 06422899 fix: AU-1286: re-style other attachment field (#599)
+- c0816ed3 fix: AU-XX: Initialize applicant info when document is created. (#600)
+- 0415d1ba fix: AU-1372: Fix subventions values multiplying 100 fold. (#598)
+- a48bd441 fix: AU-1357: fix toiminnasta vastaava henkilö (#597)
+- 4e889d47 fix: AU-1371: Add text (#596)
+- 8b7438d1 fix: AU-1358: Fix community officials element visibility. (#594)
+- eae0d336 fix: AU-1298: webform title translations (#590)
+- 4b2069c4 Fix front page application search (#591)
+- 5fec825c fix: AU-1369: Fix some toimintaryhma issues (#589)
+- 255528bb fix: AU-1246: fix NUORLOMALEIR translation (#545)
+- 3f0304c3 fix: AU-1248: liikunta translations (#553)
+- 5f154b0f feat: AU-1289: add print button (#587)
+- 9eebcea8 fix: AU-1364, AU-1365: fix nuoriso palkkaennakko (#588)
+- 210c91ae fix: AU-1356: Add check for officials role for printing (#586)
+- 95a92858 fix: Remove auto deploy fromo correct env.
+- d03b0f10 fix: AU-1361, AU-1362: fix liikunnan yleisavustus (#584)
+- 0638605b fix: AU-1359: Add translations (#585)
+- 0b37b940 feat: AU-1260: Force service nodes to the main menu. (#579)
+- fd873048 Remove auto deployment for TEST env
+- 90e81f9e feat: AU-1272: Webform translations import (#583)
+- e5958db2 fix: AU-1287 fix preview print (#581)
+- 7678afb2 AU-1331: fix perusopetus (#582)
+- 39bb41e9 fix: AU-1333, AU-1334, AU-1335, AU-1336, AU-1337: fixes to leiriavustus (#580)
+- e4e325f0 feat: AU-960: Liikunta tapahtuma 59 // IBM (#416)
+- 321da9e5 fix: AU-1300, AU-1301, AU-1302: fixes to Kasko IPLISA (#577)
+- 495fe309 feat: AU-1222, AU-1227, AU-1243: Unregistered Community changes.
+- 97c0ff0d Fix print link
+- 5180721f fix: AU-1291: fix premise (#576)
+- efcb0bd1 fix: AU-1281: Change Unregistered community to unregistered community or group (#574)
+- d1aae8eb fix: AU-1290: Fix Premises States (#573)
+- 68080122 feat: AU-183: Place of Opeartion Webform composite component (#568)
 - f76f6803 fix: AU-1297: Add sv translations to sent application (#571)
 - 7837b962 fix: AU-1298: Translate webform titles (#570)
 - 3cf11cd6 fix: AU-1232: Add access checks to custom endpoints. (#569)
