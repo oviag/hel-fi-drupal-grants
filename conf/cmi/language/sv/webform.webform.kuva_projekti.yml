@@ -1,4 +1,4 @@
-title: 'SV Taide ja kulttuuri: projektiavustus'
+title: 'Konst och kultur, projektstöd'
 description: 'MVP-f&ouml;rm'
 elements: |
   1_hakijan_tiedot:
@@ -26,28 +26,25 @@ elements: |
     '#title': Adress
   community_address:
     '#title': Adress
-    '#description': 'V&auml;lj en adress, adresser sparas i v&aring;r egen data.'
     '#help': 'Om du vill l&auml;gga till, ta bort eller &auml;ndra adressuppgifter, spara ans&ouml;kan som ett utkast och g&aring; till att beh&aring;lla adressuppgifterna i dina egna uppgifter.'
     '#community_address_select__title': 'Välj en adress'
   tilinumero:
     '#title': Kontonummer
   bank_account:
     '#title': Kontonummer
-    '#description': 'V&auml;lj ett kontonummer, kontonummer f&ouml;rs i din egen information.'
     '#help': 'Om du vill l&auml;gga till, radera eller &auml;ndra kontonummerinformation, spara applikationen som ett utkast och g&aring; till att beh&aring;lla kontonummerinformationen i din egen data.'
     '#account_number_select__title': 'Välj ett kontonummer'
     '#account_number__title': ''
-    '#account_number_owner_name__title': ''
-    '#account_number_ssn__title': ''
   toiminnasta_vastaavat_henkilot:
     '#title': 'Personer som ansvarar för verksamheten'
   community_officials:
-    '#description': 'V&auml;lj de ansvariga f&ouml;r verksamheten, personerna h&aring;lls i sin egen information.'
     '#help': 'Om du vill l&auml;gga till, ta bort eller &auml;ndra personer, spara applikationen som ett utkast och g&aring; till att underh&aring;lla personernas information i din egen data.'
-    '#title': 'Personer som ansvarar för samfundet'
-    '#multiple__no_items_message': 'Inga personer ansvariga f&ouml;r verksamheten. L&auml;gg till en ny person nedan.'
+    '#title': 'Personer som ansvarar för verksamheten'
     '#multiple__add_more_button_label': 'Lägg till en person'
-    '#community_officials_select__title': ' Välj motsvarande person'
+    '#community_officials_select__title': 'Välj motsvarande person'
+    '#role__title': Roll
+    '#email__title': E-post
+    '#phone__title': Telefonnummer
   2_avustustiedot:
     '#title': '2. Uppgifter om understödet'
     '#prev_button_label': '< Tidigare'
@@ -58,6 +55,8 @@ elements: |
     '#title': 'År för vilket jag ansöker om understöd'
   subventions:
     '#title': Understöd
+  markup:
+    '#markup': '<p>Ans&ouml;k alltid endast om en typ av underst&ouml;d &aring;t g&aring;ngen.</p>'
   ensisijainen_taiteen_ala:
     '#title': 'Huvudsaklig konstart '
     '#help': 'V&auml;lj det alternativ som b&auml;st beskriver aktiviteten fr&aring;n rullgardinsmenyn.'
@@ -266,6 +265,8 @@ elements: |
     '#next_button_label': 'Nästa >'
   talousarvio:
     '#title': Budget
+  markup_01:
+    '#markup': 'G&auml;llande hela projektet, som ni s&ouml;ker st&ouml;d f&ouml;r.'
   organisaatio_kuuluu_valtionosuusjarjestelmaan_vos_:
     '#title': 'Organisationen får statsandelar (VOS)'
     '#options':

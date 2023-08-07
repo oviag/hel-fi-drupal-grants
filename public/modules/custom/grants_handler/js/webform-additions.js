@@ -5,9 +5,10 @@
       const formData = drupalSettings.grants_handler.formData
       const selectedCompany = drupalSettings.grants_handler.selectedCompany
       const submissionId = drupalSettings.grants_handler.submissionId
+      const lockedStatus = drupalSettings.grants_handler.formLocked;
 
-      if (formData['status'] === 'DRAFT' && !$("#webform-button--delete-draft").length) {
-        $('#edit-actions').append($('<a id="webform-button--delete-draft" class="webform-button--delete-draft hds-button hds-button--secondary" href="/hakemus/' + submissionId + '/clear">' +
+      if (formData['status'] === 'DRAFT' && !lockedStatus && !$("#webform-button--delete-draft").length) {
+        $('#edit-actions').append($('<a id="webform-button--delete-draft" class="webform-button--delete-draft hds-button hds-button--supplementary" href="/hakemus/' + submissionId + '/clear">' +
             '  <span class="hds-button__label">' + Drupal.t('Delete draft') + '</span>' +
             '</a>'));
       }

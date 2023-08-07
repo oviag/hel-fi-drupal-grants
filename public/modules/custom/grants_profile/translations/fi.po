@@ -208,6 +208,9 @@ msgstr "Lisää vähintään yksi osoite"
 msgid "Add at least one account number"
 msgstr "Lisää vähintään yksi tilinumero"
 
+msgid "Choose the role 'Responsible person' for at least one person responsible for operations."
+msgstr "Valitse vähintään yhdelle toiminnasta vastaavalle henkilölle rooli 'Vastuuhenkilö'."
+
 msgid "Briefly describe the purpose for which the community is working and how the community is fulfilling its purpose. For example, you can use the text \"Community purpose and forms of action\" in the Community rules. Please do not describe the purpose of the grant here, it will be asked later when completing the grant application."
 msgstr "Kerro lyhyesti tarkoitus, jonka edistämiseksi yhteisö toimii ja millä tavoin yhteisö toteuttaa tarkoitustaan. Voit hyödyntää esimerkiksi yhteisön säännöistä löytyvää \"Yhteisön tarkoitus ja toimintamuodot\" -tekstikappaletta. Älä kuvaile avustuksen käyttötarkoitusta tässä, sitä kysytään myöhemmin avustushakemuksen täyttämisen yhteydessä."
 
@@ -231,6 +234,12 @@ msgstr "Sihteeri"
 
 msgid "Deputy chairperson"
 msgstr "Varapuheenjohtaja"
+
+msgid "Chief executive officer"
+msgstr "Toimitusjohtaja"
+
+msgid "Producer"
+msgstr "Tuottaja"
 
 msgid 'In order to show a modal dialog by clicking on a link, that link has to have class <code>use-ajax</code> and <code>data-dialog-type="modal"</code>. This link has those attributes.'
 msgstr 'Näyttääksesi modaali-ikkunan linkkiä klikkaamalla, linkillä tulee olla <code>use-ajax</code> -luokka ja <code>data-dialog-type="modal"</code>. Tällä linkillä on nuo ominaisuudet.'
@@ -268,6 +277,9 @@ msgstr "Muokkaa omia tietoja"
 msgid "Edit community information"
 msgstr "Muokkaa yhteisön tietoja"
 
+msgid "Remove profile"
+msgstr "Poista asiointiprofiili"
+
 msgid "Bank account confirmation successfully deleted"
 msgstr "Pankkitilin varmistustiedosto onnistuneesti poistettu"
 
@@ -303,6 +315,15 @@ msgstr "Tilinumerot"
 
 msgid "Finnish bank account number in IBAN format"
 msgstr "Suomalainen tilinumero IBAN-muodossa"
+
+msgid "Bank account owner name"
+msgstr "Pankkitilin omistajan nimi"
+
+msgid "Bank account owner SSN"
+msgstr "Pankkitilin omistajan henkilötunnus"
+
+msgid "%value is not valid Finnish social security number"
+msgstr "%value ei ole validi suomalainen henkilötunnus"
 
 msgid "Personal bank account"
 msgstr "Henkilökohtainen tilinumero"
@@ -490,6 +511,9 @@ msgctxt "Yksityishenkilön asiointi"
 msgid "Social security number"
 msgstr "Henkilötunnus"
 
+msgid "Social security number"
+msgstr "Henkilötunnus"
+
 msgctxt "Yksityishenkilön asiointi"
 msgid "Own contact information"
 msgstr "Omat yhteystiedot"
@@ -497,11 +521,11 @@ msgstr "Omat yhteystiedot"
 msgid "Select Private person role"
 msgstr "Valitse rooli Yksityishenkilö"
 
-msgid "Select Unregistered community role"
-msgstr "Valitse rooli Rekisteröimätön yhteisö"
+msgid "Select Unregistered community or group role"
+msgstr "Valitse rooli Rekisteröitymätön yhteisö tai ryhmä"
 
-msgid "Add new Unregistered community"
-msgstr "Lisää uusi Rekisteröimätön yhteisö"
+msgid "Add new Unregistered community or group"
+msgstr "Lisää uusi Rekisteröitymätön yhteisö tai ryhmä"
 
 msgid "Select Registered community role and authorize mandate"
 msgstr "Valitse rooli Rekisteröity yhteisö ja tee valtuutus"
@@ -520,3 +544,60 @@ msgstr "Siirry Helsinki-profiiliin päivittääksesi tietoja."
 
 msgid "The link opens in a new tab"
 msgstr "Linkki avautuu uuteen välilehteen"
+
+msgid "Community removed"
+msgstr "Yhteisö poistettu"
+
+msgid "Unable to remove the community"
+msgstr "Yhteisön poisto ei onnistunut"
+
+msgid "Do you want to delete community and all of its content?"
+msgstr "Haluatko varmasti poistaa yhteisön ja sen sisällön?"
+
+msgid "This removes the community and all applications in draft state. Removal can not be done if there are sent applications. This cannot be undone."
+msgstr "Tämä poistaa yhteisön ja kaikki sen hakemusluonnokset. Poistoa ei voi tehdä mikäli yhteisöllä on lähetettyjä hakemuksia. Toimintoa ei voi peruuttaa."
+
+msgid "You can not remove this profile"
+msgstr "Et voi poistaa tätä profiilia"
+
+msgid "Community has applications in progress."
+msgstr "Yhteisöllä on avustuksia käsittelyssä."
+
+msgid "Connection error"
+msgstr "Yhteysvirhe"
+
+msgid 'You need to have a name for your unregistered community or group. Please add a name and save or cancel them.'
+msgstr 'Sinulla täytyy olla nimi rekisteröitymättömälle yhteisöllesi tai ryhmällesi. Lisää nimi ja tallenna tai peruuta ne.'
+
+msgid 'You have unsaved changes in your profile. Please save or cancel them.'
+msgstr 'Sinulla on tallentamattomia muutoksia profiilissasi. Ole hyvä ja tallenna tai peruuta ne.'
+
+msgid 'You have unsaved changes in your profile. Are you sure you want to leave the form?'
+msgstr 'Sinulla on tallentamattomia muutoksia profiilissasi. Oletko varma, että haluat lähteä lomakkeelta?'
+
+msgid 'You need to have a name for your unregistered community or group. Are you sure you want to leave the form?'
+msgstr 'Sinulla täytyy olla nimi rekisteröitymättömälle yhteisöllesi tai ryhmällesi. Oletko varma, että haluat lähteä lomakkeelta?'
+
+msgid 'Back to profile'
+msgstr 'Takaisin profiiliin'
+
+msgid "Fill all fields, check that the information is correct and save in the end."
+msgstr "Täytä kaikki kentät, tarkista tietojen oikeellisuus ja tallenna lopuksi."
+
+msgid "Fields marked with an asterisk * are required information."
+msgstr "Tähdellä * merkityt kentät ovat pakollisia tietoja."
+
+msgid "Fill all fields first and save in the end."
+msgstr "Täytä kaikki kentät ensin ja tallenna lopuksi."
+
+msgid "Please note that if you want to apply as a regirestered community or company, you have to change your role. This will give you the possibility to view and apply for applications aimed at registered communities."
+msgstr "Huomaathan, että jos haluat hakea avustusta rekisteröidylle yhteisölle tai yritykselle sinun tulee vaihtaa asiointiroolia rekisteröityneen yhteisön valtuutetuksi edustajaksi. Saat tällöin mahdollisuuden hakea rekisteröidyille yhteisölle suunnattuja avustuksia."
+
+msgid "The address must be your official address. One address is mandatory information in your personal information and on the application."
+msgstr "Osoitteen tulee olla sinun virallinen osoitteesi. Yksi osoite on pakollinen tieto omissa tiedoissa ja hakemuksella."
+
+msgid "You can only fill in your own bank account information."
+msgstr "Voit antaa vain oman tilisi tiedot."
+
+msgid "Responsible person"
+msgstr "Vastuuhenkilö"

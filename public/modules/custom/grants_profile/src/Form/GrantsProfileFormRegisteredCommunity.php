@@ -40,6 +40,9 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
       5 => t('Auditor'),
       7 => t('Secretary'),
       8 => t('Deputy chairperson'),
+      9 => t('Chief executive officer'),
+      10 => t('Producer'),
+      11 => t('Responsible person'),
     ];
   }
 
@@ -65,6 +68,17 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
       return [];
     }
 
+    $lockService = \DrupaL::service('grants_handler.form_lock_service');
+    $locked = $lockService->isProfileFormLocked($grantsProfile->getId());
+    if ($locked) {
+      $form['#disabled'] = TRUE;
+      $this->messenger()
+        ->addWarning($this->t('This form is being modified by other person currently, you cannot do any modifications while the form is locked for them.'));
+    }
+    else {
+      $lockService->createOrRefreshProfileFormLock($grantsProfile->getId());
+    }
+
     // Get content from document.
     $grantsProfileContent = $grantsProfile->getContent();
 
@@ -76,7 +90,15 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
     $form['#tree'] = TRUE;
 
     $form['#after_build'] = ['Drupal\grants_profile\Form\GrantsProfileFormRegisteredCommunity::afterBuild'];
-
+    $form['profileform_info'] = [
+      '#type' => 'markup',
+      '#markup' => '<section class="webform-section"><div class="webform-section-flex-wrapper"><h2 class="webform-section-title"><span class="hidden">' . $this->t('Info') . '</span></h2><div class="hds-notification hds-notification--info">
+          <div class="hds-notification__content"><div class="hds-notification__label"><span>' . $this->t('Fields marked with an asterisk * are required information.') . ' <strong>' . $this->t('Fill all fields first and save in the end.') . '</strong>
+          </span></div>
+          </div></div>
+          </div>
+          </section>',
+    ];
     $form['foundingYearWrapper'] = [
       '#type' => 'webform_section',
       '#title' => $this->t('Year of establishment'),
@@ -140,6 +162,10 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
     $form['#profilecontent'] = $grantsProfileContent;
     $form_state->setStorage($storage);
 
+    $form['actions']['submit_cancel']["#submit"] = [
+      [self::class, 'formCancelCallback'],
+    ];
+
     return $form;
   }
 
@@ -164,11 +190,11 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
 
       if ($attachmentDeleteResults) {
         \Drupal::messenger()
-          ->addStatus('Bank account & verification attachment deleted.');
+          ->addStatus(t('Bank account & verification attachment deleted.'));
       }
       else {
         \Drupal::messenger()
-          ->addError('Attachment deletion failed, error has been logged. Please contact customer support');
+          ->addError(t('Attachment deletion failed, error has been logged. Please contact customer support.'));
       }
     }
     // Remove item from items.
@@ -1166,6 +1192,27 @@ rtf, txt, xls, xlsx, zip.'),
 
       }
     }
+  }
+
+  /**
+   * Cancel form edit callback.
+   *
+   * @param array $form
+   *   Form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   */
+  public static function formCancelCallback(array &$form, FormStateInterface &$form_state) {
+
+    $profileService = \Drupal::service('grants_profile.service');
+    $lockService    = \Drupal::service('grants_handler.form_lock_service');
+
+    $selectedRoleData = $profileService->getSelectedRoleData();
+    $grantsProfile = $profileService->getGrantsProfile($selectedRoleData, TRUE);
+
+    $lockService->releaseProfileFormLock($grantsProfile->getId());
+
+    parent::formCancelCallback($form, $form_state);
   }
 
 }

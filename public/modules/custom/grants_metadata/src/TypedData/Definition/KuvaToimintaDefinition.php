@@ -29,18 +29,8 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
         $info[$key] = $property;
       }
 
-      /* Avustustiedot */
-
-      $info['subventions'] = ListDataDefinition::create('grants_metadata_compensation_type')
-        ->setLabel('compensationArray')
-        ->setSetting('jsonPath', [
-          'compensation',
-          'compensationInfo',
-          'compensationArray',
-        ]);
-
       $info['tulevat_vuodet_joiden_ajalle_monivuotista_avustusta_on_haettu_ta'] = DataDefinition::create('string')
-        ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta on haettu tai myönnetty')
+        ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta haetaan tai on myönnetty')
         ->setSetting('jsonPath', [
           'compensation',
           'compensationInfo',
@@ -172,6 +162,10 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
           'service' => 'grants_premises.service',
           'method' => 'processPremises',
           'webform' => TRUE,
+        ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_premises.service',
+          'method' => 'extractToWebformData',
         ])
         ->setSetting('fieldsForApplication', [
           'premiseName',
@@ -538,11 +532,14 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
           'method' => 'processPremises',
           'webform' => TRUE,
         ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_premises.service',
+          'method' => 'extractToWebformData',
+        ])
         ->setSetting('fieldsForApplication', [
           'premiseName',
           'postCode',
           'isOwnedByCity',
-          //          'premiseType',
         ]);
 
       $info['maara_helsingissa_toteutuneet'] = DataDefinition::create('integer')
@@ -882,7 +879,6 @@ class KuvaToimintaDefinition extends ComplexDataDefinitionBase {
           'budgetInfoArray',
           'otherValuables',
         ]);
-
     }
     return $this->propertyDefinitions;
   }

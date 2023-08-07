@@ -457,6 +457,8 @@ class GrantsProfileService {
    *
    * @return array
    *   Profile content with required fields.
+   *
+   * @throws \Drupal\helfi_helsinki_profiili\TokenExpiredException
    */
   public function initGrantsProfileUnRegisteredCommunity(array $selectedCompanyData, array $profileContent): array {
 
@@ -465,7 +467,24 @@ class GrantsProfileService {
     }
 
     if (!isset($profileContent['addresses'])) {
-      $profileContent['addresses'] = [];
+
+      $hpData = $this->helsinkiProfiili->getUserProfileData();
+
+      $newAddress = [];
+      if ($hpData["myProfile"]["primaryAddress"]) {
+        $profileContent['addresses'][] = $hpData["myProfile"]["primaryAddress"];
+      }
+      elseif ($hpData["myProfile"]["verifiedPersonalInformation"]["permanentAddress"]) {
+        $profileContent['addresses'][] = [
+          'street' => $hpData["myProfile"]["verifiedPersonalInformation"]["permanentAddress"]["streetAddress"],
+          'postCode' => $hpData["myProfile"]["verifiedPersonalInformation"]["permanentAddress"]["postalCode"],
+          'city' => $hpData["myProfile"]["verifiedPersonalInformation"]["permanentAddress"]["postOffice"],
+          'country' => 'Suomi',
+        ];
+      }
+      else {
+        $profileContent['addresses'] = [];
+      }
     }
     if (!isset($profileContent['officials'])) {
       $profileContent['officials'] = [];
@@ -494,6 +513,15 @@ class GrantsProfileService {
         ];
       }
 
+      $profileContent['bankAccounts'][0] = [
+        'bankAccount' => NULL,
+        'ownerName' => NULL,
+        'ownerSsn' => NULL,
+        'confirmationFileName' => NULL,
+        'confirmationFile' => NULL,
+        'bank_account_id' => Uuid::uuid4()->toString(),
+      ];
+
       $profileContent['officials'][0] = [
         'name' => $profileData['myProfile']['firstName'] . " " . $profileData['myProfile']['lastName'],
         'additional' => '',
@@ -511,6 +539,83 @@ class GrantsProfileService {
 
     return $profileContent;
 
+  }
+
+  /**
+   * Remove unregistered community.
+   *
+   * @param array $companyData
+   *   Company to remove.
+   *
+   * @return array
+   *   Was the removal successful
+   */
+  public function removeProfile(array $companyData): array {
+    if ($companyData['type'] !== 'unregistered_community') {
+      return [
+        'reason' => $this->t('You can not remove this profile'),
+        'success' => FALSE,
+      ];
+    }
+    /** @var \Drupal\helfi_atv\AtvDocument $atvDocument */
+    $atvDocument = $this->getGrantsProfile($companyData);
+    if (!$atvDocument->isDeletable()) {
+      return [
+        'reason' => $this->t('You can not remove this profile'),
+        'success' => FALSE,
+      ];
+    }
+
+    $appEnv = ApplicationHandler::getAppEnv();
+
+    try {
+      // Get applications from ATV.
+      $applications = ApplicationHandler::getCompanyApplications(
+        $companyData,
+        $appEnv,
+        FALSE,
+        TRUE,
+        'application_list_item'
+      );
+      $drafts = [];
+      if (isset($applications['DRAFT'])) {
+        $drafts = $applications['DRAFT'];
+        unset($applications['DRAFT']);
+      }
+      if (!empty($applications)) {
+        return [
+          'reason' => $this->t('Community has applications in progress.'),
+          'success' => FALSE,
+        ];
+      }
+    }
+    catch (\Throwable $e) {
+      $this->logger->error('Error fetching data from ATV: @e', ['@e' => $e->getMessage()]);
+      return [
+        'reason' => $this->t('Connection error'),
+        'success' => FALSE,
+      ];
+    }
+    try {
+      foreach ($drafts as $draft) {
+        $this->atvService->deleteDocument($draft['#document']);
+      }
+      $this->atvService->deleteDocument($atvDocument);
+    }
+    catch (\Throwable $e) {
+      $id = $atvDocument->getId();
+      $this->logger->error('Error removing profile (id: @id) from ATV: @e',
+        ['@e' => $e->getMessage(), '@id' => $id],
+      );
+      return [
+        'reason' => $this->t('Connection error'),
+        'success' => FALSE,
+      ];
+    }
+    return [
+      'reason' => '',
+      'success' => TRUE,
+    ];
   }
 
   /**

@@ -29,14 +29,6 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
         $info[$key] = $property;
       }
 
-      $info['subventions'] = ListDataDefinition::create('grants_metadata_compensation_type')
-        ->setLabel('compensationArray')
-        ->setSetting('jsonPath', [
-          'compensation',
-          'compensationInfo',
-          'compensationArray',
-        ]);
-
       $info['ensisijainen_taiteen_ala'] = DataDefinition::create('string')
         ->setLabel('Ensisijainen taiteenala')
         ->setSetting('jsonPath', [
@@ -317,6 +309,10 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
           'method' => 'processPremises',
           'webform' => TRUE,
         ])
+        ->setSetting('webformDataExtracter', [
+          'service' => 'grants_premises.service',
+          'method' => 'extractToWebformData',
+        ])
         ->setSetting('fieldsForApplication', [
           'premiseName',
           'isOwnedByCity',
@@ -385,7 +381,7 @@ class KuvaKehaDefinition extends ComplexDataDefinitionBase {
     }
 
     $info['vuodet_joille_monivuotista_avustusta_on_haettu_tai_myonetty'] = DataDefinition::create('string')
-      ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta on haettu tai myönnetty')
+      ->setLabel('Tulevat vuodet joiden ajalle monivuotista avustusta haetaan tai on myönnetty')
       ->setSetting('jsonPath', [
         'compensation',
         'compensationInfo',
