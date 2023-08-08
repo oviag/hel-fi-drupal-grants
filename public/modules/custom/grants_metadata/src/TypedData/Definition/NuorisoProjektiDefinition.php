@@ -41,7 +41,6 @@ class NuorisoProjektiDefinition extends ComplexDataDefinitionBase {
         ->setSetting('formSettings', [
           'formElement' => 'subventions',
         ]);
-
       $info['kenelle_haen_avustusta'] = DataDefinition::create('string')
         ->setLabel('Avustuksen kohde')
         ->setSetting('jsonPath', [
@@ -236,7 +235,6 @@ class NuorisoProjektiDefinition extends ComplexDataDefinitionBase {
           'budget_other_cost',
           GrantsBudgetInfoDefinition::getOtherCostDefinition()
         );
-
     }
     return $this->propertyDefinitions;
   }

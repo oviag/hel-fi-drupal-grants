@@ -9,6 +9,8 @@ elements: |
     '#title': 'Samfund för vilket understödet ansöks'
   prh_markup:
     '#markup': '<div class="grants-profile-prh-info">De markerade uppgifterna har h&auml;mtats fr&aring;n Patent- och registerstyrelsens register (PRH) och det &auml;r endast m&ouml;jligt att &auml;ndra uppgifterna i n&auml;ttj&auml;nsten i fr&aring;ga.</div>'
+  hakijan_tiedot:
+    '#title': 'Den sökandes uppgifter'
   contact_person_email_section:
     '#title': E-post
   contact_markup:
@@ -253,7 +255,7 @@ elements: |
     '#preview_next__label': ' För förhandsvisning >'
     '#delete__label': ' Radera oavslutat'
 settings:
-  preview_label: '5. Bekräfta, förhandsgranska och skicka'
-  preview_title: 'Bekräfta, förhandsgranska och skicka'
   wizard_prev_button_label: '< Tidigare'
   wizard_next_button_label: 'Nästa >'
+  preview_label: '5. Bekräfta, förhandsgranska och skicka'
+  preview_title: 'Bekräfta, förhandsgranska och skicka'

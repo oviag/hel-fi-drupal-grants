@@ -172,7 +172,7 @@ elements: |-
       '#states':
         visible:
           ':input[name="applicant_type"]':
-            '!value': private_person
+            value: registered_community
       community_address:
         '#type': community_address_composite
         '#title': 'Yhteisön osoite'
@@ -181,6 +181,10 @@ elements: |-
           class:
             - webform--large
         '#required': true
+        '#states':
+          visible:
+            ':input[name="applicant_type"]':
+              value: registered_community
     tilinumero:
       '#type': webform_section
       '#title': Tilinumero
@@ -197,11 +201,8 @@ elements: |-
       '#title': 'Toiminnasta vastaavat henkilöt'
       '#states':
         visible:
-          - ':input[name="applicant_type"]':
-              value: registered_community
-          - or
-          - ':input[name="applicant_type"]':
-              value: unregistered_community
+          ':input[name="applicant_type"]':
+            '!value': private_person
       community_officials:
         '#type': community_officials_composite
         '#help': 'Jos haluat lisätä, poistaa tai muuttaa henkilöitä tallenna hakemus luonnokseksi ja siirry ylläpitämään henkilöiden tietoja omiin tietoihin.'
@@ -580,7 +581,7 @@ elements: |-
         '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
       onko_vapaa_oppilaspaikkoja_montako_:
         '#type': textarea
-        '#title': 'Onko vapaa oppilaspaikkoja? Montako?'
+        '#title': 'Onko vapaaoppilaspaikkoja? Jos on, niin kuinka monta?'
       opetustunnit_helsingissa_edellisena_paattyneena_tilivuonna:
         '#type': fieldset
         '#title': 'Opetustunnit Helsingissä edellisenä päättyneenä tilivuonna'
@@ -602,20 +603,11 @@ elements: |-
           '#title': 'Yleinen oppimäärä'
     helsingissa_jarjestettava:
       '#type': webform_section
-      '#title': 'Helsingissä järjestettävä'
+      '#title': 'Helsingissä järjestettävä yleisölle avoin toiminta toteutettiin'
       helsingissa_jarjestettava_tila:
         '#type': premises_composite
         '#title': Tila
         '#multiple': true
-        '#description': |-
-          T&Auml;NNE TARVII MY&Ouml;S:<br />
-          <br />
-          Kaupunkiymp&auml;rist&ouml;n toimiala (esimerkiksi koulujen opetustilat)<br />
-          Kulttuurin ja vapaa-ajan toimiala (esimerkiksi kulttuuri-, kirjasto-, nuoriso- tai liikuntapalveluiden hallinnoimat tilat)<br />
-          Kasvatuksen ja koulutuksen toimiala (esimerkiksi ty&ouml;v&auml;enopiston tilat)<br />
-          Muu kaupungin omistama tila<br />
-          <br />
-          Kuinka hyvin tila soveltuu siell&auml; j&auml;rjestett&auml;v&auml;&auml;n opetukseen / Hyvin, osittain, huonosti
         '#multiple__min_items': 1
         '#multiple__empty_items': 0
         '#multiple__sorting': false
@@ -1071,7 +1063,7 @@ elements: |-
         '#multiple__add': false
         '#multiple__remove': false
         '#multiple__add_more_input': false
-        '#multiple__add_more_button_label': 'Lisää liite'
+        '#multiple__add_more_button_label': 'Lisää uusi liite'
         '#isDeliveredLater__access': false
         '#isIncludedInOtherFile__access': false
   actions:

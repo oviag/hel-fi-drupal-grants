@@ -5,12 +5,49 @@ declare(strict_types=1);
 namespace Drupal\grants_webform_print\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\StringTranslation\TranslationManager;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\WebformTranslationManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Returns responses for Webform Printify routes.
  */
 class GrantsWebformPrintController extends ControllerBase {
+  /**
+   * The string translation service.
+   *
+   * @var \Drupal\Core\StringTranslation\TranslationManager
+   */
+  protected $translationManager;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
+
+  /**
+   * @param LanguageManagerInterface $languageManager
+   * @param WebformTranslationManager $translationManager
+   */
+  public function __construct(LanguageManagerInterface $languageManager, WebformTranslationManager $translationManager) {
+    $this->languageManager = $languageManager;
+    $this->translationManager = $translationManager;
+
+  }
+
+  /**
+   * @param ContainerInterface $container
+   * @return GrantsWebformPrintController
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('language_manager'),
+      $container->get('webform.translation_manager'),
+    );  }
 
   /**
    * Builds the response.
@@ -24,10 +61,10 @@ class GrantsWebformPrintController extends ControllerBase {
   public function build(Webform $webform): array {
 
     /** @var \Drupal\webform\WebformTranslationManager $wftm */
-    $wftm = \Drupal::service('webform.translation_manager');
+    $wftm = $this->translationManager;
 
     // Load all translations for this webform.
-    $currentLanguage = \Drupal::languageManager()->getCurrentLanguage();
+    $currentLanguage = $this->languageManager->getCurrentLanguage();
     $elementTranslations = $wftm->getElements($webform, $currentLanguage->getId());
 
     $webformArray = $webform->getElementsDecoded();
@@ -165,11 +202,11 @@ class GrantsWebformPrintController extends ControllerBase {
       if ($element['#type'] === 'premises_composite') {
         $element['#type'] = 'markup';
         $element['#markup'] = '<p><strong>' . $this->getTranslatedTitle($element, $translatedFields) . '</strong><br>';
-        $element['#markup'] .= t('Premise name');
+        $element['#markup'] .= $this->t('Premise name');
         $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input webform_large" type="text">&nbsp;</div></div>';
-        $element['#markup'] .= t('Postal Code');
+        $element['#markup'] .= $this->t('Postal Code');
         $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input webform_large" type="text">&nbsp;</div></div>';
-        $element['#markup'] .= t('City owns the property');
+        $element['#markup'] .= $this->t('City owns the property');
         $element['#markup'] .= '<div class="hds-text-input__input-wrapper"><div class="hide-input form-text hds-text-input__input webform_large" type="text">&nbsp;</div></div>';
         $element['#markup'] .= '</p>';
       }

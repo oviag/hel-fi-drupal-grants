@@ -36,7 +36,6 @@ class LiikuntaTapahtumaDefinition extends ComplexDataDefinitionBase {
           'compensationInfo',
           'compensationArray',
         ]);
-
       // Section 2. Participants.
       $info['20_men'] = DataDefinition::create('integer')
         ->setLabel('Miehiä')
