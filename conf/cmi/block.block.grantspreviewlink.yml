@@ -1,24 +1,23 @@
-uuid: d59bcddb-23d0-46bf-a3d9-425f62461f9f
+uuid: 75de3ca7-0cd7-48a0-9777-f089567b423b
 langcode: fi
 status: true
 dependencies:
   module:
-    - grants_handler
+    - grants_preview_link
     - node
   theme:
     - hdbt_subtheme
-id: servicepageanonblock
+id: grantspreviewlink
 theme: hdbt_subtheme
 region: sidebar_first
-weight: -15
+weight: -14
 provider: null
-plugin: grants_handler_service_page_anon_block
+plugin: grants_preview_link
 settings:
-  id: grants_handler_service_page_anon_block
-  label: 'Hae avustusta'
-  label_display: visible
-  provider: grants_handler
-  foo: ''
+  id: grants_preview_link
+  label: 'Grants Preview Link'
+  label_display: '0'
+  provider: grants_preview_link
 visibility:
   'entity_bundle:node':
     id: 'entity_bundle:node'
