@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## 2023.15
+- 08fdd8a8 fix: AU-1196: fix: AU-1196: Typofix (#611)
+- 44e83350 fix: AU-1368, AU-1381, AU-1386, AU-1391, AU-1402: translation fixes (#610)
+- 1880be57 fix: AU-1404: Fix avustukset_summa prepopulation / calculation and some mapping fixes (#609)
+
 ## 2023.14
 - 0bf0234e feat: AU-1233: Save application to ATV before sending it to integration for saving. (#595)
 - d1a2ee2a fix: AU-1343: Translate attachment field labels for print view (#607)
