@@ -2,6 +2,11 @@
 
 
 ## 2023.15
+- d479c29f fix: AU-1401: remove print button and fix print styles for p… (#616)
+- c34d4791 config: Update configuration (#550)
+- d7d73280 fix: AU-1406: Allow submitted application to be edited when application period is closed (#614)
+- ff2a1a80 fix: AU-1411: Use correct translationinterface in print page (#613)
+- 1e124e32 fix: AU-1375: fix title for Nuorisotoiminta, toimnta- ja palkkausavustus ennakkohakemus (#612)
 - 08fdd8a8 fix: AU-1196: fix: AU-1196: Typofix (#611)
 - 44e83350 fix: AU-1368, AU-1381, AU-1386, AU-1391, AU-1402: translation fixes (#610)
 - 1880be57 fix: AU-1404: Fix avustukset_summa prepopulation / calculation and some mapping fixes (#609)
