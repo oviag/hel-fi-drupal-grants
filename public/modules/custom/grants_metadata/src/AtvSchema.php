@@ -11,6 +11,7 @@ use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\grants_attachments\AttachmentHandler;
+use Drupal\grants_attachments\Element\GrantsAttachments as GrantsAttachmentsElement;
 use Drupal\grants_attachments\Plugin\WebformElement\GrantsAttachments;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
@@ -200,11 +201,50 @@ class AtvSchema {
       if ($typedDataValues['community_practices_business'] === 'true') {
         $typedDataValues['community_practices_business'] = 1;
       }
+    }
 
+    if (isset($typedDataValues['equality_radios'])) {
+      if ($typedDataValues['equality_radios'] === 'false') {
+        $typedDataValues['equality_radios'] = 'No';
+      }
+      if ($typedDataValues['equality_radios'] === 'true') {
+        $typedDataValues['equality_radios'] = 'Yes';
+      }
+    }
+    if (isset($typedDataValues['inclusion_radios'])) {
+      if ($typedDataValues['inclusion_radios'] === 'false') {
+        $typedDataValues['inclusion_radios'] = 'No';
+      }
+      if ($typedDataValues['inclusion_radios'] === 'true') {
+        $typedDataValues['inclusion_radios'] = 'Yes';
+      }
+    }
+    if (isset($typedDataValues['environment_radios'])) {
+      if ($typedDataValues['environment_radios'] === 'false') {
+        $typedDataValues['environment_radios'] = 'No';
+      }
+      if ($typedDataValues['environment_radios'] === 'true') {
+        $typedDataValues['environment_radios'] = 'Yes';
+      }
+    }
+    if (isset($typedDataValues['exercise_radios'])) {
+      if ($typedDataValues['exercise_radios'] === 'false') {
+        $typedDataValues['exercise_radios'] = 'No';
+      }
+      if ($typedDataValues['exercise_radios'] === 'true') {
+        $typedDataValues['exercise_radios'] = 'Yes';
+      }
+    }
+    if (isset($typedDataValues['activity_radios'])) {
+      if ($typedDataValues['activity_radios'] === 'false') {
+        $typedDataValues['activity_radios'] = 'No';
+      }
+      if ($typedDataValues['activity_radios'] === 'true') {
+        $typedDataValues['activity_radios'] = 'Yes';
+      }
     }
 
     $typedDataValues['muu_liite'] = $other_attachments;
-
     $typedDataValues['metadata'] = $metadata;
     return $typedDataValues;
 
@@ -345,17 +385,25 @@ class AtvSchema {
    *   Typed data to export.
    * @param \Drupal\webform\Entity\WebformSubmission $webformSubmission
    *   Form submission entity.
+   * @param array $submittedFormData
+   *   Form data from actual submission.
    *
    * @return array
    *   Document structure based on schema.
    */
   public function typedDataToDocumentContent(
     TypedDataInterface $typedData,
-    WebformSubmission $webformSubmission): array {
-
+    WebformSubmission $webformSubmission,
+    array $submittedFormData
+  ): array {
     $webform = $webformSubmission->getWebform();
     $pages = $webform->getPages('edit', $webformSubmission);
-    return $this->typedDataToDocumentContentWithWebform($typedData, $webform, $pages);
+    return $this->typedDataToDocumentContentWithWebform(
+      $typedData,
+      $webform,
+      $pages,
+      $submittedFormData
+    );
   }
 
   /**
@@ -367,6 +415,8 @@ class AtvSchema {
    *   Form entity.
    * @param array $pages
    *   Page structure of webform.
+   * @param array $submittedFormData
+   *   Data from form.
    *
    * @return array
    *   Document structure based on schema.
@@ -374,7 +424,9 @@ class AtvSchema {
   public function typedDataToDocumentContentWithWebform(
     TypedDataInterface $typedData,
     Webform $webform,
-    array $pages): array {
+    array $pages,
+    array $submittedFormData
+  ): array {
 
     $pageKeys = array_keys($pages);
     $elements = $webform->getElementsDecodedAndFlattened();
@@ -400,12 +452,20 @@ class AtvSchema {
         if ($addWebformToCallback) {
           $propertyStructureCallback['arguments']['webform'] = $webform;
         }
+        $addSubmittedDataToCallback2 = $propertyStructureCallback['submittedData'] ?? FALSE;
+        if ($addSubmittedDataToCallback2) {
+          $propertyStructureCallback['arguments']['submittedData'] = $submittedFormData;
+        }
       }
 
       if ($fullItemValueCallback) {
         $addWebformToCallback = $fullItemValueCallback['webform'] ?? FALSE;
         if ($addWebformToCallback) {
           $fullItemValueCallback['arguments']['webform'] = $webform;
+        }
+        $addSubmittedDataToCallback = $fullItemValueCallback['submittedData'] ?? FALSE;
+        if ($addSubmittedDataToCallback) {
+          $fullItemValueCallback['arguments']['submittedData'] = $submittedFormData;
         }
       }
 
@@ -414,6 +474,11 @@ class AtvSchema {
       if ($propertyName == 'account_number') {
         $propertyName = 'bank_account';
       }
+
+      // Should we hide the data.
+      $hidden = $this->isFieldHidden($property);
+      // Which field to hide in list fields.
+      $hiddenFields = $definition->getSetting('hiddenFields') ?? [];
 
       /* Try to get element from webform. This tells usif we can try to get
       metadata from webform. If not, field is not printable. */
@@ -481,6 +546,7 @@ class AtvSchema {
               // Finally the element itself.
               $label = $property['label'];
               $weight = array_search($name, $elementKeys);
+              $hidden = in_array($name, $hiddenFields);
               $page = [
                 'id' => $pageId,
                 'label' => $pageLabel,
@@ -494,6 +560,7 @@ class AtvSchema {
               $element = [
                 'label' => $label,
                 'weight' => $elementWeight,
+                'hidden' => $hidden,
               ];
               $elementWeight++;
               $metaData = self::getMetaData($page, $section, $element);
@@ -548,6 +615,7 @@ class AtvSchema {
         $element = [
           'label' => $label,
           'weight' => $weight,
+          'hidden' => $hidden,
         ];
         $metaData = self::getMetaData($page, $section, $element);
       }
@@ -659,10 +727,6 @@ class AtvSchema {
                         $label = $titleElement->render();
                       }
                     }
-                    $element = [
-                      'weight' => $weight,
-                      'label' => $label,
-                    ];
 
                     if (isset($propertyItem[$itemName])) {
                       $itemValue = $propertyItem[$itemName];
@@ -670,6 +734,12 @@ class AtvSchema {
                       $itemValue = $this->getItemValue($itemTypes, $itemValue, $defaultValue, $valueCallback);
 
                       $idValue = $itemName;
+                      $hidden = in_array($itemName, $hiddenFields);
+                      $element = [
+                        'weight' => $weight,
+                        'label' => $label,
+                        'hidden' => $hidden,
+                      ];
                       $metaData = self::getMetaData($page, $section, $element);
                       $valueArray = [
                         'ID' => $idValue,
@@ -716,6 +786,16 @@ class AtvSchema {
             is_array($value) &&
             self::numericKeys($value)) {
             if ($propertyType == 'list') {
+              /* All attachments are saved into same array
+               * despite their name in webform. We can not
+               * get actual webform elements for translated
+               * label so we use webform element defining class
+               *  directly.
+               */
+              if ($propertyName == 'attachments') {
+                $webformMainElement = [];
+                $webformMainElement['#webform_composite_elements'] = GrantsAttachmentsElement::getCompositeElements([]);
+              }
               foreach ($property as $itemIndex => $item) {
                 $fieldValues = [];
                 $propertyItem = $item->getValue();
@@ -724,12 +804,22 @@ class AtvSchema {
                 foreach ($itemValueDefinitions as $itemName => $itemValueDefinition) {
                   // Backup label.
                   $label = $itemValueDefinition->getLabel();
-                  if (isset($webformMainElement['#webform_composite_elements'][$itemName]['#title'])) {
+                  // File name has no visible label in the webform so we
+                  // need to manually handle it.
+                  if ($itemName == 'fileName') {
+                    $label = $this->t('File name');
+                  }
+                  elseif (
+                    isset($webformMainElement['#webform_composite_elements'][$itemName]['#title']) &&
+                    !is_string($webformMainElement['#webform_composite_elements'][$itemName]['#title'])
+                  ) {
                     $label = $webformMainElement['#webform_composite_elements'][$itemName]['#title']->render();
                   }
+                  $hidden = in_array($itemName, $hiddenFields);
                   $element = [
                     'weight' => $weight,
                     'label' => $label,
+                    'hidden' => $hidden,
                   ];
                   $itemTypes = self::getJsonTypeForDataType($itemValueDefinition);
                   if (isset($propertyItem[$itemName])) {
@@ -807,6 +897,34 @@ class AtvSchema {
   }
 
   /**
+   * Check if the given field should be hidden from end users.
+   *
+   * @param Drupal\Core\TypedData\TypedDataInterface $property
+   *   Field to check.
+   *
+   * @return bool
+   *   Should the field be hidden
+   */
+  public static function isFieldHidden($property) {
+    $definition = $property->getDataDefinition();
+    $propertyName = $property->getName();
+    $hide = $definition->getSetting('hidden') || FALSE;
+    if ($hide) {
+      return TRUE;
+    }
+    $parent = $property->getParent();
+    if (!$parent) {
+      return FALSE;
+    }
+    $parentDefinition = $parent->getDataDefinition();
+    $hiddenFields = $definition->getSetting('hiddenFields');
+    if (is_array($hiddenFields) && in_array($propertyName, $hiddenFields)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
    * Get metadata array for JSON schema meta field.
    *
    * This function is used to guarantee that meta field in
@@ -837,6 +955,7 @@ class AtvSchema {
       'element' => [
         'weight' => $element['weight'] ?? -1,
         'label' => $element['label'] ?? 'Element',
+        'hidden' => $element['hidden'] ?? FALSE,
       ],
     ];
     return $metaData;
@@ -902,22 +1021,63 @@ class AtvSchema {
 
       $thisElement = $content[$elementName];
 
+      $itemPropertyDefinitions = NULL;
+      // Check if we have child definitions, ie itemDefinitions.
+      if (method_exists($definition, 'getItemDefinition')) {
+        /** @var \Drupal\Core\TypedData\ComplexDataDefinitionBase $id */
+        $itemDefinition = $definition->getItemDefinition();
+        if ($itemDefinition !== NULL) {
+          $itemPropertyDefinitions = $itemDefinition->getPropertyDefinitions();
+        }
+      }
+      // Check if we have child definitions, ie itemDefinitions.
+      if (method_exists($definition, 'getPropertyDefinitions')) {
+        $itemPropertyDefinitions = $definition->getPropertyDefinitions();
+      }
+
       // If element is array.
       if (is_array($thisElement)) {
         $retval = [];
         // We need to loop values and structure data in array as well.
         foreach ($content[$elementName] as $key => $value) {
           foreach ($value as $key2 => $v) {
+            $itemValue = NULL;
             if (is_array($v)) {
+              // If we have definitions for given property.
+              if (is_array($itemPropertyDefinitions) && isset($itemPropertyDefinitions[$v['ID']])) {
+                $itemPropertyDefinition = $itemPropertyDefinitions[$v['ID']];
+                // Get value extracter.
+                $valueExtracterConfig = $itemPropertyDefinition->getSetting('webformValueExtracter');
+                if ($valueExtracterConfig) {
+                  $valueExtracterService = \Drupal::service($valueExtracterConfig['service']);
+                  $method = $valueExtracterConfig['method'];
+                  // And try to get value from there.
+                  $itemValue = $valueExtracterService->$method($v);
+                }
+              }
+
               if (array_key_exists('value', $v)) {
-                $retval[$key][$v['ID']] = $v['value'];
+                $retval[$key][$v['ID']] = $itemValue ?? $v['value'];
               }
               else {
-                $retval[$key][$key2] = $v;
+                $retval[$key][$key2] = $itemValue ?? $v;
               }
             }
             else {
-              $retval[$key][$key2] = $v;
+              // If we have definitions for given property.
+              if (is_array($itemPropertyDefinitions) && isset($itemPropertyDefinitions[$key2])) {
+                $itemPropertyDefinition = $itemPropertyDefinitions[$key2];
+                // Get value extracter.
+                $valueExtracterConfig = $itemPropertyDefinition->getSetting('webformValueExtracter');
+                if ($valueExtracterConfig) {
+                  $valueExtracterService = \Drupal::service($valueExtracterConfig['service']);
+                  $method = $valueExtracterConfig['method'];
+                  // And try to get value from there.
+                  $itemValue = $valueExtracterService->$method($v);
+                }
+              }
+
+              $retval[$key][$key2] = $itemValue ?? $v;
             }
           }
         }

@@ -40,6 +40,9 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
       5 => t('Auditor'),
       7 => t('Secretary'),
       8 => t('Deputy chairperson'),
+      9 => t('Chief executive officer'),
+      10 => t('Producer'),
+      11 => t('Responsible person'),
     ];
   }
 
@@ -87,7 +90,15 @@ class GrantsProfileFormRegisteredCommunity extends GrantsProfileFormBase {
     $form['#tree'] = TRUE;
 
     $form['#after_build'] = ['Drupal\grants_profile\Form\GrantsProfileFormRegisteredCommunity::afterBuild'];
-
+    $form['profileform_info'] = [
+      '#type' => 'markup',
+      '#markup' => '<section class="webform-section"><div class="webform-section-flex-wrapper"><h2 class="webform-section-title"><span class="hidden">' . $this->t('Info') . '</span></h2><div class="hds-notification hds-notification--info">
+          <div class="hds-notification__content"><div class="hds-notification__label"><span>' . $this->t('Fields marked with an asterisk * are required information.') . ' <strong>' . $this->t('Fill all fields first and save in the end.') . '</strong>
+          </span></div>
+          </div></div>
+          </div>
+          </section>',
+    ];
     $form['foundingYearWrapper'] = [
       '#type' => 'webform_section',
       '#title' => $this->t('Year of establishment'),
