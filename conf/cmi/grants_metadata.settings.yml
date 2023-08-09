@@ -71,6 +71,16 @@ third_party_options:
         fi: 'Nuorisopalvelu: projektiavustushakemus'
         en: 'EN Nuorisopalvelu: projektiavustushakemus'
         sv: 'SV Nuorisopalvelu: projektiavustushakemus'
+    54:
+      id: KANSLIATYO
+      code: KANSLIATYO
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KansliatyoDefinition
+        definitionId: grants_metadata_kansliatyo
+      labels:
+        fi: 'Asukasosallisuus: yleis- ja toiminta-avustushakemus'
+        en: 'EN Asukasosallisuus: yleis- ja toiminta-avustushakemus'
+        sv: 'SV Asukasosallisuus: yleis- ja toiminta-avustushakemus'
     59:
       id: LIIKUNTATAPAHTUMA
       code: LIIKUNTATAPAHTUMA
