@@ -2,6 +2,9 @@
 
 
 ## 2023.15
+- d8fa7432 fix: AU-1377: Move description to before in Liikunta yleis (#620)
+- bed6b6a9 fix: AU-1370: Use hds notification template instead of custom core in profile pages (#618)
+- 894a9544 feat: AU-1414: create module for automated Preview -link (#617)
 - d479c29f fix: AU-1401: remove print button and fix print styles for p… (#616)
 - c34d4791 config: Update configuration (#550)
 - d7d73280 fix: AU-1406: Allow submitted application to be edited when application period is closed (#614)
