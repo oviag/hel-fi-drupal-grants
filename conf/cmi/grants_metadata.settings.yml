@@ -61,6 +61,16 @@ third_party_options:
         fi: 'Taide ja kulttuuri: toiminta-avustus'
         en: 'EN Taide ja kulttuuri: toiminta-avustus'
         sv: 'SV Taide ja kulttuuri: toiminta-avustus'
+    62:
+      id: NUORPROJ
+      code: NUORPROJ
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\NuorisoProjektiDefinition
+        definitionId: grants_metadata_nuorisoprojekti
+      labels:
+        fi: 'Nuorisopalvelu: projektiavustushakemus'
+        en: 'EN Nuorisopalvelu: projektiavustushakemus'
+        sv: 'SV Nuorisopalvelu: projektiavustushakemus'
     54:
       id: KANSLIATYO
       code: KANSLIATYO
@@ -107,6 +117,16 @@ third_party_options:
       dataDefinition:
         definitionClass: Drupal\grants_metadata\TypedData\Definition\KuvaPerusDefinition
         definitionId: grants_metadata_kuvaperus
+      labels:
+        fi: 'Taide ja kulttuuri: perusopetuksen avustus'
+        en: 'EN Taide ja kulttuuri: perusopetuksen avustus'
+        sv: 'SV Taide ja kulttuuri: perusopetuksen avustus'
+    62:
+      id: NUORPROJ
+      code: NUORPROJ
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\NuorisoProjektiDefinition
+        definitionId: grants_metadata_nuorisoprojekti
       labels:
         fi: 'Taide ja kulttuuri, taiteen perusopetus'
         en: 'Arts and culture, basic arts education grants'
