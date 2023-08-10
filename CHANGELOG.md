@@ -1,9 +1,14 @@
 # CHANGELOG
 
 
+## 2023.15.2
+- 8c9feb2d fix: AU-1420: Swap field mappings (#627)
+- 21a65f0f fix: AU-1246: Add nuorisolomaleiri translations (#625)
+- 1a3d359f fix: AU-1394: font change for labels and legends (#624)
+- ce88163e fix: AU-1379: remove unused attachment fields (#622)
+
 ## 2023.15.1
 - e9e2a7c4 fix: Disable cache (#621)
-
 
 ## 2023.15
 - d8fa7432 fix: AU-1377: Move description to before in Liikunta yleis (#620)
