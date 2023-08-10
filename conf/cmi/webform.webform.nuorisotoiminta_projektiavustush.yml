@@ -650,18 +650,21 @@ elements: |-
         '#filetype': '7'
         '#description': 'Uusi hakija tai s&auml;&auml;nn&ouml;t muuttuneet'
         '#attachment__title': 'Yhteisön säännöt'
+        '#description__access': false
       projektisuunnitelma_liite:
         '#type': grants_attachments
         '#title': Projektisuunnitelma
         '#multiple': false
         '#filetype': '19'
         '#attachment__title': Projektisuunnitelma
+        '#description__access': false
       projektin_talousarvio:
         '#type': grants_attachments
         '#title': 'Projektin talousarvio'
         '#multiple': false
         '#filetype': '2'
         '#attachment__title': 'Projektin talousarvio'
+        '#description__access': false
       extra_info:
         '#type': textarea
         '#title': 'Lisäselvitys liitteistä'
