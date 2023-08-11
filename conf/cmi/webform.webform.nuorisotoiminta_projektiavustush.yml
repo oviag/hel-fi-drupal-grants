@@ -19,12 +19,9 @@ third_party_settings:
     applicationTargetGroup: '27'
     applicationOpen: '2022-10-02T11:08:26'
     applicationClose: '2023-12-22T11:19:00'
-    applicationActingYearsType: fixed
-    applicationActingYears:
-      2023: '2023'
-      2024: '2024'
-      2025: '2025'
-    applicationActingYearsNextCount: ''
+    applicationActingYearsType: current_and_next_x_years
+    applicationActingYears: {  }
+    applicationActingYearsNextCount: '1'
     applicationContinuous: 0
     disableCopying: 0
 weight: 0
@@ -192,51 +189,52 @@ elements: |-
       '#states':
         visible:
           ':input[name="applicant_type"]':
-            '!value': private_person
+            value: registered_community
       community_address:
         '#type': community_address_composite
         '#title': 'Yhteisön osoite'
-        '#description': 'Valitse osoite, osoitteita ylläpidetään omissa tiedoissa.'
         '#help': 'Jos haluat lisätä, poistaa tai muuttaa osoitetietoa tallenna hakemus luonnokseksi ja siirry ylläpitämään osoitetietoa omiin tietoihin.'
         '#attributes':
           class:
             - webform--large
+        '#required': true
+        '#states':
+          visible:
+            ':input[name="applicant_type"]':
+              value: registered_community
     tilinumero:
       '#type': webform_section
       '#title': Tilinumero
       bank_account:
         '#type': bank_account_composite
         '#title': Tilinumero
-        '#description': 'Valitse tilinumero, tilinumeroita ylläpidetään omissa tiedoissa. '
         '#help': 'Jos haluat lisätä, poistaa tai muuttaa tilinumerotietoa tallenna hakemus luonnokseksi ja siirry ylläpitämään tilinumerotietoa omiin tietoihin.'
         '#attributes':
           class:
             - webform--medium
+        '#required': true
     toiminnasta_vastaavat_henkilot:
       '#type': webform_section
       '#title': 'Toiminnasta vastaavat henkilöt'
       '#states':
         visible:
-          - ':input[name="applicant_type"]':
-              value: registered_community
-          - or
-          - ':input[name="applicant_type"]':
-              value: unregistered_community
+          ':input[name="applicant_type"]':
+            '!value': private_person
       community_officials:
         '#type': community_officials_composite
         '#help': 'Jos haluat lisätä, poistaa tai muuttaa henkilöitä tallenna hakemus luonnokseksi ja siirry ylläpitämään henkilöiden tietoja omiin tietoihin.'
         '#title': 'Valitse toiminnasta vastaavat henkilöt'
         '#multiple': true
-        '#description': 'Valitse toiminnasta vastaavat henkil&ouml;t, henkil&ouml;it&auml; yll&auml;pidet&auml;&auml;n omissa tiedoissa.'
-        '#required': true
         '#multiple__item_label': henkilö
-        '#multiple__no_items_message': 'Ei toiminnasta vastaavia henkil&ouml;it&auml;. Lis&auml;&auml; uusi henkil&ouml; alta.'
         '#multiple__min_items': 0
-        '#multiple__empty_items': 0
+        '#multiple__empty_items': 1
         '#multiple__sorting': false
         '#multiple__add': false
         '#multiple__add_more_input': false
         '#multiple__add_more_button_label': 'Lisää henkilö'
+        '#wrapper_attributes':
+          class:
+            - community_officials_wrapper
         '#attributes':
           class:
             - webform--large
@@ -251,6 +249,8 @@ elements: |-
       kenelle_haen_avustusta:
         '#type': select
         '#title': 'Kenelle haen avustusta'
+        '#help': 'Valitse tässä se yhteisö, jolle haette avustusta'
+        '#required': true
         '#options':
           Nuorisoyhdistys: Nuorisoyhdistys
           'Nuorten toimintaryhmä': 'Nuorten toimintaryhmä'
@@ -269,6 +269,7 @@ elements: |-
         '#type': grants_compensations
         '#title': Avustukset
         '#multiple': true
+        '#help': 'Kerro tässä, kuinka paljon haette avustusta. Ilmoita hakusumma kokonaisulukuna ja euroissa.'
         '#subventionType':
           4: '4'
         '#required': true
@@ -287,9 +288,6 @@ elements: |-
         '#subvention_type_id__access': false
         '#subvention_type__title': Avustuslaji
         '#subvention_amount__title': 'Avustuksen summa'
-      markup:
-        '#type': webform_markup
-        '#markup': '<p>Hae yhdell&auml; hakemuksella aina vain yht&auml; avustuslajia kerrallaan.</p>'
     muut_samaan_tarkoitukseen_myonnetyt_avustukset:
       '#type': webform_section
       '#title': 'Muut samaan tarkoitukseen myönnetyt avustukset'
@@ -297,7 +295,7 @@ elements: |-
         '#type': radios
         '#title': 'Olemme saaneet muita avustuksia'
         '#description': |-
-          <p>Ilmoita tähän ainoastaan avustukset, jotka on myönnetty muualta kuin Helsingin kaupungilta kuluvana tai kahtena edellisenä verovuotena.</p>
+          <p>Jos olette saaneet tai hakeneet muita avustuksia samaan projektiin, ilmoittakaa niiden tiedot tässä.</p>
 
           <div class="hds-notification hds-notification--info">
           <div class="hds-notification__content">
@@ -519,12 +517,10 @@ elements: |-
         '#type': date
         '#title': 'Projekti alkaa'
         '#required': true
-        '#datepicker': true
       projekti_loppuu:
         '#type': date
         '#title': 'Projekti loppuu'
         '#required': true
-        '#datepicker': true
     projektin_kaikki_osallistujat:
       '#type': webform_section
       '#title': 'Projektin kaikki osallistujat'
@@ -544,21 +540,10 @@ elements: |-
       projektin_paikka_2:
         '#type': textarea
         '#title': 'Projektin paikka'
+        '#description_display': before
         '#description': 'Paikka tai paikat, joissa suunnittelette toteuttavanne projektin toiminnan.'
         '#help': 'Laita t&auml;h&auml;n paikan mahdollinen nimi tai muu kuvaus paikasta. Esimerkiksi jos paikka on joku Helsingin kaupungin nuorisotiloista, voitte kirjoittaa sen nuorisotilan nimen. Jos projekti tapahtuu digitaalisessa ymp&auml;rist&ouml;ss&auml;, kertokaa, miss&auml; digitaalisessa ymp&auml;rist&ouml;ss&auml; toiminta tapahtuu. Jos kyseess&auml; olisi esimerkiksi podcast-projekti, joka &auml;&auml;nitet&auml;&auml;n tietyss&auml; fyysiess&auml; paikassa ja podcast julkaistaan digitaalisen alusta kautta internetiss&auml;, voit kertoa n&auml;m&auml; molemmat paikat.'
         '#size': 32
-        '#autocomplete': 'off'
-        '#counter_type': character
-        '#counter_maximum': 1000
-        '#counter_maximum_message': '%d/1000 merkkiä jäljellä'
-    lisakysymys:
-      '#type': webform_section
-      '#title': Lisäkysymys
-      lisakysymys_2:
-        '#type': textarea
-        '#title': Lisäkysymys
-        '#description': 'T&auml;m&auml; on lis&auml;kysymys joka vied&auml;&auml;n tarvittaessa hakemukselle. Jos kysymyst&auml; ei ole, kohtaa ei n&auml;y hakemuksella.'
-        '#description_display': before
         '#autocomplete': 'off'
         '#counter_type': character
         '#counter_maximum': 1000
@@ -619,7 +604,7 @@ elements: |-
         '#attributes':
           class:
             - webform--large
-        '#help': 'T&auml;h&auml;n voit tarvittaessa kirjoittaa lis&auml;tietoja tai muita perusteluja hakemukseen liittyen tai ilmoittaa perustietoihin tulleista muutoksista&nbsp;'
+        '#help': 'T&auml;h&auml;n voit tarvittaessa kirjoittaa lis&auml;tietoja tai muita perusteluja hakemukseen liittyen.'
         '#counter_type': character
         '#maxlength': 5000
         '#counter_maximum': 5000
@@ -630,7 +615,7 @@ elements: |-
       '#title': Liitteet
       attachments_info:
         '#type': webform_markup
-        '#markup': 'Avustushakemuksen k&auml;sittely&auml; varten tulee toimittaa kaikki alla luetellut liitteet. Avustushakemus voidaan hyl&auml;t&auml;, jos liitteit&auml; ei ole toimitettu. Mik&auml;li joku liitteist&auml; puuttuu, kerro siit&auml; hakemuksen Lis&auml;selvitys liitteist&auml; -kohdassa.'
+        '#markup': "<p>Avustushakemuksen käsittelyä varten tulee toimittaa kaikki vaaditut liitteet. Avustushakemus voidaan hylätä, jos liitteitä ei ole toimitettu. Mikäli joku liitteistä puuttuu kerro siitä hakemuksen Lisäselvitys liitteistä -kohdassa.</p>\r\n\r\n<p><strong>Vaaditut liitteet</strong><br />\r\nProjektiavustushakemukseen voi halutessaan liittää projektin tarkemman suunnitelman sekä sen talousarvion. Yhdistysten hakiessa projektiavustusta pakollisena liitteenä on toimitettava yhdistyksen voimassa olevat säännöt. Sääntöjen tulee olla patentti- ja rekisterihallituksen hyväksymiä.</p>\r\n\r\n<p><strong>Usean liitteen toimittaminen yhtenä tiedostona</strong><br />\r\nVoit halutessasi toimittaa useampia liitteitä yhtenä tiedostona. Kerro tästä lisäselvitys liitteistä-kohdassa.</p>\r\n\r\n<p><strong>Helsingin kaupungille aiemmin toimitetut liitteet</strong><br />\r\nJos vaaditut liitteet on jo toimitettu toisen Helsingin kaupungille osoitetun avustushakemuksen liitteenä, samoja liitteitä ei tarvitse toimittaa uudelleen. Yhteisön vahvistettu tilinpäätös, toimintakertomus, toimintasuunnitelma ja talousarvio eivät voi olla erilaisia eri hakemusten liitteenä. Merkitse tällöin toimitettujen liitteiden kohdalla ”Liite on toimitettu yhtenä tiedostona tai toisen hakemuksen yhteydessä”.</p>"
       notification_attachments:
         '#type': processed_text
         '#text': |
@@ -648,22 +633,22 @@ elements: |-
         '#title': 'Yhteisön säännöt'
         '#multiple': false
         '#filetype': '7'
-        '#description': 'Uusi hakija tai s&auml;&auml;nn&ouml;t muuttuneet'
-        '#attachment__title': 'Yhteisön säännöt'
+        '#help': 'Uusi hakija tai s&auml;&auml;nn&ouml;t muuttuneet.'
+        '#title_display': ''
         '#description__access': false
       projektisuunnitelma_liite:
         '#type': grants_attachments
         '#title': Projektisuunnitelma
         '#multiple': false
         '#filetype': '19'
-        '#attachment__title': Projektisuunnitelma
+        '#title_display': ''
         '#description__access': false
       projektin_talousarvio:
         '#type': grants_attachments
         '#title': 'Projektin talousarvio'
         '#multiple': false
         '#filetype': '2'
-        '#attachment__title': 'Projektin talousarvio'
+        '#title_display': ''
         '#description__access': false
       extra_info:
         '#type': textarea
