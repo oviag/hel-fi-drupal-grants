@@ -2,6 +2,11 @@
 
 
 ## 2023.15.2
+- 654873d2 AU-1403: Add defaults to suppress warnings (#640)
+- 8ec03882 feat: AU-1412: Custom Webform config ignore and config import by application type ID (#636)
+- 5e6e87d7 AU-XX: fix malformed translation string (#639)
+- d08e2ad8 fix: AU-1438: Make so that continuous applications are not expired in list (#638)
+- 50eb0521 feat: AU-966: Nuoriso Projekti code 62 // IBM (#417)
 - 832b8025 fix: AU-1415: Install & configure Varnish modules bypassing helfi_proxy module. (#634)
 - 67a88a3d fix: AU-1428: Fix TPR integration by updating to Guzzle7 (#633)
 - 5452ab79 fix: AU-1416: Edit premise (#631)
