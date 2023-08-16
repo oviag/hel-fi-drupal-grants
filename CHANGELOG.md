@@ -1,6 +1,12 @@
 # CHANGELOG
 
 
+## 2023.15.3
+- 829d59f7 fix: AU-1442 remove frontpageblock from conf (#646)
+- 7658d94e fix: AU-1440: Summation field change event (#643)
+- ae4f0fb0 fix: AU-1443: Update packages to support php8.2 without going to platta v3 (#644)
+- 08d5a4aa fix: AU-1277: Handle translations for applicant details (#642)
+
 ## 2023.15.2
 - 654873d2 AU-1403: Add defaults to suppress warnings (#640)
 - 8ec03882 feat: AU-1412: Custom Webform config ignore and config import by application type ID (#636)
