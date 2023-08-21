@@ -2,9 +2,9 @@
 
 namespace Drupal\grants_applicant_info\Element;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\helfi_atv\AtvDocument;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Element\WebformCompositeBase;
 use Drupal\webform\Entity\Webform;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -65,6 +65,7 @@ class ApplicantInfoComposite extends WebformCompositeBase {
     $elements['applicantType'] = [
       '#type' => 'hidden',
       '#value' => $selectedRoleData["type"],
+      '#title' => t('Applicant type'),
     ];
     $elements['applicant_type'] = [
       '#type' => 'hidden',
