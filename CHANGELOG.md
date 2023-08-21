@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## 2023.16
+- 729ea630 fix: AU-1458: Fix KUVA Perus realized premises mapping (#652)
+- fbf4fd8e fix: AU-1456: Updates to the ForceMenuLinkService.php service. (#656)
+- 6d9eb5b3 fix: AU-1429, AU-1431, AU-1432, AU-1433, AU-1434: Taiteen perusopetuksen avustukset testfixes (#650)
+
 ## 2023.15.3
 - 8c692ad9 fix: AU-1444: Handle amount conversion in other compensation composite (#649)
 - 829d59f7 fix: AU-1442 remove frontpageblock from conf (#646)
