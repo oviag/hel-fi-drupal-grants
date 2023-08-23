@@ -1,6 +1,11 @@
 # CHANGELOG
 
 
+## 2023.17
+- 4f7695a0 docs: Changelog + Version
+- d79655d0 feat: AU-1408: Webform configuration override (#647)
+- a91de320 fix: AU-1423: Copy address and budget fields properly for new applications (#651)
+
 ## 2023.16
 - 1c4344bf feat: AU-1325: Liikunta, laitosavustus // ID 57 (#592)
 - f4c0e281 Restore page required variable
