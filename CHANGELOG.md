@@ -2,6 +2,12 @@
 
 
 ## 2023.16
+- 1c4344bf feat: AU-1325: Liikunta, laitosavustus // ID 57 (#592)
+- f4c0e281 Restore page required variable
+- a7ad224b fix: AU-1247, AU-1430, AU-1437: Kulttuuri taiteen perusopetus fixes (#661)
+- 235fc37d fix: AU-1427: change notification text (#660)
+- 4c0329cc fix: AU-1424: add target blank (#659)
+- deb59276 Remove citySection from form config since it is not implemented in avus2.
 - 729ea630 fix: AU-1458: Fix KUVA Perus realized premises mapping (#652)
 - fbf4fd8e fix: AU-1456: Updates to the ForceMenuLinkService.php service. (#656)
 - 6d9eb5b3 fix: AU-1429, AU-1431, AU-1432, AU-1433, AU-1434: Taiteen perusopetuksen avustukset testfixes (#650)
