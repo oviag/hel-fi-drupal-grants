@@ -5,6 +5,9 @@
 - 4f7695a0 docs: Changelog + Version
 - d79655d0 feat: AU-1408: Webform configuration override (#647)
 - a91de320 fix: AU-1423: Copy address and budget fields properly for new applications (#651)
+- c61b14ed fix: AU-1137: fix multiples for vastuuhenkilö (#667)
+- 9c2d5583 fix: AU-1472: Correct format for date on application form (#668)
+- bb65a329 fix: AU-1477: Fixed an issue with webfrom translation importing. (#665)
 
 ## 2023.16
 - 1c4344bf feat: AU-1325: Liikunta, laitosavustus // ID 57 (#592)
