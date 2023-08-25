@@ -19,6 +19,7 @@ use Drupal\Core\Lock\LockBackendInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drush\Commands\DrushCommands;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\PathUtil\Path;
@@ -155,6 +156,8 @@ class WebformImportCommands extends DrushCommands {
    *   Extension list module.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   Config factory.
+   * @param GuzzleHttp\ClientInterface $client
+   *   Http client.
    */
   public function __construct(
     StorageInterface $storage,
@@ -167,7 +170,8 @@ class WebformImportCommands extends DrushCommands {
     ThemeHandlerInterface $themeHandler,
     TranslationInterface $stringTranslation,
     ModuleExtensionList $extensionListModule,
-    ConfigFactoryInterface $configFactory
+    ConfigFactoryInterface $configFactory,
+    ClientInterface $httpClient
   ) {
     parent::__construct();
     $this->storage = $storage;
@@ -181,6 +185,7 @@ class WebformImportCommands extends DrushCommands {
     $this->stringTranslation = $stringTranslation;
     $this->extensionListModule = $extensionListModule;
     $this->configFactory = $configFactory;
+    $this->httpClient = $httpClient;
   }
 
   /**
@@ -211,6 +216,76 @@ class WebformImportCommands extends DrushCommands {
       return;
     }
     $this->import($webformFiles);
+  }
+
+  /**
+   * Import webform config ignoring config_ignore.
+   *
+   * param string|false $applicationTypeID
+   *   A singular (numeric) form ID. The configuration for only this form
+   *   will be imported.
+   * param false[] $options
+   *   An array of options provided to the command.
+   *
+   * @command grants-tools:webform-import-api
+   *
+   * @option force
+   *   Force importing configurations, even if they are ignored.
+   *
+   * @usage grants-tools:webform-import-api
+   *
+   * @aliases gwia
+   */
+  public function importWebformsViaApi() {
+    // Fetch the config
+    $url = "https://hel-fi-drupal-grant-applications.docker.so/en/jsonapi/webform/webform";
+    $options = [
+      'verify' => FALSE,
+      'headers' => [
+        // 'Authorization' => 'Basic d2ViZm9ybV9jb25maWdfcmV0cmlldmVyOjN5Q2dEUXZZQnZLMnRMNkU=',
+      ],
+    ];
+    $response = $this->httpClient->get(
+      $url,
+      $options,
+    );
+    $statusCode = $response->getStatusCode();
+    if ($statusCode !== '200') {
+      $this->output()
+          ->writeln("Authorization error");
+      return;
+    }
+    $contents = (string) $response->getBody();
+    $responseArray = json_decode($contents, TRUE);
+    $webformData = $responseArray['data'];
+
+    // Prepare for config import
+    $processedFiles = [];
+    $sourceStorage = new StorageReplaceDataWrapper(
+      $this->storage
+    );
+    // Handle webform configs.
+    foreach ($webformData as $webformConfig) {
+      $webformConfigObject = $webformConfig['attributes'];
+      $webformConfigObject['uuid'] = $webformConfig['id'];
+      $webformConfigObject['id'] = $webformConfigObject['drupal_internal__id'];
+      $name = "webform.webform.${webformConfigObject['id']}";
+      $processedFiles[] = $name;
+      $sourceStorage->replaceData($name, $webformConfigObject);
+    }
+    // Actual import phase.
+    $storageComparer = new StorageComparer(
+      $sourceStorage,
+      $this->storage
+    );
+    if ($this->configImport($storageComparer)) {
+      foreach ($processedFiles as $file) {
+        $this->output()->writeln("Successfully imported file: $file");
+      }
+    }
+    else {
+      throw new ConfigImporterException("Failed importing files");
+    }
   }
 
   /**
