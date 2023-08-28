@@ -219,18 +219,9 @@ class WebformImportCommands extends DrushCommands {
   }
 
   /**
-   * Import webform config ignoring config_ignore.
-   *
-   * param string|false $applicationTypeID
-   *   A singular (numeric) form ID. The configuration for only this form
-   *   will be imported.
-   * param false[] $options
-   *   An array of options provided to the command.
+   * Import webform config from a server.
    *
    * @command grants-tools:webform-import-api
-   *
-   * @option force
-   *   Force importing configurations, even if they are ignored.
    *
    * @usage grants-tools:webform-import-api
    *
