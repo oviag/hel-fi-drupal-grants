@@ -2,12 +2,22 @@
 
 
 ## 2023.17
-- 4f7695a0 docs: Changelog + Version
 - d79655d0 feat: AU-1408: Webform configuration override (#647)
 - a91de320 fix: AU-1423: Copy address and budget fields properly for new applications (#651)
 - c61b14ed fix: AU-1137: fix multiples for vastuuhenkilö (#667)
 - 9c2d5583 fix: AU-1472: Correct format for date on application form (#668)
 - bb65a329 fix: AU-1477: Fixed an issue with webfrom translation importing. (#665)
+- f7801223 feat: AU-1293: Liikunta, toiminta ja tilankäyttöavustus // ID 60 (#575)
+- 1e64ff07 fix: AU-1482, AU-1483: fix nuoriso projekti fields (#673)
+- 585f8df2 fix: AU-1256: unregistered community always has required Community Officials and other roles don't (#675)
+- 78e28f46 fix: AU-1457: Hidden fields do not need titles if they are not to be displayed on preview (#677)
+- 76a935c9 fix: AU-1474 change hidden avustukset-summa to a hidden field instead of display:none (#678)
+- 7b0df10c fix: AU-1288: fix preview notification -text and add new notification (#669)
+- b882cb2c fix: AU-1432: translation fixes (#674)
+- a0d40aed fix: AU-1475: fix the AJAX attachment thing with form_alter before the hierarchy is changed (#676)
+- 8d6b4dd5 fix: AU-1391: fix liikunta tapahtuma buttons (#671)
+- ffb3c7a1 fix: AU-1490: Disable custom health_check module (#672)
+- 3d2825d7 feat: AU-1478: Automate form config imports safely. (#664)
 
 ## 2023.16
 - 1c4344bf feat: AU-1325: Liikunta, laitosavustus // ID 57 (#592)
