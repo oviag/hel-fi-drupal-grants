@@ -238,11 +238,16 @@ class WebformImportCommands extends DrushCommands {
    */
   public function importWebformsViaApi() {
     // Fetch the config
-    $url = "https://hel-fi-drupal-grant-applications.docker.so/en/jsonapi/webform/webform";
+    $baseUrl = getenv('GRANTS_WEBFORM_IMPORT_BASE_URL');
+    // Language parameter does not affect the response.
+    $url = $baseUrl . '/en/jsonapi/webform/webform';
+    $authorizationHeader = getenv('GRANTS_WEBFORM_IMPORT_AUTHORIZATION_HEADER');
+    $isLocal = str_contains($url, 'hel-fi-drupal-grant-applications.docker.so');
     $options = [
-      'verify' => FALSE,
+      // Curl does not find local cert.
+      'verify' => !$isLocal,
       'headers' => [
-        // 'Authorization' => 'Basic d2ViZm9ybV9jb25maWdfcmV0cmlldmVyOjN5Q2dEUXZZQnZLMnRMNkU=',
+        'Authorization' => $authorizationHeader,
       ],
     ];
     $response = $this->httpClient->get(
@@ -250,7 +255,8 @@ class WebformImportCommands extends DrushCommands {
       $options,
     );
     $statusCode = $response->getStatusCode();
-    if ($statusCode !== '200') {
+
+    if ($statusCode !== 200) {
       $this->output()
           ->writeln("Authorization error");
       return;
