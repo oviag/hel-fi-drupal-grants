@@ -2,6 +2,8 @@
 
 
 ## 2023.17
+- e6118849 fix: AU-1487: appendix to attachment (#681)
+- dcf9495f fix: AU-1496: Move notification outside of checkbox in preview page (#680)
 - d79655d0 feat: AU-1408: Webform configuration override (#647)
 - a91de320 fix: AU-1423: Copy address and budget fields properly for new applications (#651)
 - c61b14ed fix: AU-1137: fix multiples for vastuuhenkilö (#667)
