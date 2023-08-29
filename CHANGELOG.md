@@ -2,6 +2,8 @@
 
 
 ## 2023.17
+- 152450f9 fix: AU-1497: add the rest of the nuorproj translations (#682)
+- 5414b892 feat: AU-1445, AU-1446, 1475: Header hierarchy and AJAX file issues with required notification (#658)
 - e6118849 fix: AU-1487: appendix to attachment (#681)
 - dcf9495f fix: AU-1496: Move notification outside of checkbox in preview page (#680)
 - d79655d0 feat: AU-1408: Webform configuration override (#647)
