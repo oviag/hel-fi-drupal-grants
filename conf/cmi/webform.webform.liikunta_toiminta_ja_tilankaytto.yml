@@ -399,7 +399,7 @@ elements: |-
                 - webform--small
             '#maxlength': 4
             '#pattern': '^(19\d\d|20\d\d|2100)$'
-            '#pattern_error': 'Syötä vuosiluku
+            '#pattern_error': 'Syötä vuosiluku'
           amount:
             '#type': textfield
             '#required': true
