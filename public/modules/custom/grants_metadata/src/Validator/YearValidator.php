@@ -21,7 +21,7 @@ class YearValidator {
    *
    * @param array $element
    *   The form element to process.
-   * @param FormStateInterface $formState
+   * @param \Drupal\Core\Form\FormStateInterface $formState
    *   The form state.
    * @param array $form
    *   The complete form structure.
@@ -44,4 +44,5 @@ class YearValidator {
       $formState->setError($element, t('Enter a valid year.', [], $tOpts));
     }
   }
+
 }

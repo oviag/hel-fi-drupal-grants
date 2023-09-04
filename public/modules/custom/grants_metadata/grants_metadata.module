@@ -480,7 +480,7 @@ function grants_metadata_webform_element_alter(array &$element, FormStateInterfa
         str_contains($element['#webform_id'], '--haettu_avustus_tieto')) {
       $element['#element_validate'][] = [
         YearValidator::class,
-        'validate'
+        'validate',
       ];
     }
   }
