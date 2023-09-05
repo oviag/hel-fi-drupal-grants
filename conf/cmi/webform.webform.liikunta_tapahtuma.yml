@@ -118,7 +118,7 @@ elements: |-
       '#states':
         visible:
           ':input[name="applicant_type"]':
-            'value': registered_community
+            value: registered_community
       community_address:
         '#type': community_address_composite
         '#title': 'Yhteisön osoite'
@@ -130,7 +130,7 @@ elements: |-
         '#states':
           visible:
             ':input[name="applicant_type"]':
-              'value': registered_community
+              value: registered_community
     tilinumero:
       '#type': webform_section
       '#title': Tilinumero
@@ -161,7 +161,6 @@ elements: |-
         '#multiple__add': false
         '#multiple__add_more_input': false
         '#multiple__add_more_button_label': 'Lisää henkilö'
-
         '#wrapper_attributes':
           class:
             - community_officials_wrapper
@@ -416,11 +415,13 @@ elements: |-
         '#type': date
         '#title': Alkaa
         '#required': true
+        '#date_date_min': today
         '#datepicker': true
       paattyy:
         '#type': date
         '#title': Päättyy
         '#required': true
+        '#date_date_min': today
         '#datepicker': true
   tapahtuman_talousarvio:
     '#type': webform_wizard_page
