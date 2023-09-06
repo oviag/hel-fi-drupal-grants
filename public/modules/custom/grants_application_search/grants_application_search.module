@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Hook implementations for the Grants Application Search module.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 
 /**
