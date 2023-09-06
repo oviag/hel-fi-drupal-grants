@@ -41,7 +41,7 @@ class YearValidator {
     }
 
     if (!preg_match("/^(19\d\d|20\d\d|2100)$/", $year)) {
-      $formState->setError($element, t('Enter a year.', [], $tOpts));
+      $formState->setError($element, t('Enter a year between 1900 - 2100.', [], $tOpts));
     }
   }
 

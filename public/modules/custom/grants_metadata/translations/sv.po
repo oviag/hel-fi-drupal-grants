@@ -12,5 +12,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-msgid "Enter a year."
-msgstr "Ange ett årtal."
+msgid "Enter a year between 1900 - 2100."
+msgstr "Ange ett årtal mellan 1900 - 2100."

@@ -331,7 +331,7 @@ elements: |-
                 - webform--small
             '#maxlength': 4
             '#pattern': '^(19\d\d|20\d\d|2100)$'
-            '#pattern_error': 'Syötä vuosiluku'
+            '#pattern_error': 'Syötä vuosiluku väliltä 1900 - 2100'
           amount:
             '#type': textfield
             '#required': true
@@ -421,7 +421,7 @@ elements: |-
             '#title': Vuosi
             '#maxlength': 4
             '#pattern': '^(19\d\d|20\d\d|2100)$'
-            '#pattern_error': 'Syötä vuosiluku'
+            '#pattern_error': 'Syötä vuosiluku väliltä 1900 - 2100'
           amount:
             '#type': textfield
             '#required': true
