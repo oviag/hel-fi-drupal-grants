@@ -508,7 +508,7 @@ function hdbt_subtheme_form_alter(&$form, FormStateInterface $form_state, $form_
   }
 
   // Attach the restricted-datepicker library to the "liikunta_tapahtuma" form.
-  if (str_contains($form_id, 'liikunta_tapahtuma')) {
+  if (str_contains($form_id, 'webform_submission_liikunta_tapahtuma')) {
     $form['#attached']['library'][] = 'hdbt_subtheme/restricted-datepicker';
   }
 }
