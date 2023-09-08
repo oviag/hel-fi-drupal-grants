@@ -8,6 +8,7 @@
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\grants_metadata\Validator\EndDateValidator;
 use Drupal\grants_metadata\Validator\YearValidator;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
@@ -480,6 +481,12 @@ function grants_metadata_webform_element_alter(array &$element, FormStateInterfa
         str_contains($element['#webform_id'], '--haettu_avustus_tieto')) {
       $element['#element_validate'][] = [
         YearValidator::class,
+        'validate',
+      ];
+    }
+    if ($element['#webform_id'] === 'liikunta_tapahtuma--paattyy') {
+      $element['#element_validate'][] = [
+        EndDateValidator::class,
         'validate',
       ];
     }
