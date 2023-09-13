@@ -161,6 +161,16 @@ third_party_options:
         fi: 'Liikunta, Laitosavustushakemus'
         en: 'EN Liikunta, Laitosavustushakemus'
         sv: 'SV Liikunta, Laitosavustushakemus'
+    67:
+      id: ASUKASYLEISTOIM
+      code: ASUKASYLEISTOIM
+      dataDefinition:
+        definitionClass: Drupal\grants_metadata\TypedData\Definition\KansliatyoDefinition
+        definitionId: grants_metadata_kansliatyo
+      labels:
+        fi: 'Asukasosallisuus: yleis- ja toiminta-avustushakemus'
+        en: 'EN Asukasosallisuus: yleis- ja toiminta-avustushakemus'
+        sv: 'SV Asukasosallisuus: yleis- ja toiminta-avustushakemus'
   application_statuses:
     DRAFT: DRAFT
     SENT: SENT
