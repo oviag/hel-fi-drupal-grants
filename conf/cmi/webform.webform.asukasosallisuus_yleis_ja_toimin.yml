@@ -8,7 +8,7 @@ dependencies:
 third_party_settings:
   grants_metadata:
     applicationTypeSelect: '67'
-    applicationType: KANSLIATYO
+    applicationType: ASUKASYLEISTOIM
     applicationTypeID: '67'
     applicationIndustry: KANSLIA
     applicantTypes:
@@ -32,7 +32,7 @@ template: false
 archive: false
 id: asukasosallisuus_yleis_ja_toimin
 title: 'Asukasosallisuus: yleis- ja toiminta-avustushakemus'
-description: KANSLIATYO
+description: ASUKASYLEISTOIM
 category: ''
 elements: |-
   1_hakijan_tiedot:
