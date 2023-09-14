@@ -141,7 +141,6 @@ third_party_options:
         fi: 'Nuorisotoiminta, loma-aikojen leiriavustushakemus'
         en: 'Holiday camp grants for youth activities'
         sv: 'Ungdomsverksamhet, lägerunderstöd under skollovstider'
-<<<<<<< HEAD
     64:
       id: ASUKASPIEN
       code: ASUKASPIEN
@@ -152,7 +151,6 @@ third_party_options:
         fi: 'Asukasosallisuus, pienavustushakemus'
         en: 'EN Asukasosallisuus, pienavustushakemus'
         sv: 'SV Asukasosallisuus, pienavustushakemus'
-=======
     60:
       id: LIIKUNTATILANKAYTTO
       code: LIIKUNTATILANKAYTTO
@@ -173,7 +171,6 @@ third_party_options:
         fi: 'Liikunta, Laitosavustushakemus'
         en: 'EN Liikunta, Laitosavustushakemus'
         sv: 'SV Liikunta, Laitosavustushakemus'
->>>>>>> remote-grants/develop
   application_statuses:
     DRAFT: DRAFT
     SENT: SENT
